@@ -55,13 +55,33 @@
           },
           "description": "Plateforme d'agents vocaux IA pour l'automatisation du service client et des ventes. 4 offres: Starter, Pro, E-commerce, Telephony.",
           "featureList": [
-            "Voice Widget Starter - Assistant IA vocal 24/7, 38 personas métier",
-            "Voice Widget Pro - Lead qualification BANT, prise de RDV, CRM integration",
-            "Voice Widget E-commerce - Catalogue produits, panier vocal, exit-intent",
-            "Voice Telephony AI - Agents PSTN, lignes téléphoniques, 199€/mois + 0.10€/min",
-            "Multi-language Support (FR/EN/ES/AR/Darija)",
-            "Multi-AI avec 5 niveaux de redondance",
-            "9 E-commerce Integrations (Shopify, WooCommerce, Magento)"
+            "Text chat + voice AI conversation",
+            "Voice recognition (Web Speech API + ElevenLabs STT)",
+            "Voice synthesis TTS (ElevenLabs, 5 languages)",
+            "5-level AI fallback: Grok → Gemini → Claude → Atlas → local",
+            "RAG knowledge base per tenant",
+            "38 industry personas × 5 languages (190 prompt variants)",
+            "Automatic email/name/phone detection",
+            "BANT scoring (Budget, Authority, Need, Timeline)",
+            "Lead classification (hot/warm/cold)",
+            "In-chat appointment booking with push notifications",
+            "Calendar integration (Google Calendar, Outlook, Calendly)",
+            "Custom colors, position, avatar, dark mode",
+            "Mobile responsive with typewriter effect",
+            "Returning visitor memory (localStorage + server-side)",
+            "Unified Contact Profile (UCP) across all channels",
+            "Social proof, exit intent, 8 contextual greetings × 5 languages",
+            "Voice cart, product quiz, spin wheel (e-commerce)",
+            "Product carousel, info cards, quick reply buttons",
+            "5 native languages (FR/EN/ES/AR/Darija) with automatic RTL",
+            "Geo-detection (language + currency by location)",
+            "Shadow DOM isolation, XSS protection, CSP headers",
+            "SRI integrity on 78 CDN scripts",
+            "Tenant isolation, rate limiting, JWT authentication",
+            "19 GA4 events, real-time dashboard",
+            "JSON + HTML attribute configuration, A/B testing",
+            "API + Webhooks integration",
+            "Human escalation"
           ]
         },
         {
@@ -476,7 +496,7 @@
                 <i data-lucide="phone" class="w-6 h-6 text-indigo-300"></i>
               </div>
               <div class="flex items-baseline gap-1">
-                <span id="telephonyPrice" class="text-2xl font-bold font-mono text-white" data-price-key="overage">0.10</span>
+                <span id="telephonyPrice" class="text-2xl font-bold font-mono text-white" data-price-key="overage">0.24</span>
                 <span class="text-zinc-400 text-sm" data-currency-symbol>$</span>
                 <span class="text-zinc-500 text-xs ml-1" data-i18n="per_min">/min</span>
               </div>
@@ -910,7 +930,7 @@
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
           </div>
           <blockquote class="text-zinc-300 mb-6 leading-relaxed" data-i18n="testimonials.quote2">
-            "La téléphonie PSTN VocalIA gère les rendez-vous 24/7 avec 25 function tools : prise de RDV, rappels, qualification et suivi — le tout à 0,10€/min avec IA, personas et analytics inclus."
+            "La téléphonie PSTN VocalIA gère les rendez-vous 24/7 avec 25 function tools : prise de RDV, rappels, qualification et suivi — le tout à 0,24€/min avec IA, personas et analytics inclus."
           </blockquote>
           <div class="flex items-center gap-3">
             <div
@@ -1129,7 +1149,7 @@
           el.textContent = info.symbol;
         });
         // Update price values from pricing table
-        var prices = { MAD: { starter: 490, pro: 990, ecom: 990, telephony: 1990, overage: 1.00 }, EUR: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 }, USD: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 } };
+        var prices = { MAD: { starter: 490, pro: 990, ecom: 990, telephony: 1990, overage: 2.40 }, EUR: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.24 }, USD: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.26 } };
         var currencyPrices = prices[info.currency] || prices.EUR;
         document.querySelectorAll('[data-price-key]').forEach(el => {
           var key = el.getAttribute('data-price-key');

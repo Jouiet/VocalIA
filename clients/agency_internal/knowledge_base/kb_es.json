@@ -5,7 +5,7 @@
     "language": "es",
     "created_at": "2026-02-12T00:00:00Z",
     "auto_generated": false,
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "business_info": {
     "question": "Que es VocalIA?",
@@ -32,14 +32,159 @@
     "response": "VocalIA soporta 5 idiomas: frances, ingles, espanol, arabe estandar, y darija (arabe marroqui). La deteccion de idioma es automatica — los visitantes pueden hablar en su idioma y la IA responde en el mismo.",
     "keywords": ["idioma", "lengua", "frances", "ingles", "espanol", "arabe", "darija", "multilingue"]
   },
-  "contact": {
-    "question": "Como contactar a VocalIA?",
-    "response": "Puede contactarnos por email a contact@vocalia.ma, reservar una demo en vocalia.ma/booking, o chatear directamente conmigo, Nadia, su asesora VocalIA. Estoy disponible 24/7.",
-    "keywords": ["contacto", "email", "llamar", "hablar", "direccion"]
+  "integrations": {
+    "question": "Con que herramientas se integra VocalIA?",
+    "response": "VocalIA se integra con: Shopify y WooCommerce (e-commerce), HubSpot y Zoho (CRM), Klaviyo (email marketing), Google Calendar (citas), Stripe (pagos), Slack (notificaciones), Pipedrive (CRM), PrestaShop y Magento (e-commerce). Las integraciones se configuran desde el panel de control en pocos clics.",
+    "keywords": ["integracion", "shopify", "woocommerce", "hubspot", "stripe", "slack", "crm", "conectar"]
+  },
+  "widget": {
+    "question": "Como funciona el widget vocal?",
+    "response": "El widget VocalIA es un boton flotante que se agrega a su sitio web con un simple copiar-pegar de codigo HTML. Los visitantes hacen clic para chatear con su asistente IA por texto o por voz. El widget es personalizable (colores, logo, mensajes de bienvenida) y se adapta al movil. Usa Shadow DOM para no interferir con su sitio existente.",
+    "keywords": ["widget", "boton", "instalar", "sitio web", "chat", "vocal", "como funciona"]
+  },
+  "telephony": {
+    "question": "Como funciona el servicio telefonico?",
+    "response": "Con el plan Telephony (199EUR/mes + 0.10EUR/min), obtiene un numero de telefono dedicado. La IA responde a las llamadas entrantes, califica a los llamantes, agenda citas, y puede transferir a un humano si es necesario. Las llamadas se graban y transcriben automaticamente.",
+    "keywords": ["telefono", "llamada", "pstn", "numero", "telefonia", "voz", "llamar"]
+  },
+  "security": {
+    "question": "Es seguro VocalIA?",
+    "response": "VocalIA utiliza cifrado TLS/HTTPS para todas las comunicaciones, aislamiento de datos por tenant (cada cliente tiene datos separados), tokens JWT para autenticacion, y cumple con el RGPD. Los datos se alojan en Europa. No vendemos los datos de los clientes.",
+    "keywords": ["seguridad", "rgpd", "datos", "cifrado", "privacidad", "proteccion", "gdpr"]
   },
   "booking": {
     "question": "Como reservar una demostracion?",
     "response": "Puede reservar una demostracion gratuita en vocalia.ma/booking. Le mostraremos la plataforma en accion con un persona adaptado a su sector de actividad. La demo dura unos 20 minutos.",
     "keywords": ["reservar", "demo", "demostracion", "cita", "ver"]
+  },
+  "contact": {
+    "question": "Como contactar a VocalIA?",
+    "response": "Puede contactarnos por email a contact@vocalia.ma, reservar una demo en vocalia.ma/booking, o chatear directamente conmigo, Nadia, su asesora VocalIA. Estoy disponible 24/7.",
+    "keywords": ["contacto", "email", "llamar", "hablar", "direccion"]
+  },
+  "ecommerce": {
+    "question": "Como ayuda VocalIA a los e-commerce?",
+    "response": "El plan E-commerce (99EUR/mes) conecta VocalIA a su tienda Shopify, WooCommerce, PrestaShop o Magento. La IA puede: verificar el estado de pedidos, consultar el inventario en tiempo real, recomendar productos, gestionar devoluciones e intercambios, y calificar leads. Todo en conversacion natural con sus clientes.",
+    "keywords": ["ecommerce", "tienda", "pedido", "inventario", "shopify", "woocommerce", "producto"]
+  },
+  "setup": {
+    "question": "Cuanto tiempo toma implementar VocalIA?",
+    "response": "La implementacion es rapida: agregue una linea de codigo HTML a su sitio para el widget (5 minutos), configure su persona y base de conocimientos desde el panel (15-30 minutos), y esta en linea. No necesita desarrollador. Para integraciones CRM/e-commerce, cuente 10-15 minutos adicionales por integracion.",
+    "keywords": ["instalar", "configurar", "tiempo", "implementar", "empezar", "cuanto tiempo"]
+  },
+  "knowledge_base_feature": {
+    "question": "Que es la Base de Conocimientos?",
+    "response": "La Base de Conocimientos es la memoria de su asistente IA. Usted agrega la informacion especifica de su empresa: horarios, servicios, tarifas, FAQ, procedimientos. La IA usa esta informacion para responder con precision a las preguntas de sus clientes. Puede importar contenido desde archivos CSV/JSON o desde la URL de su sitio.",
+    "keywords": ["base de conocimientos", "kb", "informacion", "faq", "contenido"]
+  },
+  "dashboard": {
+    "question": "Hay un panel de control?",
+    "response": "Si, VocalIA incluye un panel de control completo accesible desde app.vocalia.ma. Encontrara: conversaciones en tiempo real, estadisticas de llamadas, leads calificados, gestion de la Base de Conocimientos, configuracion del widget, seguimiento de facturacion, e integraciones. Todo accesible desde el navegador, sin software que instalar.",
+    "keywords": ["panel", "dashboard", "estadisticas", "analytics", "seguimiento", "gestion"]
+  },
+  "ai_technology": {
+    "question": "Que tecnologia de IA utilizan?",
+    "response": "VocalIA utiliza los modelos de lenguaje mas avanzados con un sistema de fallback inteligente: Grok como principal, Gemini como respaldo, luego Claude. Esto garantiza una disponibilidad maxima. El reconocimiento y la sintesis de voz son proporcionados por ElevenLabs para una calidad de voz natural.",
+    "keywords": ["ia", "inteligencia artificial", "tecnologia", "grok", "modelo", "llm", "como funciona"]
+  },
+  "difference": {
+    "question": "Cual es la diferencia entre VocalIA y un chatbot clasico?",
+    "response": "A diferencia de un chatbot con scripts basado en arboles de decision, VocalIA usa IA generativa para conversaciones naturales y contextuales. El asistente comprende matices, maneja el multilingue automaticamente, y se adapta al sector del cliente a traves de personas especializados. Ademas, VocalIA ofrece voz (no solo texto), telefonia PSTN, e integraciones nativas CRM/e-commerce.",
+    "keywords": ["diferencia", "chatbot", "mejor", "ventaja", "comparacion", "por que vocalia"]
+  },
+  "cancellation": {
+    "question": "Como cancelo mi suscripcion?",
+    "response": "Puede cancelar su suscripcion en cualquier momento desde su panel de control en la seccion Facturacion, o contactando a contact@vocalia.ma. La cancelacion toma efecto al final del periodo de facturacion actual. Sin cargos de cancelacion. Sus datos se conservan 30 dias despues de la cancelacion.",
+    "keywords": ["cancelar", "cancelacion", "desuscribir", "parar", "terminar"]
+  },
+  "clients": {
+    "question": "Tienen clientes?",
+    "response": "VocalIA es una plataforma reciente en fase de lanzamiento comercial. La tecnologia esta operativa con 38 personas sectoriales, 5 idiomas y un sistema de produccion desplegado y monitorizado. Buscamos nuestros primeros clientes socios con acompanamiento privilegiado.",
+    "keywords": ["clientes", "referencias", "usuarios", "quien usa", "testimonios"]
+  },
+  "sla": {
+    "question": "Cual es su SLA?",
+    "response": "VocalIA ofrece actualmente un servicio best-effort con monitorizacion automatica cada 5 minutos y alertas en tiempo real. Sin SLA contractual garantizado en esta etapa. Nuestra infraestructura esta alojada en un servidor dedicado con 7 contenedores Docker monitorizados 24/7.",
+    "keywords": ["sla", "disponibilidad", "uptime", "garantia", "compromiso"]
+  },
+  "roi": {
+    "question": "Cual es el retorno de inversion?",
+    "response": "Un agente de soporte cuesta aproximadamente 3.000 a 5.000 EUR/mes (salario + cargas). VocalIA a 99 EUR/mes puede reemplazar 1-2 agentes en consultas recurrentes (horarios, precios, disponibilidad, FAQ), resultando en un ahorro neto estimado de unos 3.000 EUR/mes. El ROI depende del volumen de consultas y del sector.",
+    "keywords": ["roi", "retorno", "inversion", "ahorro", "rentable", "costo beneficio"]
+  },
+  "support": {
+    "question": "Como funciona el soporte de VocalIA?",
+    "response": "El soporte esta disponible por email a contact@vocalia.ma con un tiempo de respuesta habitual de 48 horas laborables. La ayuda en linea incluye documentacion, guias de configuracion y esta asistente, Nadia. Para planes Pro y superiores, se incluye asistencia de implementacion.",
+    "keywords": ["soporte", "ayuda", "asistencia", "problema", "bug", "pregunta"]
+  },
+  "mobile": {
+    "question": "Funciona VocalIA en movil?",
+    "response": "Si, el widget vocal VocalIA es totalmente responsive y se adapta automaticamente a pantallas moviles (smartphones y tablets). El reconocimiento de voz y la sintesis de voz tambien funcionan en movil. El panel de administracion tambien es accesible desde un navegador movil.",
+    "keywords": ["movil", "smartphone", "tablet", "responsive", "telefono"]
+  },
+  "api": {
+    "question": "Tienen una API?",
+    "response": "Si, VocalIA ofrece una API REST completa disponible con el plan Pro y superiores. La API permite enviar mensajes, consultar el historial de conversaciones, gestionar la Base de Conocimientos, acceder a leads calificados y configurar webhooks. La documentacion de la API esta disponible en el panel de control.",
+    "keywords": ["api", "rest", "endpoint", "desarrollador", "integracion", "programacion"]
+  },
+  "wordpress": {
+    "question": "Funciona VocalIA con WordPress?",
+    "response": "Si, VocalIA ofrece un plugin WordPress oficial que se instala en un clic desde el panel de WordPress. El plugin agrega automaticamente el widget vocal a su sitio. Es compatible con WooCommerce para seguimiento de pedidos y consulta de inventario en tiempo real.",
+    "keywords": ["wordpress", "wp", "plugin", "woocommerce", "cms"]
+  },
+  "multilingual": {
+    "question": "Como funciona el multilingue?",
+    "response": "La IA detecta automaticamente el idioma del visitante y responde en el mismo idioma. No necesita configuracion — un visitante espanol sera atendido en espanol, un visitante arabe en arabe. El cambio de idioma ocurre naturalmente durante la conversacion.",
+    "keywords": ["multilingue", "deteccion", "idioma", "automatico", "cambio"]
+  },
+  "customization": {
+    "question": "Se puede personalizar el widget?",
+    "response": "La apariencia del widget es 100% personalizable: colores (principal, acento, fondo oscuro), logo de la empresa, mensaje de bienvenida, nombre del asistente, posicion en la pagina (abajo-derecha por defecto), y burbuja de notificacion. Todo se configura desde el panel sin codigo.",
+    "keywords": ["personalizar", "personalizacion", "colores", "logo", "apariencia", "estilo", "branding"]
+  },
+  "handoff": {
+    "question": "Se puede transferir a un humano?",
+    "response": "Si, la transferencia a un humano es posible via webhook o notificacion. La IA detecta cuando el visitante necesita un humano (solicitudes complejas, frustracion) y puede activar una notificacion a su equipo o transferir la llamada (plan Telephony). La conversacion y el contexto se transmiten al agente humano.",
+    "keywords": ["humano", "transferencia", "handoff", "escalamiento", "agente", "operador"]
+  },
+  "quotas": {
+    "question": "Como funcionan las cuotas?",
+    "response": "Cada plan tiene cuotas mensuales: Starter 500 sesiones/mes, Pro 2000 sesiones/mes, E-commerce 2000 sesiones/mes, Telephony 2000 sesiones/mes + facturacion por minuto (0.10 EUR/min). Las cuotas se reinician cada mes. Se envia una advertencia al 80% de uso.",
+    "keywords": ["cuota", "limite", "sesiones", "llamadas", "mensual", "exceso"]
+  },
+  "data_management": {
+    "question": "Que hacen con mis datos?",
+    "response": "Sus datos son suyos. Exportacion disponible via API o panel. Almacenamiento aislado por tenant (cada cliente tiene sus propios datos). Cumplimiento RGPD, alojamiento en Europa, cifrado TLS. No vendemos, compartimos ni reutilizamos sus datos. Eliminacion completa bajo solicitud.",
+    "keywords": ["datos", "exportar", "rgpd", "propiedad", "privacidad", "eliminar"]
+  },
+  "crm_details": {
+    "question": "Como funciona la integracion CRM?",
+    "response": "Integracion CRM nativa con HubSpot, Pipedrive y Zoho. Los leads calificados por la IA (nombre, email, necesidad, puntuacion) se crean automaticamente como contactos en su CRM. Las conversaciones se vinculan al perfil del cliente. Configuracion en 10-15 minutos desde el panel.",
+    "keywords": ["crm", "hubspot", "pipedrive", "zoho", "lead", "contacto", "sincronizacion"]
+  },
+  "voice_features": {
+    "question": "Como funciona la voz?",
+    "response": "La IA habla con una voz natural via ElevenLabs. El visitante puede hablar por microfono o escribir por teclado. Modo solo texto disponible. El reconocimiento vocal funciona en frances, ingles, espanol, arabe y darija. La sintesis de voz es automatica para cada respuesta.",
+    "keywords": ["voz", "hablar", "microfono", "vocal", "escuchar", "sintesis", "reconocimiento"]
+  },
+  "darija": {
+    "question": "Que es la darija?",
+    "response": "La darija es el dialecto arabe marroqui hablado por mas de 35 millones de personas. VocalIA es la unica plataforma Voice AI que soporta la darija nativamente — la IA entiende y responde en arabe marroqui, no solo en arabe estandar. Es una ventaja clave para empresas que apuntan al mercado marroqui.",
+    "keywords": ["darija", "marroqui", "dialecto", "arabe marroqui", "marruecos"]
+  },
+  "webhooks_detail": {
+    "question": "Como funcionan los webhooks?",
+    "response": "Webhooks disponibles para todos los eventos: conversacion iniciada, lead calificado, reserva creada, cuota alcanzada. Configura sus URLs de destino desde el panel. Los webhooks envian datos en JSON via POST HTTPS. Ideal para conectar VocalIA a sus herramientas internas o a Zapier/Make.",
+    "keywords": ["webhook", "evento", "notificacion", "zapier", "make", "automatizacion"]
+  },
+  "shopify_detail": {
+    "question": "Como funciona la integracion Shopify?",
+    "response": "Instalacion Shopify en 2 clics via la app VocalIA. El widget e-commerce detecta automaticamente su tienda y puede: verificar el estado de un pedido por numero o email, consultar el stock de un producto, recomendar alternativas si esta agotado, guiar al checkout. Funciona tambien con Shopify Markets (multi-moneda).",
+    "keywords": ["shopify", "tienda", "pedido", "stock", "instalacion", "app"]
+  },
+  "billing": {
+    "question": "Como funciona la facturacion?",
+    "response": "Facturacion mensual por tarjeta de credito via Stripe. Facturas disponibles en su panel. Sin compromiso — puede cancelar en cualquier momento. Para el plan Telephony, los minutos se facturan adicionalmente (0.10 EUR/min) segun su consumo real del mes.",
+    "keywords": ["facturacion", "factura", "pago", "stripe", "tarjeta", "mensual"]
   }
 }

@@ -2034,10 +2034,10 @@ server.registerResource(
               name: "Telephony",
               price: 199,
               period: "month",
-              usage: "0.10€/min",
+              usage: "0.24€/min",
               target: "Call centers & enterprises",
               features: ["AI phone line", "38 personas", "5 languages", "Twilio PSTN", "25 function tools", "Dedicated support"],
-              margin: "~38% on usage",
+              margin: "~77% on usage",
             },
           ],
         }, null, 2),
@@ -2134,7 +2134,7 @@ server.registerPrompt(
 **Need:** ${need}
 **Timeline:** ${timeline}
 
-VocalIA Plans: Starter (49€/mo), Pro (99€/mo), E-commerce (99€/mo), Telephony (199€/mo + 0.10€/min).
+VocalIA Plans: Starter (49€/mo), Pro (99€/mo), E-commerce (99€/mo), Telephony (199€/mo + 0.24€/min).
 
 Respond with:
 1. BANT Score (0-100) with breakdown per dimension

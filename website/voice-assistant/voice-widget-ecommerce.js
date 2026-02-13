@@ -109,18 +109,47 @@
     }
 
     // ============================================================
+    // CONVERSATION PERSISTENCE (sessionStorage — survives page navigation, clears on tab close)
+    // ============================================================
+
+    const STORAGE_KEY = 'va_v3_conversation';
+    function saveConversation() {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+          sessionId: state.sessionId,
+          history: state.conversationHistory.slice(-50),
+          lang: state.currentLang,
+          ts: Date.now()
+        }));
+      } catch {}
+    }
+    function loadConversation() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (Date.now() - data.ts > 30 * 60 * 1000) {
+          sessionStorage.removeItem(STORAGE_KEY);
+          return null;
+        }
+        return data;
+      } catch { return null; }
+    }
+
+    // ============================================================
     // STATE
     // ============================================================
 
+    const saved = loadConversation();
     let state = {
         isOpen: false,
         isListening: false,
         recognition: null,
         synthesis: window.speechSynthesis,
-        conversationHistory: [],
-        currentLang: null,
+        conversationHistory: saved?.history || [],
+        currentLang: saved?.lang || null,
         langData: null,
-        sessionId: `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        sessionId: saved?.sessionId || `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         tenantId: null, // Set via data attribute or URL
         tenantConfig: null, // Loaded from /config endpoint
         planFeatures: null, // Session 250.146: Plan-based feature gating
@@ -797,6 +826,7 @@
             role: type === 'user' ? 'user' : 'assistant',
             content: text
         });
+        saveConversation();
     }
 
     function showTyping() {
@@ -3414,7 +3444,17 @@
             panel.classList.add('open');
             trackEvent('voice_panel_opened');
 
-            if (state.conversationHistory.length === 0) {
+            // Restore persisted conversation or show welcome message
+            const container = $id('va-messages');
+            if (state.conversationHistory.length > 0 && container && container.children.length === 0) {
+                for (const msg of state.conversationHistory) {
+                    const div = document.createElement('div');
+                    div.className = `va-message ${msg.role}`;
+                    div.innerHTML = `<div class="va-message-content">${escapeHTML(msg.content)}</div>`;
+                    container.appendChild(div);
+                }
+                container.scrollTop = container.scrollHeight;
+            } else if (state.conversationHistory.length === 0) {
                 const L = state.langData;
                 const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
                 addMessage(welcomeMsg, 'assistant');

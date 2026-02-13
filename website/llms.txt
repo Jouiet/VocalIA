@@ -1,8 +1,8 @@
 # VocalIA - Voice AI Platform
 
-> VocalIA est une plateforme Voice AI pour entreprises. Trois produits: Voice Widget B2B, Voice Widget E-commerce, Voice Telephony AI. 38 personas IA, 5 langues natives (FR, EN, ES, AR, Darija) avec detection automatique. Jusqu'a 60% moins cher que les alternatives europeennes (Vapi, Retell). Marches cibles: Europe, MENA, International.
+> VocalIA est une plateforme Voice AI tout-en-un pour entreprises. Trois produits: Voice Widget B2B, Voice Widget E-commerce, Voice Telephony AI. 38 personas IA, 5 langues natives (FR, EN, ES, AR, Darija) avec detection automatique. Tarification tout-inclus (IA + personas + analytics dans un seul abonnement) — pas de composants factures separement. 86 fonctionnalites verifiees (voir features). Marches cibles: Europe, MENA, International.
 
-VocalIA fournit des agents vocaux IA professionnels pour automatiser les interactions clients — sur le web (widget) et par telephone (PSTN). La plateforme combine Widget + Telephonie dans une offre unifiee, avec un pricing competitif pour le marche europeen.
+VocalIA fournit des agents vocaux IA professionnels pour automatiser les interactions clients — sur le web (widget) et par telephone (PSTN). La plateforme combine Widget + Telephonie dans une offre unifiee tout-inclus. Contrairement aux concurrents qui facturent STT + LLM + TTS separement, VocalIA inclut tout dans un seul abonnement.
 
 ## Produits
 
@@ -14,7 +14,7 @@ VocalIA fournit des agents vocaux IA professionnels pour automatiser les interac
 
 - [Features](https://vocalia.ma/features): Qualification BANT, RAG knowledge base, multi-AI fallback (5 niveaux), HITL, analytics temps reel.
 - [Integrations](https://vocalia.ma/integrations): 31+ integrations natives — CRM (HubSpot, Pipedrive, Zoho), E-commerce (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce), Support (Zendesk, Freshdesk), Telephonie (Twilio).
-- [Pricing](https://vocalia.ma/pricing): Starter 49EUR/mois, Pro 99EUR/mois, E-commerce 99EUR/mois, Telephony 199EUR/mois + 0.10EUR/min. Essai 14 jours sans carte bancaire.
+- [Pricing](https://vocalia.ma/pricing): Starter 49EUR/mois, Pro 99EUR/mois, E-commerce 99EUR/mois, Telephony 199EUR/mois + 0.24EUR/min tout-inclus. Essai 14 jours sans carte bancaire.
 
 ## Industries
 

@@ -12,8 +12,8 @@
     "headerSubtitleVoice": "Parlez-moi ou tapez votre question",
     "headerSubtitleText": "Tapez votre question",
     "placeholder": "Posez votre question...",
-    "welcomeMessage": "Bonjour ! Je suis l'assistant VocalIA. Comment puis-je vous aider avec votre projet d'IA vocale ?",
-    "welcomeMessageTextOnly": "Bonjour ! Je suis l'assistant VocalIA. Posez-moi vos questions sur nos solutions d'IA vocale.",
+    "welcomeMessage": "Bonjour ! Je suis Nadia, conseillère VocalIA. Comment puis-je vous aider avec votre projet d'IA vocale ?",
+    "welcomeMessageTextOnly": "Bonjour ! Je suis Nadia, conseillère VocalIA. Posez-moi vos questions sur nos solutions d'IA vocale.",
     "errorMessage": "Désolé, une erreur s'est produite. Veuillez réessayer.",
     "timeoutMessage": "La requête a pris trop de temps. Veuillez réessayer.",
     "connectionError": "Désolé, je rencontre un problème de connexion.",
@@ -35,32 +35,36 @@
     "subtitle": "Avez-vous des questions ? Notre assistant IA peut vous aider instantanément.",
     "ctaChat": "💬 Discuter maintenant",
     "ctaDemo": "📅 Réserver une démo",
-    "voiceHint": "Support vocal disponible"
+    "voiceHint": "Support vocal disponible",
+    "contextual": {
+      "pricing": "Vous hésitez sur le plan qui vous convient ?",
+      "features": "Des questions sur nos fonctionnalités ?",
+      "booking": "Besoin d'aide pour réserver ?",
+      "blog": "Ce sujet vous intéresse ? Discutons-en !",
+      "homepage": "Vous découvrez VocalIA ? Posez-moi vos questions !",
+      "contact": "Besoin d'une réponse rapide ? Je suis là !",
+      "use_cases": "Vous cherchez votre cas d'usage ? Je peux vous guider.",
+      "about": "Curieux d'en savoir plus sur VocalIA ?"
+    }
+  },
+  "proactiveGreeting": {
+    "homepage": "Bienvenue sur VocalIA ! Vous cherchez à automatiser votre support client avec l'IA vocale ?",
+    "pricing": "Vous consultez nos tarifs — quel plan correspond à vos besoins ? Starter (49€), Pro (99€) ou Téléphonie (199€) ?",
+    "features": "Vous explorez nos fonctionnalités — une question précise sur le widget vocal, le multilingue ou les intégrations ?",
+    "booking": "Prêt à réserver une démo ? Je peux vous aider à trouver un créneau en quelques secondes.",
+    "contact": "Vous souhaitez nous contacter ? Je peux répondre à la plupart des questions instantanément !",
+    "blog": "Intéressé par ce sujet ? N'hésitez pas à poser vos questions, je connais VocalIA en détail.",
+    "use_cases": "Vous explorez nos cas d'usage — dans quel secteur êtes-vous ?",
+    "about": "Bienvenue ! Vous voulez en savoir plus sur VocalIA et notre approche ?"
   },
   "socialProof": {
-    "times": [
-      "Il y a 2 min",
-      "Il y a 5 min",
-      "Il y a 12 min",
-      "Il y a 23 min",
-      "Il y a 1h"
-    ],
+    "times": ["", "", "", "", ""],
     "messages": [
-      {
-        "text": "Sophie de Paris vient de demander une démo"
-      },
-      {
-        "text": "Une entreprise a automatisé 500 appels ce mois"
-      },
-      {
-        "text": "Nouveau client: Cabinet dentaire à Casablanca"
-      },
-      {
-        "text": "Ahmed a réservé un rendez-vous via l'assistant"
-      },
-      {
-        "text": "12 leads qualifiés générés aujourd'hui"
-      }
+      { "text": "Widget vocal disponible en 5 langues" },
+      { "text": "Intégrations CRM natives : HubSpot, Shopify, Klaviyo" },
+      { "text": "38 personas métier configurés" },
+      { "text": "Téléphonie IA : 0,24€/min tout inclus" },
+      { "text": "Démonstration gratuite disponible" }
     ]
   },
   "topics": {
@@ -82,7 +86,7 @@
         "what do you sell",
         "shnou 3andkom"
       ],
-      "response": "VocalIA propose 4 offres Voice AI :\n\n1. **Starter** (49€/mois) - Assistant vocal IA pour sites web\n2. **Pro** (99€/mois) - Qualification leads & services B2B\n3. **E-commerce** (99€/mois) - Shopify, WooCommerce, Magento...\n4. **Telephony** (199€/mois + 0.10€/min) - Ligne téléphonique IA\n\nNos atouts : 38 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quelle offre vous intéresse ?"
+      "response": "VocalIA propose 4 offres Voice AI :\n\n1. **Starter** (49€/mois) - Assistant vocal IA pour sites web\n2. **Pro** (99€/mois) - Qualification leads & services B2B\n3. **E-commerce** (99€/mois) - Shopify, WooCommerce, Magento...\n4. **Telephony** (199€/mois + 0.24€/min) - Ligne téléphonique IA\n\nNos atouts : 38 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quelle offre vous intéresse ?"
     },
     "pricing": {
       "keywords": [
@@ -94,7 +98,7 @@
         "budget",
         "devis"
       ],
-      "response": "Nos solutions VocalIA démarrent à 49€/mois (Starter) et montent à 99€/mois (Pro/E-commerce) ou 199€/mois + 0,10€/min (Telephony). Nous proposons aussi des packages personnalisés selon vos volumes. Voulez-vous un devis adapté à votre usage ?"
+      "response": "Nos solutions VocalIA démarrent à 49€/mois (Starter) et montent à 99€/mois (Pro/E-commerce) ou 199€/mois + 0,24€/min (Telephony). Nous proposons aussi des packages personnalisés selon vos volumes. Voulez-vous un devis adapté à votre usage ?"
     },
     "demo": {
       "keywords": [
@@ -126,7 +130,7 @@
         "ivr",
         "svi"
       ],
-      "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à 0,10€/minute tout inclus (IA + 38 personas + analytics). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
+      "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à 0,24€/minute tout inclus (IA + 38 personas + analytics). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
     },
     "integration": {
       "keywords": [
@@ -160,7 +164,7 @@
         "alternative",
         "comparaison"
       ],
-      "response": "VocalIA propose 0,10€/min avec IA, personas et analytics inclus dans un seul abonnement (199€/mois). Les concurrents facturent STT + LLM + TTS séparément. Nous offrons Widget + Téléphonie en une seule plateforme et le support Darija exclusif."
+      "response": "VocalIA propose 0,24€/min avec IA, personas et analytics inclus dans un seul abonnement (199€/mois). Les concurrents facturent STT + LLM + TTS séparément. Nous offrons Widget + Téléphonie en une seule plateforme et le support Darija exclusif."
     },
     "leads": {
       "keywords": [
@@ -277,7 +281,7 @@
       "confirmDate": "Date : {date} à {time}",
       "confirmOutro": "\n\nDites 'confirmer' pour valider ce rendez-vous.",
       "confirmPrompt": "Dites 'confirmer' pour valider ou 'annuler' pour recommencer.",
-      "success": "Votre démo est confirmée ! Un email de confirmation a été envoyé à {email}. À très bientôt !",
+      "success": "Votre démo est confirmée ! Référence envoyée dans le chat. À bientôt !",
       "failure": "Désolé, la réservation a échoué : {message}. Contactez contact@vocalia.ma",
       "cancelled": "Pas de souci, réservation annulée. Comment puis-je vous aider autrement ?"
     }

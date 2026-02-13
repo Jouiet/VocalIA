@@ -142,9 +142,9 @@ ECOM:  54 tenants (10%)
 - Élimine non-déterminisme: tests de stabilité (15+ runs) confirment 100%
 
 **Hand Raiser Strategy - Validé:**
-- Vidéo 5 min au lieu de démo live
+- CTA: Réserver une démo personnalisée
 - "Essai 14 jours" (jamais "gratuit/free")
-- URL vocalia.ma/demo présent
+- URL vocalia.ma/booking présent
 
 ### Session 250.97quinquies - KB Auto-Provisioning (06/02/2026)
 

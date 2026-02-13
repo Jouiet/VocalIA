@@ -1,14 +1,14 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~85k lines | 4,903 tests (75 .mjs, 0 skip)
+> 81 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | 5,015+ tests (77 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
 
-core/ (55 modules, 36.1k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (10.6k, 7 files)
-mcp-server/src/ (19.5k, 32 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
-clients/ = 553 dirs (ALL test data) | website/ = 81 pages + locales (26.2k)
+core/ (58 modules, 37.6k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (11.0k, 7 files)
+mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (852) | integrations/ (2.3k)
+clients/ = 553 dirs (ALL test data) | website/ = 81 pages + locales (27.8k)
 
 ## Services (8 HTTP servers)
 
@@ -47,13 +47,13 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 - **i18n**: 5 langs. Geo-detect: MA→FR+MAD, EU→FR+EUR, Other→EN+USD
 - **Fallback**: grok (grok-4-1-fast-reasoning) → gemini (gemini-3-flash) → anthropic (claude-opus-4-5) → atlas → local
-- **Pricing**: Starter 49€ | Pro 99€ | E-commerce 99€ | Telephony 199€ + 0.10€/min. No Free Tier, 14-day trial.
+- **Pricing**: Starter 49€ | Pro 99€ | E-commerce 99€ | Telephony 199€ + 0.24€/min. No Free Tier, 14-day trial.
 - **Multi-Tenant**: 22 registered (0 paying) | 553 client folders = test data | 38 personas × 5 langs
 - **Key Docs**: `docs/ROADMAP-TO-COMPLETION.md` | `docs/BUSINESS-INTELLIGENCE.md` | `docs/VOCALIA-SYSTEM-ARCHITECTURE.md`
 
 ## State
 
-- **Code completeness**: 9.5/10 — **415 bugs found across 43 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 4,903 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages + 5 auth pages audited.**
+- **Code completeness**: 9.5/10 — **432+ bugs found across 45+ phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 5,015+ pass, 0 fail (77 .mjs). Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages + 5 auth pages audited.**
 - **Security**: 9.0/10 — SOTA audit (250.200): CDN SRI 78/78, CSP 22 app pages, security headers all 7 API services, CORS tightened, npm vulns patched, **all 7 containers non-root** (su-exec node user PID 1). VPS: SSH key-only, fail2ban, UFW. X-XSS-Protection: 0 (modern).
 - **Monitoring**: Production monitor v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, recovery detection, */5 cron.
 - **Backup**: Daily at 2 AM UTC, 7-day retention, ~4KB compressed. Cron on VPS.
@@ -66,4 +66,4 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Next**: OAuth credentials → SMTP provider → Stripe setup → First paying customer
 - **Weighted score**: 9.1/10
 
-*Last update: 12/02/2026 - Session 250.200c (Non-root containers, backup, disk 86%→20% (63GB freed). 415 bugs / 43 phases.)*
+*Last update: 13/02/2026 - Session 250.204 (Telephony repriced 0.10→0.24€/min, margin 38%→77%, tout-inclus positioning. Metrics updated: 81 pages, 58 core modules, 77 test files. 432+ bugs / 45+ phases.)*

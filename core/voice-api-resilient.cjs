@@ -1768,7 +1768,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   const ragresults = hybridRAG
     ? await hybridRAG.search(tenantId, language, userMessage, { limit: 3, geminiKey })
-    : await KB.searchHybrid(userMessage, 3, { tenantId });
+    : KB.search(userMessage, 3);
 
   let ragContext = "";
   if (hybridRAG && ragresults.length > 0) {
@@ -1838,7 +1838,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
       console.warn('[Voice API] Stock check failed:', stockErr.message);
     }
   }
-  // NOTE: "prix" removed from trigger - for AGENCY tenant, pricing is in prompt, not Shopify
+  // NOTE: "prix"/"tarif"/"service" etc. removed from trigger — over-broad for B2B tenants (fires on every conversation)
 
   // 2.3 SOTA: AI Recommendation Intent Detection (Session 250.82)
   let recommendationAction = null;
@@ -1857,6 +1857,28 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
       }
     } catch (recErr) {
       console.warn('[Voice API] Recommendation failed:', recErr.message);
+    }
+
+    // Direct catalog fallback for service tenants (bypasses ML pipeline when no recommendations found)
+    if (!recommendationAction && tenantId) {
+      try {
+        const storeConfig = JSON.parse(fs.readFileSync(
+          path.join(__dirname, '..', 'data', 'catalogs', 'store-config.json'), 'utf8'));
+        const tenantCatalog = storeConfig.tenants?.[tenantId];
+        if (tenantCatalog && tenantCatalog.catalogType === 'services' && tenantCatalog.dataPath) {
+          const catalogPath = path.isAbsolute(tenantCatalog.dataPath)
+            ? tenantCatalog.dataPath
+            : path.join(__dirname, '..', 'data', 'catalogs', tenantCatalog.dataPath);
+          const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+          if (catalog.products?.length > 0) {
+            recommendationAction = {
+              type: 'show_carousel',
+              products: catalog.products,
+              title: ''
+            };
+          }
+        }
+      } catch (e) { /* No catalog — normal */ }
     }
   }
 
@@ -2499,14 +2521,14 @@ function startServer(port = 3004) {
             products: {
               triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
               response: lang === 'ary'
-                ? 'VocalIA 3andها 3 dial offres: Starter (49€/شهر), Pro/E-commerce (99€/شهر), و Telephony (199€/شهر + 0.10€/دقيقة)'
-                : 'VocalIA propose 3 offres: Starter (49€/mois), Pro/E-commerce (99€/mois) et Telephony (199€/mois + 0.10€/min)'
+                ? 'VocalIA 3andها 3 dial offres: Starter (49€/شهر), Pro/E-commerce (99€/شهر), و Telephony (199€/شهر + 0.24€/دقيقة)'
+                : 'VocalIA propose 3 offres: Starter (49€/mois), Pro/E-commerce (99€/mois) et Telephony (199€/mois + 0.24€/min)'
             },
             pricing: {
               triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
               response: lang === 'ary'
-                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + 0.10€/دقيقة.'
-                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.10€/min.'
+                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + 0.24€/دقيقة.'
+                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.24€/min.'
             }
           };
         }
@@ -2540,6 +2562,55 @@ function startServer(port = 3004) {
         res.end(JSON.stringify({ error: 'Failed to generate fallback' }));
         return;
       }
+    }
+
+    // Feedback endpoint - stores per-message thumbs up/down
+    if (req.url === '/feedback' && req.method === 'POST') {
+      let rawBody = '';
+      let bodyOverflow = false;
+      req.on('data', chunk => {
+        if (bodyOverflow) return;
+        rawBody += chunk;
+        if (rawBody.length > 4096) {
+          bodyOverflow = true;
+          rawBody = '';
+        }
+      });
+      req.on('end', () => {
+        if (bodyOverflow) {
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Payload too large' }));
+          return;
+        }
+        try {
+          const { sessionId, messageIndex, rating, tenantId } = JSON.parse(rawBody);
+          if (!sessionId || rating === undefined || !tenantId) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Missing required fields' }));
+            return;
+          }
+          if (rating !== 'up' && rating !== 'down') {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Rating must be "up" or "down"' }));
+            return;
+          }
+          const safeTenant = sanitizeTenantId(tenantId) || 'unknown';
+          const feedbackDir = path.join(__dirname, '..', 'data', 'feedback');
+          if (!fs.existsSync(feedbackDir)) fs.mkdirSync(feedbackDir, { recursive: true });
+          const file = path.join(feedbackDir, `${safeTenant}.json`);
+          let feedbacks = [];
+          try { feedbacks = JSON.parse(fs.readFileSync(file, 'utf8')); } catch {}
+          if (feedbacks.length >= 10000) feedbacks = feedbacks.slice(-5000);
+          feedbacks.push({ sessionId, messageIndex, rating, created_at: new Date().toISOString() });
+          fs.writeFileSync(file, JSON.stringify(feedbacks, null, 2));
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true }));
+        } catch (e) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid JSON' }));
+        }
+      });
+      return;
     }
 
     // Social Proof endpoint - returns real anonymized metrics
@@ -2843,6 +2914,42 @@ function startServer(port = 3004) {
             });
           } catch (ucpErr) {
             console.warn('[UCP] Auto-enrichment warning:', ucpErr.message);
+          }
+
+          // Session 250.202: Persist booking_data if present (widget sends structured booking)
+          if (bodyParsed.data.booking_data) {
+            try {
+              const bookingData = bodyParsed.data.booking_data;
+              const bookingsDir = path.join(__dirname, '..', 'data', 'bookings');
+              if (!fs.existsSync(bookingsDir)) fs.mkdirSync(bookingsDir, { recursive: true });
+              const safeTenantId = tenantId; // already sanitized at L2699
+              const bookingsFile = path.join(bookingsDir, `${safeTenantId}.json`);
+              let bookings = [];
+              try { bookings = JSON.parse(fs.readFileSync(bookingsFile, 'utf8')); } catch {}
+              bookings.push({
+                id: `booking_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
+                name: bookingData.name,
+                email: bookingData.email,
+                datetime: bookingData.datetime,
+                service: bookingData.service,
+                notes: bookingData.notes,
+                timezone: bookingData.timezone,
+                sessionId: leadSessionId,
+                tenantId,
+                language,
+                status: 'pending',
+                created_at: new Date().toISOString()
+              });
+              fs.writeFileSync(bookingsFile, JSON.stringify(bookings, null, 2));
+              console.log(`✅ [Booking] Saved for tenant ${tenantId}: ${bookingData.name} <${bookingData.email}>`);
+              eventBus.publish('booking.created', {
+                tenantId, sessionId: leadSessionId,
+                name: bookingData.name, email: bookingData.email,
+                datetime: bookingData.datetime, service: bookingData.service
+              });
+            } catch (bookingErr) {
+              console.warn('[Booking] Save warning:', bookingErr.message);
+            }
           }
 
           // Sync to HubSpot if lead has email and is qualified (gated by plan)

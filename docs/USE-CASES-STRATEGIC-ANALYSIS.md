@@ -19,7 +19,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 
 | Dimension | VocalIA | Vapi | Retell | Bland |
 |:----------|:--------|:-----|:-------|:------|
-| **Pricing** | ~0.10€/min (~$0.11) | $0.05-0.33/min | $0.07/min | $0.09/min |
+| **Pricing** | ~0.24€/min (~$0.26) tout-inclus | $0.05-0.33/min | $0.07/min | $0.09/min |
 | **Widget + Telephony** | ✅ Les deux | API only | API only | API only |
 | **Langues** | 5 (dont Darija) | ~20+ | 31+ | ~10 |
 | **Personas préconfigurés** | 38 | 0 | 0 | 0 |
@@ -36,7 +36,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | Produit | Technologie | Coût | Use Case Principal |
 |:--------|:------------|:-----|:-------------------|
 | **Voice Widget** | Web Speech API | $0 | Website visitors, lead capture |
-| **Voice Telephony** | Twilio PSTN + Grok | ~0.10€/min (coût ~$0.06) | Inbound/outbound calls |
+| **Voice Telephony** | Twilio PSTN + Grok | ~0.24€/min (coût ~$0.06) | Inbound/outbound calls |
 
 ### 2.2 Intégrations MCP (28 + 3 iPaaS = 203 tools)
 
@@ -122,7 +122,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 
 ### 3.3 Avantages Compétitifs VocalIA (VÉRIFIÉS)
 
-1. **Pricing agressif**: ~60% moins cher que Vapi (coûts cachés inclus)
+1. **Pricing tout-inclus**: 0.24€/min avec IA + personas + analytics inclus (vs composants facturés séparément chez Vapi/Retell)
 2. **Widget + Telephony**: Seul à offrir les deux produits
 3. **40 Personas**: Déploiement immédiat par secteur
 4. **Darija**: Unique sur le marché (via Atlas-Chat-9B)
@@ -397,7 +397,7 @@ Maroc-first                   →      Afrique francophone
 | Force | Preuve | Impact |
 |:------|:-------|:-------|
 | **Darija unique** | Atlas-Chat-9B implémenté (voice-api-resilient.cjs:109-119) | Monopole Maroc 45M personnes |
-| **Pricing compétitif** | 0.10€/min vs $0.07-0.33 concurrents | Acquisition PME |
+| **Pricing tout-inclus** | 0.24€/min tout-inclus (IA+personas+analytics) vs composants séparés concurrents | Valeur perçue PME |
 | **38 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
 | **Widget + Telephony** | Seul à offrir les 2 nativement | Omnichannel complet |
 | **iPaaS triple** | Zapier + Make + n8n (3 modules MCP) | 7000+ apps accessibles |

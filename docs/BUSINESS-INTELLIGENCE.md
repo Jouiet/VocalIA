@@ -65,21 +65,20 @@
 | **Starter** | 49€/month | ~$3-5/month | **~90-93%** | Voice AI assistant, 500 conv/mois |
 | **Pro** | 99€/month | ~$8-20/month | **80-92%** | Lead gen + booking + CRM sync |
 | **E-commerce** | 99€/month | ~$8-20/month | **80-92%** | Cart recovery + quiz + gamification |
-| **Telephony** | 199€/mo + 0.10€/min | $0.06/min | **~38%** | PSTN line, 100 min included |
+| **Telephony** | 199€/mo + 0.24€/min | $0.06/min | **~77%** | PSTN line, 100 min included |
 
 > **B2C product (79€) ELIMINATED** — merged into Pro (99€). B2C page redirects to /pricing.
-> **Telephony REPRICED** from 0.06€/min to 0.10€/min (margin 8%→38%).
+> **Telephony REPRICED** from 0.06€→0.10€→0.24€/min (margin 8%→38%→77%). Session 250.204.
 
 ### 2B. Telephony Repricing Options
 
 | Price | Margin | Verdict |
 |:------|:-------|:--------|
 | 0.06€/min | ~8% | Non viable — price change by Grok = instant loss |
-| 0.08€/min | ~23% | Fragile |
-| **0.10€/min** | **~38%** | **Viable, still competitive vs Vapi at $0.15+** |
-| **0.12€/min** | **~50%** | **Healthy, still 2x cheaper than competitors** |
+| 0.10€/min | ~38% | Viable but thin |
+| **0.24€/min** | **~77%** | **CURRENT — tout-inclus positioning (IA + personas + analytics)** |
 
-**Recommendation**: Increase to 0.10-0.12€/min. Even at 0.12€, VocalIA is 2x cheaper than Vapi/Retell.
+**Decision (250.204)**: Repriced to 0.24€/min. VocalIA is no longer cheapest — moat is value (tout-inclus vs components billed separately at competitors).
 
 ### 2C. Darija Pricing Options
 
@@ -95,14 +94,14 @@
 
 | Platform | Cost/min (FR inbound) | What's included |
 |:---------|:---------------------|:---------------|
-| **VocalIA** | **~0.10€/min (~$0.11)** | Grok LLM+STT+TTS + Twilio + 25 function tools + persona + RAG |
+| **VocalIA** | **~0.24€/min (~$0.26)** | Grok LLM+STT+TTS + Twilio + 25 function tools + persona + RAG — tout-inclus |
 | Vapi | $0.15-0.25/min | Platform only, add LLM + STT + TTS + telecom |
 | Retell | $0.12-0.20/min | STT included, add LLM + TTS + telecom |
 | Bland | $0.15-0.25/min | Self-hosted possible |
 
 **VocalIA structural advantage**: Grok $0.05/min includes LLM+STT+TTS in one price. Competitors charge each separately.
 
-**"60% cheaper" claim** (in lang files): TRUE for FR/EU market. FALSE for Morocco ($0.83/min Twilio).
+**"60% cheaper" claim REMOVED (250.204)**: At 0.24€/min, VocalIA is NOT cheaper than Bland ($0.09-0.11) or Retell (~$0.14). Competitive moat = tout-inclus (IA + 38 personas + analytics in one subscription).
 
 ### 3B. Voice Widget
 
@@ -152,7 +151,7 @@
 | PME francaises (widget) | ~500K with websites | 49€/month | Voice + 5 langs + price |
 | E-commerce FR (ECOM widget) | ~200K sites | 99€/month | Cart recovery + voice shopping |
 | Marketing agencies FR | ~15K agencies | White-label reseller | Multi-tenant, 38 personas |
-| Call centers FR/MA | ~2K centers | 0.10-0.12€/min | Darija + cost 2x lower |
+| Call centers FR/MA | ~2K centers | 0.24€/min tout-inclus | Darija + plateforme unifiée |
 
 ---
 
@@ -165,7 +164,7 @@
 | **Total unique** | **52** | **~84** | **✅ All collecting data** |
 
 **Activated**: Session 250.163 — configured (Stream ID: 13579681217)
-**Coverage**: 80/80 pages (header.html 46 + sidebar.html 11 + admin-sidebar.html 5 + 5 auth inline + 13 dashboard→app redirect)
+**Coverage**: 81/81 pages (header.html 46 + sidebar.html 11 + admin-sidebar.html 5 + 5 auth inline + 13 dashboard→app redirect + investor.html)
 **Server-side**: marketing-science-core.cjs Measurement Protocol (needs GA4_API_SECRET env var)
 
 ---
@@ -225,7 +224,7 @@
 | **Newsletter** | **DEAD** | `event-delegation.js:120-126` — changes button text to "✓ Inscrit!", NO fetch/POST, NO webhook | 0% email capture rate |
 | **Booking form** | **DEAD** | `booking.html:435-436` — `alert('Merci!')`, comment says "in real app, send to API" | 0% demo conversion |
 | **Contact form** | **PARTIAL** | `voice-api-resilient.cjs:3052` — `/api/contact` endpoint exists, saves to Google Sheets DB | DB not configured (no GOOGLE_SHEETS_ID in .env), data goes to console log only |
-| **GA4 Analytics** | **✅ ACTIVE** | `header.html:2,7` — `configured` (250.163) | 52 events collecting data on 80/80 pages |
+| **GA4 Analytics** | **✅ ACTIVE** | `header.html:2,7` — `configured` (250.163) | 52 events collecting data on 81/81 pages |
 | **Plausible Analytics** | **INSTALLED** | `site-init.js` + 5+ pages with `data-domain="vocalia.ma"` script | Account existence not verified |
 
 ### 9B. Social Proof — FICTITIOUS DATA
@@ -273,7 +272,7 @@ AWARENESS (Plausible?):  Unknown visitors → vocalia.ma
     ↓
 INTEREST (Homepage):     Fictitious social proof (500+, 2M+, 98%)
     ↓
-CONSIDERATION (Pricing): 4 tiers (Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.10€/min)
+CONSIDERATION (Pricing): 4 tiers (Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.24€/min)
     ↓
 INTENT (Booking/Contact): Booking = alert(), Contact = log-only, Newsletter = button change
     ↓
@@ -293,7 +292,7 @@ CONVERSION:              0 — NO functional acquisition mechanism
 | 3 | ~~Activate GA4~~ | ~~5min~~ | 52 events collecting data | ✅ DONE 250.163 |
 | 4 | **Replace fictitious social proof** — honest "launching" messaging | 2h | Legal/credibility risk eliminated | ❌ |
 | 5 | ~~Decide B2C product~~ — merged into Pro 99€ | ✅ Done | Pricing clarity | ✅ Session 250.143 |
-| 6 | ~~Increase telephony price~~ — 0.06→0.10€/min | ✅ Done | Margin 8%→38% | ✅ Session 250.143 |
+| 6 | ~~Increase telephony price~~ — 0.06→0.10→0.24€/min | ✅ Done | Margin 8%→38%→77% | ✅ Session 250.143+250.204 |
 | 7 | **Serve brotli** via nginx config on VPS | 30min | Transfer -55% | ❌ Infrastructure |
 | 8 | **Fix GitHub typo** — VoicalAI → VocalIA (or rename repo) | 5min | Brand consistency | ❌ |
 | 9 | **Configure Google Sheets DB** — GOOGLE_SHEETS_ID in .env | 30min | Contact form actually persists | ❌ |
@@ -301,6 +300,6 @@ CONVERSION:              0 — NO functional acquisition mechanism
 ---
 
 *Created: 08/02/2026 - Session 250.139 (External Business Audit Nr 2)*
-*Updated: 08/02/2026 - Session 250.143 (Pricing restructure: B2C eliminated, telephony 0.10€/min, Starter margin corrected, competitive pricing updated)*
+*Updated: 13/02/2026 - Session 250.204 (Telephony repriced 0.10→0.24€/min, margin 38%→77%, "60% cheaper" claim removed, tout-inclus positioning)*
 *All costs verified against provider pricing pages as of February 2026*
 *All funnel claims verified against codebase with grep/read on 08/02/2026*

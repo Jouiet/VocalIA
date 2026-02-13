@@ -43,6 +43,7 @@ const EVENT_SCHEMAS = {
     'lead.converted': ['sessionId', 'customerId', 'value'],
     'booking.requested': ['sessionId', 'service', 'preferredDate'],
     'booking.confirmed': ['bookingId', 'date', 'time'],
+    'booking.created': ['tenantId', 'sessionId', 'name', 'email', 'datetime', 'service'],
     'booking.cancelled': ['bookingId', 'reason'],
     'payment.initiated': ['transactionId', 'amount', 'currency'],
     'payment.completed': ['transactionId', 'amount', 'method'],
@@ -527,6 +528,39 @@ const registerAgentOpsIntegrations = () => {
     } catch (e) {
         console.log('[EventBus] ErrorScience integration skipped:', e.message);
     }
+
+    // Integration with Booking notifications (ntfy.sh)
+    eventBus.subscribe('booking.created', async (event) => {
+        const { tenantId, name, email, datetime, service } = event.payload || {};
+        console.log(`✅ [Booking] New booking for ${tenantId}: ${name} <${email}>`);
+
+        const ntfyTopic = process.env.NTFY_TOPIC;
+        if (!ntfyTopic) return;
+
+        const title = `Nouveau booking — ${name || 'Inconnu'}`;
+        const body = [
+            `Tenant: ${tenantId || '?'}`,
+            `Email: ${email || '?'}`,
+            datetime ? `Date: ${datetime}` : null,
+            service ? `Service: ${service}` : null
+        ].filter(Boolean).join('\n');
+
+        try {
+            const https = require('https');
+            const req = https.request(`https://ntfy.sh/${ntfyTopic}`, {
+                method: 'POST',
+                headers: {
+                    'Title': title,
+                    'Priority': 'high',
+                    'Tags': 'calendar,bell'
+                }
+            });
+            req.on('error', () => {}); // fire-and-forget
+            req.end(body);
+        } catch (e) {
+            console.warn('[Booking] ntfy notification failed:', e.message);
+        }
+    }, { name: 'BookingNotification.ntfy' });
 
     console.log('[EventBus] Agent Ops v3.0 integrations registered');
 };

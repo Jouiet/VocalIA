@@ -51,6 +51,11 @@
       "source": "custom",
       "catalogType": "menu",
       "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-restaurant-menu.json"
+    },
+    "agency_internal": {
+      "source": "custom",
+      "catalogType": "services",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/agency_internal/products.json"
     }
   }
 }

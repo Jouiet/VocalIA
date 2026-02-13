@@ -31,7 +31,7 @@ Un restaurant avec une cuisine equipee, des recettes testees et un systeme de se
 
 | Element | Statut | Verification |
 |:--------|:------:|:-------------|
-| vocalia.ma (site web) | OK | 80 pages, toutes retournent 200 |
+| vocalia.ma (site web) | OK | 81 pages, toutes retournent 200 |
 | 7 containers Docker | OK | Tous healthy, non-root, monitores */5 |
 | Security headers | OK | SRI 78/78, CSP, HSTS, nosniff, X-Frame DENY |
 | Monitoring | OK | ntfy.sh push alerts, */5 cron, disk/mem/SSL |
@@ -70,12 +70,12 @@ Visiteur → vocalia.ma → Clique "S'inscrire"
 
 | Service | 1000 min/mois | 5000 min/mois | Source |
 |:--------|:--------------|:--------------|:-------|
-| **VocalIA** | 199EUR + 100EUR (0.10/min) = **299EUR** | 199EUR + 500EUR = **699EUR** | pricing.html |
+| **VocalIA** | 199EUR + 240EUR (0.24/min) = **439EUR** | 199EUR + 1200EUR = **1399EUR** | pricing.html |
 | **Vapi** | ~75-150$ | ~250-500$ | vapi.ai/pricing |
 | **Retell AI** | ~50-120$ | ~200-400$ | retellai.com/pricing |
 | **Bland AI** | ~100-200$ | ~300-600$ | bland.ai |
 
-**VocalIA est 2-4x PLUS CHER que Vapi/Retell au faible volume.** L'ancien claim "60% moins cher" etait **faux** et a ete supprime (250.195).
+**VocalIA est 3-6x PLUS CHER que Vapi/Retell au faible volume.** L'ancien claim "60% moins cher" etait **faux** et a ete supprime (250.195). Le positionnement est **tout-inclus** (IA + 38 personas + analytics dans le prix/min, vs composants factures separement chez les concurrents). Repriced 0.10→0.24€/min (250.204).
 
 Avantage reel de VocalIA : plateforme tout-en-un (widget + telephonie + personas pre-construits). Mais cet avantage n'est **pas valide par le marche** (0 clients).
 
@@ -201,7 +201,7 @@ Le widget voice utilise `Web Speech API` (navigateur) — PAS WebRTC.
 
 ### 6.2 Atouts Reels (Factuels)
 
-1. **Base de code fonctionnelle** — 85K+ lignes, 4,903 tests, 415 bugs fixes. Rare pour un solo dev.
+1. **Base de code fonctionnelle** — 86K+ lignes, 5,015+ tests, 432+ bugs fixes. Rare pour un solo dev.
 2. **Niche linguistique** — Arabe MSA + Darija marocain. Peu de concurrents ont ca.
 3. **38 personas pre-construits** — Time-to-value immediat pour un client. Vapi/Retell = zero personas.
 4. **Infrastructure low-cost** — ~50EUR/mois (VPS 20EUR + domaine). Brulage de cash minimal.

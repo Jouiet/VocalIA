@@ -12,8 +12,8 @@
     "headerSubtitleVoice": "Habla o escribe tu pregunta",
     "headerSubtitleText": "Escribe tu pregunta",
     "placeholder": "Haz tu pregunta...",
-    "welcomeMessage": "Hola! Soy el asistente VocalIA. Como puedo ayudarte con tu proyecto de IA de voz?",
-    "welcomeMessageTextOnly": "Hola! Soy el asistente VocalIA. Preguntame lo que quieras sobre nuestras soluciones de IA de voz.",
+    "welcomeMessage": "Hola! Soy Nadia, asesora de VocalIA. Como puedo ayudarte con tu proyecto de IA de voz?",
+    "welcomeMessageTextOnly": "Hola! Soy Nadia, asesora de VocalIA. Preguntame lo que quieras sobre nuestras soluciones de IA de voz.",
     "errorMessage": "Lo siento, ha ocurrido un error. Por favor, intentalo de nuevo.",
     "timeoutMessage": "La solicitud tardo demasiado. Intentalo de nuevo.",
     "connectionError": "Lo siento, tengo un problema de conexion.",
@@ -35,22 +35,42 @@
     "subtitle": "¿Tienes alguna pregunta? Nuestro asistente IA puede ayudarte al instante.",
     "ctaChat": "💬 Chatear ahora",
     "ctaDemo": "📅 Reservar una demo",
-    "voiceHint": "Soporte por voz disponible"
+    "voiceHint": "Soporte por voz disponible",
+    "contextual": {
+      "pricing": "¿No sabes qué plan elegir?",
+      "features": "¿Preguntas sobre nuestras funcionalidades?",
+      "booking": "¿Necesitas ayuda para reservar?",
+      "blog": "¿Te interesa este tema? ¡Hablemos!",
+      "homepage": "¿Descubriendo VocalIA? ¡Pregúntame lo que quieras!",
+      "contact": "¿Necesitas una respuesta rápida? ¡Estoy aquí!",
+      "use_cases": "¿Buscas tu caso de uso? Puedo guiarte.",
+      "about": "¿Quieres saber más sobre VocalIA?"
+    }
+  },
+  "proactiveGreeting": {
+    "homepage": "¡Bienvenido a VocalIA! ¿Buscas automatizar tu atención al cliente con IA de voz?",
+    "pricing": "Estás viendo nuestros precios — ¿qué plan se adapta a ti? Starter (49€), Pro (99€) o Telefonía (199€)?",
+    "features": "Explorando nuestras funcionalidades — ¿alguna pregunta sobre el widget de voz, el multilingüe o las integraciones?",
+    "booking": "¿Listo para reservar una demo? Puedo ayudarte a encontrar un horario en segundos.",
+    "contact": "¿Quieres contactarnos? ¡Puedo responder la mayoría de preguntas al instante!",
+    "blog": "¿Interesado en este tema? No dudes en preguntar, conozco VocalIA en detalle.",
+    "use_cases": "Explorando nuestros casos de uso — ¿en qué sector estás?",
+    "about": "¡Bienvenido! ¿Quieres saber más sobre VocalIA y nuestro enfoque?"
   },
   "socialProof": {
-    "times": ["Hace 2 min", "Hace 5 min", "Hace 12 min", "Hace 23 min", "Hace 1h"],
+    "times": ["", "", "", "", ""],
     "messages": [
-      { "text": "Sophie de París acaba de solicitar una demo" },
-      { "text": "Una empresa automatizó 500 llamadas este mes" },
-      { "text": "Nuevo cliente: Clínica dental en Casablanca" },
-      { "text": "Ahmed reservó una cita a través del asistente" },
-      { "text": "12 leads calificados generados hoy" }
+      { "text": "Widget vocal disponible en 5 idiomas" },
+      { "text": "Integraciones CRM nativas: HubSpot, Shopify, Klaviyo" },
+      { "text": "38 personas sectoriales configurados" },
+      { "text": "Telefonía IA: 0,24€/min todo incluido" },
+      { "text": "Demostración gratuita disponible" }
     ]
   },
   "topics": {
     "pricing": {
       "keywords": ["precio", "coste", "cuanto", "presupuesto", "tarifa", "cotizacion"],
-      "response": "Las soluciones VocalIA empiezan en 49EUR/mes (Starter) y 0,10EUR/minuto para la telefonia AI. Tambien ofrecemos paquetes personalizados segun tu volumen. Quieres un presupuesto adaptado a tu uso?"
+      "response": "Las soluciones VocalIA empiezan en 49EUR/mes (Starter) y 0,24EUR/minuto para la telefonia AI. Tambien ofrecemos paquetes personalizados segun tu volumen. Quieres un presupuesto adaptado a tu uso?"
     },
     "demo": {
       "keywords": ["demo", "demostracion", "probar", "ver", "mostrar"],
@@ -62,7 +82,7 @@
     },
     "telephony": {
       "keywords": ["telefono", "telefonia", "llamada", "llamadas", "pbx", "ivr", "centralita"],
-      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a 0,10EUR/minuto todo incluido (IA + 38 personas + analytics). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
+      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a 0,24EUR/minuto todo incluido (IA + 38 personas + analytics). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
     },
     "integration": {
       "keywords": ["integracion", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -74,7 +94,7 @@
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "competidor", "alternativa", "comparacion", "versus"],
-      "response": "VocalIA ofrece 0,10EUR/min con IA, personas y analytics incluidos en una sola suscripcion (199EUR/mes). Los competidores cobran STT + LLM + TTS por separado. Ademas, ofrecemos Widget + Telefonia en una sola plataforma con soporte Darija para el mercado marroqui."
+      "response": "VocalIA ofrece 0,24EUR/min con IA, personas y analytics incluidos en una sola suscripcion (199EUR/mes). Los competidores cobran STT + LLM + TTS por separado. Ademas, ofrecemos Widget + Telefonia en una sola plataforma con soporte Darija para el mercado marroqui."
     },
     "leads": {
       "keywords": ["lead", "leads", "prospecto", "calificacion", "bant", "cualificar"],
@@ -119,7 +139,7 @@
       "confirmDate": "Fecha: {date} a las {time}",
       "confirmOutro": "\n\nDi 'confirmar' para validar esta cita.",
       "confirmPrompt": "Di 'confirmar' para validar o 'cancelar' para empezar de nuevo.",
-      "success": "Tu demo esta confirmada! Se ha enviado un email de confirmacion a {email}. Hasta pronto!",
+      "success": "¡Tu demo está confirmada! Referencia enviada en el chat. ¡Hasta pronto!",
       "failure": "Lo siento, la reserva ha fallado: {message}. Contacta contact@vocalia.ma",
       "cancelled": "Sin problema, reserva cancelada. Como mas puedo ayudarte?"
     }

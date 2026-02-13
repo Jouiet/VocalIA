@@ -393,7 +393,7 @@ async function handleAuthRequest(req, res, path, method) {
 
       // Audit log
       try {
-        auditStore.log({
+        auditStore.log(safeTenantId, {
           action: 'user.registered',
           category: ACTION_CATEGORIES?.AUTH || 'auth',
           actor: email,
@@ -943,8 +943,8 @@ async function handleTelephonyRequest(req, res, path, method, query) {
       };
 
       // ROI Calculation (multi-market: EU baseline)
-      // Human cost: ~0.50€/min. AI cost: ~0.10€/min. Savings: 0.40€/min.
-      const savings = Math.round(totalDuration * (0.40 / 60));
+      // Human cost: ~0.50€/min. AI cost: ~0.24€/min. Savings: 0.26€/min.
+      const savings = Math.round(totalDuration * (0.26 / 60));
 
       sendJson(res, 200, {
         success: true,

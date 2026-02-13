@@ -287,15 +287,10 @@ describe('T2: EventBus usage patterns', () => {
       const src = fs.readFileSync(filePath, 'utf8');
 
       // Find all eventBus.emit() calls — these should use publish() instead
-      // Exception: Node.js EventEmitter methods like .on()/.off() are OK
       const emitCalls = src.match(/eventBus\.emit\([^)]*\)/g) || [];
-      const domainEmits = emitCalls.filter(call => {
-        // Allow emit for a2ui_generated (legacy pattern, non-critical)
-        return !call.includes('a2ui_generated');
-      });
 
-      assert.strictEqual(domainEmits.length, 0,
-        `${file}: Found eventBus.emit() for domain events — should use publish() (F8 regression).\n  ${domainEmits.join('\n  ')}`);
+      assert.strictEqual(emitCalls.length, 0,
+        `${file}: Found eventBus.emit() — should use publish() (F8 regression).\n  ${emitCalls.join('\n  ')}`);
     });
   }
 });

@@ -451,6 +451,18 @@ const OTHER_MODULES = [
     name: 'agency-financial-config',
     type: 'object',
     expectedMethods: []
+  },
+  // NOTE: sensors/*.cjs are EXCLUDED from require() test because they call main()
+  // without `if (require.main === module)` guard — they auto-execute on require().
+  // This is a known structural issue (same as stitch-api.cjs).
+  // They ARE covered by security-regression T5.2/T5.7/T5.8/T5.12/T5.13 scanners.
+  //
+  // Lib
+  {
+    path: '../lib/security-utils.cjs',
+    name: 'security-utils',
+    type: 'object',
+    expectedMethods: []
   }
 ];
 
@@ -492,6 +504,9 @@ describe('T1: Non-empty exports', () => {
         assert.strictEqual(typeof loaded, 'object', `${mod.name} should export an object instance`);
         assert.ok(loaded.constructor && loaded.constructor.name !== 'Object',
           `${mod.name} default export should be a class instance, not plain object`);
+      } else if (mod.type === 'script') {
+        // Standalone scripts — no module.exports expected, just verify load success
+        assert.ok(true, `${mod.name} loaded as standalone script`);
       } else {
         // 'object' type — should have at least one key
         const keys = Object.keys(loaded);

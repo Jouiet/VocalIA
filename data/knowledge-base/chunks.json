@@ -528,9 +528,9 @@
     "category": "faq",
     "persona_id": "agency_v3",
     "topic": "tarifs",
-    "answer_fr": "Essai 14 jours inclus. Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€/mois + 0.10€/min.",
+    "answer_fr": "Essai 14 jours inclus. Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€/mois + 0.24€/min.",
     "tenant_id": "agency_internal",
-    "text": "agency Tarifs tarifs Essai 14 jours inclus. Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€/mois + 0.10€/min. price pricing cost fee"
+    "text": "agency Tarifs tarifs Essai 14 jours inclus. Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€/mois + 0.24€/min. price pricing cost fee"
   },
   {
     "id": "faq_agency_v3_integrations",

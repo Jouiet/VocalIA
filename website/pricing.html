@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarifs - VocalIA | Agents Vocaux IA</title>
   <meta name="description"
-    content="Plans tarifaires VocalIA: Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€+0.10€/min.">
+    content="Plans tarifaires VocalIA: Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€+0.24€/min.">
   <link rel="canonical" href="https://vocalia.ma/pricing" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -22,7 +22,7 @@
   <meta property="og:url" content="https://vocalia.ma/pricing" />
   <meta property="og:title" content="Tarifs - VocalIA | Agents Vocaux IA" />
   <meta property="og:description"
-    content="Plans tarifaires VocalIA: Starter 49€, Pro 99€, E-commerce 99€, Telephony 199€+0.10€/min." />
+    content="Plans tarifaires VocalIA: Starter 49€, Pro 99€, E-commerce 99€, Telephony 199€+0.24€/min." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-pricing.webp" />
 
 
@@ -71,7 +71,7 @@
           "name": "Comment fonctionne la facturation téléphonie?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Le plan Telephony inclut 100 minutes. Les minutes supplémentaires sont facturées à 0.10€/min. La facturation est mensuelle avec reporting détaillé."
+            "text": "Le plan Telephony inclut 100 minutes. Les minutes supplémentaires sont facturées à 0.24€/min. La facturation est mensuelle avec reporting détaillé."
           }
         },
         {
@@ -379,7 +379,7 @@
               <span class="text-4xl font-bold font-mono text-white" id="telephonyPrice">199</span>
               <span class="text-zinc-400 font-mono" data-currency-symbol>€</span>
             </div>
-            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span> + <span id="telephonyOverageText">0.10€/min</span></p>
+            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span> + <span id="telephonyOverageText">0.24€/min</span></p>
           </div>
 
           <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.telephony_desc">Réceptionniste IA 24/7 sur ligne PSTN.</p>
@@ -416,7 +416,7 @@
         <div class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08]">
           <i data-lucide="info" class="w-5 h-5 text-vocalia-400"></i>
           <span class="text-zinc-300" data-i18n="pricing_page.overage_note">Minutes supplémentaires: <strong
-              class="text-white">0.10€/min</strong> (5 langues). Darija inbound: 0.25€/min</span>
+              class="text-white">0.24€/min</strong> (5 langues). Darija inbound: 0.25€/min</span>
         </div>
       </div>
 
@@ -453,47 +453,213 @@
               <th class="text-left py-4 px-4 font-semibold" data-i18n="pricing_page.table_feature">Fonctionnalité</th>
               <th class="text-center py-4 px-4 font-semibold" data-i18n="pricing_page.table_starter">Starter</th>
               <th class="text-center py-4 px-4 font-semibold text-vocalia-400" data-i18n="pricing_page.table_pro">Pro</th>
-              <th class="text-center py-4 px-4 font-semibold text-emerald-400" data-i18n="pricing_page.table_ecom">
-                E-commerce</th>
-              <th class="text-center py-4 px-4 font-semibold text-violet-400" data-i18n="pricing_page.table_telephony">
-                Telephony</th>
+              <th class="text-center py-4 px-4 font-semibold text-emerald-400" data-i18n="pricing_page.table_ecom">E-commerce</th>
+              <th class="text-center py-4 px-4 font-semibold text-violet-400" data-i18n="pricing_page.table_telephony">Telephony</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="border-b border-white/[0.06]">
-              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_focus">Cible / Focus</td>
-              <td class="text-center py-4 px-4">Sites web / PME</td>
-              <td class="text-center py-4 px-4">Services / Lead Gen</td>
-              <td class="text-center py-4 px-4">Boutiques en ligne</td>
-              <td class="text-center py-4 px-4">Enterprise PSTN</td>
+            <!-- CONVERSATION -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-vocalia-400" data-i18n="pricing_page.row_cat_conversation">CONVERSATION</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_ux">Interface UX</td>
-              <td class="text-center py-4 px-4">Voice + Text Chat</td>
-              <td class="text-center py-4 px-4">Chat + Booking UI</td>
-              <td class="text-center py-4 px-4">8 Conversion Tools</td>
-              <td class="text-center py-4 px-4">Phone Line</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_chat_text">Chat texte + IA</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_integrations">Intégrations</td>
-              <td class="text-center py-4 px-4">-</td>
-              <td class="text-center py-4 px-4">CRM + Booking</td>
-              <td class="text-center py-4 px-4">Shopify / Woo</td>
-              <td class="text-center py-4 px-4">PSTN / PBX</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_voice_recog">Reconnaissance vocale</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_minutes">Conversations</td>
-              <td class="text-center py-4 px-4">500/mois</td>
-              <td class="text-center py-4 px-4">Incluses</td>
-              <td class="text-center py-4 px-4">Incluses</td>
-              <td class="text-center py-4 px-4">100 min PSTN</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_tts">Synthèse vocale (TTS)</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_support">Support</td>
-              <td class="text-center py-4 px-4">Email</td>
-              <td class="text-center py-4 px-4">Prioritaire</td>
-              <td class="text-center py-4 px-4">Prioritaire</td>
-              <td class="text-center py-4 px-4">Email prioritaire</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_fallback">Multi-AI Fallback (5 niv.)</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_rag">Base de connaissances RAG</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <!-- QUALIFICATION -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-emerald-400" data-i18n="pricing_page.row_cat_qualification">QUALIFICATION</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_email_detect">Détection email/nom auto</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_bant">Score BANT automatique</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_lead_class">Classification lead</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <!-- BOOKING -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-violet-400" data-i18n="pricing_page.row_cat_booking">BOOKING</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_booking_chat">Réservation dans le chat</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_booking_notif">Webhook booking</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <!-- ENGAGEMENT -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-amber-400" data-i18n="pricing_page.row_cat_engagement">ENGAGEMENT</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_social_proof">Social proof</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_exit_intent">Exit intent</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_greetings">Salutations contextuelles (×8)</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_escalation">Escalade humaine</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <!-- E-COMMERCE -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-orange-400" data-i18n="pricing_page.row_cat_ecommerce">E-COMMERCE</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_cart_voice">Panier vocal</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_quiz">Quiz produit IA</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_spin">Roue de la fortune</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-engagement" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_carousel">Carousel produits</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-a2ui" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-a2ui" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <!-- TECHNIQUE -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-sky-400" data-i18n="pricing_page.row_cat_technique">TECHNIQUE</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_5langs">5 langues natives</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_rtl">RTL arabe/darija</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_shadow_dom">Shadow DOM isolation</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-securite" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-securite" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-securite" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_ga4">GA4 Analytics (19 events)</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_api">API + Webhooks</td>
+              <td class="text-center py-3 px-4 text-zinc-600">—</td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-config" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-config" class="text-emerald-400" title="Détails">✓</a></td>
+              <td class="text-center py-3 px-4"><a href="/features#feat-config" class="text-emerald-400" title="Détails">✓</a></td>
+            </tr>
+            <!-- QUOTAS -->
+            <tr class="border-b border-white/[0.04] bg-white/[0.02]">
+              <td colspan="5" class="py-3 px-4 font-bold text-xs uppercase tracking-wider text-zinc-400" data-i18n="pricing_page.row_cat_quotas">QUOTAS</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_conversations">Conversations/mois</td>
+              <td class="text-center py-3 px-4 font-medium">500</td>
+              <td class="text-center py-3 px-4 font-medium" data-i18n="pricing_page.row_unlimited">Illimitées</td>
+              <td class="text-center py-3 px-4 font-medium" data-i18n="pricing_page.row_unlimited">Illimitées</td>
+              <td class="text-center py-3 px-4 font-medium">100 min</td>
+            </tr>
+            <tr class="border-b border-white/[0.06]">
+              <td class="py-3 px-4" data-i18n="pricing_page.row_support_level">Support</td>
+              <td class="text-center py-3 px-4">Email</td>
+              <td class="text-center py-3 px-4 font-medium" data-i18n="pricing_page.row_priority">Prioritaire</td>
+              <td class="text-center py-3 px-4 font-medium" data-i18n="pricing_page.row_priority">Prioritaire</td>
+              <td class="text-center py-3 px-4 font-medium" data-i18n="pricing_page.row_priority">Prioritaire</td>
             </tr>
           </tbody>
         </table>
@@ -516,7 +682,7 @@
           </summary>
           <div class="px-6 pb-6 text-zinc-400" data-i18n="pricing_page.faq1_a">
             Le plan Telephony inclut 100 minutes. Au-delà, les minutes supplémentaires sont
-            facturées à 0.10€/min. Ce tarif inclut l'infrastructure télécom et le traitement IA.
+            facturées à 0.24€/min. Ce tarif inclut l'infrastructure télécom et le traitement IA.
           </div>
         </details>
 

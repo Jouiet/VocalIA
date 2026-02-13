@@ -12,8 +12,8 @@
     "headerSubtitleVoice": "Speak or type your question",
     "headerSubtitleText": "Type your question",
     "placeholder": "Ask your question...",
-    "welcomeMessage": "Hello! I'm the VocalIA assistant. How can I help you with your voice AI project?",
-    "welcomeMessageTextOnly": "Hello! I'm the VocalIA assistant. Ask me anything about our voice AI solutions.",
+    "welcomeMessage": "Hello! I'm Nadia, VocalIA advisor. How can I help you with your voice AI project?",
+    "welcomeMessageTextOnly": "Hello! I'm Nadia, VocalIA advisor. Ask me anything about our voice AI solutions.",
     "errorMessage": "Sorry, an error occurred. Please try again.",
     "timeoutMessage": "The request took too long. Please try again.",
     "connectionError": "Sorry, I'm experiencing a connection issue.",
@@ -35,16 +35,36 @@
     "subtitle": "Do you have any questions? Our AI assistant can help you instantly.",
     "ctaChat": "💬 Chat now",
     "ctaDemo": "📅 Book a demo",
-    "voiceHint": "Voice support available"
+    "voiceHint": "Voice support available",
+    "contextual": {
+      "pricing": "Not sure which plan is right for you?",
+      "features": "Questions about our features?",
+      "booking": "Need help booking a demo?",
+      "blog": "Interested in this topic? Let's chat!",
+      "homepage": "Discovering VocalIA? Ask me anything!",
+      "contact": "Need a quick answer? I'm here to help!",
+      "use_cases": "Looking for your use case? I can guide you.",
+      "about": "Want to learn more about VocalIA?"
+    }
+  },
+  "proactiveGreeting": {
+    "homepage": "Welcome to VocalIA! Looking to automate your customer support with voice AI?",
+    "pricing": "Browsing our pricing — which plan fits your needs? Starter ($49), Pro ($99) or Telephony ($199)?",
+    "features": "Exploring our features — any specific question about the voice widget, multilingual support or integrations?",
+    "booking": "Ready to book a demo? I can help you find a slot in seconds.",
+    "contact": "Want to reach us? I can answer most questions instantly!",
+    "blog": "Interested in this topic? Feel free to ask, I know VocalIA inside out.",
+    "use_cases": "Exploring our use cases — what industry are you in?",
+    "about": "Welcome! Want to learn more about VocalIA and our approach?"
   },
   "socialProof": {
-    "times": ["2 min ago", "5 min ago", "12 min ago", "23 min ago", "1h ago"],
+    "times": ["", "", "", "", ""],
     "messages": [
-      { "text": "Sophie from Paris just requested a demo" },
-      { "text": "A company automated 500 calls this month" },
-      { "text": "New client: Dental clinic in Casablanca" },
-      { "text": "Ahmed booked an appointment via the assistant" },
-      { "text": "12 qualified leads generated today" }
+      { "text": "Voice widget available in 5 languages" },
+      { "text": "Native CRM integrations: HubSpot, Shopify, Klaviyo" },
+      { "text": "38 industry-specific personas configured" },
+      { "text": "AI Telephony: €0.24/min all-inclusive" },
+      { "text": "Free demo available" }
     ]
   },
   "topics": {
@@ -62,7 +82,7 @@
     },
     "telephony": {
       "keywords": ["phone", "telephony", "call", "calls", "pbx", "ivr", "hotline"],
-      "response": "Our VocalIA AI telephony automates inbound calls 24/7 at €0.10/min all-inclusive (AI + 38 personas + analytics). It qualifies leads, books appointments and transfers urgent calls. Interested in a demo?"
+      "response": "Our VocalIA AI telephony automates inbound calls 24/7 at €0.24/min all-inclusive (AI + 38 personas + analytics). It qualifies leads, books appointments and transfers urgent calls. Interested in a demo?"
     },
     "integration": {
       "keywords": ["integration", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -74,7 +94,7 @@
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "competitor", "alternative", "comparison", "versus"],
-      "response": "VocalIA offers €0.10/min with AI, personas and analytics included in a single subscription (€199/mo). Competitors charge STT + LLM + TTS separately. Plus, we offer Widget + Telephony in one platform and exclusive Darija support for the Moroccan market."
+      "response": "VocalIA offers €0.24/min with AI, personas and analytics included in a single subscription (€199/mo). Competitors charge STT + LLM + TTS separately. Plus, we offer Widget + Telephony in one platform and exclusive Darija support for the Moroccan market."
     },
     "leads": {
       "keywords": ["lead", "leads", "prospect", "qualification", "bant", "qualify"],
@@ -119,7 +139,7 @@
       "confirmDate": "Date: {date} at {time}",
       "confirmOutro": "\n\nSay 'confirm' to validate this appointment.",
       "confirmPrompt": "Say 'confirm' to validate or 'cancel' to start over.",
-      "success": "Your demo is confirmed! A confirmation email has been sent to {email}. See you soon!",
+      "success": "Your demo is confirmed! Reference sent in chat. See you soon!",
       "failure": "Sorry, the booking failed: {message}. Contact contact@vocalia.ma",
       "cancelled": "No problem, booking cancelled. How else can I help you?"
     }

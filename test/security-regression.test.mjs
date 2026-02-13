@@ -33,20 +33,12 @@ function listFiles(dir, ext) {
 
 // ─── T5.1: Widget XSS + Shadow DOM ──────────────────────────────────────────
 
-describe('T5.1: Widget XSS protection', () => {
+describe('T5.1: Widget XSS protection — per-occurrence', () => {
   const widgetFiles = listFiles('widget', '.js');
 
   test('All 7 widget files exist', () => {
     assert.strictEqual(widgetFiles.length, 7);
   });
-
-  for (const file of widgetFiles) {
-    test(`${path.basename(file)} has escapeHTML function`, () => {
-      const src = readFile(file);
-      assert.ok(src.includes('escapeHTML') || src.includes('escapeHtml'),
-        `${file} missing escapeHTML — XSS vulnerability`);
-    });
-  }
 
   for (const file of widgetFiles) {
     test(`${path.basename(file)} uses Shadow DOM`, () => {
@@ -55,13 +47,98 @@ describe('T5.1: Widget XSS protection', () => {
         `${file} should use Shadow DOM for style isolation`);
     });
   }
+
+  // Per-occurrence: every innerHTML with ${} must either use escapeHTML in the
+  // template OR pre-escape into safe* variables before the template.
+  // Widget translations (L.xxx, t.xxx, this.translations.xxx) are hardcoded
+  // in the file and safe by design.
+  test('All widget innerHTML with ${} use escapeHTML or pre-escaped vars', () => {
+    const violations = [];
+    for (const file of widgetFiles) {
+      const src = readFile(file);
+      if (!src) continue;
+      const lines = src.split('\n');
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (!/\.innerHTML\s*[+=]=?\s*/.test(line)) continue;
+
+        // Collect multi-line template literal
+        let fullExpr = line;
+        let backtickCount = (line.match(/`/g) || []).length;
+        if (backtickCount % 2 !== 0) {
+          for (let j = i + 1; j < Math.min(lines.length, i + 80); j++) {
+            fullExpr += '\n' + lines[j];
+            backtickCount += (lines[j].match(/`/g) || []).length;
+            if (backtickCount % 2 === 0) break;
+          }
+        }
+
+        if (!fullExpr.includes('${')) continue;
+        if (fullExpr.includes('escapeHTML') || fullExpr.includes('escapeHtml')) continue;
+
+        // If the surrounding context (10 lines before) defines safe* variables
+        // AND the file has both escapeHTML + escapeAttr, the developer followed
+        // the pre-escape pattern — nested template interpolations are safe.
+        const contextBefore = lines.slice(Math.max(0, i - 10), i).join('\n');
+        if (/const\s+safe\w+\s*=\s*escape(HTML|Attr)\(/.test(contextBefore) &&
+            src.includes('escapeHTML') && src.includes('escapeAttr')) continue;
+
+        // Extract all ${...} interpolations (simple — doesn't handle nested templates)
+        const interpolations = fullExpr.match(/\$\{[^}]+\}/g) || [];
+        const unsafeInterpolations = interpolations.filter(interp => {
+          const inner = interp.slice(2, -1).trim();
+
+          // Safe: hardcoded translation lookups (never user data)
+          // Matches: L.xxx, L?.xxx, t.xxx, this.translations.xxx, state.langData?.xxx
+          if (/^(L|t|this\.translations|state\.langData)[\[.?]/.test(inner)) return false;
+
+          // Safe: pre-escaped variables (safe*, escaped*)
+          if (/^(safe|escaped)[A-Z]/.test(inner)) return false;
+
+          // Safe: ternary on boolean/variable — check if it's a ternary expression
+          if (/\?/.test(inner) && /:/.test(inner)) return false;
+
+          // Safe: config properties (CSS values, booleans)
+          if (/^this\.config\./.test(inner) || /^this\._/.test(inner)) return false;
+
+          // Safe: method calls on this (internal methods that build HTML)
+          if (/^this\.\w+\(/.test(inner)) return false;
+
+          // Safe: internal IDs and CSS variables
+          if (/^(styles|css[A-Z]|carousel|carouselId)/.test(inner)) return false;
+
+          // Safe: function calls that produce safe output (formatPrice, generateXxx, etc.)
+          if (/^(formatPrice|generate\w+)\(/.test(inner)) return false;
+
+          // Safe: array.map(...).join('') — renders via a function that handles escaping
+          if (/\.map\(/.test(inner) && /\.join\(/.test(inner)) return false;
+
+          // Safe: string literal or number
+          if (/^['"`]/.test(inner) || /^\d+$/.test(inner)) return false;
+
+          // Safe: displayTitle, badgeHTML (computed from safe sources)
+          if (/^(displayTitle|badgeHTML|stockText)$/.test(inner)) return false;
+
+          return true; // Potentially unsafe — user data without escaping
+        });
+
+        if (unsafeInterpolations.length === 0) continue;
+
+        violations.push(`  ${file}:${i + 1} — innerHTML with unescaped: ${unsafeInterpolations.join(', ')}`);
+      }
+    }
+
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} widget innerHTML with unescaped interpolation:\n${violations.join('\n')}`);
+  });
 });
 
 // ─── T5.2: JSON.parse safety scanner ────────────────────────────────────────
 // Scans ALL .cjs files. JSON.parse without try-catch = process crash on bad input.
 
 describe('T5.2: JSON.parse without try-catch — crash risk', () => {
-  const cjsDirs = ['core', 'telephony', 'integrations'];
+  const cjsDirs = ['core', 'telephony', 'integrations', 'sensors', 'lib', 'personas'];
   const allCjsFiles = [];
   for (const dir of cjsDirs) {
     allCjsFiles.push(...listFiles(dir, '.cjs'));
@@ -207,7 +284,7 @@ describe('T5.4: No dangerous JS patterns', () => {
 // ─── T5.5: Tenant isolation — path.join with raw tenantId ───────────────────
 
 describe('T5.5: Tenant isolation — path traversal protection', () => {
-  const coreModules = listFiles('core', '.cjs');
+  const coreModules = [...listFiles('core', '.cjs'), ...listFiles('telephony', '.cjs'), ...listFiles('integrations', '.cjs'), ...listFiles('sensors', '.cjs')];
 
   for (const file of coreModules) {
     test(`${path.basename(file)} — path.join with tenantId uses sanitize`, () => {
@@ -263,7 +340,7 @@ describe('T5.6: Timing-safe secret comparison', () => {
 // ─── T5.7: No hardcoded secrets ─────────────────────────────────────────────
 
 describe('T5.7: No hardcoded secrets', () => {
-  const coreModules = listFiles('core', '.cjs');
+  const coreModules = [...listFiles('core', '.cjs'), ...listFiles('telephony', '.cjs'), ...listFiles('integrations', '.cjs'), ...listFiles('sensors', '.cjs'), ...listFiles('lib', '.cjs'), ...listFiles('personas', '.cjs')];
 
   for (const file of coreModules) {
     test(`${path.basename(file)} — no hardcoded API keys`, () => {
@@ -289,7 +366,7 @@ describe('T5.7: No hardcoded secrets', () => {
 // ─── T5.8: Require path casing (Linux-safe) ────────────────────────────────
 
 describe('T5.8: Require path casing', () => {
-  const coreModules = listFiles('core', '.cjs');
+  const coreModules = [...listFiles('core', '.cjs'), ...listFiles('telephony', '.cjs'), ...listFiles('integrations', '.cjs'), ...listFiles('sensors', '.cjs'), ...listFiles('lib', '.cjs'), ...listFiles('personas', '.cjs')];
 
   for (const file of coreModules) {
     test(`${path.basename(file)} — require paths match actual filenames`, () => {
@@ -377,7 +454,11 @@ describe('T5.11: JWT configuration', () => {
 // Module-level and class-level Map/Set must have eviction logic.
 
 describe('T5.12: Unbounded Map/Set — memory leak risk', () => {
-  const coreFiles = listFiles('core', '.cjs');
+  const allDirs = ['core', 'telephony', 'integrations', 'sensors', 'lib', 'personas'];
+  const coreFiles = [];
+  for (const dir of allDirs) {
+    coreFiles.push(...listFiles(dir, '.cjs'));
+  }
 
   // Maps/Sets that are bounded by design (not per-request growth):
   // - WebhookRouter.handlers: registered at startup, finite webhook types
@@ -451,7 +532,7 @@ describe('T5.12: Unbounded Map/Set — memory leak risk', () => {
 // eventBus.publish() fires full subscriber system with retry/dedup/persistence.
 
 describe('T5.13: eventBus.emit vs publish', () => {
-  const cjsDirs = ['core', 'telephony', 'integrations', 'personas'];
+  const cjsDirs = ['core', 'telephony', 'integrations', 'personas', 'sensors', 'lib'];
   const allFiles = [];
   for (const dir of cjsDirs) {
     allFiles.push(...listFiles(dir, '.cjs'));

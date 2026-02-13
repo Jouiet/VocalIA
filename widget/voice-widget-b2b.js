@@ -84,15 +84,42 @@
         }
     };
 
+    // Conversation Persistence (sessionStorage — survives page navigation, clears on tab close)
+    const STORAGE_KEY = 'va_b2b_conversation';
+    function saveConversation() {
+      try {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+          sessionId: state.sessionId,
+          history: state.conversationHistory.slice(-50),
+          lang: state.currentLang,
+          ts: Date.now()
+        }));
+      } catch {}
+    }
+    function loadConversation() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        // Expire after 30 minutes of inactivity
+        if (Date.now() - data.ts > 30 * 60 * 1000) {
+          sessionStorage.removeItem(STORAGE_KEY);
+          return null;
+        }
+        return data;
+      } catch { return null; }
+    }
+
     // State Management
+    const saved = loadConversation();
     const state = {
         isOpen: false,
         isListening: false,
-        currentLang: CONFIG.DEFAULT_LANG,
+        currentLang: saved?.lang || CONFIG.DEFAULT_LANG,
         langData: null,
-        conversationHistory: [],
+        conversationHistory: saved?.history || [],
         tenantId: null,
-        sessionId: `b2b_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        sessionId: saved?.sessionId || `b2b_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
 
         // Speech Synthesis/Recognition
         recognition: null,
@@ -138,7 +165,10 @@
         },
         availableSlotsCache: { slots: [], timestamp: 0 },
         // Session 250.146: Plan-based feature gating (from /config + /respond)
-        planFeatures: null
+        planFeatures: null,
+        // Lead data from server for adaptive UX
+        leadData: null,
+        bookingCtaShown: false
     };
 
     // Browser capabilities
@@ -360,6 +390,10 @@
         .va-catalog-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: #e5e5e5; font-size: 13px; font-weight: 600; }
         .va-catalog-header svg { width: 14px; height: 14px; fill: var(--va-primary); }
 
+        .va-feedback-bar { display:flex; gap:4px; margin-top:4px; }
+        .va-feedback-btn { background:none; border:1px solid rgba(94,106,210,0.2); border-radius:6px; padding:2px 8px; cursor:pointer; font-size:12px; transition:all 0.2s; color:rgba(255,255,255,0.5); }
+        .va-feedback-btn:hover { border-color:rgba(94,106,210,0.5); background:rgba(94,106,210,0.1); }
+
         @media (max-width: 480px) {
           .va-panel { width: calc(100vw - 40px); ${position}: -5px; }
         }
@@ -500,10 +534,25 @@
                 if (input) input.focus();
             }, 100);
 
-            // Show welcome message if first open
-            if (state.conversationHistory.length === 0) {
+            // Restore persisted conversation or show welcome message
+            const container = $id('va-messages');
+            if (state.conversationHistory.length > 0 && container && container.children.length === 0) {
+                // Restore saved messages to DOM (without re-speaking or re-saving)
+                for (const msg of state.conversationHistory) {
+                    const div = document.createElement('div');
+                    div.className = `va-message ${msg.role}`;
+                    const safeHtml = msg.role === 'assistant' ? renderMarkdown(escapeHtml(msg.content)) : escapeHtml(msg.content);
+                    div.innerHTML = `<div class="va-message-content">${safeHtml}</div>`;
+                    container.appendChild(div);
+                }
+                const lastAssistant = container.querySelector('.va-message.assistant:last-of-type');
+                if (lastAssistant) appendFeedbackBar(lastAssistant);
+                container.scrollTop = container.scrollHeight;
+            } else if (state.conversationHistory.length === 0) {
                 const L = state.langData;
-                const welcomeMsg = L.ui.welcomeMessage || 'Bonjour ! Comment puis-je vous aider aujourd\'hui ?';
+                const pageCtx = getPageContext();
+                const contextualGreeting = L.proactiveGreeting?.[pageCtx.pageType];
+                const welcomeMsg = contextualGreeting || L.ui.welcomeMessage || 'Bonjour ! Comment puis-je vous aider aujourd\'hui ?';
                 addMessage(welcomeMsg, 'assistant');
             }
         } else {
@@ -515,20 +564,98 @@
     // MESSAGING & VOICE
     // ============================================================
 
-    function addMessage(text, type = 'assistant') {
+    function addMessage(text, type = 'assistant', { typewriter = false } = {}) {
         const container = $id('va-messages');
         if (!container) return;
 
         const div = document.createElement('div');
         div.className = `va-message ${type}`;
-        div.innerHTML = `<div class="va-message-content">${escapeHtml(text)}</div>`;
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
+
+        if (type === 'assistant' && typewriter) {
+            // Typewriter: reveal word by word, final render with markdown
+            const contentEl = document.createElement('div');
+            contentEl.className = 'va-message-content';
+            div.appendChild(contentEl);
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+
+            const words = text.split(/(\s+)/);
+            let displayed = '';
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i >= words.length) {
+                    clearInterval(interval);
+                    contentEl.innerHTML = renderMarkdown(escapeHtml(text));
+                    container.scrollTop = container.scrollHeight;
+                    if (hasSpeechSynthesis) speak(text);
+                    appendFeedbackBar(div);
+                    return;
+                }
+                displayed += words[i];
+                contentEl.innerHTML = renderMarkdown(escapeHtml(displayed));
+                container.scrollTop = container.scrollHeight;
+                i++;
+            }, 30);
+        } else {
+            // Instant display
+            const safeContent = type === 'assistant' ? renderMarkdown(escapeHtml(text)) : escapeHtml(text);
+            div.innerHTML = `<div class="va-message-content">${safeContent}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            if (type === 'assistant' && hasSpeechSynthesis) speak(text);
+            if (type === 'assistant') appendFeedbackBar(div);
+        }
 
         state.conversationHistory.push({ role: type, content: text });
+        saveConversation();
+    }
 
-        if (type === 'assistant' && hasSpeechSynthesis) {
-            speak(text);
+    function renderMarkdown(escaped) {
+        return escaped
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/`(.+?)`/g, '<code style="background:rgba(94,106,210,0.2);padding:1px 4px;border-radius:3px;font-size:0.9em;">$1</code>')
+            .replace(/\n- /g, '\n\u2022 ')
+            .replace(/\n/g, '<br>')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, linkText, url) => {
+                if (/^(\/|https:\/\/)/.test(url)) {
+                    return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:underline;">${linkText}</a>`;
+                }
+                return linkText;
+            });
+    }
+
+    function appendFeedbackBar(msgDiv) {
+        // Only show feedback on non-welcome messages (after at least 1 exchange)
+        if (state.conversationHistory.length <= 1) return;
+        const bar = document.createElement('div');
+        bar.className = 'va-feedback-bar';
+        bar.innerHTML = '<button class="va-feedback-btn" data-rating="up" aria-label="Utile">\ud83d\udc4d</button><button class="va-feedback-btn" data-rating="down" aria-label="Pas utile">\ud83d\udc4e</button>';
+        msgDiv.appendChild(bar);
+        const msgIndex = state.conversationHistory.length - 1;
+        bar.querySelectorAll('.va-feedback-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                submitFeedback(msgIndex, btn.dataset.rating);
+                bar.innerHTML = '<span style="font-size:11px;color:rgba(255,255,255,0.4);">Merci !</span>';
+            });
+        });
+    }
+
+    async function submitFeedback(messageIndex, rating) {
+        try {
+            await fetch(CONFIG.VOICE_API_URL.replace('/respond', '/feedback'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: state.sessionId,
+                    messageIndex,
+                    rating,
+                    tenantId: state.tenantId
+                })
+            });
+            trackEvent('feedback_submitted', { rating, messageIndex });
+        } catch (e) {
+            console.warn('[VocalIA B2B] Feedback submit failed:', e.message);
         }
     }
 
@@ -961,14 +1088,34 @@
                 if (data.features) {
                     state.planFeatures = data.features;
                 }
-                addMessage(data.response, 'assistant');
+                addMessage(data.response, 'assistant', { typewriter: true });
+                // Check for escalation signals in assistant response
+                if (checkEscalation(data.response)) {
+                    setTimeout(() => showHandoffCTA(), 800);
+                }
                 // Render A2UI component if backend sent one (booking, lead_form, etc.)
                 if (data.a2ui) {
                     renderA2UIComponent(data.a2ui);
                 }
-                // Render catalog/service cards if backend returned them
-                if (data.catalog && data.catalog.items && data.catalog.items.length > 0) {
+                // Render service/product cards from recommendation action OR catalog
+                if (data.action && data.action.type === 'show_carousel' && data.action.products && data.action.products.length > 0) {
+                    renderServiceCards(data.action.products, data.action.title);
+                } else if (data.catalog && data.catalog.items && data.catalog.items.length > 0) {
                     renderServiceCards(data.catalog.items, data.catalog.title);
+                }
+                // Lead score adaptive UX
+                if (data.lead) {
+                    state.leadData = data.lead;
+                    if (data.lead.status === 'hot' && state.bookingConfig.enabled && !state.bookingCtaShown) {
+                        state.bookingCtaShown = true;
+                        setTimeout(() => showBookingCTA(), 1000);
+                    }
+                    if (data.lead.extractedData?.email) {
+                        state.conversationContext.bookingFlow.data.email = data.lead.extractedData.email;
+                    }
+                    if (data.lead.extractedData?.name) {
+                        state.conversationContext.bookingFlow.data.name = data.lead.extractedData.name;
+                    }
                 }
             } else {
                 addMessage(state.langData?.ui?.errorMessage || 'Désolé, une erreur s\'est produite.', 'assistant');
@@ -1053,22 +1200,66 @@
         state.exitIntent.triggered = true;
         try { localStorage.setItem('vocalia_exit_intent', Date.now().toString()); } catch {}
 
-        // Open widget with special message
-        if (!state.isOpen) {
-            togglePanel();
-            setTimeout(() => {
-                const L = state.langData;
-                const exitMsg = L.ui.exitIntentMessage || 'Attendez ! Avez-vous des questions avant de partir ?';
-                addMessage(exitMsg, 'assistant');
-                // Session 250.146: Show booking CTA if plan allows booking
-                const planAllowsBooking = !state.planFeatures || state.planFeatures.booking !== false;
-                if (state.bookingConfig.enabled && planAllowsBooking) {
-                    setTimeout(() => showBookingCTA(), 800);
-                }
-            }, 500);
+        const L = state.langData;
+        const pageCtx = getPageContext();
+
+        // Build contextual subtitle
+        const contextual = L.exitIntent?.contextual || {};
+        const subtitle = contextual[pageCtx.pageType] || L.exitIntent?.subtitle || 'Avez-vous des questions ?';
+        const title = L.exitIntent?.title || 'Attendez !';
+        const ctaChat = L.exitIntent?.ctaChat || 'Discuter maintenant';
+        const ctaDemo = L.exitIntent?.ctaDemo || 'Réserver une démo';
+
+        // Show contextual exit intent overlay in Shadow DOM
+        const existing = $id('va-exit-overlay');
+        if (existing) existing.remove();
+
+        const isRTL = L.meta?.rtl;
+        const overlay = document.createElement('div');
+        overlay.id = 'va-exit-overlay';
+        overlay.style.cssText = `position:absolute;bottom:70px;${isRTL ? 'left' : 'right'}:0;width:300px;z-index:10000;animation:vaSlideUp 0.3s ease;`;
+        overlay.innerHTML = `
+            <div style="background:linear-gradient(145deg,#1e2642,#191e35);border:1px solid rgba(94,106,210,0.35);border-radius:14px;padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,0.4);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <span style="font-size:16px;font-weight:700;color:#e5e5e5;">${escapeHtml(title)}</span>
+                    <button id="va-exit-dismiss" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:16px;padding:0 2px;">✕</button>
+                </div>
+                <p style="font-size:13px;color:rgba(255,255,255,0.7);margin:0 0 14px;line-height:1.5;">${escapeHtml(subtitle)}</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button id="va-exit-chat" style="flex:1;padding:10px 14px;border-radius:8px;background:#5E6AD2;color:white;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.2s;">${escapeHtml(ctaChat)}</button>
+                    <button id="va-exit-demo" style="flex:1;padding:10px 14px;border-radius:8px;background:rgba(94,106,210,0.15);color:#818cf8;border:1px solid rgba(94,106,210,0.3);font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.2s;">${escapeHtml(ctaDemo)}</button>
+                </div>
+            </div>
+        `;
+
+        const trigger = $id('va-trigger');
+        if (trigger && trigger.parentNode) {
+            trigger.parentNode.appendChild(overlay);
         }
 
-        trackEvent('exit_intent_triggered');
+        // Event handlers
+        const dismissBtn = overlay.querySelector('#va-exit-dismiss');
+        const chatBtn = overlay.querySelector('#va-exit-chat');
+        const demoBtn = overlay.querySelector('#va-exit-demo');
+
+        if (dismissBtn) dismissBtn.addEventListener('click', () => overlay.remove());
+        if (chatBtn) chatBtn.addEventListener('click', () => {
+            overlay.remove();
+            if (!state.isOpen) togglePanel();
+        });
+        if (demoBtn) demoBtn.addEventListener('click', () => {
+            overlay.remove();
+            if (!state.isOpen) togglePanel();
+            const planAllowsBooking = !state.planFeatures || state.planFeatures.booking !== false;
+            if (state.bookingConfig.enabled && planAllowsBooking) {
+                setTimeout(() => startBookingFlow(), 500);
+            }
+        });
+
+        // Auto-dismiss after 15s
+        setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 15000);
+
+        trackEvent('exit_intent_triggered', { pageType: pageCtx.pageType });
     }
 
     // ============================================================
@@ -1086,12 +1277,31 @@
             if (data.success && Array.isArray(data.messages) && data.messages.length > 0) {
                 state.socialProof.messages = data.messages;
             } else {
-                // No real data available - don't show fake notifications
-                return;
+                // Fallback: use static messages from lang file when server has no real data
+                const sp = state.langData?.socialProof;
+                if (sp?.messages?.length > 0) {
+                    state.socialProof.messages = sp.messages.map((m, i) => ({
+                        text: m.text || m,
+                        icon: null,
+                        time: sp.times?.[i] || ''
+                    }));
+                } else {
+                    return;
+                }
             }
         } catch (e) {
-            console.warn('[VocalIA B2B] Social proof fetch failed, skipping:', e.message);
-            return;
+            // Fallback on network error too
+            const sp = state.langData?.socialProof;
+            if (sp?.messages?.length > 0) {
+                state.socialProof.messages = sp.messages.map((m, i) => ({
+                    text: m.text || m,
+                    icon: null,
+                    time: sp.times?.[i] || ''
+                }));
+            } else {
+                console.warn('[VocalIA B2B] Social proof fetch failed, skipping:', e.message);
+                return;
+            }
         }
 
         // Start notification cycle only if we have real messages
@@ -1161,11 +1371,13 @@
         const textEl = document.createElement('div');
         textEl.style.cssText = 'font-size:13px;color:rgba(255,255,255,0.9);line-height:1.4;';
         textEl.textContent = proof.text;
-        const timeEl = document.createElement('div');
-        timeEl.style.cssText = 'font-size:11px;color:rgba(94,106,210,0.7);margin-top:4px;';
-        timeEl.textContent = proof.time || '';
         textWrap.appendChild(textEl);
-        textWrap.appendChild(timeEl);
+        if (proof.time) {
+            const timeEl = document.createElement('div');
+            timeEl.style.cssText = 'font-size:11px;color:rgba(94,106,210,0.7);margin-top:4px;';
+            timeEl.textContent = proof.time;
+            textWrap.appendChild(timeEl);
+        }
 
         content.appendChild(iconDiv);
         content.appendChild(textWrap);
@@ -1496,10 +1708,102 @@
         const L = state.langData;
         const booking = state.conversationContext.bookingFlow;
         booking.active = true;
-        booking.step = 'name';
-        booking.data = { name: null, email: null, datetime: null, service: L?.booking?.service || 'Consultation' };
-        addMessage(L?.booking?.messages?.start || 'Let\'s book an appointment. What is your name?', 'assistant');
-        trackEvent('booking_flow_started');
+        booking.data.service = L?.booking?.service || 'Consultation';
+
+        // Skip steps already filled by lead extraction
+        if (booking.data.name && booking.data.email) {
+            booking.step = 'datetime';
+            const confirmMsg = (L.booking?.messages?.askEmail || '').replace('{name}', booking.data.name);
+            addMessage(confirmMsg || `${booking.data.name}, ${booking.data.email} — fetching slots...`, 'assistant');
+            // Directly fetch slots
+            fetchAvailableSlots().then(slots => {
+                if (slots.length === 0) {
+                    addMessage(L.booking?.messages?.noSlots || 'No slots available.', 'assistant');
+                    return;
+                }
+                let response = L.booking?.messages?.slotsIntro || 'Available slots:\n';
+                slots.slice(0, 3).forEach((s, i) => {
+                    response += (L.booking?.messages?.slotFormat || '{index}. {date} at {time}')
+                        .replace('{index}', i + 1).replace('{date}', s.date).replace('{time}', s.time) + '\n';
+                });
+                response += L.booking?.messages?.slotsOutro || '\nChoose 1, 2 or 3.';
+                addMessage(response, 'assistant');
+            });
+        } else if (booking.data.name) {
+            booking.step = 'email';
+            addMessage((L.booking?.messages?.askEmail || 'What is your email?').replace('{name}', booking.data.name), 'assistant');
+        } else {
+            booking.step = 'name';
+            addMessage(L?.booking?.messages?.start || 'Let\'s book an appointment. What is your name?', 'assistant');
+        }
+        trackEvent('booking_flow_started', { skippedSteps: booking.data.name ? (booking.data.email ? 'name+email' : 'none') : 'none' });
+    }
+
+    // ============================================================
+    // HANDOFF — Human Escalation CTA
+    // ============================================================
+
+    function checkEscalation(text) {
+        const lower = text.toLowerCase();
+        const escalationKeywords = {
+            fr: ['ne peux pas', 'pas en mesure', 'contactez', 'contacter', 'dépasse mes compétences', 'agent humain'],
+            en: ['cannot help', 'beyond my', 'contact us', 'human agent', 'speak to someone'],
+            es: ['no puedo', 'contacte con', 'agente humano'],
+            ar: ['\u0644\u0627 \u0623\u0633\u062a\u0637\u064a\u0639', '\u062a\u0648\u0627\u0635\u0644 \u0645\u0639', '\u0645\u0648\u0638\u0641'],
+            ary: ['\u0645\u0627\u0642\u062f\u0631\u062a\u0634', '\u062a\u0648\u0627\u0635\u0644 \u0645\u0639', '\u0639\u064a\u0637']
+        };
+        const langKw = escalationKeywords[state.currentLang] || escalationKeywords.fr;
+        return langKw.some(kw => lower.includes(kw));
+    }
+
+    function showHandoffCTA() {
+        const container = $id('va-messages');
+        if (!container) return;
+
+        const labels = {
+            fr: { email: 'Envoyer un email', call: 'Appeler', book: 'Prendre RDV' },
+            en: { email: 'Send email', call: 'Call us', book: 'Book appointment' },
+            es: { email: 'Enviar email', call: 'Llamar', book: 'Reservar cita' },
+            ar: { email: '\u0625\u0631\u0633\u0627\u0644 \u0628\u0631\u064a\u062f', call: '\u0627\u062a\u0635\u0644', book: '\u062d\u062c\u0632 \u0645\u0648\u0639\u062f' },
+            ary: { email: '\u0635\u064a\u0641\u0637 \u0625\u064a\u0645\u064a\u0644', call: '\u0639\u064a\u0637', book: '\u062d\u062c\u0632 \u0645\u0648\u0639\u062f' }
+        };
+        const l = labels[state.currentLang] || labels.fr;
+
+        const div = document.createElement('div');
+        div.className = 'va-message assistant';
+        const content = document.createElement('div');
+        content.className = 'va-message-content';
+        content.style.cssText = 'padding:12px 16px;';
+
+        const btnStyle = 'display:inline-block;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;margin:4px;cursor:pointer;text-decoration:none;';
+
+        const emailBtn = document.createElement('a');
+        emailBtn.href = 'mailto:contact@vocalia.ma';
+        emailBtn.style.cssText = btnStyle + 'background:rgba(94,106,210,0.15);color:#818cf8;border:1px solid rgba(94,106,210,0.3);';
+        emailBtn.textContent = l.email;
+        content.appendChild(emailBtn);
+
+        if (state.bookingConfig.phone) {
+            const phoneBtn = document.createElement('a');
+            phoneBtn.href = `tel:${state.bookingConfig.phone}`;
+            phoneBtn.style.cssText = btnStyle + 'background:rgba(94,106,210,0.08);color:#a5b4fc;border:1px solid rgba(94,106,210,0.2);';
+            phoneBtn.textContent = l.call;
+            content.appendChild(phoneBtn);
+        }
+
+        if (state.bookingConfig.enabled) {
+            const bookBtn = document.createElement('button');
+            bookBtn.type = 'button';
+            bookBtn.style.cssText = btnStyle + 'background:#5E6AD2;color:white;border:none;';
+            bookBtn.textContent = l.book;
+            bookBtn.addEventListener('click', () => startBookingFlow());
+            content.appendChild(bookBtn);
+        }
+
+        div.appendChild(content);
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+        trackEvent('handoff_shown');
     }
 
     // ============================================================

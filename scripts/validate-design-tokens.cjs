@@ -151,8 +151,10 @@ const BUSINESS_PATTERNS = [
   { regex: /Voice Widget B2C/gi, rule: 'ELIMINATED_PRODUCT', reason: 'B2C product ELIMINATED → merged into Pro (99€)' },
 
   // 19. Old pricing (non-viable telephony margin — BI.md L71, L77)
-  { regex: /\$0\.06/g, rule: 'OLD_PRICING', reason: '$0.06 is OLD telephony cost (8% margin) → now $0.10-0.11/min' },
-  { regex: /\b0[.,]06\s*€/g, rule: 'OLD_PRICING', reason: '0.06€ is OLD telephony price (8% margin) → now 0.10€/min' },
+  { regex: /\$0\.06/g, rule: 'OLD_PRICING', reason: '$0.06 is OLD telephony cost (8% margin) → now $0.24/min' },
+  { regex: /\b0[.,]06\s*€/g, rule: 'OLD_PRICING', reason: '0.06€ is OLD telephony price (8% margin) → now 0.24€/min' },
+  { regex: /\b0[.,]10\s*€\s*\/?\s*min/g, rule: 'OLD_PRICING', reason: '0.10€/min is OLD telephony price → now 0.24€/min (Session 250.204)' },
+  { regex: /VocalIA[^.]{0,40}\$0\.10\s*\/?\s*min/g, rule: 'OLD_PRICING', reason: '$0.10/min is OLD telephony price → now $0.26/min (Session 250.204)' },
   { regex: /\b79\s*€/g, rule: 'OLD_PRICING', reason: '79€ was B2C tier — ELIMINATED. Use Pro 99€/mo' },
 
   // 20. Unverifiable uptime claim (API not deployed — production readiness 3.5/10)
@@ -651,13 +653,13 @@ function validate() {
     const content = fs.readFileSync(file, 'utf-8');
     const rel = relPath(file);
 
-    const hasTelephonyPerMin = /0[.,]10\s*€\s*\/?\s*min/i.test(content);
+    const hasTelephonyPerMin = /0[.,]24\s*€\s*\/?\s*min/i.test(content);
     const hasBaseFee = /199\s*€/.test(content);
 
     if (hasTelephonyPerMin && !hasBaseFee) {
-      const match = content.match(/0[.,]10\s*€\s*\/?\s*min/i);
+      const match = content.match(/0[.,]24\s*€\s*\/?\s*min/i);
       const lineNum = match ? content.substring(0, match.index).split('\n').length : 0;
-      warnings.push({ file: rel, line: lineNum, rule: 'TELEPHONY_BASE_MISSING', msg: 'Shows 0.10€/min without 199€/month base fee — incomplete pricing' });
+      warnings.push({ file: rel, line: lineNum, rule: 'TELEPHONY_BASE_MISSING', msg: 'Shows 0.24€/min without 199€/month base fee — incomplete pricing' });
     }
   }
 

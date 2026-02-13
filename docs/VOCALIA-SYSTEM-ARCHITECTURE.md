@@ -989,7 +989,7 @@ Audio stream ──► WebSocket ──────► /stream/:sessionId
                                        → Send WhatsApp/SMS confirmation
 ```
 
-**Cost**: Grok ~$0.05 + Twilio ~$0.01 + ElevenLabs TTS ~$0.04 = **~$0.10/min**
+**COGS**: Grok ~$0.005 + Twilio ~$0.01 + ElevenLabs TTS ~$0.04 = **~$0.055/min** (selling price: 0.24€/min ~$0.26, margin ~77%)
 **25 function tools**: Grok calls these via `function_call` → handler returns structured data → Grok incorporates into conversation
 
 ### 11.4 Flux Auth

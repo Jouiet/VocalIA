@@ -413,3 +413,108 @@ describe('T6: HITL states', () => {
     }
   });
 });
+
+// ─── T6.15: Client config.json schema validation ─────────────────────────────
+// Bug: agency_internal was incomplete (missing quotas, usage, widget_config).
+// Validates that ALL tenants with config.json have required structural fields.
+
+describe('T6: Client config.json schema', () => {
+  const clientsDir = path.join(ROOT, 'clients');
+  const REQUIRED_FIELDS = ['tenant_id', 'plan'];
+  // Tenants referenced by code (fallback clients, registered tenants) need FULL config
+  const CRITICAL_TENANTS = ['agency_internal', 'client_demo'];
+  const FULL_REQUIRED = [
+    'tenant_id', 'name', 'type', 'plan', 'status',
+    'quotas', 'usage', 'features', 'integrations', 'market_rules'
+  ];
+  const REQUIRED_QUOTAS = ['calls_monthly', 'sessions_monthly', 'kb_entries'];
+  const REQUIRED_USAGE = ['calls_current', 'sessions_current'];
+
+  for (const tenant of CRITICAL_TENANTS) {
+    const cfgPath = path.join(clientsDir, tenant, 'config.json');
+
+    test(`${tenant}/config.json exists`, () => {
+      assert.ok(fs.existsSync(cfgPath), `${tenant}/config.json missing`);
+    });
+
+    test(`${tenant}/config.json has all required top-level fields`, () => {
+      if (!fs.existsSync(cfgPath)) return;
+      const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      for (const field of FULL_REQUIRED) {
+        assert.ok(field in cfg,
+          `${tenant}/config.json missing required field: ${field}`);
+      }
+    });
+
+    test(`${tenant}/config.json tenant_id matches directory`, () => {
+      if (!fs.existsSync(cfgPath)) return;
+      const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      assert.strictEqual(cfg.tenant_id, tenant,
+        `${tenant}/config.json tenant_id mismatch: ${cfg.tenant_id}`);
+    });
+
+    test(`${tenant}/config.json quotas has required subfields`, () => {
+      if (!fs.existsSync(cfgPath)) return;
+      const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      if (!cfg.quotas) return;
+      for (const qf of REQUIRED_QUOTAS) {
+        assert.ok(qf in cfg.quotas,
+          `${tenant}/config.json quotas missing: ${qf}`);
+      }
+    });
+
+    test(`${tenant}/config.json usage has required subfields`, () => {
+      if (!fs.existsSync(cfgPath)) return;
+      const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      if (!cfg.usage) return;
+      for (const uf of REQUIRED_USAGE) {
+        assert.ok(uf in cfg.usage,
+          `${tenant}/config.json usage missing: ${uf}`);
+      }
+    });
+
+    test(`${tenant}/config.json market_rules has markets/geo_rules and default`, () => {
+      if (!fs.existsSync(cfgPath)) return;
+      const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      if (!cfg.market_rules) return;
+      assert.ok(cfg.market_rules.markets || cfg.market_rules.geo_rules,
+        `${tenant} market_rules missing both markets and geo_rules`);
+      assert.ok(cfg.market_rules.default, `${tenant} market_rules missing default`);
+      assert.ok(cfg.market_rules.default.currency, `${tenant} market_rules.default missing currency`);
+    });
+
+    test(`${tenant}/config.json integrations is an object`, () => {
+      if (!fs.existsSync(cfgPath)) return;
+      const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+      assert.ok(cfg.integrations && typeof cfg.integrations === 'object',
+        `${tenant} integrations should be an object`);
+    });
+  }
+
+  // Verify that seeded client configs at minimum have tenant_id + plan
+  test('All client configs have tenant_id and plan', () => {
+    const violations = [];
+    const dirs = fs.readdirSync(clientsDir).filter(d =>
+      fs.statSync(path.join(clientsDir, d)).isDirectory() && !d.startsWith('_')
+    );
+    for (const dir of dirs) {
+      const cfgPath = path.join(clientsDir, dir, 'config.json');
+      if (!fs.existsSync(cfgPath)) continue;
+      try {
+        const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+        for (const f of REQUIRED_FIELDS) {
+          if (!(f in cfg)) {
+            violations.push(`${dir}: missing ${f}`);
+          }
+        }
+        if (cfg.tenant_id !== dir) {
+          violations.push(`${dir}: tenant_id mismatch (${cfg.tenant_id})`);
+        }
+      } catch (e) {
+        violations.push(`${dir}: JSON parse error`);
+      }
+    }
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} client config violation(s):\n  ${violations.slice(0, 10).join('\n  ')}`);
+  });
+});

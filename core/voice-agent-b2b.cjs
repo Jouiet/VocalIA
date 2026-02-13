@@ -153,7 +153,7 @@ const SERVICE_PACKS = {
   telephony: {
     name: 'Telephony',
     name_fr: 'Telephony',
-    price: '199€/mois + 0.10€/min',
+    price: '199€/mois + 0.24€/min',
     description: 'All features + PSTN telephony',
     description_fr: 'Toutes fonctionnalités + téléphonie PSTN',
     includes: ['Toutes fonctionnalités', 'Téléphonie PSTN (Twilio)', '38 personas', 'Multi-tenant', 'SLA dédié']
@@ -307,7 +307,7 @@ PRICING
 - Starter: 49€/month - Voice Widget, 500 interactions/month
 - Pro: 99€/month - Full widget + CRM + Calendar + Export + API
 - E-commerce: 99€/month - Full e-commerce suite (cart recovery, quiz, recommendations)
-- Telephony: 199€/month + 0.10€/min - All features + PSTN telephony
+- Telephony: 199€/month + 0.24€/min - All features + PSTN telephony
 
 ═══════════════════════════════════════════════════════════════════
 VOICE RESPONSE GUIDELINES

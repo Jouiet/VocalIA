@@ -3097,6 +3097,13 @@ body.gsap-ready [data-reveal="scale"] {
   @apply border-slate-700/30 border-slate-700/50 border-slate-700/70;
 }
 
+/* Feature category icon backgrounds (features.html — Session 250.204) */
+.safelist-feature-icons {
+  @apply bg-emerald-500/20 bg-violet-500/20 bg-indigo-500/20 bg-sky-500/20;
+  @apply bg-amber-500/20 bg-orange-500/20 bg-pink-500/20 bg-teal-500/20;
+  @apply bg-red-500/20 bg-cyan-500/20 bg-zinc-500/20;
+}
+
 /* ==========================================================================
    CROSS-BROWSER FALLBACKS
    Session 249.13: Fix backdrop-filter for Firefox < 103, IE 11

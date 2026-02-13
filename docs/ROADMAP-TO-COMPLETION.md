@@ -21,9 +21,9 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (4,903 tests, 75 files). **415 bugs reported across 43 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO login implemented (250.198). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
+**Code Completeness: 9.5/10** — Features coded and tested (5,015+ tests, 77 files). **432+ bugs reported across 45+ phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO login implemented (250.198). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). Telephony repriced 0.10→0.24€/min (250.204). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
 **Production Readiness: 8.0/10** — VERIFIED 250.200c (12/02/2026) via SSH + curl:
-- `vocalia.ma` ✅ Website live (all 80 pages return 200, 64KB homepage)
+- `vocalia.ma` ✅ Website live (all 81 pages return 200, 64KB homepage)
 - `api.vocalia.ma/health` ✅ Voice API healthy (4 AI providers: Grok, Gemini, Claude, Atlas)
 - `api.vocalia.ma/api/db/health` ✅ DB API connected (Google Sheets: 7 sheets) + security headers (nosniff, X-Frame DENY, HSTS, Referrer-Policy)
 - `api.vocalia.ma/api/auth/login` ✅ Auth endpoint works (JWT_SECRET configured)
@@ -101,7 +101,7 @@
 | Decision | Session | Rationale |
 |:---------|:-------:|:----------|
 | B2C product ELIMINATED | 250.143 | Phantom product (no B2C widget, loaded B2B at 79€). Merged into Pro 99€ |
-| Telephony 0.06→0.10€/min | 250.143 | Margin 8%→38%. Still 2x cheaper than Vapi |
+| Telephony 0.06→0.10→0.24€/min | 250.143+250.204 | Margin 8%→38%→77%. Tout-inclus positioning |
 | ESM source migration DEFERRED | 250.158 | 78 conditional requires — needs AST-based tool, too risky for regex |
 | CDN REJECTED | 250.154 | VPS + nginx + brotli sufficient at current volume |
 | PostgreSQL REJECTED | User directive | No migration from Google Sheets |
@@ -200,7 +200,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Rule | Count | Files | Description |
 |:-----|:-----:|:------|:------------|
 | COMPETITIVE_CLAIM | 29 | about, investor, index, blog ×4, locale ×5 | "60% moins cher" TRUE for FR/EU, FALSE for Morocco ($0.83/min Twilio) |
-| TELEPHONY_BASE_MISSING | 13 | about, academie, features, blog ×4, docs, dashboard | "0.10€/min" without mentioning 199€/month base fee |
+| TELEPHONY_BASE_MISSING | 13 | about, academie, features, blog ×4, docs, dashboard | "0.24€/min" without mentioning 199€/month base fee |
 | COMPONENT_COVERAGE | 2 | mentions-legales, voice-widget-b2c | Redirect pages — acceptable exception |
 
 ### 3.3 Additional Issues (Manual audit 250.160)
@@ -237,7 +237,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | # | Action | Effort | Impact | Status |
 |:-:|:-------|:-------|:-------|:------:|
 | 1 | ~~Activate GA4~~ | ~~5min~~ | 52 events collecting data | ✅ 250.163 |
-| 2 | Increase telephony price 0.06→0.10€ | Decision | Margin 8%→38% | ✅ 250.143 |
+| 2 | Increase telephony price 0.06→0.10→0.24€ | Decision | Margin 8%→38%→77% | ✅ 250.143+250.204 |
 | 3 | Serve brotli via nginx | 30min | Transfer -84% B2B, -88% ECOM | ✅ 250.152 |
 | 4 | Booking inline B2B | 3h | Conversion +30-40% (est.) | ✅ 250.140 |
 | 5 | Evaluate Telnyx (Moroccan numbers) | 4h | Unblock Morocco, -50% PSTN | ❌ Research |
@@ -253,7 +253,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Starter | 49€/month | ~€3.50 | **93%** | ✅ |
 | Pro | 99€/month | ~€5 | **95%** | ✅ |
 | E-commerce | 99€/month | ~€6.50 | **93%** | ✅ |
-| Telephony FR/EN/ES | 199€/mo + 0.10€/min | $0.06/min cost | **38%** | ✅ |
+| Telephony FR/EN/ES | 199€/mo + 0.24€/min | $0.06/min cost | **77%** | ✅ |
 | **Telephony Darija** | **$0.25/min** (inbound) | $0.16/min cost | **36%** | ✅ |
 
 **Darija cost breakdown**: Grok $0.05 + Twilio inbound $0.01 + ElevenLabs TTS $0.10 = **$0.16/min**
@@ -263,7 +263,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 ### 4.3 Competitive Position
 
 **Widget**: Voice-native widget with 5 languages. 49€ vs Intercom $39-139/seat. Different product (voice-first sales vs support platform).
-**Telephony**: 0.10€/min vs Vapi 0.15-0.33€/min (up to 60% cheaper for EU market). Structural advantage: Grok bundles LLM+STT+TTS at ~$0.05/min.
+**Telephony**: 0.24€/min tout-inclus (IA + 38 personas + analytics) vs Vapi $0.13-0.33/min (components billed separately). Moat = valeur, pas prix.
 **Market strategy (250.164)**: 1. Europe (FR+EUR) → 2. MENA (AR+USD) → 3. International (EN+USD) → 4. Morocco (FR+MAD). USP = price + widget+telephony unified, NOT Darija.
 **Feature gaps vs Intercom/Crisp**: No help center, shared inbox, ticketing, email channel, file upload, WhatsApp. VocalIA ≠ support platform.
 
@@ -274,7 +274,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Newsletter | ✅ 250.144 — POST to /api/contact |
 | Booking form | ✅ 250.144 — POST to /api/contact |
 | Contact form | ✅ Backend + Google Sheets configured |
-| GA4 | ✅ configured activated (250.163) — 80/80 pages |
+| GA4 | ✅ configured activated (250.163) — 81/81 pages |
 | Social proof | ✅ 250.144 — honest tech metrics |
 | Case studies | ⚠️ Fictional (labeled honestly) |
 
@@ -292,31 +292,31 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ## 5. Verified Metrics
 
-> All data verified by command on 2026-02-08.
+> All data verified by command on 2026-02-13 (Session 250.204).
 
 ### 5.1 Code Metrics
 
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
-| core/*.cjs | 36,090 lines / 55 files | `wc -l core/*.cjs` |
-| widget/*.js | 10,621 lines / 7 files | `wc -l widget/*.js` |
-| personas/ | 8,776 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
-| telephony/ | 4,754 lines / 1 file | `wc -l telephony/*.cjs` |
-| mcp-server/src/ | 17,628 lines / 31 files | `find mcp-server/src -name "*.ts"` |
+| core/*.cjs | 37,571 lines / 58 files | `wc -l core/*.cjs` |
+| widget/*.js | 11,001 lines / 7 files | `wc -l widget/*.js` |
+| personas/ | 8,797 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
+| telephony/ | 4,843 lines / 1 file | `wc -l telephony/*.cjs` |
+| mcp-server/src/ | 19,324 lines / 33 files | `find mcp-server/src -name "*.ts"` |
 | MCP tools | 203 (22 inline + 181 external) | `node --test test/mcp-server.test.mjs` |
 | MCP resources | 6 (5 static + 1 template) | `grep -c "server.registerResource(" mcp-server/src/index.ts` |
 | MCP prompts | 8 | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
-| HTML pages | 80 | `find website -name "*.html" | wc -l` |
+| HTML pages | 81 | `find website -name "*.html" | wc -l` |
 | Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
-| i18n lines | 26,175 | `wc -l website/src/locales/*.json` |
+| i18n lines | 27,775 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 1 moderate (nodemailer — deferred, SMTP not configured) | `npm audit --json` |
 | innerHTML XSS risk | 0 | All dynamic data uses escapeHTML/textContent (250.192: 6 app pages hardened) |
 
 ### 5.2 Tests
 
-**TOTAL: 4,903 tests | 4,903 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.200)
+**TOTAL: 5,015+ tests | 5,015+ pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.204)
 
 Top test suites (by count):
 
@@ -330,7 +330,7 @@ Top test suites (by count):
 | telephony-pure | 76 | Real functions |
 | persona-audit | 711 | 38 × 5 langs |
 
-75 test files total. Coverage: 39.4% statements, 75.2% branches, 45.0% functions.
+77 test files total. Coverage: 39.4% statements, 75.2% branches, 45.0% functions.
 Theater tests: **0** typeof/exports (244 purged in 250.126, 20 purged in 250.114).
 New (250.198-200): oauth-login.test.mjs (16), provision-tenant.test.mjs (24), auth-pages.test.mjs, security-headers.test.mjs, and more.
 
@@ -666,7 +666,7 @@ create_booking          get_recommendations    qualify_lead
 
 **Remaining actionable bugs: 0** (verified 250.200c). 8 not fixable locally (VPS/arch). **ALL CODE + SECURITY + OPS tasks complete. Marketing copy 100% clean. Only BUSINESS items remain (SMTP, Stripe, OAuth credentials, first customer).**
 
-Rigorous per-item audit through 250.200c reveals all 415 code bugs resolved across 43 phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO (250.198) adds 2 D1-pattern bugs. Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). Non-root containers + backup (250.200c):
+Rigorous per-item audit through 250.204 reveals all 432+ code bugs resolved across 45+ phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO (250.198) adds 2 D1-pattern bugs. Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). Non-root containers + backup (250.200c):
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):

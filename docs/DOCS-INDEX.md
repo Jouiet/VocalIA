@@ -1,8 +1,8 @@
 # VocalIA - Documentation Index
 
-> **Version**: 6.1.0 | **Date**: 09/02/2026 | **Session**: 250.177
+> **Version**: 6.1.0 | **Date**: 13/02/2026 | **Session**: 250.204
 > **Production**: https://vocalia.ma
-> **Verified:** ~84k lines source | 80 pages | 203 MCP tools (0 connected) | 38 Personas | 25 Function Tools | 7 Widgets
+> **Verified:** ~86k lines source | 81 pages | 203 MCP tools (0 connected) | 38 Personas | 25 Function Tools | 7 Widgets
 
 ---
 
@@ -71,27 +71,27 @@
 
 ---
 
-## Metriques Verifiees (09/02/2026 - Session 250.177)
+## Metriques Verifiees (13/02/2026 - Session 250.204)
 
 | Metrique | Valeur | Commande Verification |
 |:---------|:------:|:----------------------|
-| Core Backend | **~36,000** lignes (55 files) | `wc -l core/*.cjs` |
+| Core Backend | **~37,600** lignes (58 files) | `wc -l core/*.cjs` |
 | Telephony | **~4,800** lignes | `wc -l telephony/*.cjs` |
 | Personas | **8,800** lignes (3 files) | `wc -l personas/*.cjs personas/*.json` |
-| Widget | **10,598** lignes (7 files) | `wc -l widget/*.js` |
-| Sensors | **822** lignes | `wc -l sensors/*.cjs` |
-| Integrations | **2,234** lignes | `wc -l integrations/*.cjs` |
-| Lib | **923** lignes | `wc -l lib/*.cjs` |
-| MCP Server | **~19,500** lignes (32 files) | `wc -l mcp-server/src/**/*.ts` |
+| Widget | **11,001** lignes (7 files) | `wc -l widget/*.js` |
+| Sensors | **852** lignes | `wc -l sensors/*.cjs` |
+| Integrations | **2,275** lignes | `wc -l integrations/*.cjs` |
+| Lib | **944** lignes | `wc -l lib/*.cjs` |
+| MCP Server | **~19,300** lignes (33 files) | `find mcp-server/src -name "*.ts" -exec wc -l {} +` |
 | Website Libs | **7,581** lignes | `wc -l website/src/lib/*.js` |
-| i18n Locales | **~26,000** lignes | `wc -l website/src/locales/*.json` |
-| HTML Pages | **80** | `find website -name "*.html" \| wc -l` |
+| i18n Locales | **~27,800** lignes | `wc -l website/src/locales/*.json` |
+| HTML Pages | **81** | `find website -name "*.html" \| wc -l` |
 | MCP Tools | **203** (0 connected) | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Function Tools | **25** | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | **38** | `grep -E "^\s+[A-Z_]+:\s*\{$" \| sort -u \| wc -l` |
 | Langues | **5** | FR, EN, ES, AR, ARY |
-| HTTP Services | **8** | 4 deployed (3004,3007,3009,3013) + 4 non-deployed (3010,3011,3012,3015) |
-| Tests | **3,803** (68 files, 0 skip) | `node --test test/*.mjs` |
+| HTTP Services | **8** | 7 deployed (3004,3007,3009,3010,3011,3012,3013) + 1 non-deployed (3015) |
+| Tests | **5,015+** (77 files, 0 fail) | `node --test test/*.mjs` |
 | Registered Clients | **22** (0 paying) | `client_registry.json` |
 | Client Folders | **553** (all test data) | `ls clients/ \| wc -l` |
 | Distribution | **5** platforms | npm, shopify, wordpress, wix, zapier |
@@ -100,23 +100,23 @@
 
 ## Services (8 HTTP Servers)
 
-**Deployed (Docker containers via Traefik):**
+**Deployed (7 Docker containers via Traefik — ALL non-root):**
 ```bash
 node core/voice-api-resilient.cjs    # port 3004
 node core/grok-voice-realtime.cjs    # port 3007
 node telephony/voice-telephony-bridge.cjs  # port 3009
 node core/db-api.cjs                 # port 3013
+node core/OAuthGateway.cjs --start   # port 3010
+node core/WebhookRouter.cjs --start  # port 3011
+node core/remotion-hitl.cjs --server # port 3012 (hybrid: library + optional server)
 ```
 
 **Non-deployed (standalone, code exists):**
 ```bash
-node core/OAuthGateway.cjs --start   # port 3010
-node core/WebhookRouter.cjs --start  # port 3011
-node core/remotion-hitl.cjs --server # port 3012 (hybrid: library + optional server)
 node mcp-server/dist/index.js --http # port 3015 (standalone TypeScript)
 ```
 
 ---
 
-*Index updated: 09/02/2026 - Session 250.177*
+*Index updated: 13/02/2026 - Session 250.204*
 *All metrics verified with wc -l, grep -c, and node --test*

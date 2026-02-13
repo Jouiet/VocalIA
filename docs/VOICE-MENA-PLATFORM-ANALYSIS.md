@@ -1168,10 +1168,12 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 
 | Tier | Prix/minute | Prix/mois | Minutes incluses | Cible |
 |------|-------------|-----------|------------------|-------|
-| **Starter** | $0.12/min | 99 MAD (~$10) | 100 min | Micro-entreprises |
-| **Pro** | $0.10/min | 499 MAD (~$50) | 600 min | PME |
-| **Business** | $0.08/min | 1,499 MAD (~$150) | 2,500 min | Moyennes entreprises |
-| **Enterprise** | $0.05/min | Custom | Illimité | BPO, grandes entreprises |
+| **Starter** | $0.26/min | 99 MAD (~$10) | 100 min | Micro-entreprises |
+| **Pro** | $0.26/min | 499 MAD (~$50) | 600 min | PME |
+| **Business** | $0.22/min | 1,499 MAD (~$150) | 2,500 min | Moyennes entreprises |
+| **Enterprise** | $0.18/min | Custom | Illimité | BPO, grandes entreprises |
+
+> **Note**: Repriced 250.204. Prix standard $0.26/min (~0.24€). Volume discounts uniquement Business/Enterprise.
 
 ### 6.2 Projection Revenue (Maroc Y1)
 
@@ -1420,7 +1422,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | Infra | Hostinger | $0.005 | VPS |
 | **TOTAL** | | **$0.019/min** | |
 
-**Marge @ $0.10/min:** (0.10 - 0.019) / 0.10 = **81%** ✅
+**Marge @ $0.26/min:** (0.26 - 0.019) / 0.26 = **93%** ✅ (WhatsApp channel, COGS très bas)
 
 **Canal 2: PSTN Morocco via Freezvon Mobile**
 
