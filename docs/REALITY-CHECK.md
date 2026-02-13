@@ -1,6 +1,6 @@
 # VocalIA — Reality Check
 
-> **Date:** 2026-02-12 | **Session:** 250.200d
+> **Date:** 2026-02-13 | **Session:** 250.205
 > **Auteur:** Audit interne (Claude). **AUCUNE validation externe.**
 > **Methode:** Bottom-up factuelle. Zero wishful thinking. Chaque affirmation est verifiable.
 
@@ -13,10 +13,10 @@ Le probleme fondamental : **je note mon propre travail.**
 | Dimension | Score affiche | Score realiste | Ecart | Justification de la correction |
 |:----------|:------------:|:--------------:|:-----:|:-------------------------------|
 | Code Completeness | 9.5 | **7.5-8.0** | -1.5 | Coverage 39.4%. 0 validation utilisateur. 0 appel reel. |
-| Production Readiness | 8.0 | **4.0** | -4.0 | 0 clients, SMTP off, Stripe off, OAuth off. Inscription = dead-end. |
+| Production Readiness | 8.5 | **5.0-5.5** | -3.0 | SMTP LIVE, OAuth LIVE, mais 0 clients, Stripe off. Inscription = email fonctionne, paiement impossible. |
 | Security | 9.0 | **6.5-7.0** | -2.5 | 0 pen test, 0 WAF, 0 DDoS protection, rate limit en memoire. |
 | MCP | 9.0 | **7.0** | -2.0 | 203 tools, 0 appels reels en production. |
-| **Weighted** | **9.1** | **~6.0-6.5** | **-3** | Infrastructure sans clients = infrastructure sans valeur. |
+| **Weighted** | **9.2** | **~6.5-7.0** | **-2.5** | Infrastructure sans clients = infrastructure sans valeur. |
 
 ### Pourquoi l'ecart?
 
@@ -31,13 +31,13 @@ Un restaurant avec une cuisine equipee, des recettes testees et un systeme de se
 
 | Element | Statut | Verification |
 |:--------|:------:|:-------------|
-| vocalia.ma (site web) | OK | 81 pages, toutes retournent 200 |
+| vocalia.ma (site web) | OK | 84 pages, toutes retournent 200 |
 | 7 containers Docker | OK | Tous healthy, non-root, monitores */5 |
 | Security headers | OK | SRI 78/78, CSP, HSTS, nosniff, X-Frame DENY |
 | Monitoring | OK | ntfy.sh push alerts, */5 cron, disk/mem/SSL |
 | Backup | OK | Daily 2AM, 7-day retention |
 | VPS hardening | OK | SSH key-only, fail2ban, UFW |
-| Tests | OK | 4,903 pass, 0 fail |
+| Tests | OK | 5,019 pass, 0 fail |
 | Widget code | OK | 7 widgets, Shadow DOM, escapeHTML, minifie |
 | Personas | OK | 38 personas x 5 langues (code present) |
 | Disk | OK | 20% (19G/96G) |
@@ -46,10 +46,10 @@ Un restaurant avec une cuisine equipee, des recettes testees et un systeme de se
 
 | Element | Statut | Impact |
 |:--------|:------:|:-------|
-| **SMTP** | OFF | **Inscription impossible.** Pas de verification email, pas de reset password. |
+| **SMTP** | **LIVE** | Resend SMTP (250.205). DKIM+SPF+MX verified. `noreply@vocalia.ma`. Inscription email = fonctionnel. |
 | **Stripe** | OFF | **Paiement impossible.** 0 moyen d'encaisser de l'argent. |
-| **OAuth Google** | OFF | Login Google = erreur 400 (GOOGLE_CLIENT_ID manquant) |
-| **OAuth GitHub** | OFF | Login GitHub = erreur 400 (GITHUB_CLIENT_ID manquant) |
+| **OAuth Google** | **LIVE** | Login Google → 302 redirect (250.205). Separate SSO client from Sheets API. |
+| **OAuth GitHub** | **LIVE** | Login GitHub → 302 redirect (250.205). Client ID + Secret deployed. |
 | **Tenant config** | VIDE | /respond = quota-limited. Aucun tenant configure pour un usage reel. |
 | **Kling** | OFF | API 500 (credits expires). Video generation = 1 seul moteur (Veo). |
 | **Payzone** | OFF | Pas de paiement en MAD. Maroc non monetisable. |
@@ -58,8 +58,10 @@ Un restaurant avec une cuisine equipee, des recettes testees et un systeme de se
 ```
 Visiteur → vocalia.ma → Clique "S'inscrire"
   → Remplit le formulaire → POST /api/auth/register
-  → "Verifiez votre email" → AUCUN EMAIL ARRIVE (SMTP off)
-  → FIN. L'utilisateur est bloque. Pour toujours.
+  → "Verifiez votre email" → Email arrive (Resend SMTP LIVE) ✅
+  → Compte cree → Dashboard accessible → Widget fonctionnel
+  → Veut payer → AUCUN moyen de paiement (Stripe OFF)
+  → FIN. L'utilisateur peut tester mais pas payer.
 ```
 
 ---
@@ -201,7 +203,7 @@ Le widget voice utilise `Web Speech API` (navigateur) — PAS WebRTC.
 
 ### 6.2 Atouts Reels (Factuels)
 
-1. **Base de code fonctionnelle** — 86K+ lignes, 5,015+ tests, 432+ bugs fixes. Rare pour un solo dev.
+1. **Base de code fonctionnelle** — 87K+ lignes, 5,019+ tests, 440+ bugs fixes. Rare pour un solo dev.
 2. **Niche linguistique** — Arabe MSA + Darija marocain. Peu de concurrents ont ca.
 3. **38 personas pre-construits** — Time-to-value immediat pour un client. Vapi/Retell = zero personas.
 4. **Infrastructure low-cost** — ~50EUR/mois (VPS 20EUR + domaine). Brulage de cash minimal.
@@ -225,7 +227,7 @@ Le widget voice utilise `Web Speech API` (navigateur) — PAS WebRTC.
 
 | Jalon | Probabilite | Prerequis |
 |:------|:----------:|:----------|
-| Configurer SMTP + Stripe (infra minimale) | **90%** | Effort technique, pas de blocage externe |
+| ~~Configurer SMTP~~ + Stripe (infra minimale) | **90%** | SMTP = DONE (Resend 250.205). Stripe = effort technique restant. |
 | 1 client payant | **30-50%** | Effort commercial actif + produit fonctionnel |
 | 10 clients payants | **10-20%** | Product-market fit + bouche-a-oreille |
 | 10K EUR MRR (~100 clients Starter) | **5-10%** | Distribution + retention + support |
@@ -257,7 +259,7 @@ Le scenario median : **5-15 clients sur 12 mois, revenue ~500-1500EUR/mois, insu
 | Ameliorer la securite | ~0% | Eleve |
 | Refactoring | ~0% | Eleve |
 | Ajouter des features | ~2% | Eleve |
-| **Configurer SMTP** | **+15%** | **30 min** |
+| ~~Configurer SMTP~~ | ~~+15%~~ | ✅ DONE (250.205) |
 | **Configurer Stripe** | **+10%** | **1h** |
 | **Creer 1 demo fonctionnelle** | **+10%** | **2h** |
 | **Contacter 1 prospect** | **+20%** | **1h** |
@@ -267,9 +269,9 @@ Le scenario median : **5-15 clients sur 12 mois, revenue ~500-1500EUR/mois, insu
 
 ```
 SEMAINE 1:
-  1. SMTP (Brevo free tier = 300 emails/jour) ← 30 min
+  1. ~~SMTP~~ ✅ DONE (Resend — 250.205)
   2. Stripe (test mode d'abord) ← 1h
-  3. OAuth Google (console.cloud.google.com → Client ID) ← 30 min
+  3. ~~OAuth Google~~ ✅ DONE (250.205) | ~~OAuth GitHub~~ ✅ DONE (250.205)
   4. 1 tenant demo complet avec config.json ← 1h
 
 SEMAINE 2:
@@ -316,10 +318,10 @@ Aucune ligne de code supplementaire ne fera cette transition. Seul le contact hu
 
 ```
 Score CODE   = 8/10 (solide, audite, bien teste)
-Score PRODUIT = 2/10 (inutilisable sans SMTP/Stripe)
+Score PRODUIT = 4/10 (SMTP + OAuth LIVE, mais Stripe OFF = pas de monetisation)
 Score STARTUP = 0/10 (0 clients, 0 revenue, 0 validation)
 ```
 
 ---
 
-*Document genere le 12/02/2026. Methode : analyse bottom-up factuelle. Zero validation externe. Tous les chiffres sont verifiables par les commandes listees dans `.claude/rules/factuality.md`.*
+*Document mis a jour le 13/02/2026 (250.205). Methode : analyse bottom-up factuelle. Zero validation externe. Tous les chiffres sont verifiables par les commandes listees dans `.claude/rules/factuality.md`.*

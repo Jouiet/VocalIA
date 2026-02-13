@@ -1,6 +1,6 @@
 # VocalIA — Business Intelligence
 
-> **Version**: 2.0.0 | **Date**: 08/02/2026 | **Session**: 250.142
+> **Version**: 2.1.0 | **Date**: 13/02/2026 | **Session**: 250.205 (pricing data from 250.142-204, infra updated 250.205)
 > **Source**: External business audits Nr 2 (250.139) + Nr 3 (250.142) — verified against code + provider pricing Feb 2026
 > **Contact**: contact@vocalia.ma | +1 762 422 4223 (Twilio official number)
 
@@ -164,7 +164,7 @@
 | **Total unique** | **52** | **~84** | **✅ All collecting data** |
 
 **Activated**: Session 250.163 — configured (Stream ID: 13579681217)
-**Coverage**: 81/81 pages (header.html 46 + sidebar.html 11 + admin-sidebar.html 5 + 5 auth inline + 13 dashboard→app redirect + investor.html)
+**Coverage**: 84/84 pages (header.html 46 + sidebar.html 11 + admin-sidebar.html 5 + 5 auth inline + 13 dashboard→app redirect + investor.html + 3 utility pages 250.205)
 **Server-side**: marketing-science-core.cjs Measurement Protocol (needs GA4_API_SECRET env var)
 
 ---
@@ -224,7 +224,7 @@
 | **Newsletter** | **DEAD** | `event-delegation.js:120-126` — changes button text to "✓ Inscrit!", NO fetch/POST, NO webhook | 0% email capture rate |
 | **Booking form** | **DEAD** | `booking.html:435-436` — `alert('Merci!')`, comment says "in real app, send to API" | 0% demo conversion |
 | **Contact form** | **PARTIAL** | `voice-api-resilient.cjs:3052` — `/api/contact` endpoint exists, saves to Google Sheets DB | DB not configured (no GOOGLE_SHEETS_ID in .env), data goes to console log only |
-| **GA4 Analytics** | **✅ ACTIVE** | `header.html:2,7` — `configured` (250.163) | 52 events collecting data on 81/81 pages |
+| **GA4 Analytics** | **✅ ACTIVE** | `header.html:2,7` — `configured` (250.163) | 52 events collecting data on 84/84 pages |
 | **Plausible Analytics** | **INSTALLED** | `site-init.js` + 5+ pages with `data-domain="vocalia.ma"` script | Account existence not verified |
 
 ### 9B. Social Proof — FICTITIOUS DATA

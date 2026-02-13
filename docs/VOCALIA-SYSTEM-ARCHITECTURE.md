@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 2.5.0 | 12/02/2026 | Session 250.200c (7 deployed + 1 non-deployed. ALL non-root. Security SOTA. Monitoring v3.0. Backup daily.)
+### Version 2.7.0 | 13/02/2026 | Session 250.205 (7 deployed + 1 non-deployed. ALL non-root, node:22-alpine. Resend SMTP LIVE. OAuth SSO LIVE. GSC verified.)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -49,7 +49,7 @@
 | Lib | 1 | **923** | `wc -l lib/*.cjs` |
 | MCP Server (TS) | 32 | **19,173** | `wc -l mcp-server/src/**/*.ts` |
 | Website Libs (JS) | ~21 | **7,581** | `wc -l website/src/lib/*.js` |
-| Website HTML | **80** | ~28,000 | `find website -name "*.html"` |
+| Website HTML | **84** | ~28,500 | `find website -name "*.html"` |
 | Locales (JSON) | 5 | **23,995** | `wc -l website/src/locales/*.json` |
 | **TOTAL Backend** | **~77** | **~61,615** | (core+telephony+personas+widget+sensors+integrations+lib) |
 | **TOTAL avec MCP** | **~109** | **~80,788** | Backend + MCP |
