@@ -58,7 +58,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Monitoring**: Production monitor v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, recovery detection, */5 cron.
 - **Backup**: Daily at 2 AM UTC, 7-day retention, ~4KB compressed. Cron on VPS.
 - **Marketing integrity**: 100% — Remediation COMPLETE (250.195-197): 34 HTML + locale keys + 12/12 blog disclaimers. Zero false claims.
-- **Production readiness**: 8.5/10 — Website live + API + monitoring + security hardened + non-root containers + backup + disk cleaned (86%→20%). 7 containers healthy (node:22). GSC verified + sitemap submitted. **Resend SMTP LIVE** (DKIM+SPF+MX verified). Missing: Stripe, OAuth credentials, 0 paying customers.
+- **Production readiness**: 8.5/10 — Website live + API + monitoring + security hardened + non-root containers + backup + disk cleaned (86%→20%). 7 containers healthy (node:22). GSC verified + sitemap submitted. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub). Missing: Stripe, 0 paying customers.
 - **OAuth SSO**: **LIVE** (250.205). Google + GitHub SSO functional — redirect 302 verified. Separate SSO client from Sheets API client.
 - **Video Studio**: E2E verified (250.197-199). Veo FUNCTIONAL (GCP ADC). Kling API = external 500 (crédits).
 - **MCP Server**: 9.0/10. 203 tools + 6 resources + 8 prompts.
