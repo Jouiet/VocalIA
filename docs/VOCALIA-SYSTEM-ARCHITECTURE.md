@@ -36,23 +36,23 @@
 | **Produits** | Voice Widget (Browser) + Voice Telephony (PSTN) |
 | **Langues** | 5 (FR, EN, ES, AR, ARY/Darija) |
 
-### 1.2 Metriques Globales (VERIFIE `wc -l` 09/02/2026 — Session 250.177)
+### 1.2 Metriques Globales (VERIFIE `wc -l` 13/02/2026 — Session 250.205)
 
 | Composant | Fichiers | Lignes | Verification |
 |:----------|:--------:|:------:|:-------------|
-| Core Backend | 54 | **34,533** | `wc -l core/*.cjs` |
-| Telephony | 1 | **4,732** | `wc -l telephony/*.cjs` |
-| Personas | 3 | **8,700** | `wc -l personas/*.cjs personas/*.json` |
-| Widget | 7 | **9,671** | `wc -l widget/*.js` |
-| Sensors | 4 | **822** | `wc -l sensors/*.cjs` |
-| Integrations | 7 | **2,234** | `wc -l integrations/*.cjs` |
-| Lib | 1 | **923** | `wc -l lib/*.cjs` |
-| MCP Server (TS) | 32 | **19,173** | `wc -l mcp-server/src/**/*.ts` |
-| Website Libs (JS) | ~21 | **7,581** | `wc -l website/src/lib/*.js` |
+| Core Backend | 58 | **37,649** | `wc -l core/*.cjs` |
+| Telephony | 1 | **4,843** | `wc -l telephony/*.cjs` |
+| Personas | 3 | **8,797** | `wc -l personas/*.cjs personas/*.json` |
+| Widget | 7 | **11,001** | `wc -l widget/*.js` |
+| Sensors | 4 | **852** | `wc -l sensors/*.cjs` |
+| Integrations | 7 | **2,275** | `wc -l integrations/*.cjs` |
+| Lib | 1 | **944** | `wc -l lib/*.cjs` |
+| MCP Server (TS) | 33 | **19,324** | `find mcp-server/src -name "*.ts" -exec wc -l {} +` |
+| Website Libs (JS) | 21 | **7,806** | `wc -l website/src/lib/*.js` |
 | Website HTML | **84** | ~28,500 | `find website -name "*.html"` |
-| Locales (JSON) | 5 | **23,995** | `wc -l website/src/locales/*.json` |
-| **TOTAL Backend** | **~77** | **~61,615** | (core+telephony+personas+widget+sensors+integrations+lib) |
-| **TOTAL avec MCP** | **~109** | **~80,788** | Backend + MCP |
+| Locales (JSON) | 5 | **27,805** | `wc -l website/src/locales/*.json` |
+| **TOTAL Backend** | **~81** | **~66,361** | (core+telephony+personas+widget+sensors+integrations+lib) |
+| **TOTAL avec MCP** | **~114** | **~85,685** | Backend + MCP |
 
 ### 1.3 Diagramme d'Architecture Globale
 
@@ -131,15 +131,15 @@
 
 | Service | Port | Fichier | Lignes | Fonction | Docker Profile |
 |:--------|:----:|:--------|:------:|:---------|:---------------|
-| **Voice API** | 3004 | `core/voice-api-resilient.cjs` | **3,018** | API texte multi-AI | core (default) |
+| **Voice API** | 3004 | `core/voice-api-resilient.cjs` | **3,883** | API texte multi-AI | core (default) |
 | **Grok Realtime** | 3007 | `core/grok-voice-realtime.cjs` | **1,109** | WebSocket audio | core (default) |
 | **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` | **4,709** | PSTN ↔ AI + 25 Function Tools | core (default) |
 | **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ~400 | OAuth 2.0 SSO (Google, GitHub, HubSpot, Shopify, Slack) | integrations |
-| **DB API** | 3013 | `core/db-api.cjs` | **2,721** | REST API + Auth + WebSocket | core (default) |
+| **DB API** | 3013 | `core/db-api.cjs` | **3,610** | REST API + Auth + WebSocket | core (default) |
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ~300 | Inbound webhooks (HubSpot, Shopify, Stripe, Klaviyo, Google) | integrations |
-| **Video HITL** | 3012 | `core/remotion-hitl.cjs` | **374** | Video HITL + Kling/Veo pipeline | video |
+| **Video HITL** | 3012 | `core/remotion-hitl.cjs` | **376** | Video HITL + Kling/Veo pipeline | video |
 
-> **OAuth Gateway** (250.198): Deployed via `--profile integrations`. Routes: `api.vocalia.ma/oauth/*`. SSO login with tenant auto-provisioning. Awaiting GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET.
+> **OAuth Gateway** (250.198-205): Deployed via `--profile integrations`. Routes: `api.vocalia.ma/oauth/*`. SSO login with tenant auto-provisioning. **SSO LIVE** (250.205): Google (GOOGLE_SSO_CLIENT_ID) + GitHub (GITHUB_CLIENT_ID) — 302 redirect verified.
 
 > **Webhook Router** (250.200c): Deployed via `--profile integrations`. Routes: `api.vocalia.ma/webhook/*`. HMAC signature validation. Start flag: `--start`.
 
@@ -197,12 +197,12 @@ curl http://localhost:3012/health          # Video HITL
 
 ## 3. ARCHITECTURE BACKEND
 
-### 3.1 Modules Core (38 fichiers, 32,727 lignes) - VÉRIFIÉ 05/02/2026
+### 3.1 Modules Core (58 fichiers, 37,649 lignes) - VÉRIFIÉ 13/02/2026
 
 | Module | Lignes | Fonction |
 |:-------|:------:|:---------|
-| `voice-api-resilient.cjs` | 3,018 | Multi-Provider Fallback API |
-| `db-api.cjs` | 2,721 | REST API + Auth + WebSocket |
+| `voice-api-resilient.cjs` | 3,883 | Multi-Provider Fallback API |
+| `db-api.cjs` | 3,610 | REST API + Auth + WebSocket |
 | `catalog-connector.cjs` | 2,287 | 6 E-commerce Connectors |
 | `tenant-catalog-store.cjs` | 1,148 | Multi-Tenant Catalog |
 | `grok-voice-realtime.cjs` | 1,109 | WebSocket Audio Streaming |
@@ -217,7 +217,8 @@ curl http://localhost:3012/health          # Video HITL
 | `recommendation-service.cjs` | 743 | AI Recommendations |
 | `tenant-kb-loader.cjs` | 707 | Multi-Tenant KB |
 | `kb-crawler.cjs` | 680 | FAQ/Contact Crawler |
-| `remotion-hitl.cjs` | 645 | Human In The Loop |
+| `remotion-hitl.cjs` | 376 | Human In The Loop |
+| `email-service.cjs` | 339 | Email (Resend + nodemailer fallback) |
 | `auth-service.cjs` | 644 | JWT + bcrypt (19 exports) |
 | `AgencyEventBus.cjs` | 623 | A2A Event System |
 | `ucp-store.cjs` | 585 | Unified Customer Profile |
@@ -237,7 +238,7 @@ curl http://localhost:3012/health          # Video HITL
 | Lead Velocity | `sensors/lead-velocity-sensor.cjs` | Lead qualification rate |
 | Retention | `sensors/retention-sensor.cjs` | Client retention metrics |
 
-### 3.3 Integrations (7 fichiers, 2,234 lignes) - VÉRIFIÉ 05/02/2026
+### 3.3 Integrations (7 fichiers, 2,275 lignes) - VÉRIFIÉ 13/02/2026
 
 | Module | Lignes | Fonction |
 |:-------|:------:|:---------|
@@ -249,7 +250,7 @@ curl http://localhost:3012/health          # Video HITL
 | `prestashop.cjs` | 110 | PrestaShop Integration |
 | `voice-crm-tools.cjs` | 104 | CRM wrappers |
 
-### 3.4 Telephony (1 fichier, 4,709 lignes) - VÉRIFIÉ 05/02/2026
+### 3.4 Telephony (1 fichier, 4,843 lignes) - VÉRIFIÉ 13/02/2026
 
 ```
 telephony/voice-telephony-bridge.cjs
@@ -286,7 +287,7 @@ telephony/voice-telephony-bridge.cjs
 └── HITL Controls
 ```
 
-### 3.5 Personas (2 fichiers, 5,995 lignes) - VÉRIFIÉ 05/02/2026
+### 3.5 Personas (3 fichiers, 8,797 lignes) - VÉRIFIÉ 13/02/2026
 
 ```
 personas/voice-persona-injector.cjs
@@ -306,7 +307,7 @@ personas/voice-persona-injector.cjs
     └── Behavioral context injection
 ```
 
-**40 Personas:**
+**38 Personas:**
 ```
 AGENCY, UNIVERSAL_ECOMMERCE, DENTAL, PROPERTY, COLLECTOR,
 RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT,
@@ -322,7 +323,7 @@ PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_SME
 
 ## 4. ARCHITECTURE FRONTEND
 
-### 4.1 Website Statique (76 pages HTML) - VÉRIFIÉ 05/02/2026
+### 4.1 Website Statique (84 pages HTML) - VÉRIFIÉ 13/02/2026
 
 ```
 website/
@@ -339,10 +340,16 @@ website/
 ├── privacy.html                  # Confidentialité
 ├── cookie-policy.html            # Cookies
 ├── referral.html                 # Programme parrainage
-├── 404.html                      # Page erreur
+├── 404.html                      # Page erreur 404
+├── 500.html                      # Page erreur 500 (250.205)
+├── offline.html                  # PWA fallback (250.205)
+├── mentions-legales.html         # Mentions légales
+├── googled735a48fbe6cba7f.html   # GSC verification (250.205)
 │
-├── products/                     # 2 pages produits
+├── products/                     # 4 pages produits
 │   ├── voice-widget.html
+│   ├── voice-widget-ecommerce.html
+│   ├── voice-widget-b2b.html
 │   └── voice-telephony.html
 │
 ├── industries/                   # 5 pages industries
@@ -390,11 +397,12 @@ website/
 ├── status/                       # 1 page status
 │   └── index.html
 │
-├── components/                   # 4 composants partagés
+├── components/                   # 5 composants partagés
 │   ├── header.html
 │   ├── footer.html
 │   ├── newsletter-cta.html
-│   └── analytics.html
+│   ├── analytics.html
+│   └── cookie-consent.html       # RGPD 5 langs (250.205)
 │
 └── app/                          # 19 pages SaaS Webapp
     ├── auth/                     # 5 pages authentification
@@ -403,7 +411,7 @@ website/
     │   ├── forgot-password.html
     │   ├── reset-password.html
     │   └── verify-email.html
-    ├── client/                   # 9 pages portail client
+    ├── client/                   # 11 pages portail client
     │   ├── index.html            # Dashboard
     │   ├── calls.html            # Historique appels
     │   ├── agents.html           # Gestion personas
@@ -412,6 +420,8 @@ website/
     │   ├── billing.html          # Facturation
     │   ├── settings.html         # Paramètres
     │   ├── knowledge-base.html   # Gestion KB
+    │   ├── catalog.html          # Gestion catalogue
+    │   ├── telephony.html        # Dashboard téléphonie
     │   └── onboarding.html       # Wizard configuration
     └── admin/                    # 5 pages console admin
         ├── index.html            # Dashboard admin
@@ -421,7 +431,7 @@ website/
         └── hitl.html             # Approbations HITL
 ```
 
-### 4.2 Libraries JavaScript (21 fichiers, 7,563 lignes) - VÉRIFIÉ 05/02/2026
+### 4.2 Libraries JavaScript (21 fichiers, 7,806 lignes) - VÉRIFIÉ 13/02/2026
 
 ```
 website/src/lib/
@@ -448,18 +458,17 @@ website/src/lib/
 └── db-client.js           (87)    # DB utilities
 ```
 
-### 4.3 Widget Voice (8 fichiers, 9,107 lignes) - VÉRIFIÉ 05/02/2026
+### 4.3 Widget Voice (7 fichiers, 11,001 lignes) - VÉRIFIÉ 13/02/2026
 
 ```
 widget/
-├── voice-widget-v3.js         (3,135)   # E-commerce Widget Core
-├── abandoned-cart-recovery.js (1,416)   # Cart Recovery (+25% recovery)
-├── spin-wheel.js              (1,176)   # Gamification (+15% conversion)
-├── voice-quiz.js              (1,127)   # Interactive Quiz (+65% completion)
-├── free-shipping-bar.js       (826)     # Shipping Progress (+20% AOV)
-├── voice-widget-b2b.js        (659)     # B2B Lead Widget
-├── recommendation-carousel.js (615)     # AI Product Carousel
-└── intelligent-fallback.js    (153)     # Graceful Degradation
+├── voice-widget-v3.js         (3,737)   # E-commerce Widget Core + Orchestrator
+├── voice-widget-b2b.js        (1,878)   # B2B Lead Widget + Catalog Mode
+├── abandoned-cart-recovery.js (1,454)   # Cart Recovery
+├── spin-wheel.js              (1,256)   # Gamification
+├── voice-quiz.js              (1,161)   # Interactive Quiz
+├── free-shipping-bar.js       (862)     # Shipping Progress
+└── recommendation-carousel.js (653)     # AI Product Carousel
 
 FEATURES UNIQUES (Session 250.78-250.83):
 ├── Voice Waveform Visualizer (real-time audio animation)
@@ -525,7 +534,7 @@ FEATURES UNIQUES (Session 250.78-250.83):
 │    │     - Darija enhancement                          │        │
 │    │     - Marketing psychology                        │        │
 │    │     - Example dialogues                           │        │
-│    │  3. Function Tools (11 outils)                    │        │
+│    │  3. Function Tools (25 outils)                    │        │
 │    └───────────────┼───────────────────────────────────┘        │
 │                    │                                             │
 │              WebSocket → Grok Realtime                           │
@@ -638,13 +647,14 @@ Methods:
 
 ## 7. ARCHITECTURE MCP SERVER
 
-### 7.1 Statistiques - VÉRIFIÉ 05/02/2026
+### 7.1 Statistiques - VÉRIFIÉ 13/02/2026
 
 | Métrique | Valeur | Vérification |
 |:---------|:------:|:-------------|
 | Total Tools | **203** | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Tool Files | 25 | TypeScript modules |
-| TypeScript Lines | **17,630** | `wc -l mcp-server/src/**/*.ts` |
+| TypeScript Files | **33** | `find mcp-server/src -name "*.ts" \| wc -l` |
+| TypeScript Lines | **19,324** | `find mcp-server/src -name "*.ts" -exec wc -l {} +` |
 | Version | 0.8.0 | package.json |
 
 ### 7.2 Tools par Catégorie
@@ -872,15 +882,15 @@ sdks/
 | ar | العربية (MSA) | Oui | `locales/ar.json` |
 | ary | Darija (Marocain) | Oui | `locales/ary.json` |
 
-### 10.2 Métriques i18n - VÉRIFIÉ 05/02/2026
+### 10.2 Métriques i18n - VÉRIFIÉ 13/02/2026
 
 | Métrique | Valeur | Vérification |
 |:---------|:------:|:-------------|
 | Fichiers locales | 5 | fr, en, es, ar, ary |
-| Lignes JSON totales | **23,790** | `wc -l website/src/locales/*.json` |
-| Lignes par locale | **4,758** | Identique chaque fichier |
-| Keys par locale | ~4,600 | Estimé (lignes - brackets) |
-| Personas × langues | 40 × 5 = 200 | SYSTEM_PROMPTS |
+| Lignes JSON totales | **27,805** | `wc -l website/src/locales/*.json` |
+| Lignes par locale | **5,561** | Identique chaque fichier |
+| Keys par locale | ~5,400 | Estimé (lignes - brackets) |
+| Personas × langues | 38 × 5 = 190 | SYSTEM_PROMPTS |
 | French Contamination | **0** | Sessions 250.92-250.93 |
 
 ### 10.3 Geo-Detection
@@ -1034,7 +1044,7 @@ S1 (3004) ──► reads ──► client_registry.json (CORS, tenant config)
 S4 (3009) ──► reads ──► VoicePersonaInjector (38 personas × 5 langs)
 S4 (3009) ──► reads ──► SecretVault (per-tenant API keys)
 S2 (3013) ──► reads/writes ──► Google Sheets API (7 tables)
-S2 (3013) ──► sends ──► nodemailer (SMTP: verification, reset emails)
+S2 (3013) ──► sends ──► email-service.cjs (Resend primary + nodemailer fallback: verification, reset, transactional)
 S7 (3011) ──► validates ──► HMAC signatures → routes to S1/S4/integrations
 MCP (3015) ──► 0 imports from core ──► standalone, talks to external APIs directly
 ```
@@ -1059,6 +1069,11 @@ MCP (3015) ──► 0 imports from core ──► standalone, talks to external
 | `GOOGLE_SHEETS_CREDENTIALS` | Database | ✅ Critical |
 | `JWT_SECRET` | Authentication | ✅ Critical |
 | `VOCALIA_VAULT_KEY` | SecretVault | ⚠️ Production |
+| `RESEND_API_KEY` | Email (Resend SMTP) | ✅ Critical |
+| `GOOGLE_SSO_CLIENT_ID` | OAuth SSO (Google) | ✅ For SSO |
+| `GOOGLE_SSO_CLIENT_SECRET` | OAuth SSO (Google) | ✅ For SSO |
+| `GITHUB_CLIENT_ID` | OAuth SSO (GitHub) | ✅ For SSO |
+| `GITHUB_CLIENT_SECRET` | OAuth SSO (GitHub) | ✅ For SSO |
 
 ### 12.2 Fichiers de Configuration
 
