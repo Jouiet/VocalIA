@@ -150,7 +150,7 @@
             <div class="flex flex-col md:flex-row gap-4">
               <div class="flex-1 relative">
                 <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400"></i>
-                <input type="text" id="search-input"
+                <input type="text" id="search-input" aria-label="Rechercher un article"
                   class="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Rechercher un article..." data-i18n-placeholder="catalog.search_placeholder">
               </div>
@@ -343,52 +343,52 @@
         <form id="add-item-form" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+              <label for="item-name" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.name">Nom *</label>
-              <input type="text" name="name" required
+              <input type="text" name="name" id="item-name" required
                 class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+              <label for="item-sku" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.sku">SKU/ID</label>
-              <input type="text" name="sku"
+              <input type="text" name="sku" id="item-sku"
                 class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+              <label for="item-price" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.price">Prix *</label>
-              <input type="number" name="price" step="0.01" required
+              <input type="number" name="price" id="item-price" step="0.01" required
                 class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+              <label for="item-stock" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.stock">Stock</label>
-              <input type="number" name="stock" min="0"
+              <input type="number" name="stock" id="item-stock" min="0"
                 class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            <label for="item-category" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               data-i18n="catalog.form.category">Catégorie</label>
-            <input type="text" name="category"
+            <input type="text" name="category" id="item-category"
               class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            <label for="item-description" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               data-i18n="catalog.form.description">Description</label>
-            <textarea name="description" rows="3"
+            <textarea name="description" id="item-description" rows="3"
               class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white"></textarea>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            <label for="item-voice-description" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               data-i18n="catalog.form.voice_description">Description vocale</label>
-            <textarea name="voice_description" rows="2"
+            <textarea name="voice_description" id="item-voice-description" rows="2"
               class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white"
               placeholder="Comment l'IA doit présenter cet article..."></textarea>
             <p class="text-xs text-zinc-500 mt-1" data-i18n="catalog.form.voice_hint">Conseil: Écrivez comme si vous
