@@ -16,7 +16,7 @@
 
 import { test, describe, beforeEach } from 'node:test';
 import assert from 'node:assert';
-import { SECTOR_TO_ARCHETYPE, transformTenantToClientConfig, getClientConfigSync, invalidateCache, getCacheStats, getDemoClients } from '../core/tenant-persona-bridge.cjs';
+import { SECTOR_TO_ARCHETYPE, transformTenantToClientConfig, getClientConfig, getClientConfigSync, clientExists, invalidateCache, getCacheStats, getDemoClients } from '../core/tenant-persona-bridge.cjs';
 
 
 // ─── SECTOR_TO_ARCHETYPE ────────────────────────────────────────────
@@ -254,6 +254,61 @@ describe('TenantPersonaBridge cache', () => {
       const after = getCacheStats().size;
       assert.strictEqual(after, before - 1);
     }
+  });
+});
+
+// ─── getClientConfig (async) ────────────────────────────────────────
+
+describe('TenantPersonaBridge getClientConfig', () => {
+  beforeEach(() => {
+    invalidateCache();
+  });
+
+  test('null/undefined clientId → returns null', async () => {
+    assert.strictEqual(await getClientConfig(null), null);
+    assert.strictEqual(await getClientConfig(undefined), null);
+  });
+
+  test('known demo client → returns config with _source:static_demo', async () => {
+    const demos = getDemoClients();
+    if (demos.length > 0) {
+      const config = await getClientConfig(demos[0]);
+      assert.ok(config);
+      assert.strictEqual(config._source, 'static_demo');
+    }
+  });
+
+  test('unknown clientId → returns null (DB fails gracefully)', async () => {
+    const config = await getClientConfig('nonexistent_client_xyz_999');
+    assert.strictEqual(config, null);
+  });
+
+  test('caching: second call returns same result from cache', async () => {
+    const demos = getDemoClients();
+    if (demos.length > 0) {
+      const first = await getClientConfig(demos[0]);
+      const statsBefore = getCacheStats().size;
+      const second = await getClientConfig(demos[0]);
+      assert.deepStrictEqual(first, second);
+      // Cache size should not increase on second call
+      assert.strictEqual(getCacheStats().size, statsBefore);
+    }
+  });
+});
+
+// ─── clientExists ───────────────────────────────────────────────────
+
+describe('TenantPersonaBridge clientExists', () => {
+  beforeEach(() => {
+    invalidateCache();
+  });
+
+  test('known demo → true, unknown → false', async () => {
+    const demos = getDemoClients();
+    if (demos.length > 0) {
+      assert.strictEqual(await clientExists(demos[0]), true);
+    }
+    assert.strictEqual(await clientExists('nonexistent_xyz_999'), false);
   });
 });
 

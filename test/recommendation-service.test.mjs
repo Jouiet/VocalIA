@@ -19,7 +19,10 @@ import assert from 'node:assert';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import recSingleton from '../core/recommendation-service.cjs';
 import { RecommendationService, AssociationRulesEngine } from '../core/recommendation-service.cjs';
+import productEmbeddingService from '../core/product-embedding-service.cjs';
+import vectorStore from '../core/vector-store.cjs';
 
 // ─── PERSONA_CONFIG ─────────────────────────────────────────────────
 
@@ -298,5 +301,170 @@ describe('RecommendationService _formatVoiceResponse', () => {
     const resultFr = svc._formatVoiceResponse(recs, 'similar', 'fr', 'items');
     const resultXx = svc._formatVoiceResponse(recs, 'similar', 'xx', 'items');
     assert.strictEqual(resultFr.text, resultXx.text);
+  });
+});
+
+// ─── RecommendationService public API (mocked dependencies) ─────────
+
+describe('RecommendationService initializeCatalog', () => {
+  test('calls batchEmbed + addBatch, returns {embedded, indexed}', async () => {
+    const svc = new RecommendationService();
+    // Mock productEmbeddingService on the singleton (used internally)
+    const origBatch = productEmbeddingService.batchEmbed;
+    const origCached = productEmbeddingService.getCachedEmbedding;
+    const origAdd = vectorStore.addBatch;
+
+    productEmbeddingService.batchEmbed = async () => ({ total: 2, generated: 2 });
+    productEmbeddingService.getCachedEmbedding = (tid, pid) => [0.1, 0.2, 0.3];
+    vectorStore.addBatch = (tid, items) => items.length;
+
+    try {
+      const result = await svc.initializeCatalog('test_init', [
+        { id: 'p1', title: 'Shoe', category: 'shoes', price: '50' },
+        { id: 'p2', title: 'Bag', category: 'bags', price: '80' }
+      ]);
+      assert.ok(result.embedded);
+      assert.strictEqual(result.indexed, 2);
+    } finally {
+      productEmbeddingService.batchEmbed = origBatch;
+      productEmbeddingService.getCachedEmbedding = origCached;
+      vectorStore.addBatch = origAdd;
+    }
+  });
+});
+
+describe('RecommendationService getSimilarProducts', () => {
+  test('returns array of {productId, score, similarity, metadata, reason}', async () => {
+    const svc = new RecommendationService();
+    const origFind = vectorStore.findSimilar;
+    vectorStore.findSimilar = () => [
+      { id: 'p2', score: 0.92, metadata: { category: 'shoes' } },
+      { id: 'p3', score: 0.85, metadata: { category: 'bags' } }
+    ];
+    try {
+      const result = await svc.getSimilarProducts('t1', 'p1');
+      assert.strictEqual(result.length, 2);
+      assert.strictEqual(result[0].productId, 'p2');
+      assert.strictEqual(result[0].reason, 'similar_product');
+      assert.strictEqual(result[0].similarity, 92);
+    } finally {
+      vectorStore.findSimilar = origFind;
+    }
+  });
+
+  test('empty vectorStore → returns []', async () => {
+    const svc = new RecommendationService();
+    const origFind = vectorStore.findSimilar;
+    vectorStore.findSimilar = () => [];
+    try {
+      const result = await svc.getSimilarProducts('t1', 'p1');
+      assert.deepStrictEqual(result, []);
+    } finally {
+      vectorStore.findSimilar = origFind;
+    }
+  });
+});
+
+describe('RecommendationService getPersonalizedRecommendations', () => {
+  test('with recentlyViewed → includes based_on_viewed results', async () => {
+    const svc = new RecommendationService();
+    const origQuery = productEmbeddingService.getQueryEmbedding;
+    const origFind = vectorStore.findSimilar;
+    const origSearch = vectorStore.search;
+    const origFilter = vectorStore.queryByFilter;
+
+    productEmbeddingService.getQueryEmbedding = async () => null; // skip two-tower
+    vectorStore.findSimilar = () => [{ id: 'sim1', score: 0.8, metadata: { category: 'x' } }];
+    vectorStore.search = () => [];
+    vectorStore.queryByFilter = () => [];
+
+    try {
+      const result = await svc.getPersonalizedRecommendations('t1', 'u1', {}, {
+        recentlyViewed: ['p1'],
+        recentlyPurchased: []
+      });
+      const viewedRec = result.find(r => r.reason === 'based_on_viewed');
+      assert.ok(viewedRec, 'Should include based_on_viewed recommendation');
+    } finally {
+      productEmbeddingService.getQueryEmbedding = origQuery;
+      vectorStore.findSimilar = origFind;
+      vectorStore.search = origSearch;
+      vectorStore.queryByFilter = origFilter;
+    }
+  });
+
+  test('deduplication: same productId not repeated', async () => {
+    const svc = new RecommendationService();
+    const origQuery = productEmbeddingService.getQueryEmbedding;
+    const origFind = vectorStore.findSimilar;
+    const origSearch = vectorStore.search;
+    const origFilter = vectorStore.queryByFilter;
+
+    productEmbeddingService.getQueryEmbedding = async () => [0.1, 0.2];
+    vectorStore.search = () => [
+      { id: 'dup1', score: 0.9, metadata: { category: 'a' } }
+    ];
+    vectorStore.findSimilar = () => [
+      { id: 'dup1', score: 0.7, metadata: { category: 'a' } }
+    ];
+    vectorStore.queryByFilter = () => [];
+
+    try {
+      const result = await svc.getPersonalizedRecommendations('t1', 'u1', {}, {
+        recentlyViewed: ['p1'],
+        recentlyPurchased: []
+      });
+      const dup1Count = result.filter(r => r.productId === 'dup1').length;
+      assert.strictEqual(dup1Count, 1, 'Same productId should appear only once');
+    } finally {
+      productEmbeddingService.getQueryEmbedding = origQuery;
+      vectorStore.findSimilar = origFind;
+      vectorStore.search = origSearch;
+      vectorStore.queryByFilter = origFilter;
+    }
+  });
+});
+
+describe('RecommendationService getVoiceRecommendations', () => {
+  test('type similar with productId → returns formatted string', async () => {
+    const svc = new RecommendationService();
+    const origFind = vectorStore.findSimilar;
+    vectorStore.findSimilar = () => [
+      { id: 'p2', score: 0.9, metadata: { category: 'shoes' } }
+    ];
+    try {
+      const result = await svc.getVoiceRecommendations('t1', { productId: 'p1', type: 'similar' }, 'fr');
+      assert.ok(result.text);
+      assert.ok(result.recommendations.length > 0);
+      assert.ok(result.voiceWidget);
+    } finally {
+      vectorStore.findSimilar = origFind;
+    }
+  });
+
+  test('no recommendations → returns _getNoRecommendationsResponse', async () => {
+    const svc = new RecommendationService();
+    const origFind = vectorStore.findSimilar;
+    vectorStore.findSimilar = () => [];
+    try {
+      const result = await svc.getVoiceRecommendations('t1', { productId: 'p1', type: 'similar' }, 'en');
+      assert.deepStrictEqual(result.recommendations, []);
+      assert.strictEqual(result.voiceWidget, null);
+    } finally {
+      vectorStore.findSimilar = origFind;
+    }
+  });
+});
+
+describe('RecommendationService learnFromOrders', () => {
+  test('delegates to associationEngine.learn', async () => {
+    const svc = new RecommendationService();
+    const orders = [];
+    for (let i = 0; i < 15; i++) {
+      orders.push({ items: [{ product_id: 'a', category: 'phone' }, { product_id: 'b', category: 'protection' }] });
+    }
+    const result = await svc.learnFromOrders('test_learn_api', orders);
+    assert.ok('learned' in result);
+    assert.ok('products' in result);
   });
 });

@@ -217,6 +217,83 @@ describe('GrokClient queryKnowledgeBase', () => {
   });
 });
 
+// ─── chatCompletion (fetch mock) ──────────────────────────────────────
+
+describe('GrokClient chatCompletion', () => {
+  test('API success → returns response content string', async () => {
+    const origFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+      ok: true,
+      json: async () => ({ choices: [{ message: { content: 'Bonjour, je suis VocalIA' } }] })
+    });
+    try {
+      const result = await chatCompletion('Présente-toi', 'Tu es VocalIA');
+      assert.strictEqual(result, 'Bonjour, je suis VocalIA');
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+
+  test('API error (status 500) → returns Erreur string', async () => {
+    const origFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error'
+    });
+    try {
+      const result = await chatCompletion('test', 'system');
+      assert.ok(result.startsWith('Erreur:'));
+      assert.ok(result.includes('500'));
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+
+  test('network failure (fetch throws) → returns Erreur string', async () => {
+    const origFetch = globalThis.fetch;
+    globalThis.fetch = async () => { throw new Error('ECONNREFUSED'); };
+    try {
+      const result = await chatCompletion('test', 'system');
+      assert.ok(result.startsWith('Erreur:'));
+      assert.ok(result.includes('ECONNREFUSED'));
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+
+  test('sends correct model grok-4-1-fast-reasoning in request body', async () => {
+    const origFetch = globalThis.fetch;
+    let capturedBody;
+    globalThis.fetch = async (url, opts) => {
+      capturedBody = JSON.parse(opts.body);
+      return { ok: true, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
+    };
+    try {
+      await chatCompletion('hello', 'sys');
+      assert.strictEqual(capturedBody.model, 'grok-4-1-fast-reasoning');
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+
+  test('uses provided systemPrompt instead of buildEnhancedPrompt', async () => {
+    const origFetch = globalThis.fetch;
+    let capturedBody;
+    globalThis.fetch = async (url, opts) => {
+      capturedBody = JSON.parse(opts.body);
+      return { ok: true, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
+    };
+    try {
+      await chatCompletion('hello', 'My custom system prompt');
+      const systemMsg = capturedBody.messages.find(m => m.role === 'system');
+      assert.strictEqual(systemMsg.content, 'My custom system prompt');
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+});
+
 // ─── API boundary (encapsulation) ────────────────────────────────────
 
 describe('GrokClient API boundary', () => {

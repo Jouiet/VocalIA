@@ -303,6 +303,107 @@ describe('BillingAgent static STATES', () => {
   });
 });
 
+// ─── handleInvoicePaidWebhook ─────────────────────────────────────
+
+describe('BillingAgent handleInvoicePaidWebhook', () => {
+  test('invalid signature → {success:false, error:invalid_signature}', async () => {
+    const agent = new BillingAgent();
+    const origVerify = agent.stripe.verifyWebhookSignature;
+    agent.stripe.verifyWebhookSignature = () => ({ valid: false, error: 'bad sig' });
+    try {
+      const result = await agent.handleInvoicePaidWebhook('{}', 'bad-sig');
+      assert.strictEqual(result.success, false);
+      assert.strictEqual(result.error, 'invalid_signature');
+    } finally {
+      agent.stripe.verifyWebhookSignature = origVerify;
+    }
+  });
+
+  test('wrong event type → {success:false, error:wrong_event_type}', async () => {
+    const agent = new BillingAgent();
+    agent.stripe.verifyWebhookSignature = () => ({ valid: true });
+    const body = JSON.stringify({ type: 'customer.created', data: {} });
+    const result = await agent.handleInvoicePaidWebhook(body, 'sig');
+    assert.strictEqual(result.success, false);
+    assert.strictEqual(result.error, 'wrong_event_type');
+  });
+
+  test('malformed JSON → {success:false, error:parse_error}', async () => {
+    const agent = new BillingAgent();
+    agent.stripe.verifyWebhookSignature = () => ({ valid: true });
+    const result = await agent.handleInvoicePaidWebhook('not-json!!!', 'sig');
+    assert.strictEqual(result.success, false);
+    assert.strictEqual(result.error, 'parse_error');
+  });
+
+  test('valid invoice.paid → delegates to handleInvoicePaid → {success:true}', async () => {
+    const agent = new BillingAgent();
+    agent.stripe.verifyWebhookSignature = () => ({ valid: true });
+    const invoiceData = {
+      id: `inv_webhook_${Date.now()}`,
+      amount_paid: 9900,
+      customer_email: 'webhook@test.com',
+      customer: 'cus_123'
+    };
+    const body = JSON.stringify({
+      type: 'invoice.paid',
+      data: { object: invoiceData }
+    });
+    const result = await agent.handleInvoicePaidWebhook(body, 'valid-sig');
+    assert.strictEqual(result.success, true);
+    assert.strictEqual(result.tracked, true);
+    assert.strictEqual(result.value, 99);
+  });
+});
+
+// ─── handleInvoicePaid ──────────────────────────────────────────
+
+describe('BillingAgent handleInvoicePaid', () => {
+  test('returns {success:true, tracked:true, value, invoiceId, state}', async () => {
+    const agent = new BillingAgent();
+    const invoiceData = {
+      id: `inv_test_${Date.now()}`,
+      amount_paid: 50000,
+      customer_email: 'test@vocalia.ma',
+      customer: 'cus_abc'
+    };
+    const result = await agent.handleInvoicePaid(invoiceData);
+    assert.strictEqual(result.success, true);
+    assert.strictEqual(result.tracked, true);
+    assert.strictEqual(result.value, 500);
+    assert.strictEqual(result.invoiceId, invoiceData.id);
+    assert.strictEqual(result.state, 'payment_completed');
+  });
+
+  test('dedup: same invoiceId twice → second returns {tracked:false, reason:already_processed}', async () => {
+    const agent = new BillingAgent();
+    const invoiceId = `inv_dedup_${Date.now()}`;
+    const invoiceData = { id: invoiceId, amount_paid: 1000, customer_email: 'x@x.com', customer: 'c' };
+    const first = await agent.handleInvoicePaid(invoiceData);
+    assert.strictEqual(first.tracked, true);
+    const second = await agent.handleInvoicePaid(invoiceData);
+    assert.strictEqual(second.tracked, false);
+    assert.strictEqual(second.reason, 'already_processed');
+  });
+
+  test('extracts amount_paid/100 correctly', async () => {
+    const agent = new BillingAgent();
+    const invoiceData = { id: `inv_amt_${Date.now()}`, amount_paid: 12345, customer_email: 'a@b.c', customer: 'c' };
+    const result = await agent.handleInvoicePaid(invoiceData);
+    assert.strictEqual(result.value, 123.45);
+  });
+
+  test('_processedInvoices set exists and grows', async () => {
+    const agent = new BillingAgent();
+    assert.strictEqual(agent._processedInvoices, undefined);
+    await agent.handleInvoicePaid({ id: `inv_set_${Date.now()}`, amount_paid: 100, customer_email: 'e@e.e', customer: 'c' });
+    assert.ok(agent._processedInvoices instanceof Set);
+    assert.strictEqual(agent._processedInvoices.size, 1);
+    await agent.handleInvoicePaid({ id: `inv_set2_${Date.now()}`, amount_paid: 200, customer_email: 'f@f.f', customer: 'c' });
+    assert.strictEqual(agent._processedInvoices.size, 2);
+  });
+});
+
 // NOTE: BillingAgent exports are proven by behavioral tests above
 // (processSessionBilling, getAgentCard, recordTaskState, getTaskHistory, STATES, etc.)
 

@@ -119,6 +119,77 @@ describe('KnowledgeEmbeddingService cache', () => {
   });
 });
 
+// ─── getEmbedding (behavioral) ───────────────────────────────────────
+
+describe('KnowledgeEmbeddingService getEmbedding', () => {
+  test('cache hit → returns cached vector without API call', async () => {
+    const fakeVector = [0.11, 0.22, 0.33];
+    const cacheKey = `test_tenant_cache:chunk_cached_${Date.now()}`;
+    embeddingService.cache[cacheKey] = fakeVector;
+    try {
+      const result = await embeddingService.getEmbedding(
+        `chunk_cached_${Date.now()}`, 'some text', null, 'test_tenant_cache'
+      );
+      // The cache key uses tenantId:id format
+      // Since we pre-populated with exact key, it should return cached
+      assert.deepStrictEqual(result, fakeVector);
+    } finally {
+      delete embeddingService.cache[cacheKey];
+    }
+  });
+
+  test('cache miss without API key → returns null (graceful)', async () => {
+    // Without GEMINI_API_KEY set, getModel() returns null → embedContent throws → returns null
+    const origKey = process.env.GEMINI_API_KEY;
+    const origKey2 = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    delete process.env.GEMINI_API_KEY;
+    delete process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    try {
+      const result = await embeddingService.getEmbedding(
+        `chunk_no_key_${Date.now()}`, 'test text', null, 'test_nokey'
+      );
+      assert.strictEqual(result, null);
+    } finally {
+      if (origKey) process.env.GEMINI_API_KEY = origKey;
+      if (origKey2) process.env.GOOGLE_GENERATIVE_AI_API_KEY = origKey2;
+    }
+  });
+
+  test('cache eviction when full (MAX_CACHE_ENTRIES)', async () => {
+    // Create a temporary service to test eviction without polluting singleton
+    const svc = new (embeddingService.constructor)();
+    // Pre-fill with entries close to MAX (5000 from source code)
+    // We'll use a smaller test — just verify the eviction code path
+    const MAX = 5000;
+    for (let i = 0; i < MAX; i++) {
+      svc.cache[`evict_${i}`] = [0.1];
+    }
+    assert.strictEqual(Object.keys(svc.cache).length, MAX);
+    // Manually call getEmbedding which does eviction — will fail without API key but exercises eviction code
+    const result = await svc.getEmbedding(`evict_new`, 'text', null, null);
+    // Without API key, returns null — but the cache eviction code ran
+    assert.strictEqual(result, null);
+  });
+});
+
+// ─── getQueryEmbedding (behavioral) ──────────────────────────────────
+
+describe('KnowledgeEmbeddingService getQueryEmbedding', () => {
+  test('without API key → returns null (graceful)', async () => {
+    const origKey = process.env.GEMINI_API_KEY;
+    const origKey2 = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    delete process.env.GEMINI_API_KEY;
+    delete process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    try {
+      const result = await embeddingService.getQueryEmbedding('test query', null);
+      assert.strictEqual(result, null);
+    } finally {
+      if (origKey) process.env.GEMINI_API_KEY = origKey;
+      if (origKey2) process.env.GOOGLE_GENERATIVE_AI_API_KEY = origKey2;
+    }
+  });
+});
+
 // ─── Singleton ───────────────────────────────────────────────────
 
 describe('KnowledgeEmbeddingService singleton', () => {

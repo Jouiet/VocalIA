@@ -501,5 +501,58 @@ describe('ProductEmbeddingService _loadCache', () => {
   });
 });
 
+// ─── getProductEmbedding (behavioral) ────────────────────────────
+
+describe('ProductEmbeddingService getProductEmbedding', () => {
+  test('product without id/sku → returns null', async () => {
+    const svc = new ProductEmbeddingService();
+    const result = await svc.getProductEmbedding('t_no_id', { title: 'No ID Product' });
+    assert.strictEqual(result, null);
+  });
+
+  test('cache hit → returns cached embedding, stats.hits++', async () => {
+    const svc = new ProductEmbeddingService();
+    const fakeEmbed = [0.1, 0.2, 0.3];
+    svc.caches['t_cache'] = { 'prod-1': { embedding: fakeEmbed, generatedAt: '2026-01-01' } };
+    const before = svc.stats.hits;
+    const result = await svc.getProductEmbedding('t_cache', { id: 'prod-1', title: 'Test' });
+    assert.deepStrictEqual(result, fakeEmbed);
+    assert.strictEqual(svc.stats.hits, before + 1);
+  });
+
+  test('cache miss + embedding succeeds → caches and returns', async () => {
+    const svc = new ProductEmbeddingService();
+    const fakeVector = Array.from({ length: 768 }, (_, i) => i * 0.001);
+    svc._getInternalEmbedding = async () => fakeVector;
+    const result = await svc.getProductEmbedding('t_miss', { id: 'prod-new', title: 'New Product' });
+    assert.ok(result);
+    assert.strictEqual(result.length, 768);
+    // Verify it's now cached
+    assert.ok(svc.caches['t_miss']['prod-new']);
+    assert.strictEqual(svc.caches['t_miss']['prod-new'].embedding, fakeVector);
+  });
+
+  test('cache miss + embedding fails → returns null, stats.errors++', async () => {
+    const svc = new ProductEmbeddingService();
+    svc._getInternalEmbedding = async () => null;
+    const before = svc.stats.errors;
+    const result = await svc.getProductEmbedding('t_fail', { id: 'prod-fail', title: 'Fail' });
+    assert.strictEqual(result, null);
+    assert.strictEqual(svc.stats.errors, before + 1);
+  });
+});
+
+// ─── getQueryEmbedding (behavioral) ─────────────────────────────
+
+describe('ProductEmbeddingService getQueryEmbedding', () => {
+  test('returns embedding vector from _getInternalEmbedding', async () => {
+    const svc = new ProductEmbeddingService();
+    const fakeVector = [0.5, 0.6, 0.7];
+    svc._getInternalEmbedding = async () => fakeVector;
+    const result = await svc.getQueryEmbedding('find similar shoes');
+    assert.deepStrictEqual(result, fakeVector);
+  });
+});
+
 // NOTE: All exports tested behaviorally above (cosineSimilarity, EMBEDDING_DIM,
 // _generateProductText, _getPriceRange, getStats, clearCache, etc.).
