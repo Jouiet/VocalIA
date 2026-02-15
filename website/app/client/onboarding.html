@@ -224,6 +224,21 @@
         <p class="text-lg text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.complete_subtitle">Votre assistant vocal est prêt à l'emploi</p>
       </div>
 
+      <!-- Quick Install Snippet -->
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08] mb-6">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="code-2" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+          <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="onboarding.install_title">Installez le widget en 1 minute</h3>
+        </div>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-3" data-i18n="onboarding.install_desc">Copiez ce code et collez-le avant &lt;/body&gt; dans votre site web :</p>
+        <div class="relative">
+          <pre id="onboarding-snippet" class="bg-zinc-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto font-mono"></pre>
+          <button id="copy-snippet-btn" class="absolute top-2 right-2 p-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition-colors" title="Copier">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
       <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08] mb-6">
         <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="onboarding.next_steps">Prochaines étapes</h3>
         <ul class="space-y-3">
@@ -257,7 +272,10 @@
         </ul>
       </div>
 
-      <a href="/app/client/index.html" class="block w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-colors text-center" data-i18n="onboarding.go_dashboard">Accéder au tableau de bord</a>
+      <div class="flex gap-4">
+        <a href="/app/client/install-widget.html" class="flex-1 bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-colors text-center" data-i18n="onboarding.go_install">Installer le widget sur votre site</a>
+        <a href="/app/client/index.html" class="flex-1 bg-zinc-200 dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200 py-3 px-6 rounded-lg font-medium hover:bg-zinc-300 dark:hover:bg-white/[0.1] transition-colors text-center" data-i18n="onboarding.go_dashboard">Tableau de bord</a>
+      </div>
     </section>
     </div>
   </main>
@@ -354,6 +372,42 @@
 
     // Set initial persona selection style
     document.querySelector('.persona-card input:checked')?.closest('.persona-card').querySelector('.persona-box')?.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+
+    // Generate snippet for step 4
+    const tid = auth.getTenantId();
+    const snippetContainer = document.getElementById('onboarding-snippet')?.closest('.bg-white, .dark\\:bg-white\\/\\[0\\.06\\]') || document.getElementById('onboarding-snippet')?.parentElement?.parentElement;
+    if (tid) {
+      const snippet = `<script src="https://api.vocalia.ma/voice-assistant/voice-widget-v3.js" data-tenant-id="${tid}" defer><\/script>`;
+      const pre = document.getElementById('onboarding-snippet');
+      if (pre) pre.textContent = snippet;
+    } else {
+      // Hide snippet block when tenantId unavailable
+      const pre = document.getElementById('onboarding-snippet');
+      if (pre) {
+        pre.textContent = '<!-- Snippet non disponible — reconnectez-vous -->';
+        pre.classList.add('opacity-50');
+      }
+      const copyBtn = document.getElementById('copy-snippet-btn');
+      if (copyBtn) copyBtn.style.display = 'none';
+    }
+
+    // Copy snippet button
+    const copyBtn = document.getElementById('copy-snippet-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const text = document.getElementById('onboarding-snippet')?.textContent;
+        if (text) {
+          navigator.clipboard.writeText(text).then(() => {
+            copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
+            lucide.createIcons();
+            setTimeout(() => {
+              copyBtn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i>';
+              lucide.createIcons();
+            }, 2000);
+          });
+        }
+      });
+    }
   </script>
 </body>
 </html>

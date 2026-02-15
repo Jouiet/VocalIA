@@ -360,7 +360,9 @@ async function login({ email, password, rememberMe = false }) {
       role: user.role,
       tenant_id: user.tenant_id,
       email_verified: user.email_verified === 'true' || user.email_verified === true,
-      preferences: (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })()
+      oauth_provider: user.oauth_provider || null,
+      linked_providers: Array.isArray(user.linked_providers) ? user.linked_providers : (() => { try { return JSON.parse(user.linked_providers || '[]'); } catch { return []; } })(),
+      preferences: (typeof user.preferences === 'object' && user.preferences !== null) ? user.preferences : (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })()
     }
   };
 }
@@ -385,9 +387,18 @@ async function loginWithOAuth({ email, name, provider, providerId }) {
   if (users.length > 0) {
     // Existing user — update OAuth info and login
     user = users[0];
+
+    // B21 fix: Accumulate linked providers (don't overwrite previous ones)
+    // B25 compat: rowToObject may return already-parsed array or JSON string
+    let linked = user.linked_providers;
+    if (typeof linked === 'string') { try { linked = JSON.parse(linked); } catch { linked = []; } }
+    if (!Array.isArray(linked)) linked = [];
+    if (!linked.includes(provider)) linked.push(provider);
+
     await db.update('users', user.id, {
       oauth_provider: provider,
       oauth_provider_id: providerId,
+      linked_providers: JSON.stringify(linked),
       last_login: now,
       login_count: (parseInt(user.login_count) || 0) + 1,
       failed_login_count: 0,
@@ -415,6 +426,7 @@ async function loginWithOAuth({ email, name, provider, providerId }) {
       email_verified: true,
       oauth_provider: provider,
       oauth_provider_id: providerId,
+      linked_providers: JSON.stringify([provider]),
       login_count: 1,
       failed_login_count: 0,
       preferences: JSON.stringify({ theme: 'system', lang: 'fr', notifications: true }),
@@ -454,7 +466,9 @@ async function loginWithOAuth({ email, name, provider, providerId }) {
       role: user.role,
       tenant_id: user.tenant_id,
       email_verified: true,
-      preferences: (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })()
+      oauth_provider: user.oauth_provider || provider,
+      linked_providers: Array.isArray(user.linked_providers) ? user.linked_providers : (() => { try { return JSON.parse(user.linked_providers || '[]'); } catch { return []; } })(),
+      preferences: (typeof user.preferences === 'object' && user.preferences !== null) ? user.preferences : (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })()
     }
   };
 }
@@ -610,11 +624,14 @@ async function resetPassword(token, newPassword) {
   // Hash new password
   const passwordHash = await hashPassword(newPassword);
 
-  // Update user
+  // Update user — BUG FIX 250.207b: clear lockout on password reset
+  // Without this, locked-out users can't login even after resetting their password
   await db.update('users', user.id, {
     password_hash: passwordHash,
     password_reset_token: null,
     password_reset_expires: null,
+    locked_until: null,
+    failed_login_count: 0,
     updated_at: new Date().toISOString()
   });
 
@@ -756,7 +773,7 @@ async function getCurrentUser(userId) {
     email_verified: user.email_verified === 'true' || user.email_verified === true,
     phone: user.phone,
     avatar_url: user.avatar_url,
-    preferences: (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })(),
+    preferences: (typeof user.preferences === 'object' && user.preferences !== null) ? user.preferences : (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })(),
     created_at: user.created_at,
     last_login: user.last_login
   };

@@ -238,6 +238,7 @@ const apiLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minu
 
 // Session 250.174: Shared tenant CORS module (was ~80 lines duplicated with voice-api — NM7 fix)
 const tenantCors = require('./tenant-cors.cjs');
+const errorScience = require('./ErrorScience.cjs');
 const { validateOriginTenant, validateApiKey, getCorsHeaders, VOCALIA_ORIGINS: CORS_ALLOWED_ORIGINS } = tenantCors;
 
 // validateOriginTenant, validateApiKey, getCorsHeaders → imported from tenant-cors.cjs (250.174)
@@ -401,6 +402,10 @@ async function handleAuthRequest(req, res, path, method) {
           details: { plan: normalizedPlan, company: company || '', provisioned: provision.success }
         });
       } catch (_e) { /* non-critical */ }
+
+      // Notify Slack of new signup
+      const slackNotifier = require('./slack-notifier.cjs');
+      slackNotifier.notifySignup({ email, name: userName, plan: normalizedPlan, tenantId: safeTenantId });
 
       sendJson(res, 201, {
         success: true,
@@ -613,6 +618,7 @@ async function handleAuthRequest(req, res, path, method) {
     if (error instanceof authService.AuthError) {
       sendError(res, error.status, error.message);
     } else {
+      errorScience.recordError({ component: 'AuthService', error, severity: 'high' });
       sendError(res, 500, error.message);
     }
     return true;
@@ -821,7 +827,8 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
 
       broadcast('hitl', 'approved', { id, admin, item: pending });
 
-      auditStore.log(pending.tenant_id || pending.tenantId || 'default', {
+      // BUG FIX 250.207b: DB records use `tenant` field, not `tenant_id` — was always falling back to 'default'
+      auditStore.log(pending.tenant || pending.tenant_id || pending.tenantId || 'default', {
         action: ACTION_CATEGORIES.HITL_APPROVE,
         actor: admin,
         actor_type: 'admin',
@@ -878,7 +885,8 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
 
       broadcast('hitl', 'rejected', { id, admin, reason, item: pending });
 
-      auditStore.log(pending.tenant_id || pending.tenantId || 'default', {
+      // BUG FIX 250.207b: DB records use `tenant` field — was always falling back to 'default'
+      auditStore.log(pending.tenant || pending.tenant_id || pending.tenantId || 'default', {
         action: ACTION_CATEGORIES.HITL_REJECT,
         actor: admin,
         actor_type: 'admin',
@@ -998,6 +1006,17 @@ async function handleTelephonyRequest(req, res, path, method, query) {
   }
 }
 
+// Session 250.209: B9 fix — catalog store singleton MUST be at module scope
+// (was incorrectly inside handleRequest → new instance per request → data lost between requests)
+let _catalogStore = null;
+function getCatalogStore() {
+  if (!_catalogStore) {
+    const { TenantCatalogStore } = require('./tenant-catalog-store.cjs');
+    _catalogStore = new TenantCatalogStore();
+  }
+  return _catalogStore;
+}
+
 /**
  * API Router
  */
@@ -1098,6 +1117,272 @@ async function handleRequest(req, res) {
     } catch (e) {
       console.error('[Billing API] Portal Error:', e);
       sendError(res, 500, 'Could not create portal session');
+    }
+    return;
+  }
+
+  // POST /api/tenants/:id/billing/checkout - Create Stripe Checkout Session
+  const checkoutMatch = path.match(/^\/api\/tenants\/(\w+)\/billing\/checkout$/);
+  if (checkoutMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = checkoutMatch[1];
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const body = await parseBody(req);
+      if (!body.priceId) {
+        sendError(res, 400, 'priceId is required');
+        return;
+      }
+      const successUrl = body.successUrl || 'https://vocalia.ma/app/client/billing.html?success=1';
+      const cancelUrl = body.cancelUrl || 'https://vocalia.ma/app/client/billing.html?canceled=1';
+      const session = await stripeService.createCheckoutSession(tenantId, body.priceId, successUrl, cancelUrl);
+
+      // Notify Slack of checkout
+      const slackNotifier = require('./slack-notifier.cjs');
+      slackNotifier.notifyPayment({ tenantId, plan: body.plan, action: 'checkout_created' });
+
+      sendJson(res, 200, { success: true, url: session.url, sessionId: session.id });
+    } catch (e) {
+      console.error('[Billing API] Checkout Error:', e);
+      sendError(res, 500, 'Could not create checkout session');
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/billing/subscription - Get active subscription
+  const subGetMatch = path.match(/^\/api\/tenants\/(\w+)\/billing\/subscription$/);
+  if (subGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = subGetMatch[1];
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const sub = await stripeService.getSubscriptionForTenant(tenantId);
+      sendJson(res, 200, { success: true, subscription: sub });
+    } catch (e) {
+      console.error('[Billing API] Subscription Error:', e);
+      sendError(res, 500, 'Could not fetch subscription');
+    }
+    return;
+  }
+
+  // POST /api/tenants/:id/billing/cancel - Cancel subscription
+  const cancelMatch = path.match(/^\/api\/tenants\/(\w+)\/billing\/cancel$/);
+  if (cancelMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = cancelMatch[1];
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const result = await stripeService.cancelSubscriptionForTenant(tenantId);
+      sendJson(res, 200, { success: true, subscription: result });
+    } catch (e) {
+      console.error('[Billing API] Cancel Error:', e);
+      sendError(res, 500, e.message || 'Could not cancel subscription');
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.206: ALLOWED ORIGINS API (Self-Service Widget Install)
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/tenants/:id/widget-config - Get widget configuration
+  const widgetConfigGetMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/widget-config$/i);
+  if (widgetConfigGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(widgetConfigGetMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!fs.existsSync(configPath)) {
+        sendJson(res, 200, { success: true, tenantId, widget_config: {} });
+        return;
+      }
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      sendJson(res, 200, { success: true, tenantId, widget_config: config.widget_config || {} });
+    } catch (e) {
+      sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/allowed-origins - List allowed origins
+  const originsGetMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/allowed-origins$/i);
+  if (originsGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(originsGetMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!fs.existsSync(configPath)) {
+        sendJson(res, 200, { success: true, tenantId, origins: [] });
+        return;
+      }
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      sendJson(res, 200, { success: true, tenantId, origins: config.allowed_origins || [] });
+    } catch (e) {
+      sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // PUT /api/tenants/:id/allowed-origins - Update allowed origins
+  const originsPutMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/allowed-origins$/i);
+  if (originsPutMatch && method === 'PUT') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(originsPutMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const body = await parseBody(req);
+      const origins = body.origins;
+
+      if (!Array.isArray(origins)) {
+        sendError(res, 400, 'origins must be an array of URLs');
+        return;
+      }
+      if (origins.length > 10) {
+        sendError(res, 400, 'Maximum 10 domains allowed');
+        return;
+      }
+
+      const urlPattern = /^https?:\/\/[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+      const invalid = origins.filter(o => typeof o !== 'string' || !urlPattern.test(o));
+      if (invalid.length > 0) {
+        sendError(res, 400, `Invalid URL format: ${invalid.join(', ')}`);
+        return;
+      }
+      const tooLong = origins.filter(o => o.length > 200);
+      if (tooLong.length > 0) {
+        sendError(res, 400, 'Each origin must be 200 characters or less');
+        return;
+      }
+
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!fs.existsSync(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      config.allowed_origins = origins;
+      config.updated_at = new Date().toISOString();
+      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+      try {
+        auditStore.log(tenantId, {
+          action: 'tenant.allowed_origins_updated',
+          category: ACTION_CATEGORIES?.CONFIG || 'config',
+          actor: user.id || user.email,
+          target: tenantId,
+          details: { origins_count: origins.length }
+        });
+      } catch (_e) { /* non-critical */ }
+
+      sendJson(res, 200, { success: true, tenantId, origins });
+    } catch (e) {
+      sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // PUT /api/tenants/:id/widget-config - Update widget configuration
+  const widgetConfigMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/widget-config$/i);
+  if (widgetConfigMatch && method === 'PUT') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(widgetConfigMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const body = await parseBody(req);
+      const wc = body.widget_config;
+      if (!wc || typeof wc !== 'object') {
+        sendError(res, 400, 'widget_config object required');
+        return;
+      }
+
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!fs.existsSync(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      if (!config.widget_config) config.widget_config = {};
+
+      // Merge allowed fields only (whitelist approach)
+      if (wc.position && ['bottom-right', 'bottom-left'].includes(wc.position)) {
+        config.widget_config.position = wc.position;
+      }
+      if (wc.branding && typeof wc.branding === 'object') {
+        if (!config.widget_config.branding) config.widget_config.branding = {};
+        if (wc.branding.primary_color && /^#[0-9a-f]{6}$/i.test(wc.branding.primary_color)) {
+          config.widget_config.branding.primary_color = wc.branding.primary_color;
+        }
+      }
+      if (wc.persona && typeof wc.persona === 'string' && wc.persona.length <= 50) {
+        config.widget_config.persona = wc.persona;
+      }
+
+      config.updated_at = new Date().toISOString();
+      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+      try {
+        auditStore.log(tenantId, {
+          action: 'tenant.widget_config_updated',
+          category: ACTION_CATEGORIES?.CONFIG || 'config',
+          actor: user.id || user.email,
+          target: tenantId,
+          details: { position: config.widget_config.position, color: config.widget_config.branding?.primary_color }
+        });
+      } catch (_e) { /* non-critical */ }
+
+      sendJson(res, 200, { success: true, tenantId, widget_config: config.widget_config });
+    } catch (e) {
+      sendError(res, 500, e.message);
     }
     return;
   }
@@ -1511,15 +1796,7 @@ async function handleRequest(req, res) {
   // - POST /api/tenants/:id/catalog/sync      - Sync with external source
   // ═══════════════════════════════════════════════════════════════
 
-  // Lazy load catalog store to avoid circular dependencies
-  let _catalogStore = null;
-  function getCatalogStore() {
-    if (!_catalogStore) {
-      const { TenantCatalogStore } = require('./tenant-catalog-store.cjs');
-      _catalogStore = new TenantCatalogStore();
-    }
-    return _catalogStore;
-  }
+  // Session 250.209: B9 fix — getCatalogStore moved to module scope (above handleRequest)
 
   // Catalog List - GET /api/tenants/:id/catalog
   const catalogListMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog$/);
@@ -1536,7 +1813,7 @@ async function handleRequest(req, res) {
 
     try {
       const catalogStore = getCatalogStore();
-      const catalogType = query.type || 'PRODUCTS';
+      const catalogType = query.type || 'products';
       const search = query.search || null;
       const category = query.category || null;
       const limit = query.limit ? parseInt(query.limit) : 100;
@@ -1600,7 +1877,7 @@ async function handleRequest(req, res) {
       }
 
       const catalogStore = getCatalogStore();
-      const catalogType = body.type || 'PRODUCTS';
+      const catalogType = body.type || 'products';
 
       // Register tenant if not exists
       catalogStore.registerTenant(tenantId, {
@@ -1652,7 +1929,7 @@ async function handleRequest(req, res) {
     try {
       const body = await parseBody(req);
       const catalogStore = getCatalogStore();
-      const catalogType = body.type || 'PRODUCTS';
+      const catalogType = body.type || 'products';
 
       const result = await catalogStore.syncCatalog(tenantId, catalogType, { force: body.force || false });
 
@@ -1774,7 +2051,7 @@ async function handleRequest(req, res) {
       const catalogStore = getCatalogStore();
       await catalogStore.registerTenant(tenantId, {
         type: body.source,
-        catalogType: body.catalogType || 'PRODUCTS',
+        catalogType: body.catalogType || 'products',
         ...body
       });
 
@@ -1788,7 +2065,7 @@ async function handleRequest(req, res) {
         connected,
         connector: {
           type: body.source,
-          catalogType: body.catalogType || 'PRODUCTS',
+          catalogType: body.catalogType || 'products',
           status: connector.status
         },
         warnings: validation.warnings
@@ -1808,10 +2085,15 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const [, tenantId, itemId] = catalogItemMatch;
+    // Session 250.209: B6 fix — tenant isolation (was missing from C3-AUDIT)
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const catalogStore = getCatalogStore();
-      const catalogType = query.type || 'PRODUCTS';
+      const catalogType = query.type || 'products';
       const item = catalogStore.getItem(tenantId, catalogType, itemId);
 
       if (!item) {
@@ -1834,6 +2116,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = catalogListMatch[1];
+    // Session 250.209: B6 fix — tenant isolation (was missing from C3-AUDIT)
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const body = await parseBody(req);
@@ -1843,17 +2130,18 @@ async function handleRequest(req, res) {
       }
 
       const catalogStore = getCatalogStore();
-      const catalogType = body.catalog_type || 'PRODUCTS';
+      const catalogType = body.catalog_type || 'products';
 
-      // Register tenant if not exists
-      catalogStore.registerTenant(tenantId, {
-        name: tenantId,
-        connector: {
-          type: 'custom',
-          catalogType: catalogType
-          // Session 250.190 Fix F9: Removed explicit dataPath — use connector default
-        }
-      });
+      // Session 250.209: B8 fix — await registerTenant + guard to avoid re-register
+      if (!catalogStore.getConnector(tenantId)) {
+        await catalogStore.registerTenant(tenantId, {
+          name: tenantId,
+          connector: {
+            type: 'custom',
+            catalogType: catalogType
+          }
+        });
+      }
 
       // Generate ID if not provided
       const item = {
@@ -1869,7 +2157,12 @@ async function handleRequest(req, res) {
         createdAt: new Date().toISOString()
       };
 
-      catalogStore.addItem(tenantId, catalogType, item);
+      // Session 250.209: B8 fix — check addItem return value
+      const added = catalogStore.addItem(tenantId, catalogType, item);
+      if (!added) {
+        sendError(res, 500, 'Failed to add item to catalog');
+        return;
+      }
 
       sendJson(res, 201, {
         success: true,
@@ -1889,11 +2182,16 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const [, tenantId, itemId] = catalogItemMatch;
+    // Session 250.209: B6 fix — tenant isolation (was missing from C3-AUDIT)
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const body = await parseBody(req);
       const catalogStore = getCatalogStore();
-      const catalogType = body.catalog_type || query.type || 'PRODUCTS';
+      const catalogType = body.catalog_type || query.type || 'products';
 
       const existing = catalogStore.getItem(tenantId, catalogType, itemId);
       if (!existing) {
@@ -1929,10 +2227,15 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const [, tenantId, itemId] = catalogItemMatch;
+    // Session 250.209: B6 fix — tenant isolation (was missing from C3-AUDIT)
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const catalogStore = getCatalogStore();
-      const catalogType = query.type || 'PRODUCTS';
+      const catalogType = query.type || 'products';
 
       const existing = catalogStore.getItem(tenantId, catalogType, itemId);
       if (!existing) {
@@ -1970,7 +2273,7 @@ async function handleRequest(req, res) {
 
     try {
       const catalogStore = getCatalogStore();
-      const catalogType = query.type || 'PRODUCTS';
+      const catalogType = query.type || 'products';
       const item = catalogStore.getItem(tenantId, catalogType, itemId);
 
       if (!item) {
@@ -1997,7 +2300,7 @@ async function handleRequest(req, res) {
     try {
       const body = await parseBody(req);
       const catalogStore = getCatalogStore();
-      const catalogType = body.catalog_type || 'PRODUCTS';
+      const catalogType = body.catalog_type || 'products';
 
       let items = catalogStore.getItems(tenantId, catalogType) || [];
 
@@ -2056,7 +2359,7 @@ async function handleRequest(req, res) {
       }
 
       const catalogStore = getCatalogStore();
-      const catalogType = body.catalog_type || 'PRODUCTS';
+      const catalogType = body.catalog_type || 'products';
       let items = catalogStore.getItems(tenantId, catalogType) || [];
 
       // Simple text search across name, description, category
@@ -2224,7 +2527,7 @@ async function handleRequest(req, res) {
     try {
       const body = await parseBody(req);
       const catalogStore = getCatalogStore();
-      const catalogType = body.catalog_type || 'PRODUCTS';
+      const catalogType = body.catalog_type || 'products';
       let items = catalogStore.getItems(tenantId, catalogType) || [];
 
       // Filter in stock
@@ -2407,11 +2710,14 @@ async function handleRequest(req, res) {
       };
 
       // Store in memory + persist to file
+      // BUG FIX 250.207b: `path` is shadowed by URL pathname in handleRequest() (line 1007).
+      // Must use require('path') directly to avoid TypeError: path.join is not a function.
+      const nodePath_cr = require('path');
       if (!global.cartRecoveryQueue) {
         global.cartRecoveryQueue = [];
         // Load existing from disk
         try {
-          const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
+          const recoveryPath = nodePath_cr.join(__dirname, '..', 'data', 'cart-recovery.json');
           if (fs.existsSync(recoveryPath)) {
             global.cartRecoveryQueue = JSON.parse(fs.readFileSync(recoveryPath, 'utf8'));
           }
@@ -2424,7 +2730,7 @@ async function handleRequest(req, res) {
       }
       // Persist to disk
       try {
-        const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
+        const recoveryPath = nodePath_cr.join(__dirname, '..', 'data', 'cart-recovery.json');
         fs.writeFileSync(recoveryPath, JSON.stringify(global.cartRecoveryQueue, null, 2));
       } catch (e) {
         console.warn('[Cart Recovery] File persist failed:', e.message);
@@ -2462,12 +2768,15 @@ async function handleRequest(req, res) {
           try {
             const telephony = require('../telephony/voice-telephony-bridge.cjs');
             if (telephony.sendMessage) {
+              // BUG FIX 250.207b: Use defaulted values — raw body vars can be undefined/null
+              const safeDiscount = discount_percent || 10;
+              const urlSuffix = recoveryUrl ? `: ${recoveryUrl}` : '';
               const messages = {
-                fr: `VocalIA: Votre panier vous attend! ${discount_percent}% de reduction: ${recoveryUrl}`,
-                en: `VocalIA: Your cart is waiting! ${discount_percent}% off: ${recoveryUrl}`,
-                es: `VocalIA: Tu carrito te espera! ${discount_percent}% descuento: ${recoveryUrl}`,
-                ar: `VocalIA: سلتك بانتظارك! خصم ${discount_percent}%: ${recoveryUrl}`,
-                ary: `VocalIA: الباني ديالك كيتسناك! ${discount_percent}% تخفيض: ${recoveryUrl}`
+                fr: `VocalIA: Votre panier vous attend! ${safeDiscount}% de reduction${urlSuffix}`,
+                en: `VocalIA: Your cart is waiting! ${safeDiscount}% off${urlSuffix}`,
+                es: `VocalIA: Tu carrito te espera! ${safeDiscount}% descuento${urlSuffix}`,
+                ar: `VocalIA: سلتك بانتظارك! خصم ${safeDiscount}%${urlSuffix}`,
+                ary: `VocalIA: الباني ديالك كيتسناك! ${safeDiscount}% تخفيض${urlSuffix}`
               };
               result = await telephony.sendMessage({
                 to: contact,
@@ -2543,10 +2852,12 @@ async function handleRequest(req, res) {
     if (!user) return;
 
     // Load from disk if not in memory
+    // BUG FIX 250.207b: `path` is shadowed — use require('path')
     if (!global.cartRecoveryQueue) {
       global.cartRecoveryQueue = [];
       try {
-        const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
+        const nodePath_crg = require('path');
+        const recoveryPath = nodePath_crg.join(__dirname, '..', 'data', 'cart-recovery.json');
         if (fs.existsSync(recoveryPath)) {
           global.cartRecoveryQueue = JSON.parse(fs.readFileSync(recoveryPath, 'utf8'));
         }
@@ -2572,10 +2883,12 @@ async function handleRequest(req, res) {
   // ═══════════════════════════════════════════════════════════════
 
   // Promo code store (persisted to file)
+  // BUG FIX 250.207b: `path` is shadowed by URL pathname — use require('path')
+  const nodePath_promo = require('path');
   if (!global.promoCodes) {
     global.promoCodes = new Map();
     try {
-      const promoPath = path.join(__dirname, '..', 'data', 'promo-codes.json');
+      const promoPath = nodePath_promo.join(__dirname, '..', 'data', 'promo-codes.json');
       if (fs.existsSync(promoPath)) {
         const entries = JSON.parse(fs.readFileSync(promoPath, 'utf8'));
         for (const [k, v] of entries) { global.promoCodes.set(k, v); }
@@ -2585,7 +2898,7 @@ async function handleRequest(req, res) {
 
   function _persistPromoCodes() {
     try {
-      const promoPath = path.join(__dirname, '..', 'data', 'promo-codes.json');
+      const promoPath = nodePath_promo.join(__dirname, '..', 'data', 'promo-codes.json');
       const entries = [...global.promoCodes.entries()].slice(-1000);
       fs.writeFileSync(promoPath, JSON.stringify(entries, null, 2));
     } catch (e) {
@@ -2752,33 +3065,8 @@ async function handleRequest(req, res) {
     return;
   }
 
-  // Conversation Detail - GET /api/tenants/:id/conversations/:sessionId
-  const convDetailMatch = path.match(/^\/api\/tenants\/(\w+)\/conversations\/([^/]+)$/);
-  if (convDetailMatch && method === 'GET') {
-    const user = await checkAuth(req, res);
-    if (!user) return;
-    const [, tenantId, sessionId] = convDetailMatch;
-
-    // Session 250.167: Tenant isolation
-    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
-      sendError(res, 403, 'Forbidden');
-      return;
-    }
-
-    try {
-      const conversation = conversationStore.load(tenantId, sessionId);
-      if (!conversation) {
-        sendError(res, 404, 'Conversation not found');
-        return;
-      }
-      sendJson(res, 200, conversation);
-    } catch (e) {
-      sendError(res, 500, `Conversation error: ${e.message}`);
-    }
-    return;
-  }
-
   // Export Conversations - GET /api/tenants/:id/conversations/export
+  // NOTE: Must come BEFORE convDetailMatch (which also matches /export as :sessionId)
   const convExportMatch = path.match(/^\/api\/tenants\/(\w+)\/conversations\/export$/);
   if (convExportMatch && method === 'GET') {
     const user = await checkAuth(req, res);
@@ -2844,6 +3132,32 @@ async function handleRequest(req, res) {
       sendJson(res, 200, result);
     } catch (e) {
       sendError(res, 500, `Export error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Conversation Detail - GET /api/tenants/:id/conversations/:sessionId
+  const convDetailMatch = path.match(/^\/api\/tenants\/(\w+)\/conversations\/([^/]+)$/);
+  if (convDetailMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const [, tenantId, sessionId] = convDetailMatch;
+
+    // Session 250.167: Tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const conversation = conversationStore.load(tenantId, sessionId);
+      if (!conversation) {
+        sendError(res, 404, 'Conversation not found');
+        return;
+      }
+      sendJson(res, 200, conversation);
+    } catch (e) {
+      sendError(res, 500, `Conversation error: ${e.message}`);
     }
     return;
   }
@@ -3302,9 +3616,14 @@ async function handleRequest(req, res) {
           sendError(res, 400, 'ID required for update');
           return;
         }
-        // Check tenant access before update
+        // Session 250.209b: B10 fix — check existence BEFORE update (was throwing 500)
         const existingRecord = await db.findById(sheet, id);
-        if (existingRecord && tenantId && existingRecord.tenant_id !== tenantId && user.role !== 'admin') {
+        if (!existingRecord) {
+          sendError(res, 404, 'Record not found');
+          return;
+        }
+        // Session 250.209b: B12 fix — add existingRecord.tenant_id guard (consistent with GET by ID)
+        if (tenantId && existingRecord.tenant_id && existingRecord.tenant_id !== tenantId && user.role !== 'admin') {
           sendError(res, 403, 'Access denied');
           return;
         }
@@ -3325,9 +3644,14 @@ async function handleRequest(req, res) {
           sendError(res, 400, 'ID required for delete');
           return;
         }
-        // Check tenant access before delete
+        // Session 250.209b: B11 fix — check existence BEFORE delete (was throwing 500)
         const recordToDelete = await db.findById(sheet, id);
-        if (recordToDelete && tenantId && recordToDelete.tenant_id !== tenantId && user.role !== 'admin') {
+        if (!recordToDelete) {
+          sendError(res, 404, 'Record not found');
+          return;
+        }
+        // Session 250.209b: B12 fix — add recordToDelete.tenant_id guard (consistent with GET by ID)
+        if (tenantId && recordToDelete.tenant_id && recordToDelete.tenant_id !== tenantId && user.role !== 'admin') {
           sendError(res, 403, 'Access denied');
           return;
         }

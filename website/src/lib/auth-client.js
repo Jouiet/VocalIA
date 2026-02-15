@@ -185,10 +185,12 @@ class AuthClient {
   /**
    * Register new user
    */
-  async register({ email, password, name, tenantId = null }) {
+  async register({ email, password, name, tenantId = null, plan = null }) {
+    const body = { email, password, name, tenant_id: tenantId };
+    if (plan) body.plan = plan;
     const result = await this._request('/register', {
       method: 'POST',
-      body: { email, password, name, tenant_id: tenantId }
+      body
     });
 
     return result;

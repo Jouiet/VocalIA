@@ -106,6 +106,14 @@
           </form>
         </div>
 
+        <!-- Linked Accounts -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.linked_accounts.title">Comptes liés</h3>
+          <div id="linked-accounts" class="space-y-3">
+            <p class="text-zinc-500 text-sm">Chargement...</p>
+          </div>
+        </div>
+
         <!-- Preferences -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.preferences.title">Préférences</h3>
@@ -221,6 +229,29 @@
               </div>
               <input type="checkbox" id="notif-system" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
+          </div>
+        </div>
+
+        <!-- Notification Channels -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.notification_channels.title">Canaux de notification</h3>
+          <div class="space-y-4">
+            <label class="flex items-center justify-between cursor-pointer">
+              <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A"/><path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0"/><path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.163 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D"/><path d="M15.163 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.163 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.27a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.315A2.528 2.528 0 0 1 24 15.163a2.528 2.528 0 0 1-2.522 2.523h-6.315z" fill="#ECB22E"/></svg>
+                <div>
+                  <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.notification_channels.slack">Notifications Slack</p>
+                  <p class="text-sm text-zinc-500" data-i18n="settings.notification_channels.slack_desc">Recevoir les alertes dans votre canal Slack</p>
+                </div>
+              </div>
+              <input type="checkbox" id="notif-slack" class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
+            </label>
+            <div id="slack-channel-config" class="hidden pl-8 space-y-3">
+              <div>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Canal Slack</label>
+                <input type="text" id="slack-channel" placeholder="#notifications" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+            </div>
           </div>
         </div>
 
@@ -349,6 +380,15 @@
         settings = await api.settings.get(tenantId);
         renderApiKeys(settings.api_keys || []);
 
+        // Slack notification channel
+        if (settings.slack_notifications_enabled) {
+          document.getElementById('notif-slack').checked = true;
+          document.getElementById('slack-channel-config').classList.remove('hidden');
+        }
+        if (settings.slack_channel) {
+          document.getElementById('slack-channel').value = settings.slack_channel;
+        }
+
         // Webhook form
         document.getElementById('webhook-url').value = settings.webhook_url || '';
         document.getElementById('webhook-secret').value = settings.webhook_secret || '';
@@ -446,9 +486,58 @@
       }
     });
 
+    // Linked accounts — uses linked_providers array (accumulates all OAuth providers ever used)
+    function loadLinkedAccounts() {
+      const container = document.getElementById('linked-accounts');
+      const providers = [
+        { key: 'google', name: 'Google', color: 'text-blue-600' },
+        { key: 'github', name: 'GitHub', color: 'text-zinc-900 dark:text-white' },
+        { key: 'slack', name: 'Slack', color: 'text-purple-600' }
+      ];
+      // B21 fix: linked_providers is an array of all providers the user has ever logged in with
+      const linked = Array.isArray(user?.linked_providers) ? user.linked_providers : [];
+      container.innerHTML = providers.map(p => {
+        const isLinked = linked.includes(p.key);
+        return `<div class="flex items-center justify-between p-3 border border-zinc-200 dark:border-white/[0.08] rounded-lg">
+          <div class="flex items-center gap-3">
+            <span class="font-medium ${p.color}">${escapeHtml(p.name)}</span>
+          </div>
+          <span class="${isLinked ? 'text-green-600 dark:text-green-400' : 'text-zinc-400'} text-sm">${isLinked ? 'Lié' : 'Non lié'}</span>
+        </div>`;
+      }).join('');
+    }
+
+    // Slack notification toggle — persist to tenant settings
+    const notifSlack = document.getElementById('notif-slack');
+    const slackConfig = document.getElementById('slack-channel-config');
+    notifSlack.addEventListener('change', async () => {
+      slackConfig.classList.toggle('hidden', !notifSlack.checked);
+      if (!tenantId) return;
+      try {
+        await api.settings.update(tenantId, {
+          slack_notifications_enabled: notifSlack.checked,
+          slack_channel: document.getElementById('slack-channel').value || ''
+        });
+        toast.success(notifSlack.checked ? 'Notifications Slack activées' : 'Notifications Slack désactivées');
+      } catch (e) {
+        toast.error('Erreur lors de la sauvegarde');
+      }
+    });
+
+    // Save Slack channel name on blur
+    document.getElementById('slack-channel').addEventListener('blur', async () => {
+      if (!tenantId || !notifSlack.checked) return;
+      try {
+        await api.settings.update(tenantId, {
+          slack_channel: document.getElementById('slack-channel').value || ''
+        });
+      } catch (e) { /* silent — saved on toggle too */ }
+    });
+
     // Load settings on page load
     loadSettings();
     loadWidgetFeatures();
+    loadLinkedAccounts();
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
       await auth.logout();

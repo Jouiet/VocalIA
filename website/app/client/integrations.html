@@ -213,6 +213,26 @@
           </div>
         </section>
 
+        <!-- Messagerie -->
+        <section>
+          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4" data-i18n="integrations.messaging">Messagerie</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="integration-card bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200" data-integration="slack">
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                  <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z" fill="#E01E5A"/><path d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z" fill="#36C5F0"/><path d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.27 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.163 0a2.528 2.528 0 0 1 2.523 2.522v6.312z" fill="#2EB67D"/><path d="M15.163 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.163 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.27a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.315A2.528 2.528 0 0 1 24 15.163a2.528 2.528 0 0 1-2.522 2.523h-6.315z" fill="#ECB22E"/></svg>
+                </div>
+                <span class="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded hidden" data-status>Connecté</span>
+              </div>
+              <h3 class="font-semibold text-zinc-900 dark:text-white">Slack</h3>
+              <p class="text-sm text-zinc-500 mt-1" data-i18n="integrations.slack_desc">Bot IA dans vos canaux Slack</p>
+              <button class="mt-4 w-full py-2 px-4 bg-zinc-100 dark:bg-white/[0.06] hover:bg-zinc-200 dark:hover:bg-white/[0.1] text-zinc-700 dark:text-zinc-200 font-medium rounded-lg transition-colors text-sm">
+                Connecter
+              </button>
+            </div>
+          </div>
+        </section>
+
         <!-- Calendrier -->
         <section>
           <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Calendrier</h2>
@@ -342,7 +362,8 @@
       'calendly': { name: 'Calendly', icon: '🗓️', category: 'Calendrier' },
       'zapier': { name: 'Zapier', icon: '⚡', category: 'Automatisation' },
       'make': { name: 'Make', icon: '🔮', category: 'Automatisation' },
-      'n8n': { name: 'n8n', icon: '🔧', category: 'Automatisation' }
+      'n8n': { name: 'n8n', icon: '🔧', category: 'Automatisation' },
+      'slack': { name: 'Slack', icon: '💬', category: 'Messagerie' }
     };
 
     let connectedIntegrations = [];
@@ -482,6 +503,21 @@
       }
     };
 
+    // B20 fix: Handle ?connected= param from OAuth callback redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const justConnected = urlParams.get('connected');
+    if (justConnected) {
+      const tenantId = auth.getTenantId() || user?.tenant_id;
+      if (tenantId) {
+        try {
+          await api.integrations.connect(tenantId, { name: justConnected, status: 'active' });
+          toast.success(`${(INTEGRATIONS_META[justConnected] || { name: justConnected }).name} connecté avec succès`);
+        } catch (e) { /* silent — may already be connected */ }
+      }
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
     // Load integrations on page load
     loadIntegrations();
     loadWebhookHealth();
@@ -497,6 +533,12 @@
 
         if (isConnected) {
           await window.disconnectIntegration(integrationName);
+        } else if (integrationName === 'slack') {
+          const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3010' : 'https://api.vocalia.ma';
+          const tid = auth.getTenantId() || user?.tenant_id;
+          window.location.href = `${baseUrl}/oauth/start/slack?tenantId=${encodeURIComponent(tid)}`;
+          return;
         } else {
           const loading = modal.loading(`Connexion à ${meta.name}...`);
           try {

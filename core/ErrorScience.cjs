@@ -19,6 +19,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// ntfy.sh alerting for critical/high errors
+const NTFY_TOPIC = process.env.NTFY_TOPIC || '';
+const ERROR_ALERT_COOLDOWN = 5 * 60 * 1000; // 5 min between alerts
+let lastErrorAlert = 0;
+
 // SOTA: Confidence thresholds
 const CONFIDENCE_CONFIG = {
     minSampleSize: 5,         // Minimum events to generate rule
@@ -429,6 +434,25 @@ class ErrorScience {
             }
 
             console.log(`[ErrorScience] Recorded: ${component} - ${event.error} (${severity})`);
+
+            // Alert ntfy.sh for critical/high errors (native — zero external deps)
+            if (NTFY_TOPIC && (severity === 'critical' || severity === 'high')) {
+                const now = Date.now();
+                if (now - lastErrorAlert > ERROR_ALERT_COOLDOWN) {
+                    lastErrorAlert = now;
+                    const title = `${severity.toUpperCase()}: ${component}`;
+                    const body = `${event.error}\nTenant: ${tenantId || 'unknown'}`;
+                    fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+                        method: 'POST',
+                        headers: { 'Title': title, 'Priority': severity === 'critical' ? '5' : '4', 'Tags': 'warning' },
+                        body
+                    }).catch(() => {}); // fire-and-forget
+
+                    // Also notify Slack
+                    const slackNotifier = require('./slack-notifier.cjs');
+                    slackNotifier.notifyError({ component, error: event.error, severity, tenantId });
+                }
+            }
 
             // Auto-analyze if buffer reaches threshold
             if (this.errorBuffer.length >= CONFIDENCE_CONFIG.minSampleSize * 2) {

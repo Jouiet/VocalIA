@@ -74,8 +74,13 @@ const OAUTH_PROVIDERS = {
     authUrl: 'https://slack.com/oauth/v2/authorize',
     tokenUrl: 'https://slack.com/api/oauth.v2.access',
     scopes: {
-      default: 'incoming-webhook,chat:write'
+      default: 'incoming-webhook,chat:write,app_mentions:read,im:history,im:read,im:write,users:read'
     },
+    // SSO Login via Slack OIDC
+    loginAuthUrl: 'https://slack.com/openid/connect/authorize',
+    loginTokenUrl: 'https://slack.com/api/openid.connect.token',
+    loginScopes: 'openid email profile',
+    profileUrl: 'https://slack.com/api/openid.connect.userInfo',
     clientIdEnv: 'SLACK_CLIENT_ID',
     clientSecretEnv: 'SLACK_CLIENT_SECRET'
   }
@@ -254,8 +259,17 @@ class OAuthGateway {
       newCredentials.SLACK_WEBHOOK_URL = tokens.incoming_webhook.url;
     }
 
-    // Save to vault
+    // Save to vault under VocalIA tenant ID
     await SecretVault.saveCredentials(tenantId, newCredentials, false);
+
+    // B17 fix: Slack webhooks arrive with team_id as tenant identifier.
+    // Duplicate credentials under slack_${team_id} so the webhook handler finds them.
+    if (provider === 'slack' && tokens.team?.id) {
+      const slackTenantId = `slack_${tokens.team.id}`;
+      newCredentials.VOCALIA_TENANT_ID = tenantId; // Back-reference to original tenant
+      await SecretVault.saveCredentials(slackTenantId, newCredentials, false);
+      console.log(`[OAuthGateway] Saved Slack tokens also under: ${slackTenantId}`);
+    }
 
     console.log(`[OAuthGateway] Saved ${provider} tokens for tenant: ${tenantId}`);
   }
@@ -294,7 +308,8 @@ class OAuthGateway {
       params.set('prompt', 'select_account');
     }
 
-    return `${config.authUrl}?${params.toString()}`;
+    const authBase = config.loginAuthUrl || config.authUrl;
+    return `${authBase}?${params.toString()}`;
   }
 
   /**
@@ -322,7 +337,8 @@ class OAuthGateway {
       tokenHeaders['Accept'] = 'application/json';
     }
 
-    const tokenResponse = await fetch(config.tokenUrl, {
+    const loginTokenUrl = config.loginTokenUrl || config.tokenUrl;
+    const tokenResponse = await fetch(loginTokenUrl, {
       method: 'POST',
       headers: tokenHeaders,
       body: new URLSearchParams({
@@ -397,6 +413,26 @@ class OAuthGateway {
       };
     }
 
+    if (provider === 'slack') {
+      // Slack OIDC userInfo — profile already fetched above (generic fetch at L354)
+      // Slack wraps response with ok:true/false
+      if (profile.ok === false) {
+        throw new Error(profile.error || 'Slack userInfo failed');
+      }
+
+      if (!profile.email) {
+        throw new Error('Unable to retrieve email from Slack. Ensure email scope is granted.');
+      }
+
+      return {
+        email: profile.email,
+        name: profile.name || profile.given_name || '',
+        avatar: profile.picture || null,
+        provider: 'slack',
+        providerId: profile.sub
+      };
+    }
+
     throw new Error(`Login not supported for provider: ${provider}`);
   }
 
@@ -468,13 +504,19 @@ class OAuthGateway {
         const safeTenantId = String(result.tenantId).replace(/[<>&"']/g, c => ({
           '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'
         }[c]));
+        const safeProvider = String(provider).replace(/[<>&"']/g, c => ({
+          '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+        // B20 fix: Redirect to integrations page with connected param so UI updates
+        const websiteBase = process.env.WEBSITE_URL || 'https://vocalia.ma';
+        const redirectUrl = `${websiteBase}/app/client/integrations.html?connected=${encodeURIComponent(provider)}`;
         res.send(`
           <html><body>
-            <h1>✅ Connected Successfully!</h1>
-            <p>${OAUTH_PROVIDERS[provider].name} connected for tenant: ${safeTenantId}</p>
-            <p>You can close this window.</p>
+            <h1>Connected Successfully!</h1>
+            <p>${OAUTH_PROVIDERS[provider]?.name || safeProvider} connected for tenant: ${safeTenantId}</p>
+            <p>Redirecting...</p>
             <script>
-              setTimeout(() => window.close(), 3000);
+              setTimeout(() => { window.location.href = '${redirectUrl}'; }, 1500);
             </script>
           </body></html>
         `);
@@ -552,7 +594,11 @@ class OAuthGateway {
           user_id: result.user.id,
           user_email: result.user.email,
           user_name: result.user.name || '',
-          tenant_id: result.user.tenant_id || ''
+          tenant_id: result.user.tenant_id || '',
+          role: result.user.role || 'user',
+          email_verified: result.user.email_verified ? 'true' : 'false',
+          oauth_provider: result.user.oauth_provider || provider,
+          linked_providers: JSON.stringify(result.user.linked_providers || [provider])
         });
 
         res.redirect(`${websiteBase}/login.html#oauth_success=1&${params.toString()}`);

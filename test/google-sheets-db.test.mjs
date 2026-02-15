@@ -476,6 +476,68 @@ describe('GoogleSheetsDB objectToRow', () => {
     const restored = db.rowToObject('logs', row);
     assert.deepStrictEqual(restored, original);
   });
+
+  test('B25 fix: objectToRow serializes objects to JSON strings', () => {
+    const db = new GoogleSheetsDB();
+    const obj = { id: 't1', name: 'Test', email: 'a@b', phone: '', plan: 'pro', mrr: 0, status: 'active',
+      nps_score: 0, conversion_rate: 0, qualified_leads: 0, voice_language: 'fr', voice_gender: 'female',
+      active_persona: null, business_name: 'Acme', sector: 'DENTAL', widget_type: 'B2B', address: '',
+      horaires: '', services: ['cleaning', 'whitening'], zones: ['Paris', 'Lyon'], currency: 'EUR',
+      knowledge_base_id: null, payment_method: 'CARD', payment_details: '',
+      stripe_customer_id: '', webhook_url: '', webhook_secret: '', webhook_events: ['order.created'],
+      api_keys: [{ key: 'k1', name: 'Main' }], integrations: [], notifications: { email: true, slack: false },
+      slack_notifications_enabled: '', slack_channel: '',
+      created_at: '', updated_at: '' };
+    const row = db.objectToRow('tenants', obj);
+    // Arrays/objects serialized as JSON strings
+    assert.strictEqual(row[18], '["cleaning","whitening"]');  // services
+    assert.strictEqual(row[19], '["Paris","Lyon"]');           // zones
+    assert.strictEqual(row[27], '["order.created"]');          // webhook_events
+    assert.strictEqual(row[28], '[{"key":"k1","name":"Main"}]'); // api_keys
+    assert.strictEqual(row[30], '{"email":true,"slack":false}'); // notifications
+  });
+
+  test('B25 fix: rowToObject auto-parses JSON strings', () => {
+    const db = new GoogleSheetsDB();
+    // Simulate a row from Google Sheets with JSON strings
+    const row = new Array(35).fill('');
+    row[0] = 't1'; row[1] = 'Test'; row[2] = 'a@b';
+    row[18] = '["cleaning","whitening"]';  // services
+    row[19] = '["Paris"]';                  // zones
+    row[30] = '{"email":true}';            // notifications
+    const obj = db.rowToObject('tenants', row);
+    assert.deepStrictEqual(obj.services, ['cleaning', 'whitening']);
+    assert.deepStrictEqual(obj.zones, ['Paris']);
+    assert.deepStrictEqual(obj.notifications, { email: true });
+  });
+
+  test('B25 fix: round-trip preserves JSON arrays/objects', () => {
+    const db = new GoogleSheetsDB();
+    const original = { id: 't1', name: 'Test', email: 'a@b', phone: '', plan: 'pro', mrr: 0, status: 'active',
+      nps_score: 0, conversion_rate: 0, qualified_leads: 0, voice_language: 'fr', voice_gender: 'female',
+      active_persona: '', business_name: '', sector: '', widget_type: 'B2B', address: '', horaires: '',
+      services: ['svc1'], zones: ['z1', 'z2'], currency: 'EUR', knowledge_base_id: '',
+      payment_method: '', payment_details: '', stripe_customer_id: '',
+      webhook_url: '', webhook_secret: '', webhook_events: [], api_keys: [],
+      integrations: [{ type: 'slack', connected: true }],
+      notifications: { email: true, slack: false },
+      slack_notifications_enabled: '', slack_channel: '',
+      created_at: '', updated_at: '' };
+    const row = db.objectToRow('tenants', original);
+    const restored = db.rowToObject('tenants', row);
+    assert.deepStrictEqual(restored.services, ['svc1']);
+    assert.deepStrictEqual(restored.zones, ['z1', 'z2']);
+    assert.deepStrictEqual(restored.integrations, [{ type: 'slack', connected: true }]);
+    assert.deepStrictEqual(restored.notifications, { email: true, slack: false });
+  });
+
+  test('B25 fix: invalid JSON strings kept as strings', () => {
+    const db = new GoogleSheetsDB();
+    const row = new Array(5).fill('');
+    row[0] = '2026-01-01'; row[1] = 'info'; row[4] = '{invalid json}';
+    const obj = db.rowToObject('logs', row);
+    assert.strictEqual(obj.details, '{invalid json}'); // kept as string
+  });
 });
 
 // ─── getDB singleton ────────────────────────────────────────────
@@ -628,9 +690,13 @@ describe('GoogleSheetsDB resetUsage (no config)', () => {
 // ─── Schema column counts ───────────────────────────────────────
 
 describe('GoogleSheetsDB schema column counts', () => {
-  test('tenants has 27 columns (C8: +stripe_customer_id)', () => {
-    assert.strictEqual(SCHEMAS.tenants.columns.length, 27);
+  test('tenants has 35 columns (B24: +8 settings fields)', () => {
+    assert.strictEqual(SCHEMAS.tenants.columns.length, 35);
     assert.ok(SCHEMAS.tenants.columns.includes('stripe_customer_id'));
+    assert.ok(SCHEMAS.tenants.columns.includes('webhook_url'));
+    assert.ok(SCHEMAS.tenants.columns.includes('api_keys'));
+    assert.ok(SCHEMAS.tenants.columns.includes('integrations'));
+    assert.ok(SCHEMAS.tenants.columns.includes('slack_channel'));
   });
 
   test('sessions has 8 columns', () => {
@@ -641,8 +707,11 @@ describe('GoogleSheetsDB schema column counts', () => {
     assert.strictEqual(SCHEMAS.logs.columns.length, 5);
   });
 
-  test('users has 20 columns', () => {
-    assert.strictEqual(SCHEMAS.users.columns.length, 20);
+  test('users has 23 columns (+3 OAuth: oauth_provider, oauth_provider_id, linked_providers)', () => {
+    assert.strictEqual(SCHEMAS.users.columns.length, 23);
+    assert.ok(SCHEMAS.users.columns.includes('oauth_provider'));
+    assert.ok(SCHEMAS.users.columns.includes('oauth_provider_id'));
+    assert.ok(SCHEMAS.users.columns.includes('linked_providers'));
   });
 
   test('auth_sessions has 7 columns', () => {
@@ -687,9 +756,9 @@ describe('columnLetter (H7 fix: >26 column support)', () => {
 });
 
 describe('sheetRange', () => {
-  test('tenants range covers 27 columns (A:AA)', () => {
+  test('tenants range covers 35 columns (A:AI)', () => {
     const range = sheetRange('tenants');
-    assert.strictEqual(range, 'tenants!A:AA');
+    assert.strictEqual(range, 'tenants!A:AI');
   });
 
   test('sessions range covers 8 columns (A:H)', () => {

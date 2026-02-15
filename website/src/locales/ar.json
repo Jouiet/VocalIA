@@ -228,6 +228,7 @@
       "overview": "نظرة عامة",
       "calls": "المكالمات",
       "agents": "الوكلاء الذكيين",
+      "install_widget": "تثبيت الودجت",
       "catalog": "الكتالوج",
       "knowledge_base": "قاعدة المعرفة",
       "integrations": "التكاملات",
@@ -644,6 +645,14 @@
       "new_key": "مفتاح جديد",
       "loading": "جاري التحميل..."
     },
+    "notification_channels": {
+      "title": "قنوات الإشعارات",
+      "slack": "إشعارات Slack",
+      "slack_desc": "تلقي التنبيهات في قناة Slack"
+    },
+    "linked_accounts": {
+      "title": "الحسابات المرتبطة"
+    },
     "danger_zone": {
       "title": "منطقة خطرة",
       "delete_account": "حذف الحساب",
@@ -815,6 +824,8 @@
     "empty_title": "لا توجد تكاملات متصلة",
     "empty_desc": "اربط أدواتك في CRM والتجارة الإلكترونية والدعم لأتمتة سير العمل مع المساعد الصوتي.",
     "add_first": "أضف أول تكامل لك",
+    "messaging": "المراسلة",
+    "slack_desc": "بوت ذكاء اصطناعي في قنوات Slack",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "وكلاء صوتيون بالذكاء الاصطناعي للشركات",
@@ -2918,6 +2929,7 @@
     "or": "أو",
     "google": "المتابعة مع Google",
     "github": "المتابعة مع GitHub",
+    "slack": "المتابعة مع Slack",
     "no_account": "ليس لديك حساب؟",
     "signup": "إنشاء حساب",
     "security": "اتصال آمن بتشفير SSL"
@@ -3259,7 +3271,10 @@
     "step2_desc": "استورد الأسئلة الشائعة ومعلومات المنتج",
     "step3_title": "دمج في موقعك",
     "step3_desc": "انسخ كود الويدجت إلى موقعك",
-    "go_dashboard": "الذهاب إلى لوحة التحكم",
+    "go_dashboard": "لوحة التحكم",
+    "go_install": "تثبيت الودجت على موقعك",
+    "install_title": "ثبّت الودجت في دقيقة واحدة",
+    "install_desc": "انسخ هذا الكود والصقه قبل </body> في موقعك:",
     "page_title": "الإعداد الأولي - VocalIA"
   },
   "widget": {
@@ -5466,6 +5481,7 @@
     "login_subtitle": "ادخل إلى لوحة تحكم VocalIA",
     "login_button": "تسجيل الدخول",
     "continue_google": "المتابعة مع Google",
+    "continue_slack": "المتابعة عبر Slack",
     "password": "كلمة المرور",
     "remember_me": "تذكرني",
     "forgot_password": "نسيت كلمة المرور؟",
@@ -5557,5 +5573,29 @@
     "learn_more": "اعرف المزيد",
     "accept": "قبول",
     "reject": "رفض"
+  },
+  "install_widget": {
+    "title": "تثبيت الودجت",
+    "subtitle": "أضف المساعد الصوتي VocalIA إلى موقعك في دقيقتين",
+    "snippet_title": "كود التثبيت الخاص بك",
+    "copy": "نسخ",
+    "domains_title": "النطاقات المصرح بها",
+    "domains_desc": "أضف النطاقات التي يُسمح فيها للودجت بالعمل. الحد الأقصى 10 نطاقات.",
+    "add_domain": "إضافة",
+    "save": "حفظ",
+    "no_domains": "لا توجد نطاقات مكوّنة. سيعمل الودجت على جميع النطاقات.",
+    "customize_title": "التخصيص",
+    "primary_color": "اللون الرئيسي",
+    "position": "الموضع",
+    "ecommerce_mode": "وضع التجارة الإلكترونية",
+    "preview": "معاينة مباشرة",
+    "verify_title": "التحقق",
+    "pos_bottom_right": "أسفل اليمين",
+    "pos_bottom_left": "أسفل اليسار",
+    "check_copy": "لقد نسخت الكود أعلاه",
+    "check_paste": "لقد لصقت الكود قبل </body> في موقعي",
+    "check_deploy": "لقد نشرت/أطلقت التعديل",
+    "check_visible": "أيقونة VocalIA تظهر في أسفل موقعي",
+    "verify_success": "اكتمل التثبيت! مساعدك الصوتي نشط."
   }
 }

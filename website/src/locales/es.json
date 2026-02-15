@@ -228,6 +228,7 @@
       "overview": "Vista general",
       "calls": "Llamadas",
       "agents": "Agentes IA",
+      "install_widget": "Instalar Widget",
       "catalog": "Catálogo",
       "knowledge_base": "Base de Conocimientos",
       "integrations": "Integraciones",
@@ -644,6 +645,14 @@
       "new_key": "Nueva clave",
       "loading": "Cargando..."
     },
+    "notification_channels": {
+      "title": "Canales de notificación",
+      "slack": "Notificaciones Slack",
+      "slack_desc": "Recibir alertas en su canal Slack"
+    },
+    "linked_accounts": {
+      "title": "Cuentas vinculadas"
+    },
     "danger_zone": {
       "title": "Zona peligrosa",
       "delete_account": "Eliminar cuenta",
@@ -815,6 +824,8 @@
     "empty_title": "Ninguna integración conectada",
     "empty_desc": "Conecte sus herramientas CRM, e-commerce y soporte para automatizar sus flujos de trabajo con el asistente de voz.",
     "add_first": "Agregar su primera integración",
+    "messaging": "Mensajería",
+    "slack_desc": "Bot IA en sus canales Slack",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "Preparado para la AI Act",
     "agents_vocaux_ia_2": "Agentes Vocales IA para Empresas",
@@ -2918,6 +2929,7 @@
     "or": "o",
     "google": "Continuar con Google",
     "github": "Continuar con GitHub",
+    "slack": "Continuar con Slack",
     "no_account": "¿No tienes cuenta?",
     "signup": "Crear una cuenta",
     "security": "Conexión segura con cifrado SSL"
@@ -3259,7 +3271,10 @@
     "step2_desc": "Importe sus FAQs e información de productos",
     "step3_title": "Integre en su sitio",
     "step3_desc": "Copie el código del widget a su sitio web",
-    "go_dashboard": "Ir al panel de control",
+    "go_dashboard": "Panel de control",
+    "go_install": "Instalar el widget en tu sitio",
+    "install_title": "Instala el widget en 1 minuto",
+    "install_desc": "Copia este código y pégalo antes de </body> en tu sitio web:",
     "page_title": "Onboarding - VocalIA"
   },
   "widget": {
@@ -5466,6 +5481,7 @@
     "login_subtitle": "Acceda a su panel de VocalIA",
     "login_button": "Iniciar sesión",
     "continue_google": "Continuar con Google",
+    "continue_slack": "Continuar con Slack",
     "password": "Contraseña",
     "remember_me": "Recordarme",
     "forgot_password": "¿Olvidó su contraseña?",
@@ -5557,5 +5573,29 @@
     "learn_more": "Saber más",
     "accept": "Aceptar",
     "reject": "Rechazar"
+  },
+  "install_widget": {
+    "title": "Instalar Widget",
+    "subtitle": "Añade el asistente vocal VocalIA a tu sitio en 2 minutos",
+    "snippet_title": "Tu código de instalación",
+    "copy": "Copiar",
+    "domains_title": "Dominios autorizados",
+    "domains_desc": "Añade los dominios donde el widget puede funcionar. Máximo 10 dominios.",
+    "add_domain": "Añadir",
+    "save": "Guardar",
+    "no_domains": "Sin dominios configurados. El widget funcionará en todos los dominios.",
+    "customize_title": "Personalización",
+    "primary_color": "Color principal",
+    "position": "Posición",
+    "ecommerce_mode": "Modo E-commerce",
+    "preview": "Vista previa en vivo",
+    "verify_title": "Verificación",
+    "pos_bottom_right": "Abajo derecha",
+    "pos_bottom_left": "Abajo izquierda",
+    "check_copy": "Copié el snippet de arriba",
+    "check_paste": "Pegué el código antes de </body> en mi sitio",
+    "check_deploy": "Desplegué/publiqué la modificación",
+    "check_visible": "El icono VocalIA aparece en la parte inferior de mi sitio",
+    "verify_success": "¡Instalación completada! Tu asistente vocal está activo."
   }
 }

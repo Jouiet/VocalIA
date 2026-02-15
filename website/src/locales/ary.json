@@ -228,6 +228,7 @@
       "overview": "نظرة عامة",
       "calls": "التيليفونات",
       "agents": "الوكلاء الذكيين",
+      "install_widget": "ركّب الودجت",
       "catalog": "الكطالوگ",
       "knowledge_base": "قاعدة المعلومات",
       "integrations": "الربط",
@@ -644,6 +645,14 @@
       "new_key": "مفتاح جديد",
       "loading": "كيتحمّل..."
     },
+    "notification_channels": {
+      "title": "قنوات الإشعارات",
+      "slack": "إشعارات Slack",
+      "slack_desc": "توصل بالتنبيهات فقناة Slack ديالك"
+    },
+    "linked_accounts": {
+      "title": "الحسابات المرتبطة"
+    },
     "danger_zone": {
       "title": "منطقة خطيرة",
       "delete_account": "حذف الحساب",
@@ -815,6 +824,8 @@
     "empty_title": "ما كاين حتى تكامل متصل",
     "empty_desc": "ربط الأدوات ديال CRM والتجارة الإلكترونية والدعم باش تأتمت العمليات مع المساعد الصوتي.",
     "add_first": "زيد أول تكامل ديالك",
+    "messaging": "الرسائل",
+    "slack_desc": "بوت ذكي فقنوات Slack ديالك",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "وكلاء صوتيين بـ AI للشركات",
@@ -2918,6 +2929,7 @@
     "or": "ولا",
     "google": "كمل مع Google",
     "github": "كمل مع GitHub",
+    "slack": "كمل مع Slack",
     "no_account": "ما عندكش كونط؟",
     "signup": "كري كونط جديد",
     "security": "اتصال آمن SSL"
@@ -3259,7 +3271,10 @@
     "step2_desc": "امپورطي الأسئلة الشائعة ومعلومات المنتجات",
     "step3_title": "دمج ف السيت ديالك",
     "step3_desc": "كوپي الكود ديال الويدجت ف السيت ديالك",
-    "go_dashboard": "مشي للوحة التحكم",
+    "go_dashboard": "لوحة التحكم",
+    "go_install": "ركّب الودجت ف السيت ديالك",
+    "install_title": "ركّب الودجت ف دقيقة وحدة",
+    "install_desc": "كوپي هاد الكود وپاسطيه قبل </body> ف السيت ديالك:",
     "page_title": "الإعداد الأولي - VocalIA"
   },
   "widget": {
@@ -5466,6 +5481,7 @@
     "login_subtitle": "دخل للطابلو دوبور ديال VocalIA",
     "login_button": "كونيكتي",
     "continue_google": "كمل مع Google",
+    "continue_slack": "كمّل ب Slack",
     "password": "كلمة السر",
     "remember_me": "تفكرني",
     "forgot_password": "نسيتي كلمة السر؟",
@@ -5557,5 +5573,29 @@
     "learn_more": "عرف أكثر",
     "accept": "قبل",
     "reject": "رفض"
+  },
+  "install_widget": {
+    "title": "ركّب الودجت",
+    "subtitle": "زيد المساعد الصوتي VocalIA ف السيت ديالك ف 2 دقايق",
+    "snippet_title": "الكود ديال التركيب",
+    "copy": "كوپي",
+    "domains_title": "الدومينات المسموح بيها",
+    "domains_desc": "زيد الدومينات فين الودجت يقدر يخدم. ماكسيموم 10 دومينات.",
+    "add_domain": "زيد",
+    "save": "سجّل",
+    "no_domains": "ما كاين حتا دومين مكوّن. الودجت غادي يخدم على كاع الدومينات.",
+    "customize_title": "التخصيص",
+    "primary_color": "اللون الرئيسي",
+    "position": "البلاصة",
+    "ecommerce_mode": "موض التجارة الإلكترونية",
+    "preview": "معاينة مباشرة",
+    "verify_title": "التحقق",
+    "pos_bottom_right": "لتحت ليمين",
+    "pos_bottom_left": "لتحت ليسار",
+    "check_copy": "درت كوپي لل snippet اللي فوق",
+    "check_paste": "لصقت الكود قبل </body> ف السيت ديالي",
+    "check_deploy": "نشرت/طلقت التعديل",
+    "check_visible": "أيقونة VocalIA كاتبان ف لتحت ديال السيت",
+    "verify_success": "التركيب تكمّل! المساعد الصوتي ديالك خدّام."
   }
 }

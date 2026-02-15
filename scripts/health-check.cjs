@@ -29,7 +29,8 @@ const modules = {
     'core/ErrorScience.cjs',
     'core/RevenueScience.cjs',
     'core/marketing-science-core.cjs',
-    'core/knowledge-base-services.cjs'
+    'core/knowledge-base-services.cjs',
+    'core/slack-notifier.cjs'
   ],
   'Integrations': [
     'integrations/hubspot-b2b-crm.cjs',
@@ -45,9 +46,6 @@ const modules = {
     'sensors/cost-tracking-sensor.cjs',
     'sensors/lead-velocity-sensor.cjs',
     'sensors/retention-sensor.cjs'
-  ],
-  'Widget': [
-    'widget/voice-widget-templates.cjs'
   ],
   'RAG Index': [
     'data/knowledge-base/chunks.json',
@@ -119,12 +117,36 @@ const websiteFiles = [
   'website/src/lib/i18n.js',
   'website/src/locales/fr.json',
   'website/src/locales/en.json',
-  'website/voice-assistant/voice-widget.js',
+  'website/voice-assistant/voice-widget-ecommerce-core.js',
   'website/voice-assistant/lang/voice-fr.json',
   'website/voice-assistant/lang/voice-en.json'
 ];
 
 for (const file of websiteFiles) {
+  const fullPath = path.join(__dirname, '..', file);
+  if (fs.existsSync(fullPath)) {
+    console.log(`  ${COLORS.green}✅ ${path.basename(file)}${COLORS.reset}`);
+    totalOk++;
+  } else {
+    console.log(`  ${COLORS.red}❌ ${file} (NOT FOUND)${COLORS.reset}`);
+    totalFail++;
+  }
+}
+console.log('');
+
+// Check Widget files (browser JS — existence only, no require)
+console.log(`${COLORS.cyan}Widget:${COLORS.reset}`);
+const widgetFiles = [
+  'widget/voice-widget-v3.js',
+  'widget/voice-widget-b2b.js',
+  'widget/abandoned-cart-recovery.js',
+  'widget/recommendation-carousel.js',
+  'widget/spin-wheel.js',
+  'widget/voice-quiz.js',
+  'widget/free-shipping-bar.js'
+];
+
+for (const file of widgetFiles) {
   const fullPath = path.join(__dirname, '..', file);
   if (fs.existsSync(fullPath)) {
     console.log(`  ${COLORS.green}✅ ${path.basename(file)}${COLORS.reset}`);

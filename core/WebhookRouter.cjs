@@ -93,6 +93,20 @@ const WEBHOOK_PROVIDERS = {
     name: 'Google (Pub/Sub)',
     signatureHeader: 'Authorization',
     verifySignature: () => true // Google uses JWT, simplified here
+  },
+  slack: {
+    name: 'Slack',
+    signatureHeader: 'x-slack-signature',
+    verifySignature: (payload, signature, secret, headers) => {
+      // Slack signature v0: v0=sha256(v0:timestamp:body)
+      const timestamp = headers?.['x-slack-request-timestamp'];
+      if (!timestamp || Math.abs(Date.now() / 1000 - timestamp) > 300) return false;
+      const sigBasestring = `v0:${timestamp}:${payload}`;
+      const hash = 'v0=' + crypto.createHmac('sha256', secret).update(sigBasestring).digest('hex');
+      try {
+        return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
+      } catch { return false; }
+    }
   }
 };
 
@@ -192,6 +206,9 @@ class WebhookRouter {
         // Stripe account ID
         if (body.account) return `stripe_${body.account}`;
         break;
+
+      case 'slack':
+        return body.team_id ? `slack_${body.team_id}` : 'unknown_webhook';
     }
 
     return 'unknown_webhook'; // Default — tenant must be identified from payload
@@ -230,6 +247,15 @@ class WebhookRouter {
 
       // Get raw body for signature verification
       const rawBody = req.body.toString('utf8');
+
+      // Slack URL verification challenge (no signature check needed)
+      if (provider === 'slack') {
+        let challengeBody;
+        try { challengeBody = JSON.parse(rawBody); } catch { challengeBody = {}; }
+        if (challengeBody.type === 'url_verification') {
+          return res.json({ challenge: challengeBody.challenge });
+        }
+      }
       let body;
       try {
         body = JSON.parse(rawBody);
@@ -241,14 +267,18 @@ class WebhookRouter {
       const tenantId = this.extractTenantId(provider, req.headers, body);
 
       // Session 250.43: Verify webhook signature if secret configured
-      const webhookSecret = process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`];
+      const webhookSecretEnv = provider === 'slack' ? 'SLACK_SIGNING_SECRET' : `${provider.toUpperCase()}_WEBHOOK_SECRET`;
+      const webhookSecret = process.env[webhookSecretEnv];
       if (webhookSecret && config.verifySignature) {
         const signature = req.headers[config.signatureHeader?.toLowerCase()];
         if (!signature) {
           console.warn(`[WebhookRouter] Missing signature header for ${provider}`);
           return res.status(401).json({ error: 'Missing signature' });
         }
-        const isValid = config.verifySignature(rawBody, signature, webhookSecret);
+        // Slack verifier needs full headers for timestamp
+        const isValid = provider === 'slack'
+          ? config.verifySignature(rawBody, signature, webhookSecret, req.headers)
+          : config.verifySignature(rawBody, signature, webhookSecret);
         if (!isValid) {
           console.error(`[WebhookRouter] Invalid signature for ${provider}/${tenantId}`);
           return res.status(401).json({ error: 'Invalid signature' });
@@ -341,6 +371,9 @@ class WebhookRouter {
       case 'google':
         return body.message?.attributes?.eventType || 'unknown';
 
+      case 'slack':
+        return body.event?.type || body.type || 'unknown';
+
       default:
         return body.type || body.event || 'unknown';
     }
@@ -363,6 +396,47 @@ class WebhookRouter {
     // Stripe: Payment succeeded
     this.registerHandler('stripe', 'payment_intent.succeeded', async (tenantId, eventType, data) => {
       console.log(`[Handler] Stripe payment for ${tenantId}:`, data.id);
+    });
+
+    // Slack: DM messages — respond with AI via VocalIA Voice API
+    this.registerHandler('slack', 'message', async (tenantId, eventType, data) => {
+      const event = data.event;
+      if (!event || event.bot_id || event.subtype) return; // Ignore bots + edits
+
+      const userMessage = event.text;
+      const channel = event.channel;
+
+      // Get tenant's bot token + language from SecretVault
+      const secretVault = require('./SecretVault.cjs');
+      const creds = await secretVault.loadCredentials(tenantId).catch(() => null);
+      const botToken = creds?.SLACK_ACCESS_TOKEN;
+      if (!botToken) return;
+
+      const language = creds?.LANGUAGE || 'fr';
+
+      try {
+        const response = await fetch('http://localhost:3004/respond', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: userMessage,
+            tenantId,
+            language,
+            sessionId: `slack_${event.user}_${channel}`
+          })
+        });
+        const result = await response.json();
+
+        const slackNotifier = require('./slack-notifier.cjs');
+        await slackNotifier.sendToTenant(botToken, channel, result.response || 'Je n\'ai pas pu traiter votre message.');
+      } catch (err) {
+        console.error(`[WebhookRouter] Slack bot error: ${err.message}`);
+      }
+    });
+
+    // Slack: App mentions — reuse message handler
+    this.registerHandler('slack', 'app_mention', async (tenantId, eventType, data) => {
+      await this.processEvent(tenantId, 'slack', 'message', data);
     });
   }
 

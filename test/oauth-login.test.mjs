@@ -77,13 +77,30 @@ describe('OAuth Provider Configuration', () => {
     assert.ok(keys.includes('slack'));
   });
 
-  it('should only support login for google and github', () => {
+  it('should support login for google, github and slack', () => {
     for (const [key, config] of Object.entries(OAUTH_PROVIDERS)) {
-      if (key === 'google' || key === 'github') {
+      if (key === 'google' || key === 'github' || key === 'slack') {
         assert.ok(config.loginScopes, `${key} should have loginScopes`);
         assert.ok(config.profileUrl, `${key} should have profileUrl`);
       }
     }
+  });
+
+  it('should have Slack provider with correct OIDC config', () => {
+    assert.ok(OAUTH_PROVIDERS.slack, 'Slack provider missing');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.name, 'Slack');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.loginAuthUrl, 'https://slack.com/openid/connect/authorize');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.loginTokenUrl, 'https://slack.com/api/openid.connect.token');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.profileUrl, 'https://slack.com/api/openid.connect.userInfo');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.loginScopes, 'openid email profile');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.clientIdEnv, 'SLACK_CLIENT_ID');
+    assert.strictEqual(OAUTH_PROVIDERS.slack.clientSecretEnv, 'SLACK_CLIENT_SECRET');
+  });
+
+  it('should have Slack bot scopes for integration', () => {
+    assert.ok(OAUTH_PROVIDERS.slack.scopes.default.includes('chat:write'));
+    assert.ok(OAUTH_PROVIDERS.slack.scopes.default.includes('im:history'));
+    assert.ok(OAUTH_PROVIDERS.slack.scopes.default.includes('app_mentions:read'));
   });
 });
 
@@ -169,6 +186,37 @@ describe('OAuthGateway Login URL Generation', () => {
   });
 });
 
+describe('OAuthGateway Slack Login URL Generation', () => {
+  it('should generate valid Slack OIDC login URL', () => {
+    const origId = process.env.SLACK_CLIENT_ID;
+    const origSecret = process.env.SLACK_CLIENT_SECRET;
+    process.env.SLACK_CLIENT_ID = 'test-slack-client';
+    process.env.SLACK_CLIENT_SECRET = 'test-slack-secret';
+
+    try {
+      const gw = new OAuthGateway({ baseUrl: 'https://api.vocalia.ma' });
+      const url = gw.getLoginAuthUrl('slack');
+      // MUST use OIDC endpoint
+      assert.ok(url.startsWith('https://slack.com/openid/connect/authorize'),
+        `Expected OIDC URL but got: ${url.substring(0, 60)}`);
+      assert.ok(url.includes('client_id=test-slack-client'));
+      const urlObj = new URL(url);
+      const scope = urlObj.searchParams.get('scope');
+      assert.ok(scope.includes('openid'));
+      assert.ok(scope.includes('email'));
+      assert.ok(scope.includes('profile'));
+      const redirectUri = urlObj.searchParams.get('redirect_uri');
+      assert.ok(redirectUri.includes('/oauth/login/callback/slack'));
+      assert.ok(url.includes('state='));
+      // Slack should NOT have prompt=select_account (that's Google-only)
+      assert.ok(!url.includes('prompt='));
+    } finally {
+      if (origId) process.env.SLACK_CLIENT_ID = origId; else delete process.env.SLACK_CLIENT_ID;
+      if (origSecret) process.env.SLACK_CLIENT_SECRET = origSecret; else delete process.env.SLACK_CLIENT_SECRET;
+    }
+  });
+});
+
 describe('loginWithOAuth - New User', () => {
   let result;
 
@@ -193,6 +241,11 @@ describe('loginWithOAuth - New User', () => {
     assert.strictEqual(result.user.name, 'Test OAuth User');
     assert.strictEqual(result.user.role, 'user');
     assert.strictEqual(result.user.email_verified, true);
+  });
+
+  it('should include linked_providers array with the provider (B21 fix)', () => {
+    assert.ok(Array.isArray(result.user.linked_providers), 'linked_providers should be an array');
+    assert.ok(result.user.linked_providers.includes('github'), 'Should include github');
   });
 
   it('should produce a valid JWT access token', () => {
@@ -233,6 +286,13 @@ describe('loginWithOAuth - Existing User (account linking)', () => {
   it('should generate different tokens on each login', () => {
     assert.notStrictEqual(firstResult.access_token, secondResult.access_token);
     assert.notStrictEqual(firstResult.refresh_token, secondResult.refresh_token);
+  });
+
+  it('should accumulate both providers in linked_providers (B21 fix)', () => {
+    assert.ok(Array.isArray(secondResult.user.linked_providers), 'linked_providers should be an array');
+    assert.ok(secondResult.user.linked_providers.includes('google'), 'Should include google (first login)');
+    assert.ok(secondResult.user.linked_providers.includes('github'), 'Should include github (second login)');
+    assert.strictEqual(secondResult.user.linked_providers.length, 2, 'Should have exactly 2 providers');
   });
 });
 

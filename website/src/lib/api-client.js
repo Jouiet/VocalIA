@@ -366,6 +366,8 @@ class APIClient {
             key: k.key ? `${k.key.substring(0, 8)}••••••••${k.key.slice(-4)}` : null
           })),
           notifications: tenant?.notifications || {},
+          slack_notifications_enabled: tenant?.slack_notifications_enabled || false,
+          slack_channel: tenant?.slack_channel || '',
           // Session 250.63: Voice preferences
           voice_language: tenant?.voice_language || 'fr',
           voice_gender: tenant?.voice_gender || 'female',

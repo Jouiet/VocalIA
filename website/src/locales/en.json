@@ -228,6 +228,7 @@
       "overview": "Overview",
       "calls": "Calls",
       "agents": "AI Agents",
+      "install_widget": "Install Widget",
       "catalog": "Catalog",
       "knowledge_base": "Knowledge Base",
       "integrations": "Integrations",
@@ -644,6 +645,14 @@
       "new_key": "New Key",
       "loading": "Loading..."
     },
+    "notification_channels": {
+      "title": "Notification Channels",
+      "slack": "Slack Notifications",
+      "slack_desc": "Receive alerts in your Slack channel"
+    },
+    "linked_accounts": {
+      "title": "Linked Accounts"
+    },
     "danger_zone": {
       "title": "Danger Zone",
       "delete_account": "Delete Account",
@@ -815,6 +824,8 @@
     "empty_title": "No integrations connected",
     "empty_desc": "Connect your CRM, e-commerce and support tools to automate your workflows with the voice assistant.",
     "add_first": "Add your first integration",
+    "messaging": "Messaging",
+    "slack_desc": "AI bot in your Slack channels",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Voice AI Agents for Businesses",
@@ -2918,6 +2929,7 @@
     "or": "or",
     "google": "Continue with Google",
     "github": "Continue with GitHub",
+    "slack": "Continue with Slack",
     "no_account": "No account yet?",
     "signup": "Create an account",
     "security": "Secure connection with SSL encryption"
@@ -3259,7 +3271,10 @@
     "step2_desc": "Import your FAQs and product information",
     "step3_title": "Integrate on your site",
     "step3_desc": "Copy the widget code to your website",
-    "go_dashboard": "Go to dashboard",
+    "go_dashboard": "Dashboard",
+    "go_install": "Install widget on your site",
+    "install_title": "Install the widget in 1 minute",
+    "install_desc": "Copy this code and paste it before </body> in your website:",
     "page_title": "Onboarding - VocalIA"
   },
   "widget": {
@@ -5466,6 +5481,7 @@
     "login_subtitle": "Access your VocalIA dashboard",
     "login_button": "Log In",
     "continue_google": "Continue with Google",
+    "continue_slack": "Continue with Slack",
     "password": "Password",
     "remember_me": "Remember me",
     "forgot_password": "Forgot password?",
@@ -5557,5 +5573,29 @@
     "learn_more": "Learn more",
     "accept": "Accept",
     "reject": "Reject"
+  },
+  "install_widget": {
+    "title": "Install Widget",
+    "subtitle": "Add VocalIA voice assistant to your site in 2 minutes",
+    "snippet_title": "Your installation code",
+    "copy": "Copy",
+    "domains_title": "Allowed domains",
+    "domains_desc": "Add the domains where the widget is allowed to run. Maximum 10 domains.",
+    "add_domain": "Add",
+    "save": "Save",
+    "no_domains": "No domains configured. The widget will work on all domains.",
+    "customize_title": "Customization",
+    "primary_color": "Primary color",
+    "position": "Position",
+    "ecommerce_mode": "E-commerce mode",
+    "preview": "Live preview",
+    "verify_title": "Verification",
+    "pos_bottom_right": "Bottom right",
+    "pos_bottom_left": "Bottom left",
+    "check_copy": "I copied the snippet above",
+    "check_paste": "I pasted the code before </body> on my site",
+    "check_deploy": "I deployed/published the change",
+    "check_visible": "The VocalIA icon appears at the bottom of my site",
+    "verify_success": "Installation complete! Your voice assistant is active."
   }
 }

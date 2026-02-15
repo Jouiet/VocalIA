@@ -60,6 +60,15 @@ const SCHEMAS = {
       'payment_details',    // Payment instructions
       // Billing (C8 fix)
       'stripe_customer_id', // Stripe customer ID for billing
+      // Settings (B24 fix: fields were silently dropped by objectToRow)
+      'webhook_url',        // Outgoing webhook URL
+      'webhook_secret',     // HMAC secret for webhook
+      'webhook_events',     // JSON array of subscribed events
+      'api_keys',           // JSON array of API key objects
+      'integrations',       // JSON array of connected integrations
+      'notifications',      // JSON object of notification preferences
+      'slack_notifications_enabled', // boolean
+      'slack_channel',      // Slack channel ID for tenant notifications
       // Timestamps
       'created_at', 'updated_at'
     ],
@@ -86,6 +95,7 @@ const SCHEMAS = {
       'id', 'email', 'password_hash', 'role', 'tenant_id', 'name', 'phone', 'avatar_url',
       'email_verified', 'email_verify_token', 'email_verify_expires',
       'password_reset_token', 'password_reset_expires',
+      'oauth_provider', 'oauth_provider_id', 'linked_providers',
       'last_login', 'login_count', 'failed_login_count', 'locked_until',
       'preferences', 'created_at', 'updated_at'
     ],
@@ -332,7 +342,12 @@ class GoogleSheetsDB {
     const schema = SCHEMAS[sheet];
     const obj = {};
     schema.columns.forEach((col, i) => {
-      obj[col] = row[i] || null;
+      let val = row[i] || null;
+      // B25 fix: Auto-parse JSON strings for array/object fields
+      if (val && typeof val === 'string' && (val[0] === '[' || val[0] === '{')) {
+        try { val = JSON.parse(val); } catch { /* keep as string */ }
+      }
+      obj[col] = val;
     });
     return obj;
   }
@@ -342,7 +357,12 @@ class GoogleSheetsDB {
    */
   objectToRow(sheet, obj) {
     const schema = SCHEMAS[sheet];
-    return schema.columns.map(col => obj[col] ?? '');
+    return schema.columns.map(col => {
+      const val = obj[col] ?? '';
+      // B25 fix: Auto-serialize arrays/objects to JSON strings
+      if (val !== null && typeof val === 'object') return JSON.stringify(val);
+      return val;
+    });
   }
 
   // ==================== CRUD OPERATIONS ====================
