@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-02-16T00:49:50.985Z",
+  "updated": "2026-02-16T21:30:59.335Z",
   "tenants": {
     "restaurant_test": {
       "source": "custom",
@@ -2656,6 +2656,972 @@
     },
     "tenant_4a252056": {
       "name": "tenant_4a252056",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_f911aa9d": {
+      "name": "tenant_f911aa9d",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_6b70a4fe": {
+      "name": "tenant_6b70a4fe",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_2b10afe0": {
+      "name": "tenant_2b10afe0",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c68bd2aa": {
+      "name": "tenant_c68bd2aa",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_50089d4c": {
+      "name": "tenant_50089d4c",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_84d80fdc": {
+      "name": "tenant_84d80fdc",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c513cb2f": {
+      "name": "tenant_c513cb2f",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_43d93914": {
+      "name": "tenant_43d93914",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c3c284c6": {
+      "name": "tenant_c3c284c6",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_dcd6be82": {
+      "name": "tenant_dcd6be82",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c3e4a176": {
+      "name": "tenant_c3e4a176",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_34e3b798": {
+      "name": "tenant_34e3b798",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_e347ce15": {
+      "name": "tenant_e347ce15",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_351d8e07": {
+      "name": "tenant_351d8e07",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_df59692e": {
+      "name": "tenant_df59692e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_f34dfefa": {
+      "name": "tenant_f34dfefa",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_45ba6755": {
+      "name": "tenant_45ba6755",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_ebc5494e": {
+      "name": "tenant_ebc5494e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d29fcbd9": {
+      "name": "tenant_d29fcbd9",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d039f8dd": {
+      "name": "tenant_d039f8dd",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_dec3428e": {
+      "name": "tenant_dec3428e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_21b160b4": {
+      "name": "tenant_21b160b4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c4ea3000": {
+      "name": "tenant_c4ea3000",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_3c7fff02": {
+      "name": "tenant_3c7fff02",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5e0a1550": {
+      "name": "tenant_5e0a1550",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_787a6386": {
+      "name": "tenant_787a6386",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_28a39ea8": {
+      "name": "tenant_28a39ea8",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_ed19ed88": {
+      "name": "tenant_ed19ed88",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_0ec5baf0": {
+      "name": "tenant_0ec5baf0",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_87bbf5dc": {
+      "name": "tenant_87bbf5dc",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_9950ebc4": {
+      "name": "tenant_9950ebc4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_57681f9d": {
+      "name": "tenant_57681f9d",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_755ad50b": {
+      "name": "tenant_755ad50b",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_98720572": {
+      "name": "tenant_98720572",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_98b7b86b": {
+      "name": "tenant_98b7b86b",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_cba9812a": {
+      "name": "tenant_cba9812a",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c0d8022a": {
+      "name": "tenant_c0d8022a",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_baf41025": {
+      "name": "tenant_baf41025",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_938f71c3": {
+      "name": "tenant_938f71c3",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_07dbde26": {
+      "name": "tenant_07dbde26",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_4a0805f3": {
+      "name": "tenant_4a0805f3",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b676c46e": {
+      "name": "tenant_b676c46e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_9b151b9a": {
+      "name": "tenant_9b151b9a",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_54a82539": {
+      "name": "tenant_54a82539",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_aef6e633": {
+      "name": "tenant_aef6e633",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_4b8e3264": {
+      "name": "tenant_4b8e3264",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_6fb2fa14": {
+      "name": "tenant_6fb2fa14",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_59be2312": {
+      "name": "tenant_59be2312",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_f84f750d": {
+      "name": "tenant_f84f750d",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_fce8c170": {
+      "name": "tenant_fce8c170",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_2a2c4bef": {
+      "name": "tenant_2a2c4bef",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_fcc6b9f4": {
+      "name": "tenant_fcc6b9f4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_97e53fe5": {
+      "name": "tenant_97e53fe5",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c5ba7ae5": {
+      "name": "tenant_c5ba7ae5",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_52919427": {
+      "name": "tenant_52919427",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d61745dd": {
+      "name": "tenant_d61745dd",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_9f26355f": {
+      "name": "tenant_9f26355f",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d74faf2a": {
+      "name": "tenant_d74faf2a",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_0ebfde25": {
+      "name": "tenant_0ebfde25",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_dfd328fb": {
+      "name": "tenant_dfd328fb",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_3ea57d4c": {
+      "name": "tenant_3ea57d4c",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_beaac1fe": {
+      "name": "tenant_beaac1fe",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_1898f59f": {
+      "name": "tenant_1898f59f",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5cfa15a0": {
+      "name": "tenant_5cfa15a0",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_254000dd": {
+      "name": "tenant_254000dd",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_2e83ffd8": {
+      "name": "tenant_2e83ffd8",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b6de1062": {
+      "name": "tenant_b6de1062",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_3cfa4464": {
+      "name": "tenant_3cfa4464",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_eeeb6e84": {
+      "name": "tenant_eeeb6e84",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_39bda9cf": {
+      "name": "tenant_39bda9cf",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_e4338adc": {
+      "name": "tenant_e4338adc",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_dc5079a5": {
+      "name": "tenant_dc5079a5",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_6a622c82": {
+      "name": "tenant_6a622c82",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5617306e": {
+      "name": "tenant_5617306e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c6cd4e0d": {
+      "name": "tenant_c6cd4e0d",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_8d3ee840": {
+      "name": "tenant_8d3ee840",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_12716087": {
+      "name": "tenant_12716087",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c14a5fe4": {
+      "name": "tenant_c14a5fe4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_6f5492b7": {
+      "name": "tenant_6f5492b7",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_8366469f": {
+      "name": "tenant_8366469f",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_47c2186a": {
+      "name": "tenant_47c2186a",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_ab305f6e": {
+      "name": "tenant_ab305f6e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_84f234a4": {
+      "name": "tenant_84f234a4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_db77f309": {
+      "name": "tenant_db77f309",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b9458421": {
+      "name": "tenant_b9458421",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_42986aa5": {
+      "name": "tenant_42986aa5",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_05b913fc": {
+      "name": "tenant_05b913fc",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_8be63c61": {
+      "name": "tenant_8be63c61",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_eb259159": {
+      "name": "tenant_eb259159",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_38a84fc4": {
+      "name": "tenant_38a84fc4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_1df2d4c6": {
+      "name": "tenant_1df2d4c6",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_4b9b7bde": {
+      "name": "tenant_4b9b7bde",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_13bae035": {
+      "name": "tenant_13bae035",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_4a730146": {
+      "name": "tenant_4a730146",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_baa9ffaa": {
+      "name": "tenant_baa9ffaa",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_69eebb03": {
+      "name": "tenant_69eebb03",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5e0e60a9": {
+      "name": "tenant_5e0e60a9",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b67c618e": {
+      "name": "tenant_b67c618e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b1dfccd4": {
+      "name": "tenant_b1dfccd4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_0bf538fe": {
+      "name": "tenant_0bf538fe",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_2bb5a556": {
+      "name": "tenant_2bb5a556",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_63c7c845": {
+      "name": "tenant_63c7c845",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_9749c5ea": {
+      "name": "tenant_9749c5ea",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_659bd5fb": {
+      "name": "tenant_659bd5fb",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_1c492787": {
+      "name": "tenant_1c492787",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_bc16f773": {
+      "name": "tenant_bc16f773",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_94ba21f8": {
+      "name": "tenant_94ba21f8",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_35e3650c": {
+      "name": "tenant_35e3650c",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_ba0fcd09": {
+      "name": "tenant_ba0fcd09",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d2275a1e": {
+      "name": "tenant_d2275a1e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_af6b556b": {
+      "name": "tenant_af6b556b",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c2c6ca74": {
+      "name": "tenant_c2c6ca74",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b38a1e9e": {
+      "name": "tenant_b38a1e9e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_59a15744": {
+      "name": "tenant_59a15744",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5987b2ef": {
+      "name": "tenant_5987b2ef",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_0c185a6e": {
+      "name": "tenant_0c185a6e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_baf1dd7e": {
+      "name": "tenant_baf1dd7e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_542bbd3e": {
+      "name": "tenant_542bbd3e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_ff88d068": {
+      "name": "tenant_ff88d068",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_a344dd84": {
+      "name": "tenant_a344dd84",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_8924f23e": {
+      "name": "tenant_8924f23e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_e85a4853": {
+      "name": "tenant_e85a4853",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_63726227": {
+      "name": "tenant_63726227",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_dec9ca7b": {
+      "name": "tenant_dec9ca7b",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_654e98f2": {
+      "name": "tenant_654e98f2",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5f52e0d9": {
+      "name": "tenant_5f52e0d9",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_8cd072d3": {
+      "name": "tenant_8cd072d3",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b4be48f0": {
+      "name": "tenant_b4be48f0",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_4a7bfc4e": {
+      "name": "tenant_4a7bfc4e",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_e68d2f72": {
+      "name": "tenant_e68d2f72",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_f0d156d4": {
+      "name": "tenant_f0d156d4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_fc1ec20f": {
+      "name": "tenant_fc1ec20f",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d3c214f2": {
+      "name": "tenant_d3c214f2",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_0aca76f9": {
+      "name": "tenant_0aca76f9",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_56c0bc27": {
+      "name": "tenant_56c0bc27",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_ba89d147": {
+      "name": "tenant_ba89d147",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_6d75e6d8": {
+      "name": "tenant_6d75e6d8",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b633ccd4": {
+      "name": "tenant_b633ccd4",
       "connector": {
         "type": "custom",
         "catalogType": "products"

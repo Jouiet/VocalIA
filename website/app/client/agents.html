@@ -505,7 +505,7 @@
 
       const btn = document.getElementById('preview-voice-btn');
       btn.disabled = true;
-      toast.info(`Prévisualisation de ${voiceName}...`);
+      toast.info(VocaliaI18n.t('dashboard.agents_page.preview_voice').replace('{{voice}}', voiceName));
 
       try {
         const voiceApiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -540,16 +540,16 @@
         if (lang !== 'ary' && window.speechSynthesis) {
           try {
             await speakWithWebSpeech(messages[lang] || messages.fr, lang, gender);
-            toast.info('Prévisualisation via navigateur (service principal indisponible)');
+            toast.info(VocaliaI18n.t('dashboard.agents_page.preview_browser'));
           } catch (fallbackError) {
             console.error('Web Speech fallback also failed:', fallbackError);
-            toast.error('Prévisualisation indisponible - vérifiez que le service Voice API est actif');
+            toast.error(VocaliaI18n.t('dashboard.agents_page.preview_unavailable'));
           }
         } else if (lang === 'ary') {
           // Darija requires ElevenLabs - no browser fallback
-          toast.error('Prévisualisation Darija requiert le service Voice API actif');
+          toast.error(VocaliaI18n.t('dashboard.agents_page.preview_darija'));
         } else {
-          toast.error('Prévisualisation indisponible - vérifiez que le service Voice API est actif');
+          toast.error(VocaliaI18n.t('dashboard.agents_page.preview_unavailable'));
         }
       } finally {
         btn.disabled = false;
@@ -564,7 +564,7 @@
       try {
         const tenantId = auth.getTenantId();
         if (!tenantId) {
-          toast.error('Identifiant tenant manquant');
+          toast.error(VocaliaI18n.t('dashboard.agents_page.missing_tenant'));
           return;
         }
 
@@ -574,10 +574,10 @@
           voice_name: voiceName
         });
 
-        toast.success(`Voix ${voiceName} (${lang.toUpperCase()}) enregistrée`);
+        toast.success(VocaliaI18n.t('dashboard.agents_page.voice_saved_full').replace('{{voice}}', voiceName).replace('{{lang}}', lang.toUpperCase()));
       } catch (error) {
         console.error('Failed to save voice config:', error);
-        toast.error('Erreur lors de l\'enregistrement');
+        toast.error(VocaliaI18n.t('dashboard.agents_page.save_error'));
       }
     });
 
@@ -598,7 +598,7 @@
 
       if (confirmed) {
         window.open('mailto:enterprise@vocalia.ma?subject=Demande%20Persona%20Personnalisé&body=Bonjour,%0A%0AJe%20souhaite%20un%20persona%20personnalisé%20pour%20mon%20activité.%0A%0ASecteur:%20%0ABesoins%20spécifiques:%20%0A%0AMerci', '_blank');
-        toast.success('Redirection vers le formulaire de contact Enterprise');
+        toast.success(VocaliaI18n.t('dashboard.agents_page.redirect_enterprise'));
       }
     });
   </script>

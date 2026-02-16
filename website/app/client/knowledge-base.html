@@ -82,7 +82,7 @@
                 <i data-lucide="database" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
               </div>
               <div>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.index_size">Index TF-IDF</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.index_size">Index de recherche</p>
                 <p id="stat-index" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
               </div>
             </div>
@@ -214,11 +214,11 @@
             </select>
             <button id="btn-crawl-url" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
               <i data-lucide="globe" class="w-4 h-4"></i>
-              <span data-i18n="kb.crawl_url">Crawler URL</span>
+              <span data-i18n="kb.crawl_url">Importer depuis un site</span>
             </button>
             <button id="btn-rebuild-index" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
               <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-              <span data-i18n="kb.rebuild_index">Reconstruire Index</span>
+              <span data-i18n="kb.rebuild_index">Mettre à jour l'index</span>
             </button>
             <button id="btn-test-chatbot" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-2">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
@@ -265,18 +265,18 @@
       </div>
       <form id="entry-form" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.key">Clé (identifiant unique)</label>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.key">Sujet (identifiant unique)</label>
           <input type="text" id="entry-key" required pattern="[a-z0-9_]+" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: horaires, livraison, promotions">
           <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.key_hint">Lettres minuscules, chiffres et underscores uniquement</p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.response">Réponse (texte affiché à l'utilisateur)</label>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.response">Réponse de votre agent vocal</label>
           <textarea id="entry-response" rows="3" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: Notre boutique est ouverte du lundi au samedi de 9h à 20h."></textarea>
         </div>
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.details">Détails (JSON optionnel)</label>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.details">Informations complémentaires (optionnel)</label>
           <textarea id="entry-details" rows="4" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder='{"lundi": "09:00-20:00", "mardi": "09:00-20:00"}'></textarea>
-          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.details_hint">Format JSON valide pour les données structurées</p>
+          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.details_hint">Horaires, tarifs, détails produit ou toute information utile</p>
         </div>
         <div>
           <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.language">Langue</label>
@@ -305,7 +305,7 @@
     <div class="absolute inset-0 bg-black/50" id="import-modal-backdrop"></div>
     <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.import_modal.title">Importer des données</h3>
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.import_modal.title">Importer vos informations</h3>
         <button id="import-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
@@ -313,7 +313,7 @@
       <div class="p-6 space-y-4">
         <div class="border-2 border-dashed border-zinc-300 dark:border-white/[0.08] rounded-lg p-8 text-center" id="drop-zone">
           <i data-lucide="upload-cloud" class="w-12 h-12 text-zinc-400 mx-auto mb-4"></i>
-          <p class="text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez un fichier JSON ou CSV ici</p>
+          <p class="text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez votre fichier ici (tableur Excel, liste...)</p>
           <p class="text-sm text-zinc-500 mb-4" data-i18n="kb.import_modal.or">ou</p>
           <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg cursor-pointer inline-block">
             <span data-i18n="kb.import_modal.browse">Parcourir</span>
@@ -362,7 +362,7 @@
     <div class="absolute inset-0 bg-black/50" id="crawl-modal-backdrop"></div>
     <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.crawl_modal.title">Crawler un site web</h3>
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.crawl_modal.title">Importer depuis un site web</h3>
         <button id="crawl-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>

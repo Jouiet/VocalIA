@@ -577,7 +577,7 @@
     // Logout
     logoutBtn?.addEventListener('click', async () => {
       await auth.logout();
-      toast.success('Déconnexion réussie');
+      toast.success(VocaliaI18n.t('dashboard.common.logout_success'));
       window.location.href = '/app/auth/login.html';
     });
 
@@ -589,7 +589,7 @@
       userEmail.textContent = user.email;
       const t = window.VocaliaI18n?.t || ((k, fb) => fb);
       const name = user.name || user.email.split('@')[0];
-      welcomeMessage.textContent = t('dashboard.header.welcome', `Bienvenue, ${name}.`).replace('{{name}}', name);
+      welcomeMessage.textContent = t('dashboard.header.welcome', { name }) || `Bienvenue, ${name}.`;
     }
 
     // Animated stat counter (Phase 2.1 - Data Showcase)
@@ -694,7 +694,7 @@
 
       } catch (error) {
         console.error('Dashboard load error:', error);
-        toast.error('Erreur de chargement des données');
+        toast.error(VocaliaI18n.t('dashboard.common.data_load_error'));
       }
     }
 
@@ -869,7 +869,7 @@
         const sortedLangs = Object.entries(langCounts).sort((a, b) => b[1] - a[1]);
         const labels = sortedLangs.length > 0
           ? sortedLangs.map(([code]) => langLabels[code] || code.toUpperCase())
-          : ['Aucune donnée'];
+          : [window.VocaliaI18n ? VocaliaI18n.t('dashboard.analytics_page.no_data') || 'Aucune donnée' : 'Aucune donnée'];
         const data = sortedLangs.length > 0
           ? sortedLangs.map(([, count]) => count)
           : [1];

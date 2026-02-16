@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n-title="home.vocalia_agents_vocaux_32">VocalIA - Agents Vocaux IA pour Entreprises</title>
   <meta name="description"
-    content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées.">
+    content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie IA. 5 langues supportées.">
   <link rel="canonical" href="https://vocalia.ma/" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -25,7 +25,7 @@
   <meta property="og:url" content="https://vocalia.ma/" />
   <meta property="og:title" content="VocalIA - Agents Vocaux IA pour Entreprises" />
   <meta property="og:description"
-    content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées." />
+    content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie IA. 5 langues supportées." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:site_name" content="VocalIA" />
@@ -35,7 +35,7 @@
   <meta property="twitter:url" content="https://vocalia.ma/" />
   <meta property="twitter:title" content="VocalIA - Agents Vocaux IA pour Entreprises" />
   <meta property="twitter:description"
-    content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées." />
+    content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie IA. 5 langues supportées." />
   <meta property="twitter:image" content="https://vocalia.ma/public/images/og-image.webp" />
   <meta property="twitter:site" content="@VocalIA_ma" />
 
@@ -59,13 +59,13 @@
           "description": "Plateforme d'agents vocaux IA pour l'automatisation du service client et des ventes. 4 offres: Starter, Pro, E-commerce, Telephony.",
           "featureList": [
             "Text chat + voice AI conversation",
-            "Voice recognition (Web Speech API + ElevenLabs STT)",
+            "Voice recognition (browser + ElevenLabs STT)",
             "Voice synthesis TTS (ElevenLabs, 5 languages)",
-            "5-level AI fallback: Grok → Gemini → Claude → Atlas → local",
-            "RAG knowledge base per tenant",
+            "5-level AI redundancy: Grok → Gemini → Claude → Atlas → local",
+            "Intelligent knowledge base per client",
             "38 industry personas × 5 languages (190 prompt variants)",
             "Automatic email/name/phone detection",
-            "BANT scoring (Budget, Authority, Need, Timeline)",
+            "Automatic qualification scoring (Budget, Authority, Need, Timeline)",
             "Lead classification (hot/warm/cold)",
             "In-chat appointment booking with push notifications",
             "Calendar integration (Google Calendar, Outlook, Calendly)",
@@ -78,12 +78,12 @@
             "Product carousel, info cards, quick reply buttons",
             "5 native languages (FR/EN/ES/AR/Darija) with automatic RTL",
             "Geo-detection (language + currency by location)",
-            "Shadow DOM isolation, XSS protection, CSP headers",
-            "SRI integrity on 78 CDN scripts",
-            "Tenant isolation, rate limiting, JWT authentication",
-            "19 GA4 events, real-time dashboard",
-            "JSON + HTML attribute configuration, A/B testing",
-            "API + Webhooks integration",
+            "Widget isolation, security headers",
+            "Integrity verification on external scripts",
+            "Account isolation, secure authentication",
+            "19 Analytics events, real-time dashboard",
+            "Simple attribute configuration, A/B testing",
+            "API + Notifications integration",
             "Human escalation"
           ]
         },
@@ -107,7 +107,7 @@
             "@type": "SpeakableSpecification",
             "cssSelector": [".hero-title", ".hero-subtitle", ".value-proposition"]
           },
-          "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues natives. Plateforme tout-en-un avec personas métier inclus."
+          "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie IA. 5 langues natives. Plateforme tout-en-un avec personas métier inclus."
         }
       ]
     }
@@ -401,6 +401,22 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- Value Propositions — Marketing vocabulary -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mt-12 px-4" data-animate="visual">
+        <div class="flex items-center gap-3 glass rounded-xl px-4 py-3 border border-white/[0.06]">
+          <i data-lucide="zap" class="w-5 h-5 text-vocalia-400 flex-shrink-0"></i>
+          <span class="text-sm text-zinc-300" data-i18n="hero.vp_capacity">100× plus d'appels, zéro recrutement</span>
+        </div>
+        <div class="flex items-center gap-3 glass rounded-xl px-4 py-3 border border-white/[0.06]">
+          <i data-lucide="heart-pulse" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
+          <span class="text-sm text-zinc-300" data-i18n="hero.vp_tireless">Jamais fatigué, jamais en congé</span>
+        </div>
+        <div class="flex items-center gap-3 glass rounded-xl px-4 py-3 border border-white/[0.06]">
+          <i data-lucide="trending-down" class="w-5 h-5 text-amber-400 flex-shrink-0"></i>
+          <span class="text-sm text-zinc-300" data-i18n="hero.vp_cost">Coût marginal quasi nul par appel</span>
+        </div>
       </div>
 
       <!-- Scroll indicator -->
@@ -916,7 +932,7 @@
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name1">Scénario E-commerce</div>
-              <div class="text-sm text-zinc-400" data-i18n="testimonials.role1">Widget Voice AI • Qualification BANT
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role1">Widget Voice AI • Qualification Automatique
               </div>
             </div>
           </div>
@@ -933,7 +949,7 @@
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
           </div>
           <blockquote class="text-zinc-300 mb-6 leading-relaxed" data-i18n="testimonials.quote2">
-            "La téléphonie PSTN VocalIA gère les rendez-vous 24/7 avec 25 function tools : prise de RDV, rappels, qualification et suivi — le tout à 0,24€/min avec IA, personas et analytics inclus."
+            "La téléphonie IA VocalIA gère les rendez-vous 24/7 avec 25 fonctionnalités : prise de RDV, rappels, qualification et suivi — le tout à 0,24€/min avec IA, personas et analytics inclus."
           </blockquote>
           <div class="flex items-center gap-3">
             <div
@@ -942,7 +958,7 @@
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name2">Scénario Clinique</div>
-              <div class="text-sm text-zinc-400" data-i18n="testimonials.role2">Téléphonie PSTN • Prise de RDV 24/7</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role2">Téléphonie IA • Prise de RDV 24/7</div>
             </div>
           </div>
         </div>
@@ -958,7 +974,7 @@
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
           </div>
           <blockquote class="text-zinc-300 mb-6 leading-relaxed" data-i18n="testimonials.quote3">
-            "Avec 203 outils MCP intégrés (Shopify, WooCommerce, HubSpot, Stripe...) et 38 personas métier, VocalIA s'adapte à n'importe quel secteur : immobilier, santé, e-commerce, restauration."
+            "Avec 203 connecteurs intégrés (Shopify, WooCommerce, HubSpot, Stripe...) et 38 personas métier, VocalIA s'adapte à n'importe quel secteur : immobilier, santé, e-commerce, restauration."
           </blockquote>
           <div class="flex items-center gap-3">
             <div
@@ -967,29 +983,29 @@
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name3">Scénario Multi-Secteur</div>
-              <div class="text-sm text-zinc-400" data-i18n="testimonials.role3">203 Intégrations MCP • 38 Personas</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role3">203 Intégrations • 38 Personas</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Stats Bar — Verifiable tech metrics -->
+      <!-- Stats Bar — Client-friendly hard numbers -->
       <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <div class="p-4">
           <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">38</div>
-          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat1">Personas Métier IA</div>
+          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat1">Assistants métier prêts à l'emploi</div>
         </div>
         <div class="p-4">
-          <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">203</div>
-          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat2">Outils MCP Intégrés</div>
+          <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">86</div>
+          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat2">Fonctionnalités vérifiées</div>
         </div>
         <div class="p-4">
-          <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">25</div>
-          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat3">Function Tools Téléphonie</div>
+          <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">24/7</div>
+          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat3">Disponible sans interruption</div>
         </div>
         <div class="p-4">
           <div class="text-3xl md:text-4xl font-bold gradient-text mb-2">5</div>
-          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat4">Langues Supportées</div>
+          <div class="text-zinc-400 text-sm" data-i18n="testimonials.stat4">Langues parlées nativement</div>
         </div>
       </div>
     </div>

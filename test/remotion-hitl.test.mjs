@@ -20,28 +20,24 @@ import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { STATES, queueVideo, getPending, getVideo, updateVideo, approveVideo, rejectVideo, markRendering, markGenerating, markCompleted, markFailed, getStats, getAuditLog, hitlEvents } from '../core/remotion-hitl.cjs';
 
-// ─── Test isolation: backup/restore queue file to prevent cross-test contamination ───
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const QUEUE_FILE = path.join(__dirname, '../data/remotion-hitl/pending-queue.json');
-const QUEUE_BACKUP = QUEUE_FILE + '.test-backup';
+// ─── PID-isolated queue file to prevent cross-process race condition ───
+const TEMP_QUEUE = path.join(os.tmpdir(), `hitl-test-${process.pid}.json`);
+process.env.REMOTION_HITL_QUEUE_FILE = TEMP_QUEUE;
+
+const { STATES, queueVideo, getPending, getVideo, updateVideo, approveVideo, rejectVideo, markRendering, markGenerating, markCompleted, markFailed, getStats, getAuditLog, hitlEvents } = await import('../core/remotion-hitl.cjs');
 
 before(() => {
-  // Backup existing queue, start with clean state
-  if (fs.existsSync(QUEUE_FILE)) {
-    fs.copyFileSync(QUEUE_FILE, QUEUE_BACKUP);
-  }
-  fs.writeFileSync(QUEUE_FILE, JSON.stringify({ items: [], lastUpdated: null }, null, 2));
+  // Start with clean state
+  fs.writeFileSync(TEMP_QUEUE, JSON.stringify({ items: [], lastUpdated: null }, null, 2));
 });
 
 after(() => {
-  // Restore original queue
-  if (fs.existsSync(QUEUE_BACKUP)) {
-    fs.copyFileSync(QUEUE_BACKUP, QUEUE_FILE);
-    fs.unlinkSync(QUEUE_BACKUP);
-  }
+  // Cleanup temp file
+  try { fs.unlinkSync(TEMP_QUEUE); } catch (e) { /* ignore */ }
+  delete process.env.REMOTION_HITL_QUEUE_FILE;
 });
 
 // ─── STATES ─────────────────────────────────────────────────────────

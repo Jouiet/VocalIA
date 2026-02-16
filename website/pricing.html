@@ -299,7 +299,7 @@
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.pro_f2">Qualification leads BANT</span>
+              <span data-i18n="pricing_page.pro_f2">Qualification automatique des leads</span>
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
@@ -352,7 +352,7 @@
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.ecom_f3">Product Quiz IA + Carousel</span>
+              <span data-i18n="pricing_page.ecom_f3">Quiz Produit IA + Carrousel</span>
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
@@ -382,12 +382,12 @@
             <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span> + <span id="telephonyOverageText">0.24€/min</span></p>
           </div>
 
-          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.telephony_desc">Réceptionniste IA 24/7 sur ligne PSTN.</p>
+          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.telephony_desc">Réceptionniste IA 24/7 sur votre ligne téléphonique.</p>
 
           <ul class="space-y-3 mb-8 text-sm">
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.telephony_f1">Ligne PSTN dédiée (FR)</span>
+              <span data-i18n="pricing_page.telephony_f1">Ligne téléphonique dédiée (FR)</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
@@ -521,6 +521,111 @@
     </div>
   </section>
 
+  <!-- Human Receptionist vs VocalIA -->
+  <section class="py-20 relative">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="pricing_page.vs_title">Réceptionniste Humain vs VocalIA</h2>
+        <p class="text-lg text-zinc-400 max-w-2xl mx-auto" data-i18n="pricing_page.vs_subtitle">Les chiffres parlent d'eux-mêmes. Comparez le coût réel d'un employé avec VocalIA.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <!-- Human Receptionist -->
+        <div class="glass rounded-2xl p-8 border border-red-500/20 relative">
+          <div class="absolute -top-3 left-6 px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full text-red-400 text-xs font-semibold uppercase tracking-wider" data-i18n="pricing_page.vs_human_badge">Méthode traditionnelle</div>
+          <div class="mt-4 mb-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                <i data-lucide="user" class="w-6 h-6 text-red-400"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white" data-i18n="pricing_page.vs_human_title">Réceptionniste</h3>
+                <p class="text-sm text-zinc-400" data-i18n="pricing_page.vs_human_role">Employé temps plein</p>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-4 text-sm">
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_cost">Coût mensuel</span>
+              <span class="text-red-400 font-bold text-lg">~2 500<span data-currency-symbol>€</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_hours">Heures / mois</span>
+              <span class="text-white font-semibold">176h <span class="text-zinc-500 text-xs">(8h × 22j)</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_capacity">Capacité</span>
+              <span class="text-white font-semibold">~2 640 <span class="text-zinc-500 text-xs" data-i18n="pricing_page.vs_calls_month">appels/mois</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_languages">Langues</span>
+              <span class="text-white font-semibold">1-2</span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_availability">Disponibilité</span>
+              <span class="text-zinc-400">8h/j, 5j/7</span>
+            </div>
+            <div class="flex justify-between items-center py-3">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_hidden_costs">Coûts cachés</span>
+              <span class="text-red-400 text-xs" data-i18n="pricing_page.vs_hidden_list">Congés, formation, turnover</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- VocalIA -->
+        <div class="glass rounded-2xl p-8 border border-vocalia-500/30 relative">
+          <div class="absolute -top-3 left-6 px-3 py-1 bg-vocalia-500/20 border border-vocalia-500/30 rounded-full text-vocalia-300 text-xs font-semibold uppercase tracking-wider">VocalIA Pro</div>
+          <div class="mt-4 mb-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-xl bg-vocalia-500/10 flex items-center justify-center">
+                <i data-lucide="bot" class="w-6 h-6 text-vocalia-400"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white" data-i18n="pricing_page.vs_vocalia_title">Agent Vocal IA</h3>
+                <p class="text-sm text-zinc-400" data-i18n="pricing_page.vs_vocalia_role">Disponible en permanence</p>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-4 text-sm">
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_cost">Coût mensuel</span>
+              <span class="text-emerald-400 font-bold text-lg">99<span data-currency-symbol>€</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_hours">Heures / mois</span>
+              <span class="text-white font-semibold">720h <span class="text-zinc-500 text-xs">(24h × 30j)</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_capacity">Capacité</span>
+              <span class="text-vocalia-400 font-semibold">~43 200 <span class="text-zinc-500 text-xs" data-i18n="pricing_page.vs_calls_month">appels/mois</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_languages">Langues</span>
+              <span class="text-vocalia-400 font-semibold">5 <span class="text-zinc-500 text-xs">(FR/EN/ES/AR/Darija)</span></span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-white/[0.06]">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_availability">Disponibilité</span>
+              <span class="text-emerald-400 font-semibold">24h/24, 7j/7</span>
+            </div>
+            <div class="flex justify-between items-center py-3">
+              <span class="text-zinc-400" data-i18n="pricing_page.vs_hidden_costs">Coûts cachés</span>
+              <span class="text-emerald-400 font-semibold" data-i18n="pricing_page.vs_no_hidden">Aucun</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom highlight -->
+      <div class="mt-8 text-center">
+        <div class="inline-flex items-center gap-3 px-6 py-3 glass rounded-xl border border-vocalia-500/20">
+          <i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i>
+          <span class="text-white font-semibold" data-i18n="pricing_page.vs_result">16× plus de capacité pour 4% du coût d'un employé</span>
+        </div>
+        <p class="text-xs text-zinc-500 mt-3" data-i18n="pricing_page.vs_disclaimer">* Basé sur un réceptionniste temps plein en Europe (~2 500€ chargé/mois) vs VocalIA Pro 99€/mois. Capacité estimée à 15 appels/h (humain) vs 60 req/h (IA).</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Feature Comparison Table -->
   <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -565,14 +670,14 @@
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_fallback">Multi-AI Fallback (5 niv.)</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_fallback">Redondance IA (5 niv.)</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_rag">Base de connaissances RAG</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_rag">Base de connaissances intelligente</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-conversation" class="text-emerald-400" title="Détails">✓</a></td>
@@ -590,7 +695,7 @@
               <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_bant">Score BANT automatique</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_bant">Score de qualification automatique</td>
               <td class="text-center py-3 px-4 text-zinc-600">—</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-qualification" class="text-emerald-400" title="Détails">✓</a></td>
@@ -615,7 +720,7 @@
               <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_booking_notif">Webhook booking</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_booking_notif">Notification de réservation</td>
               <td class="text-center py-3 px-4 text-zinc-600">—</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-booking" class="text-emerald-400" title="Détails">✓</a></td>
@@ -679,7 +784,7 @@
               <td class="text-center py-3 px-4 text-zinc-600">—</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_carousel">Carousel produits</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_carousel">Carrousel produits</td>
               <td class="text-center py-3 px-4 text-zinc-600">—</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-a2ui" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-a2ui" class="text-emerald-400" title="Détails">✓</a></td>
@@ -704,21 +809,21 @@
               <td class="text-center py-3 px-4"><a href="/features#feat-multilingue" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_shadow_dom">Shadow DOM isolation</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_shadow_dom">Isolation CSS du widget</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-securite" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-securite" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-securite" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4 text-zinc-600">—</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_ga4">GA4 Analytics (19 events)</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_ga4">Google Analytics (19 événements)</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-analytics" class="text-emerald-400" title="Détails">✓</a></td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-3 px-4" data-i18n="pricing_page.row_api">API + Webhooks</td>
+              <td class="py-3 px-4" data-i18n="pricing_page.row_api">Connexions & Automatisations</td>
               <td class="text-center py-3 px-4 text-zinc-600">—</td>
               <td class="text-center py-3 px-4"><a href="/features#feat-config" class="text-emerald-400" title="Détails">✓</a></td>
               <td class="text-center py-3 px-4"><a href="/features#feat-config" class="text-emerald-400" title="Détails">✓</a></td>
@@ -918,6 +1023,7 @@
       // Synchronized with Starter/Pro/ECOM/Telephony pricing (250.142)
       let currentPricing = { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 };
       let isAnnual = false; // Annual billing not yet available
+      const ANNUAL_DISCOUNT = 0.15; // 15% discount for annual billing (not yet active)
 
       function formatPrice(amount, symbol, currency) {
         if (currency === 'MAD') return `${amount} ${symbol}`;

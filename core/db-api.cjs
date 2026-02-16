@@ -3903,18 +3903,25 @@ async function startServer() {
     }, 10000);
   };
 
-  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+  // B52 fix: Only register signal handlers when running as standalone server.
+  // In test child processes, gracefulShutdown's process.exit(0) fires when
+  // the test runner sends SIGTERM, interrupting the IPC result flush and
+  // corrupting the v8 serialization buffer → intermittent
+  // "Unable to deserialize cloned data" ERR_TEST_FAILURE.
+  if (require.main === module) {
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
-  process.on('uncaughtException', (err) => {
-    console.error('❌ [DB-API] Uncaught exception:', err.message);
-    console.error(err.stack);
-    gracefulShutdown('uncaughtException');
-  });
+    process.on('uncaughtException', (err) => {
+      console.error('❌ [DB-API] Uncaught exception:', err.message);
+      console.error(err.stack);
+      gracefulShutdown('uncaughtException');
+    });
 
-  process.on('unhandledRejection', (reason) => {
-    console.error('❌ [DB-API] Unhandled rejection:', reason);
-  });
+    process.on('unhandledRejection', (reason) => {
+      console.error('❌ [DB-API] Unhandled rejection:', reason);
+    });
+  }
 
   return { server, wss };
 }

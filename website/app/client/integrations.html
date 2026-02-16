@@ -52,7 +52,7 @@
             <div class="flex gap-6">
               <div class="text-center">
                 <p class="text-4xl font-bold" id="mcp-tools-count">203</p>
-                <p class="text-emerald-200 text-sm" data-i18n="integrations.mcp_tools_label">MCP Tools</p>
+                <p class="text-emerald-200 text-sm" data-i18n="integrations.mcp_tools_label">Connecteurs</p>
               </div>
               <div class="text-center">
                 <p class="text-4xl font-bold">31+</p>
@@ -66,38 +66,38 @@
           </div>
         </div>
 
-        <!-- Webhook Health Dashboard -->
+        <!-- Notification Health Dashboard -->
         <section>
-          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Webhook Health</h2>
+          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4" data-i18n="integrations.notification_health">Santé des notifications</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
               <div class="flex items-center gap-2 mb-2">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <p class="text-xs text-zinc-500 uppercase tracking-wider">Uptime</p>
+                <p class="text-xs text-zinc-500 uppercase tracking-wider" data-i18n="integrations.uptime">Disponibilité</p>
               </div>
               <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="webhook-uptime">--</p>
-              <p class="text-xs text-green-500 mt-1">30 derniers jours</p>
+              <p class="text-xs text-green-500 mt-1" data-i18n="integrations.last_30_days">30 derniers jours</p>
             </div>
             <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
               <div class="flex items-center gap-2 mb-2">
                 <i data-lucide="send" class="w-4 h-4 text-zinc-400"></i>
-                <p class="text-xs text-zinc-500 uppercase tracking-wider">Delivered</p>
+                <p class="text-xs text-zinc-500 uppercase tracking-wider" data-i18n="integrations.delivered">Envoyées</p>
               </div>
               <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="webhook-delivered">--</p>
-              <p class="text-xs text-zinc-500 mt-1">Ce mois</p>
+              <p class="text-xs text-zinc-500 mt-1" data-i18n="dashboard.common.this_month">Ce mois</p>
             </div>
             <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
               <div class="flex items-center gap-2 mb-2">
                 <i data-lucide="alert-circle" class="w-4 h-4 text-zinc-400"></i>
-                <p class="text-xs text-zinc-500 uppercase tracking-wider">Failed</p>
+                <p class="text-xs text-zinc-500 uppercase tracking-wider" data-i18n="integrations.failed">Échouées</p>
               </div>
               <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="webhook-failed">0</p>
-              <p class="text-xs text-zinc-500 mt-1">Ce mois</p>
+              <p class="text-xs text-zinc-500 mt-1" data-i18n="dashboard.common.this_month">Ce mois</p>
             </div>
             <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
               <div class="flex items-center gap-2 mb-2">
                 <i data-lucide="zap" class="w-4 h-4 text-zinc-400"></i>
-                <p class="text-xs text-zinc-500 uppercase tracking-wider">Avg Latency</p>
+                <p class="text-xs text-zinc-500 uppercase tracking-wider" data-i18n="integrations.avg_latency">Latence moy.</p>
               </div>
               <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="webhook-latency">--</p>
               <p class="text-xs text-zinc-500 mt-1">ms</p>
@@ -493,7 +493,7 @@
         if (result.success) {
           toast.success(VocaliaI18n.t('dashboard.integrations_page.test_ok').replace('{{name}}', meta.name).replace('{{latency}}', result.latency_ms || 0));
         } else {
-          toast.warning(`${meta.name} — ${result.error || 'test failed'}`);
+          toast.warning(`${meta.name} — ${result.error || VocaliaI18n.t('dashboard.integrations_page.test_failed')}`);
         }
       } catch (error) {
         toast.error(VocaliaI18n.t('dashboard.integrations_page.test_error').replace('{{name}}', meta.name));
@@ -508,7 +508,7 @@
       if (tenantId) {
         try {
           await api.integrations.connect(tenantId, { name: justConnected, status: 'active' });
-          toast.success(`${(INTEGRATIONS_META[justConnected] || { name: justConnected }).name} connecté avec succès`);
+          toast.success(VocaliaI18n.t('dashboard.integrations_page.connected_success').replace('{{name}}', (INTEGRATIONS_META[justConnected] || { name: justConnected }).name));
         } catch (e) { /* silent — may already be connected */ }
       }
       // Clean URL
@@ -542,11 +542,11 @@
             const tenantId = auth.getTenantId() || user?.tenant_id;
             await api.integrations.connect(tenantId, { name: integrationName, status: 'active' });
             loading.close();
-            toast.success(`${meta.name} connecté avec succès`);
+            toast.success(VocaliaI18n.t('dashboard.integrations_page.connected_success').replace('{{name}}', meta.name));
             await loadIntegrations();
           } catch (error) {
             loading.close();
-            toast.error('Erreur lors de la connexion');
+            toast.error(VocaliaI18n.t('dashboard.integrations_page.connect_error'));
           }
         }
       });

@@ -15,7 +15,7 @@ const { EventEmitter } = require('events');
 // Configuration
 const PORT = process.env.REMOTION_HITL_PORT || 3012;
 const DATA_DIR = path.join(__dirname, '../data/remotion-hitl');
-const QUEUE_FILE = path.join(DATA_DIR, 'pending-queue.json');
+const QUEUE_FILE = process.env.REMOTION_HITL_QUEUE_FILE || path.join(DATA_DIR, 'pending-queue.json');
 const AUDIT_FILE = path.join(DATA_DIR, 'audit-log.jsonl');
 
 // Ensure data directory exists

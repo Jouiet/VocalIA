@@ -1,7 +1,8 @@
-# Session 250.214 — Rapport Strategique et Technique
+# VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Date**: 2026-02-16 | **Tests**: 6,152 pass, 0 fail (91 .mjs) | **Timeout**: 180s
-> **Scope**: 4 features dashboard, 4 lignes backend, 27 nettoyages "gratuit", ~40 cles i18n × 5 langues
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.217 (16/02/2026)
+> **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
+> **Tests**: ~6,233 pass, 0-1 fail intermittent (94 .mjs, B52 Node.js bug) | **Timeout**: 180s
 
 ---
 
@@ -362,9 +363,17 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 | 1 | **B38** | **MED** | `pricing.html` | ROI Calculator: slider "Tickets/jour" pas utilise dans le calcul | **CORRIGE** — `hoursNeeded = Math.min(agents * 160, (tickets * 5/60) * 22)` |
 | 2 | **B39** | **LOW** | `pricing.html` | ROI Calculator: aucun disclaimer | **CORRIGE** — `roi.disclaimer` × 5 langues |
 | 3 | **B40** | **INFO** | `analytics.html` | Sessions historiques sans `avg_latency_ms` → "--ms" | **BY DESIGN** |
-| 4 | **B41** | **LOW** | `analytics.html` | Detection booking via `duration > 60s` est imprecis | **OUVERT** |
+| 4 | **B41** | **HIGH** | `voice-api-resilient.cjs` + `analytics.html` | Detection booking via `duration > 60s` est imprecis | **CORRIGE** (250.215) — `session.booking_completed = true` + `status === 'hot' && qualificationComplete` |
 | 5 | **B42** | **LOW** | `knowledge-base.html` | 4 requetes API paralleles pour couverture langues | **OUVERT** |
 | 6 | **B43** | **MED** | 15 fichiers | "gratuit/free trial" dans CTA, FAQ, meta, signup, blogs | **CORRIGE** — 27 instances nettoyees |
+| 7 | **B44** | **HIGH** | `test/remotion-hitl.test.mjs` | Queue file 17,742+ items, 7 failures intermittentes | **CORRIGE** (250.215) — before()/after() backup/restore |
+| 8 | **B45** | **MED** | `test/auth-service.test.mjs` | 8 fonctions auth-service jamais testees | **CORRIGE** (250.215) — +18 tests comportementaux |
+| 9 | **B47** | **MED** | `test/db-api-routes.test.mjs` | db-api-routes drain insuffisant | **CORRIGE** (250.215b) — closeAllConnections() + longer drain |
+| 10 | **B48** | **LOW** | 5 locales + 2 HTML | 3 cles i18n "gratuit" misleading | **CORRIGE** (250.215b) — renommees |
+| 11 | **B49** | **MED** | `test/client-lib.test.mjs` | 20 client-side JS avec 0 tests | **CORRIGE** (250.215b) — +53 tests |
+| 12 | **B50** | **HIGH** | `pricing.html` | ANNUAL_DISCOUNT undefined crashed ROI calc | **CORRIGE** (250.216) |
+| 13 | **B51** | **HIGH** | Dashboard pages | t(key, string) corrupted {{name}} templates | **CORRIGE** (250.216) |
+| 14 | **B52** | **MED** | `core/db-api.cjs` | IPC deserialization intermittent (Node.js test runner bug) | **PARTIEL** (250.216b) — signal handlers fixed, core Node.js bug OPEN |
 
 ### B43 — Nettoyage "gratuit/free" (Detail)
 
@@ -407,33 +416,67 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 
 ---
 
-## 7. Plan d'Action — Prochaines Etapes
+## 7. Plan d'Action — Suivi d'Implementation
 
-### 7.1 Bloquant Production
+> Mis a jour: 16/02/2026 — Session 250.216b
 
-| # | Action | Priorite | Effort |
-|:-:|:-------|:--------:|:------:|
-| 1 | **Stripe integration** | CRITIQUE | Multi-session |
-| 2 | **Premier paying customer** | CRITIQUE | Business |
-| 3 | **Rebuild CSS** (`cd website && npm run build:css`) | MED | 2min |
-| 4 | **Rebuild widgets** (`node scripts/build-widgets.cjs`) | MED | 2min |
+### 7.0 Decisions Utilisateur (250.216b)
 
-### 7.2 Ameliorations Non-Bloquantes
+| Decision | Statut |
+|:---------|:------:|
+| Expert Clone tier | **APPROUVE** |
+| Changement pricing (€49→€99, etc.) | **EXCLU** — pas de changement |
+| Cross-sell bundles (3A+VocalIA) | **EXCLU** — sera implemente par devs 3A Automation |
+| RevShare contractuel | **EXCLU** |
+| Document UI/UX Conversion | **EXCLU** — ce document sert de suivi |
 
-| # | Action | Impact | Effort |
+### 7.1 FAIT — Jargon Purge L1+L2 (250.216b)
+
+| # | Action | Statut | Detail |
+|:-:|:-------|:------:|:-------|
+| 1 | **Layer 1**: termes purement techniques | **FAIT** | 133 changes, 18 files (PSTN/JWT/MCP/Webhook/CSP/SRI/CORS/TLS) |
+| 2 | **Layer 2**: termes semi-techniques | **FAIT** | ~220 changes, 18 files (BANT/RAG/Shadow DOM/GA4/Fallback/Carousel/A2UI) |
+| 3 | Verification grep residuel | **FAIT** | ZERO match sur pages cibles |
+| 4 | Tests i18n+config | **FAIT** | 519/519 pass |
+
+### 7.2 Bloquant Production
+
+| # | Action | Priorite | Effort | Statut |
+|:-:|:-------|:--------:|:------:|:------:|
+| 1 | **Stripe integration** | CRITIQUE | Multi-session | TODO |
+| 2 | **Premier paying customer** | CRITIQUE | Business | TODO |
+
+### 7.3 UI/UX Gaps — Implementation (~2h total) ✅ DONE (250.217)
+
+| # | Action | Page | Effort | Statut |
+|:-:|:-------|:-----|:------:|:------:|
+| 1 | Section "Receptionniste humain vs VocalIA" (comparaison chiffree) | `pricing.html` | 30min | **FAIT** (250.217) |
+| 2 | Matrice concurrentielle visuelle (2 tables: Voice AI + Engagement Client) | `features.html` | 1h | **FAIT** (250.217) |
+| 3 | Vocabulaire marketing: "100× plus d'appels", "Jamais fatigue", "Cout marginal quasi nul" | `index.html` | 30min | **FAIT** (250.217) |
+| 4 | Social proof avec chiffres concrets en langage client | `index.html` | 20min | **FAIT** (250.217) |
+| 5 | i18n × 5 langues (FR/EN/ES/AR/ARY) pour gaps 1-4 | tous locales | 30min | **FAIT** (250.217) |
+
+### 7.4 Expert Clone — Nouveau Tier (~1 semaine)
+
+> Ref: §3.2 ci-dessus + Audit §6.2 lignes 595-622
+
+| # | Action | Effort | Statut |
+|:-:|:-------|:------:|:------:|
+| 1 | Page produit Expert Clone (pricing + landing) | 2h | TODO |
+| 2 | Persona voice dedie (ElevenLabs voice cloning flow) | 1j | TODO |
+| 3 | Dashboard expert (KB score + revenue attribution par client) | 1j | TODO |
+| 4 | Billing: tier Expert Clone dans StripeService.cjs | 1j | TODO — requiert Stripe |
+| 5 | ConversationLearner integration (amelioration continue) | 1j | TODO |
+| 6 | i18n Expert Clone × 5 langues | 2h | TODO |
+
+### 7.5 Post-Stripe
+
+| # | Action | Impact | Statut |
 |:-:|:-------|:-------|:------:|
-| 1 | Fix B41 — detection booking plus precise | LOW | 30min |
-| 2 | Test latency accumulation backend | MED | 20min |
-| 3 | Cache KB Quality Score (eviter recalcul) | LOW | 15min |
-| 4 | Revenue Attribution reel (post-Stripe) | HIGH | Lie a Stripe |
-
-### 7.3 Post-Stripe (Revenue Attribution v2)
-
-Quand Stripe sera integre:
-- `booking_completed` → montant reel Stripe
-- Revenue Attribution passe de **proxy** (lead_score/booking count) a **reel** (EUR/USD/MAD)
-- Le funnel devient: Conversations → Intents → Bookings → **Revenue EUR**
-- Comparable directement aux claims YourAtlas/BuddyPro
+| 1 | Revenue Attribution reel (booking → montant Stripe) | HIGH | Lie a Stripe |
+| 2 | Expert Clone monetisation (15-20% commission) | HIGH | Lie a Stripe |
+| 3 | WhatsApp/Messenger deploy | MED | Code existe |
+| 4 | Help center/KB public | MED | — |
 
 ---
 
@@ -491,4 +534,4 @@ Full suite:     0 intermittent failures (vs 7 avant B44 fix)
 
 ---
 
-*Sessions 250.214-215 — 4 features strategiques + 3 bugs corriges (B41/B44/B45) + 30 tests + hero subtitle rebrand + 0 regression*
+*Sessions 250.214-217 — 4 features strategiques + Jargon Purge L1+L2 (~350 substitutions) + 14 bugs (B38-B52) + Expert Clone approuve + 4 UI/UX gaps implementes (250.217: pricing comparison, competitive matrix, marketing vocab, social proof + i18n × 5 langues)*

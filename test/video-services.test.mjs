@@ -17,9 +17,16 @@
  * Run: node --test test/video-services.test.mjs
  */
 
-import { describe, it } from 'node:test';
+import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { join } from 'node:path';
+import { unlinkSync } from 'node:fs';
+import os from 'node:os';
+
+// ─── PID-isolated queue file to prevent cross-process race condition ───
+const TEMP_QUEUE = join(os.tmpdir(), `hitl-video-test-${process.pid}.json`);
+process.env.REMOTION_HITL_QUEUE_FILE = TEMP_QUEUE;
 
 const require = createRequire(import.meta.url);
 
@@ -27,6 +34,11 @@ const kling = require('../core/kling-service.cjs');
 const veo = require('../core/veo-service.cjs');
 const { queueForApproval, processApproved, COMPOSITIONS } = require('../core/remotion-service.cjs');
 const hitl = require('../core/remotion-hitl.cjs');
+
+after(() => {
+  try { unlinkSync(TEMP_QUEUE); } catch (e) { /* ignore */ }
+  delete process.env.REMOTION_HITL_QUEUE_FILE;
+});
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // SECTION 1: Kling Service — queueAdVideo

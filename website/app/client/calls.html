@@ -496,7 +496,7 @@
       const tenantId = user?.tenant_id || 'default';
 
       try {
-        toast.info(`Export ${format.toUpperCase()} en cours...`);
+        toast.info(VocaliaI18n.t('dashboard.calls_page.export_progress'));
 
         const response = await api.get(`/tenants/${tenantId}/conversations/export`, { format, source: 'telephony' });
 
@@ -514,13 +514,13 @@
           link.click();
           document.body.removeChild(link);
 
-          toast.success(`Export ${format.toUpperCase()} réussi!`);
+          toast.success(VocaliaI18n.t('dashboard.calls_page.export_success'));
         } else {
-          toast.warning('Aucune donnée à exporter');
+          toast.warning(window.VocaliaI18n ? VocaliaI18n.t('dashboard.analytics_page.no_data_export') : 'Aucune donnée à exporter');
         }
       } catch (error) {
         console.error('Export error:', error);
-        toast.error(`Erreur d'export: ${error.message}`);
+        toast.error(VocaliaI18n.t('dashboard.calls_page.export_error'));
       }
     };
 

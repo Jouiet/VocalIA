@@ -112,7 +112,7 @@ GoogleSheetsDB.prototype.startQuotaSync = function () {};
 // STEP 2: Import db-api + auth-service (singleton gets patched prototype)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const TEST_PORT = 13013;
+const TEST_PORT = 13016;
 process.env.DB_API_PORT = String(TEST_PORT);
 const BASE = `http://127.0.0.1:${TEST_PORT}`;
 
@@ -892,25 +892,23 @@ describe('GET /api/widget/embed-code', () => {
       env: { ...process.env, NODE_ENV: 'test' }
     });
 
-    // Wait for server to be ready (listen for output or poll)
-    await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        resolve(); // Proceed even without explicit ready message
-      }, 3000);
+    // Capture stderr for debugging
+    let stderrOutput = '';
+    voiceProcess.stderr.on('data', (d) => { stderrOutput += d.toString(); });
 
-      voiceProcess.stdout.on('data', (data) => {
-        const msg = data.toString();
-        if (msg.includes('listening') || msg.includes('started') || msg.includes('port')) {
-          clearTimeout(timeout);
-          setTimeout(resolve, 500); // Extra 500ms for stability
-        }
-      });
-
-      voiceProcess.on('error', (err) => {
-        clearTimeout(timeout);
-        reject(err);
-      });
-    });
+    // Poll /health until server is ready (max 8 seconds)
+    const deadline = Date.now() + 8000;
+    let ready = false;
+    while (Date.now() < deadline) {
+      try {
+        const res = await fetch(`${VOICE_BASE}/health`);
+        if (res.ok || res.status < 500) { ready = true; break; }
+      } catch { /* server not yet listening */ }
+      await new Promise(r => setTimeout(r, 300));
+    }
+    if (!ready) {
+      console.error('[install-widget] voice-api failed to start on port', VOICE_TEST_PORT, stderrOutput);
+    }
   });
 
   after(() => {

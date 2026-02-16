@@ -214,15 +214,19 @@ before(async () => {
 });
 
 after(async () => {
+  // B47 fix: Drain all connections before close to prevent intermittent failures
   if (wss) {
     wss.clients.forEach(ws => ws.terminate());
     await new Promise(resolve => { wss.close(resolve); });
   }
   if (server) {
+    server.closeAllConnections();
     await new Promise(resolve => server.close(resolve));
   }
+  // Reset rate limit state to prevent memory accumulation across test suites
+  resetStore();
   // Allow pending callbacks to drain before test runner serializes results
-  await new Promise(resolve => setTimeout(resolve, 100));
+  await new Promise(resolve => setTimeout(resolve, 500));
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════

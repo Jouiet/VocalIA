@@ -1161,7 +1161,7 @@
         const result = await api.put(`/tenants/${tenantId}/catalog/connector`, config);
 
         if (result.connected) {
-          toast.success(`Connecté à ${platformConfigs[selectedPlatform].name}! Synchronisation en cours...`);
+          toast.success(VocaliaI18n.t('dashboard.catalog_page.connected_syncing').replace('{{name}}', platformConfigs[selectedPlatform].name));
           connectorModal.classList.add('hidden');
           connectorConfig.classList.add('hidden');
           connectorPlatforms.classList.remove('hidden');
@@ -1170,7 +1170,7 @@
           await syncCatalog();
           await loadCatalog();
         } else {
-          toast.error('Configuration sauvegardée mais connexion échouée. Vérifiez vos identifiants.');
+          toast.error(VocaliaI18n.t('dashboard.catalog_page.connect_failed'));
         }
       } catch (error) {
         console.error('Connector error:', error);
@@ -1186,7 +1186,7 @@
     async function syncCatalog() {
       try {
         await api.post(`/tenants/${tenantId}/catalog/sync`, { type: currentType.toUpperCase(), force: true });
-        toast.success('Catalogue synchronisé');
+        toast.success(VocaliaI18n.t('dashboard.catalog_page.sync_success'));
       } catch (error) {
         console.error('Sync error:', error);
       }

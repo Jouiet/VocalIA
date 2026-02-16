@@ -101,6 +101,9 @@ async function setLocale(locale) {
     document.body.classList.remove('rtl');
   }
 
+  // Update all data-i18n elements on the page
+  translatePage();
+
   // Dispatch event for UI updates
   window.dispatchEvent(new CustomEvent('localeChanged', { detail: { locale } }));
 

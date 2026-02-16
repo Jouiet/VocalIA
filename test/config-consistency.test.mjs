@@ -518,3 +518,78 @@ describe('T6: Client config.json schema', () => {
       `Found ${violations.length} client config violation(s):\n  ${violations.slice(0, 10).join('\n  ')}`);
   });
 });
+
+// ─── T6.16: B43 Regression — No "gratuit" in CTA/pricing/trial contexts ──────
+// Bug B43 (session 250.214): 27 instances of "gratuit/free trial" purged.
+// Premium positioning: "gratuit" allowed ONLY in e-commerce/tech/booking contexts.
+
+describe('T6: B43 regression — "gratuit" purge', () => {
+  const FORBIDDEN_CONTEXTS = [
+    'website/index.html',
+    'website/pricing.html',
+    'website/signup.html',
+    'website/billing.html'
+  ];
+  const ALLOWED_EXCEPTIONS = [
+    'livraison gratuite',        // e-commerce feature
+    'Web Speech API gratuit',    // tech fact
+    'annulation gratuite',       // booking policy
+    'Essai 14 Jours Gratuit',   // AB test variant (controlled)
+    'Free Personalized Demo'     // AB test variant (controlled)
+  ];
+
+  test('No "gratuit" in CTA/pricing pages (excluding allowed exceptions)', () => {
+    const violations = [];
+    for (const relPath of FORBIDDEN_CONTEXTS) {
+      const filePath = path.join(ROOT, relPath);
+      if (!fs.existsSync(filePath)) continue;
+      const content = fs.readFileSync(filePath, 'utf8');
+      const lines = content.split('\n');
+      lines.forEach((line, i) => {
+        if (/gratuit/i.test(line)) {
+          const isAllowed = ALLOWED_EXCEPTIONS.some(exc => line.includes(exc));
+          // Also allow in HTML comments and JS comments
+          const isComment = /^\s*(<!--|\/\/|\/\*|\*)/.test(line.trim());
+          if (!isAllowed && !isComment) {
+            violations.push(`${relPath}:${i + 1}: ${line.trim().slice(0, 80)}`);
+          }
+        }
+      });
+    }
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} "gratuit" violation(s) in CTA/pricing pages:\n  ${violations.join('\n  ')}`);
+  });
+
+  test('No "free tier" or "free plan" in locale pricing keys', () => {
+    const violations = [];
+    const localeDir = path.join(ROOT, 'website/src/locales');
+    const locales = fs.readdirSync(localeDir).filter(f => f.endsWith('.json'));
+    for (const file of locales) {
+      const content = JSON.parse(fs.readFileSync(path.join(localeDir, file), 'utf8'));
+      const flat = JSON.stringify(content).toLowerCase();
+      // Check for "free tier", "free plan", "plan gratuit" in pricing context
+      if (/gratuit_0|free_tier|free_plan|plan_gratuit/.test(flat)) {
+        violations.push(`${file}: contains deprecated "gratuit/free" pricing key`);
+      }
+    }
+    assert.strictEqual(violations.length, 0,
+      `Found deprecated gratuit keys:\n  ${violations.join('\n  ')}`);
+  });
+});
+
+// ─── T6.17: B5 Regression — ab-analytics O(N) correctness ──────────────────
+// Bug B5 (session 250.207b): accumulateStats was O(N×M), fixed to O(N).
+
+describe('T6: B5 regression — ab-analytics correctness', () => {
+  const { getExperimentStats } = require('../core/ab-analytics.cjs');
+
+  test('getExperimentStats returns correct structure for non-existent experiment', () => {
+    const stats = getExperimentStats('non_existent_experiment_xyz');
+    assert.ok(stats, 'returns stats object');
+    assert.equal(stats.experiment, 'non_existent_experiment_xyz');
+    assert.equal(typeof stats.variants, 'object');
+    assert.equal(stats.totalImpressions, 0);
+    assert.equal(stats.totalClicks, 0);
+    assert.equal(stats.totalConversions, 0);
+  });
+});

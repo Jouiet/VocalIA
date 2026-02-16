@@ -83,7 +83,7 @@
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-zinc-500" data-i18n="analytics.kpi.languages">Langues actives</span>
-              <span class="text-xs px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600">5 supportées</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600" data-i18n="dashboard.analytics_page.supported_langs">5 supportées</span>
             </div>
             <p id="kpi-languages" class="text-3xl font-bold text-zinc-900 dark:text-white">--</p>
             <p id="kpi-languages-sub" class="text-sm text-zinc-500 mt-1">--</p>
@@ -329,6 +329,7 @@
       await VocaliaI18n.initI18n();
       VocaliaI18n.translatePage();
     }
+    const _t = (key, fb) => window.VocaliaI18n ? VocaliaI18n.t(key) || fb : fb;
 
     // Initialize Lucide icons
     lucide.createIcons();
@@ -541,14 +542,14 @@
       });
 
       // Reorder to start from Monday
-      const orderedDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      const orderedDays = _t('dashboard.analytics_page.days_short', null) || ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
       const reorder = (arr) => [arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0]];
 
       createLineChart('#calls-chart', {
         labels: orderedDays,
         datasets: [
-          { label: 'Appels', data: reorder(callsByDay), color: COLORS.primary },
-          { label: 'Réussis', data: reorder(successByDay), color: COLORS.success }
+          { label: _t('dashboard.analytics_page.calls', 'Appels'), data: reorder(callsByDay), color: COLORS.primary },
+          { label: _t('dashboard.common.completed', 'Réussis'), data: reorder(successByDay), color: COLORS.success }
         ]
       });
 
@@ -559,7 +560,7 @@
       createBarChart('#conversion-chart', {
         labels: orderedDays,
         datasets: [
-          { label: 'Taux (%)', data: reorder(conversionByDay), color: COLORS.secondary }
+          { label: _t('dashboard.analytics_page.rate', 'Taux (%)'), data: reorder(conversionByDay), color: COLORS.secondary }
         ]
       });
 
@@ -567,13 +568,13 @@
       const langMap = { fr: 'Français', en: 'Anglais', ar: 'Arabe', ary: 'Darija', es: 'Espagnol' };
       const byLanguage = {};
       sessions.forEach(s => {
-        const lang = langMap[s.language] || s.language || 'Autre';
+        const lang = langMap[s.language] || s.language || _t('dashboard.analytics_page.other', 'Autre');
         byLanguage[lang] = (byLanguage[lang] || 0) + 1;
       });
       const langEntries = Object.entries(byLanguage).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
       createDoughnutChart('#language-chart', {
-        labels: langEntries.length > 0 ? langEntries.map(e => e[0]) : ['Aucune donnée'],
+        labels: langEntries.length > 0 ? langEntries.map(e => e[0]) : [_t('dashboard.analytics_page.no_data', 'Aucune donnée')],
         data: langEntries.length > 0 ? langEntries.map(e => e[1]) : [1],
         colors: [COLORS.primary, COLORS.secondary, COLORS.success, COLORS.warning, COLORS.danger]
       });
@@ -581,13 +582,13 @@
       // Persona distribution
       const byPersona = {};
       sessions.forEach(s => {
-        const persona = s.persona || 'Autre';
+        const persona = s.persona || _t('dashboard.analytics_page.other', 'Autre');
         byPersona[persona] = (byPersona[persona] || 0) + 1;
       });
       const personaEntries = Object.entries(byPersona).sort((a, b) => b[1] - a[1]).slice(0, 4);
 
       createDoughnutChart('#persona-chart', {
-        labels: personaEntries.length > 0 ? personaEntries.map(e => e[0]) : ['Aucun persona'],
+        labels: personaEntries.length > 0 ? personaEntries.map(e => e[0]) : [_t('dashboard.analytics_page.no_persona', 'Aucun persona')],
         data: personaEntries.length > 0 ? personaEntries.map(e => e[1]) : [1],
         colors: [COLORS.primary, COLORS.info, COLORS.success, COLORS.warning]
       });
@@ -607,18 +608,20 @@
       createBarChart('#hour-chart', {
         labels: hours,
         datasets: [
-          { label: 'Appels', data: hourData, color: COLORS.info }
+          { label: _t('dashboard.analytics_page.calls', 'Appels'), data: hourData, color: COLORS.info }
         ]
       });
     }
 
     function renderEmptyCharts() {
-      const labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-      createLineChart('#calls-chart', { labels, datasets: [{ label: 'Appels', data: Array(7).fill(0), color: COLORS.primary }] });
-      createBarChart('#conversion-chart', { labels, datasets: [{ label: 'Taux (%)', data: Array(7).fill(0), color: COLORS.secondary }] });
-      createDoughnutChart('#language-chart', { labels: ['Aucune donnée'], data: [1], colors: [COLORS.slate] });
-      createDoughnutChart('#persona-chart', { labels: ['Aucun persona'], data: [1], colors: [COLORS.slate] });
-      createBarChart('#hour-chart', { labels: ['9h', '10h', '11h', '12h', '14h', '15h', '16h', '17h'], datasets: [{ label: 'Appels', data: Array(8).fill(0), color: COLORS.info }] });
+      const labels = _t('dashboard.analytics_page.days_short', null) || ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      const noData = _t('dashboard.analytics_page.no_data', 'Aucune donnée');
+      const callsLabel = _t('dashboard.analytics_page.calls', 'Appels');
+      createLineChart('#calls-chart', { labels, datasets: [{ label: callsLabel, data: Array(7).fill(0), color: COLORS.primary }] });
+      createBarChart('#conversion-chart', { labels, datasets: [{ label: _t('dashboard.analytics_page.rate', 'Taux (%)'), data: Array(7).fill(0), color: COLORS.secondary }] });
+      createDoughnutChart('#language-chart', { labels: [noData], data: [1], colors: [COLORS.slate] });
+      createDoughnutChart('#persona-chart', { labels: [_t('dashboard.analytics_page.no_persona', 'Aucun persona')], data: [1], colors: [COLORS.slate] });
+      createBarChart('#hour-chart', { labels: ['9h', '10h', '11h', '12h', '14h', '15h', '16h', '17h'], datasets: [{ label: callsLabel, data: Array(8).fill(0), color: COLORS.info }] });
     }
 
     // Speed Metrics calculation (Session 250.214)
@@ -856,7 +859,7 @@
     // Export button - real export
     document.getElementById('export-btn').addEventListener('click', async () => {
       try {
-        toast.info('Export en cours de génération...');
+        toast.info(VocaliaI18n.t('dashboard.analytics_page.export_generating'));
         const result = await api.sessions.list({ limit: 10000 });
         const sessions = result.data || result || [];
 
@@ -879,9 +882,9 @@
         a.click();
         URL.revokeObjectURL(url);
 
-        toast.success('Rapport exporté en CSV');
+        toast.success(VocaliaI18n.t('dashboard.analytics_page.export_csv_success'));
       } catch (error) {
-        toast.error('Erreur lors de l\'export');
+        toast.error(VocaliaI18n.t('dashboard.analytics_page.export_error'));
       }
     });
   </script>

@@ -402,22 +402,20 @@
       }
     };
 
-    const FEATURE_LABELS = {
-      voice_widget: 'Widget vocal',
-      booking: 'Réservation en ligne',
-      bant_crm_push: 'Push CRM (BANT)',
-      crm_sync: 'Synchronisation CRM',
-      calendar_sync: 'Sync calendrier',
-      voice_telephony: 'Téléphonie PSTN',
-      ecom_cart_recovery: 'Récupération panier',
-      ecom_quiz: 'Quiz produit',
-      ecom_gamification: 'Gamification',
-      ecom_recommendations: 'Recommandations IA',
-      export: 'Export données',
-      webhooks: 'Webhooks',
-      api_access: 'Accès API',
-      custom_branding: 'Branding personnalisé'
+    const FEATURE_LABELS_FR = {
+      voice_widget: 'Widget vocal', booking: 'Réservation en ligne',
+      bant_crm_push: 'Push CRM (BANT)', crm_sync: 'Synchronisation CRM',
+      calendar_sync: 'Sync calendrier', voice_telephony: 'Téléphonie IA',
+      ecom_cart_recovery: 'Récupération panier', ecom_quiz: 'Quiz produit',
+      ecom_gamification: 'Gamification', ecom_recommendations: 'Recommandations IA',
+      export: 'Export données', webhooks: 'Notifications automatiques',
+      api_access: 'Connexions externes', custom_branding: 'Branding personnalisé'
     };
+    const FEATURE_LABELS = new Proxy(FEATURE_LABELS_FR, {
+      get(target, key) {
+        return (window.VocaliaI18n && VocaliaI18n.t('dashboard.billing_page.features.' + key)) || target[key] || key;
+      }
+    });
 
     function renderPlanFeatures(plan, overrides) {
       const features = PLAN_FEATURES[plan] || PLAN_FEATURES.starter;
@@ -449,10 +447,10 @@
     // Handle Stripe Checkout return
     const billingParams = new URLSearchParams(window.location.search);
     if (billingParams.get('success') === '1') {
-      toast.success('Paiement réussi ! Votre abonnement est actif.');
+      toast.success(VocaliaI18n.t('dashboard.billing_page.payment_success'));
       window.history.replaceState({}, '', window.location.pathname);
     } else if (billingParams.get('canceled') === '1') {
-      toast.error('Paiement annulé. Vous pouvez réessayer à tout moment.');
+      toast.error(VocaliaI18n.t('dashboard.billing_page.payment_cancelled'));
       window.history.replaceState({}, '', window.location.pathname);
     }
 
@@ -468,7 +466,7 @@
         const priceId = STRIPE_PRICES[plan];
 
         if (!priceId || priceId.startsWith('price_PLACEHOLDER')) {
-          toast.error('Configuration Stripe en cours. Contactez-nous.');
+          toast.error(VocaliaI18n.t('dashboard.billing_page.stripe_not_ready'));
           return;
         }
 
@@ -477,11 +475,11 @@
           if (res.url) {
             window.location.href = res.url;
           } else {
-            toast.error('Erreur lors de la création du checkout');
+            toast.error(VocaliaI18n.t('dashboard.billing_page.checkout_error'));
           }
         } catch (e) {
           console.error('[Billing] Checkout error:', e);
-          toast.error('Erreur: ' + (e.message || 'Impossible de créer le checkout'));
+          toast.error(VocaliaI18n.t('dashboard.billing_page.generic_error') + (e.message || ''));
         }
       } else {
         // Existing subscription — go to Stripe Portal
@@ -525,7 +523,7 @@
             defaultValue: billingData?.company || ''
           });
           if (company) {
-            toast.success('Informations mises à jour (Localement)');
+            toast.success(VocaliaI18n.t('dashboard.billing_page.info_updated'));
             document.getElementById('billing-company').textContent = company;
           }
         }
