@@ -735,3 +735,108 @@ describe('sanitizeInput security vectors', () => {
     assert.ok(!result.toLowerCase().includes('tu es maintenant'));
   });
 });
+
+// ─── Latency Accumulation (Session 250.214 backend) ──────────────────────────
+
+describe('Latency accumulation in session object', () => {
+  // Tests the exact same logic used in voice-api-resilient.cjs:2960-2963
+  // This is the backend accumulation that feeds the Speed Metrics dashboard
+
+  function accumulateLatency(session, latencyMs) {
+    if (latencyMs) {
+      session.latency_total = (session.latency_total || 0) + latencyMs;
+      session.latency_count = (session.latency_count || 0) + 1;
+      session.avg_latency_ms = Math.round(session.latency_total / session.latency_count);
+    }
+  }
+
+  test('first message sets initial latency values', () => {
+    const session = {};
+    accumulateLatency(session, 250);
+    assert.strictEqual(session.latency_total, 250);
+    assert.strictEqual(session.latency_count, 1);
+    assert.strictEqual(session.avg_latency_ms, 250);
+  });
+
+  test('accumulates across multiple messages', () => {
+    const session = {};
+    accumulateLatency(session, 200);
+    accumulateLatency(session, 400);
+    accumulateLatency(session, 300);
+    assert.strictEqual(session.latency_total, 900);
+    assert.strictEqual(session.latency_count, 3);
+    assert.strictEqual(session.avg_latency_ms, 300);
+  });
+
+  test('rounds to nearest integer', () => {
+    const session = {};
+    accumulateLatency(session, 100);
+    accumulateLatency(session, 200);
+    accumulateLatency(session, 150);
+    // (100+200+150)/3 = 150.0 — exact
+    assert.strictEqual(session.avg_latency_ms, 150);
+
+    accumulateLatency(session, 333);
+    // (100+200+150+333)/4 = 195.75 → 196
+    assert.strictEqual(session.avg_latency_ms, 196);
+  });
+
+  test('ignores falsy latencyMs (0, null, undefined)', () => {
+    const session = {};
+    accumulateLatency(session, 250);
+    accumulateLatency(session, 0);
+    accumulateLatency(session, null);
+    accumulateLatency(session, undefined);
+    assert.strictEqual(session.latency_count, 1);
+    assert.strictEqual(session.avg_latency_ms, 250);
+  });
+
+  test('handles very high latency values', () => {
+    const session = {};
+    accumulateLatency(session, 5000);
+    accumulateLatency(session, 8000);
+    assert.strictEqual(session.avg_latency_ms, 6500);
+  });
+
+  test('handles single sub-millisecond result', () => {
+    const session = {};
+    accumulateLatency(session, 1);
+    assert.strictEqual(session.avg_latency_ms, 1);
+  });
+});
+
+// ─── Booking Detection (B41 fix) ─────────────────────────────────────────────
+
+describe('Booking detection logic for Revenue Attribution', () => {
+  // Tests the exact logic used in analytics.html for booking detection
+  // B41 fix: replaced imprecise `duration > 60` with `status === hot && qualificationComplete`
+
+  function isBookingSession(s) {
+    return s.booking_completed || (s.status === 'hot' && s.qualificationComplete);
+  }
+
+  test('booking_completed flag = booking', () => {
+    assert.ok(isBookingSession({ booking_completed: true, status: 'warm' }));
+  });
+
+  test('hot + qualificationComplete = booking (qualified lead)', () => {
+    assert.ok(isBookingSession({ status: 'hot', qualificationComplete: true }));
+  });
+
+  test('hot but not qualified = NOT booking', () => {
+    assert.ok(!isBookingSession({ status: 'hot', qualificationComplete: false }));
+  });
+
+  test('warm + qualified = NOT booking', () => {
+    assert.ok(!isBookingSession({ status: 'warm', qualificationComplete: true }));
+  });
+
+  test('completed + long duration but no booking flag = NOT booking', () => {
+    // B41 fix: duration > 60 was a false positive signal
+    assert.ok(!isBookingSession({ status: 'completed', duration_sec: 120 }));
+  });
+
+  test('empty session = NOT booking', () => {
+    assert.ok(!isBookingSession({}));
+  });
+});

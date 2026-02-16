@@ -716,10 +716,10 @@
         s.product_intent
       );
 
-      // Bookings (sessions with booking_completed or status completed with duration > 60)
+      // Bookings (sessions with booking_completed flag or qualified hot leads with booking signals)
       const withBooking = thisMonth.filter(s =>
         s.booking_completed ||
-        (s.status === 'completed' && (parseInt(s.duration_sec) || 0) > 60)
+        (s.status === 'hot' && s.qualificationComplete)
       );
 
       const convRate = totalConversations > 0

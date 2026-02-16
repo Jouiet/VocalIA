@@ -449,3 +449,207 @@ describe('AuthService with mock DB', () => {
     assert.strictEqual(result.success, true);
   });
 });
+
+// ─── DB-dependent functions coverage gap (Session 250.215) ──────────
+
+describe('AuthService DB-dependent functions', () => {
+  const users = new Map();
+  const sessions = new Map();
+  let testUserId;
+  let refreshTokenValue;
+
+  const mockDB = {
+    query: async (table, filter) => {
+      const store = table === 'users' ? users : sessions;
+      return [...store.values()].filter(item => {
+        for (const [k, v] of Object.entries(filter)) {
+          if (item[k] !== v) return false;
+        }
+        return true;
+      });
+    },
+    create: async (table, data) => {
+      const store = table === 'users' ? users : sessions;
+      store.set(data.id, data);
+      return data;
+    },
+    update: async (table, id, updates) => {
+      const store = table === 'users' ? users : sessions;
+      const item = store.get(id);
+      if (item) {
+        Object.assign(item, updates);
+        store.set(id, item);
+      }
+    },
+    delete: async (table, id) => {
+      const store = table === 'users' ? users : sessions;
+      store.delete(id);
+    },
+    findById: async (table, id) => {
+      const store = table === 'users' ? users : sessions;
+      return store.get(id) || null;
+    }
+  };
+
+  // Setup: register + verify + login to get tokens
+  test('setup: register and login user for subsequent tests', async () => {
+    users.clear();
+    sessions.clear();
+    authService.init(mockDB);
+
+    const reg = await authService.register({
+      email: 'dbtest@vocalia.ma',
+      password: 'StrongPass1',
+      name: 'DB Test User',
+      tenantId: 'tenant_db'
+    });
+    testUserId = reg.id;
+
+    // Verify email
+    const user = users.get(testUserId);
+    user.email_verified = true;
+    users.set(testUserId, user);
+
+    // Login to get tokens
+    const login = await authService.login({
+      email: 'dbtest@vocalia.ma',
+      password: 'StrongPass1'
+    });
+    refreshTokenValue = login.refresh_token;
+    assert.ok(refreshTokenValue);
+    assert.ok(testUserId);
+  });
+
+  // ─── refreshTokens ─────────────────────────────────────────
+  test('refreshTokens returns new access token', async () => {
+    const result = await authService.refreshTokens(refreshTokenValue);
+    assert.ok(result.access_token);
+    assert.strictEqual(result.token_type, 'Bearer');
+    assert.strictEqual(result.expires_in, 86400);
+  });
+
+  test('refreshTokens throws on missing token', async () => {
+    await assert.rejects(
+      () => authService.refreshTokens(null),
+      (err) => err instanceof AuthError && err.code === 'MISSING_TOKEN'
+    );
+  });
+
+  test('refreshTokens throws on invalid token', async () => {
+    await assert.rejects(
+      () => authService.refreshTokens('invalid_token_999'),
+      (err) => err instanceof AuthError && err.code === 'INVALID_TOKEN'
+    );
+  });
+
+  // ─── getCurrentUser ─────────────────────────────────────────
+  test('getCurrentUser returns user profile', async () => {
+    const user = await authService.getCurrentUser(testUserId);
+    assert.strictEqual(user.email, 'dbtest@vocalia.ma');
+    assert.strictEqual(user.name, 'DB Test User');
+    assert.strictEqual(user.role, 'user');
+    assert.strictEqual(user.email_verified, true);
+    assert.ok(user.id);
+    assert.ok(user.created_at);
+  });
+
+  test('getCurrentUser throws for non-existent user', async () => {
+    await assert.rejects(
+      () => authService.getCurrentUser('user_nonexistent_999'),
+      (err) => err instanceof AuthError && err.code === 'USER_NOT_FOUND'
+    );
+  });
+
+  // ─── updateProfile ──────────────────────────────────────────
+  test('updateProfile updates allowed fields', async () => {
+    const updated = await authService.updateProfile(testUserId, {
+      name: 'Updated Name',
+      phone: '+33612345678'
+    });
+    assert.strictEqual(updated.name, 'Updated Name');
+    assert.strictEqual(updated.phone, '+33612345678');
+    assert.strictEqual(updated.email, 'dbtest@vocalia.ma'); // unchanged
+  });
+
+  test('updateProfile ignores disallowed fields (email, role)', async () => {
+    const updated = await authService.updateProfile(testUserId, {
+      email: 'hacked@evil.com',
+      role: 'admin',
+      name: 'Safe Name'
+    });
+    assert.strictEqual(updated.email, 'dbtest@vocalia.ma'); // unchanged
+    assert.strictEqual(updated.role, 'user'); // unchanged
+    assert.strictEqual(updated.name, 'Safe Name');
+  });
+
+  // ─── requestPasswordReset ───────────────────────────────────
+  test('requestPasswordReset succeeds for existing email', async () => {
+    const result = await authService.requestPasswordReset('dbtest@vocalia.ma');
+    assert.strictEqual(result.success, true);
+    // Check token was stored
+    const user = users.get(testUserId);
+    assert.ok(user.password_reset_token);
+    assert.ok(user.password_reset_expires);
+  });
+
+  test('requestPasswordReset succeeds for non-existent email (anti-enumeration)', async () => {
+    const result = await authService.requestPasswordReset('nobody@vocalia.ma');
+    assert.strictEqual(result.success, true);
+  });
+
+  // ─── resetPassword ─────────────────────────────────────────
+  test('resetPassword rejects invalid token', async () => {
+    await assert.rejects(
+      () => authService.resetPassword('invalid_token_xyz', 'NewStrong1'),
+      (err) => err instanceof AuthError && err.code === 'INVALID_TOKEN'
+    );
+  });
+
+  test('resetPassword rejects weak password', async () => {
+    await assert.rejects(
+      () => authService.resetPassword('any_token', 'weak'),
+      (err) => err instanceof AuthError && err.code === 'WEAK_PASSWORD'
+    );
+  });
+
+  // ─── changePassword ────────────────────────────────────────
+  test('changePassword rejects wrong old password', async () => {
+    await assert.rejects(
+      () => authService.changePassword(testUserId, 'WrongOldPass1', 'NewStrong1'),
+      (err) => err instanceof AuthError && err.code === 'INVALID_PASSWORD'
+    );
+  });
+
+  test('changePassword succeeds with correct old password', async () => {
+    const result = await authService.changePassword(testUserId, 'StrongPass1', 'NewStrong1');
+    assert.strictEqual(result.success, true);
+    assert.strictEqual(result.message, 'Password changed successfully');
+  });
+
+  test('changePassword throws for non-existent user', async () => {
+    await assert.rejects(
+      () => authService.changePassword('user_ghost_999', 'OldPass1', 'NewPass1'),
+      (err) => err instanceof AuthError && err.code === 'USER_NOT_FOUND'
+    );
+  });
+
+  // ─── verifyEmail ───────────────────────────────────────────
+  test('verifyEmail rejects invalid token', async () => {
+    await assert.rejects(
+      () => authService.verifyEmail('invalid_verify_token'),
+      (err) => err instanceof AuthError && err.code === 'INVALID_TOKEN'
+    );
+  });
+
+  // ─── resendVerificationEmail ───────────────────────────────
+  test('resendVerificationEmail succeeds for non-existent email (anti-enumeration)', async () => {
+    const result = await authService.resendVerificationEmail('ghost@vocalia.ma');
+    assert.strictEqual(result.success, true);
+  });
+
+  test('resendVerificationEmail succeeds for already-verified email', async () => {
+    const result = await authService.resendVerificationEmail('dbtest@vocalia.ma');
+    assert.strictEqual(result.success, true);
+    assert.ok(result.message.includes('already verified') || result.message.includes('verification email'));
+  });
+});

@@ -3021,6 +3021,7 @@ function startServer(port = 3004) {
                 created_at: new Date().toISOString()
               });
               fs.writeFileSync(bookingsFile, JSON.stringify(bookings, null, 2));
+              session.booking_completed = true;
               console.log(`✅ [Booking] Saved for tenant ${tenantId}: ${bookingData.name} <${bookingData.email}>`);
               eventBus.publish('booking.created', {
                 tenantId, sessionId: leadSessionId,

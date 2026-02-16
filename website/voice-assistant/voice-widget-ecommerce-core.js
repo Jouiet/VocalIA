@@ -328,6 +328,7 @@
         const eventData = {
             event_category: 'voice_assistant',
             language: state.currentLang,
+            session_id: state.sessionId,
             attribution: state.conversationContext.attribution,
             ...params
         };
