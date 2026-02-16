@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 85 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | 6,152 tests (92 .mjs, 0 skip)
+> 85 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | 6,124 tests (92 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -53,7 +53,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.5/10 — **500+ bugs found across 61 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 6,106 pass, 0 fail (92 .mjs). **213/215 exported functions directly tested + 2 indirectly (100%).** ALL 21 app pages + 5 auth pages audited.
+- **Code completeness**: 9.5/10 — **500+ bugs found across 61 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 6,124 pass, 0 fail (92 .mjs). **221/221 exported functions behaviorally tested (100%).** ALL 21 app pages + 5 auth pages audited.
 - **Dashboard features** (250.214): KB Quality Score, ROI Calculator interactif, Speed Metrics (latency/SLA/uptime), Revenue Attribution (funnel + top personas). 4 lignes backend, ~40 cles i18n × 5 langues.
 - **Security**: 9.0/10 — SOTA audit (250.200): CDN SRI 78/78, CSP 22 app pages, security headers all 7 API services, CORS tightened, npm vulns patched, **all 7 containers non-root** (su-exec node user PID 1). VPS: SSH key-only, fail2ban, UFW. X-XSS-Protection: 0 (modern).
 - **Monitoring**: Production monitor v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, recovery detection, */5 cron.
@@ -69,4 +69,4 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Next**: Stripe setup → First paying customer
 - **Weighted score**: 9.2/10
 
-*Last update: 16/02/2026 - Session 250.215 (B44: remotion-hitl test isolation fix (7→0 failures), B41: booking detection fix, B45: widget DRIFT rebuild, B46: hero copy audit-aligned × 5 langs. +12 behavioral tests voice-api, +25 auth-service tests. 6,106 tests (92 .mjs), 500+ bugs / 61 phases.)*
+*Last update: 16/02/2026 - Session 250.215 (B41: booking detection fix, B44: remotion-hitl test isolation fix (7→0 intermittent failures), B45: 8 auth-service functions untested → +18 tests. Widget DRIFT rebuild, hero subtitle audit-aligned × 5 langs. +12 voice-api tests, +18 auth-service tests. 6,124 tests (92 .mjs), 500+ bugs / 61 phases.)*

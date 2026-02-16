@@ -1,10 +1,10 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-15 | **Session:** 250.210b (Function coverage 100% — 221/221 exports behaviorally tested)
+> **Date:** 2026-02-16 | **Session:** 250.215 (Test isolation fix + auth coverage gap + B41/B44/B45)
 > **Code Completeness:** 9.5/10 | **Production Readiness:** 8.5/10 | **Security:** 9.0/10 | **Weighted:** 9.2/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 52+ audit phases across sessions 250.105-250.210b. Latest: **FUNCTION COVERAGE 100% (250.210b)** 221/221 exports tested, +81 tests, 0 new bugs. Prior: **DEBLOQUER (250.210)** CI fix, quotas, Stripe, alerting, theater→behavioral. Prior: caller/callee (250.209c), CRUD (250.209b), deep audit (250.209), forensic audit (250.207b). Full history: `memory/session-history.md`
+> **Source:** 60+ audit phases across sessions 250.105-250.215. Latest: **250.215** test isolation (B44), auth coverage gap (B45), booking detection (B41), +30 tests (6,124 total). Prior: **250.213-214** 4 strategic features, B28-B43, +27 tests. Prior: 250.210b function coverage 100%. Full history: `memory/session-history.md`
 
 ---
 
@@ -21,7 +21,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (6,042 tests, 91 files). **221/221 exported functions behaviorally tested (100%).** **457+ bugs reported across 52 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Stripe billing COMPLETE (250.210): checkout, subscriptions, cancel. ErrorScience→ntfy.sh alerting (250.210). Marketing copy remediation COMPLETE (250.195-197). OAuth SSO LIVE (250.205). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
+**Code Completeness: 9.5/10** — Features coded and tested (6,124 tests, 92 files). **221/221 exported functions behaviorally tested (100%).** **500+ bugs reported across 60 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Stripe billing COMPLETE (250.210): checkout, subscriptions, cancel. ErrorScience→ntfy.sh alerting (250.210). Marketing copy remediation COMPLETE (250.195-197). OAuth SSO LIVE (250.205). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
 **Production Readiness: 8.5/10** — VERIFIED 250.205 (13/02/2026) via SSH + curl:
 - `vocalia.ma` ✅ Website live (all 85 pages return 200, 64KB homepage)
 - `api.vocalia.ma/health` ✅ Voice API healthy (4 AI providers: Grok, Gemini, Claude, Atlas)

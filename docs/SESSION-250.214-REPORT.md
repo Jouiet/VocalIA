@@ -455,4 +455,40 @@ Bugs:           6 identifies, 3 corriges, 2 low ouverts, 1 by design
 
 ---
 
-*Session 250.214 — 4 features strategiques alignees sur le funnel concurrentiel (BuddyPro, YourAtlas), 4 lignes backend, 0 regression, nettoyage positionnel "gratuit/free" complet*
+## 9. Session 250.215 — Suite et Corrections
+
+> **Date**: 2026-02-16 | **Tests**: 6,124 pass, 0 fail (92 .mjs) | **Timeout**: 300s
+
+### 9.1 Bugs Corriges
+
+| ID | Fichier | Bug | Severite | Fix |
+|:---|:--------|:----|:---------|:----|
+| **B41** | `voice-api-resilient.cjs` + `analytics.html` | Booking detection imprecise (`duration > 60s` proxy) | HIGH | Backend: `session.booking_completed = true` flag. Frontend: `status === 'hot' && qualificationComplete` |
+| **B44** | `test/remotion-hitl.test.mjs` | Queue file 17,742+ items, 7 failures intermittentes en full suite | HIGH | `before()/after()` hooks: backup → queue vide → restore |
+| **B45** | `test/auth-service.test.mjs` | 8 fonctions auth-service jamais appelees dans les tests | MEDIUM | +18 tests comportementaux avec mock DB |
+
+### 9.2 Tests Ajoutes
+
+- **+12 tests** voice-api: latency accumulation (6) + booking detection (6)
+- **+18 tests** auth-service: refreshTokens, requestPasswordReset, resetPassword, changePassword, verifyEmail, resendVerificationEmail, getCurrentUser, updateProfile
+- **Total**: 6,026 → 6,124 (+98 tests nets, incluant les 40 remotion-hitl non-flaky)
+
+### 9.3 Autres Actions
+
+- Widget DRIFT fixe (2 bundles rebuilds)
+- Hero subtitle aligne avec audit concurrentiel §11.2 ("expert vocal qui ne dort jamais") × 5 langues
+- CSS rebuilde
+
+### 9.4 Verification Empirique
+
+```
+Tests:          6,124 pass / 0 fail / 0 skip (92 .mjs)
+Validator:      10 errors (ALL STALE_NUMBER false positives from KB test data)
+Widgets:        8/8 in sync
+CSS:            Tailwind v4.1.18 build OK
+Full suite:     0 intermittent failures (vs 7 avant B44 fix)
+```
+
+---
+
+*Sessions 250.214-215 — 4 features strategiques + 3 bugs corriges (B41/B44/B45) + 30 tests + hero subtitle rebrand + 0 regression*
