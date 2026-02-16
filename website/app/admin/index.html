@@ -15,18 +15,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
   <script src="/src/lib/gsap-animations.js"></script>
   <script src="/app/components/app-components.js" defer></script>
   <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
     .stat-accent { position: relative; overflow: hidden; }
     .stat-accent::before {
       content: ''; position: absolute; top: 0; left: 0;
@@ -472,10 +469,6 @@
     import api from '/src/lib/api-client.js';
     import { createLineChart, createBarChart, COLORS } from '/src/lib/charts.js';
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
 
     const API_HEALTH_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:3013/api/health'
@@ -498,13 +491,8 @@
     const themeToggle = document.getElementById('theme-toggle');
     themeToggle?.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      localStorage.setItem('vocalia_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     });
-
-    // Initialize theme
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
 
     // Wait for sidebar component to be injected before accessing its elements
     function initSidebar() {
@@ -644,13 +632,13 @@
         document.getElementById('stat-latency').textContent = avgLatency > 0 ? `${avgLatency}ms` : '--';
         const latencyBadge = document.getElementById('stat-latency-badge');
         if (avgLatency > 0 && avgLatency < 200) {
-          latencyBadge.textContent = 'Normal';
+          latencyBadge.textContent = VocaliaI18n.t('admin.latency_normal');
           latencyBadge.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
         } else if (avgLatency >= 200 && avgLatency < 500) {
-          latencyBadge.textContent = 'Modéré';
+          latencyBadge.textContent = VocaliaI18n.t('admin.latency_moderate');
           latencyBadge.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400';
         } else if (avgLatency >= 500) {
-          latencyBadge.textContent = 'Élevé';
+          latencyBadge.textContent = VocaliaI18n.t('admin.latency_high');
           latencyBadge.className = 'text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400';
         } else {
           latencyBadge.textContent = '--';
@@ -798,7 +786,7 @@
       const container = document.getElementById('activity-heatmap');
       if (!container) return;
 
-      const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      const days = VocaliaI18n.t('admin.days_short').split(',');
       const grid = Array.from({ length: 7 }, () => new Array(24).fill(0));
       const now = new Date();
 
@@ -892,7 +880,7 @@
         activities.push({
           icon: 'user-plus',
           iconColor: 'green',
-          text: `Tenant ${latestTenant.name || latestTenant.id} inscrit`,
+          text: VocaliaI18n.t('admin.tenant_registered').replace('{name}', latestTenant.name || latestTenant.id),
           time: formatTimeAgo(latestTenant.created_at)
         });
       }
@@ -905,8 +893,8 @@
       activities.push({
         icon: 'phone',
         iconColor: 'blue',
-        text: `${todayCalls.toLocaleString()} appels traités aujourd'hui`,
-        time: 'Mise à jour automatique'
+        text: VocaliaI18n.t('admin.calls_today_count').replace('{count}', todayCalls.toLocaleString()),
+        time: VocaliaI18n.t('admin.auto_update')
       });
 
       // HITL pending
@@ -914,8 +902,8 @@
         activities.push({
           icon: 'alert-triangle',
           iconColor: 'amber',
-          text: `${pendingHitl} approbations HITL en attente`,
-          timeHtml: '<a href="hitl.html" class="text-indigo-600 dark:text-indigo-400 hover:underline">Voir les demandes</a>'
+          text: VocaliaI18n.t('admin.hitl_pending').replace('{count}', pendingHitl),
+          timeHtml: `<a href="hitl.html" class="text-indigo-600 dark:text-indigo-400 hover:underline">${VocaliaI18n.t('admin.view_requests')}</a>`
         });
       }
 
@@ -923,18 +911,26 @@
       activities.push({
         icon: 'database',
         iconColor: 'purple',
-        text: `${sessions.length.toLocaleString()} sessions totales`,
-        time: 'Base de données'
+        text: VocaliaI18n.t('admin.total_sessions').replace('{count}', sessions.length.toLocaleString()),
+        time: VocaliaI18n.t('admin.database')
       });
 
+      const colorMap = {
+        green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-600' },
+        blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600' },
+        amber: { bg: 'bg-amber-100 dark:bg-amber-900/30', text: 'text-amber-600' },
+        purple: { bg: 'bg-purple-100 dark:bg-purple-900/30', text: 'text-purple-600' },
+        red: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-600' }
+      };
       container.innerHTML = '';
       activities.forEach(a => {
         const row = document.createElement('div');
         row.className = 'flex items-center gap-3 p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg';
 
+        const colors = colorMap[a.iconColor] || colorMap.blue;
         const iconDiv = document.createElement('div');
-        iconDiv.className = `w-8 h-8 rounded-full bg-${a.iconColor}-100 dark:bg-${a.iconColor}-900/30 flex items-center justify-center`;
-        iconDiv.innerHTML = `<i data-lucide="${escapeHtml(a.icon)}" class="w-4 h-4 text-${escapeHtml(a.iconColor)}-600"></i>`;
+        iconDiv.className = `w-8 h-8 rounded-full ${colors.bg} flex items-center justify-center`;
+        iconDiv.innerHTML = `<i data-lucide="${escapeHtml(a.icon)}" class="w-4 h-4 ${colors.text}"></i>`;
 
         const textDiv = document.createElement('div');
         textDiv.className = 'flex-1';
@@ -968,14 +964,14 @@
       const diffHours = Math.floor(diffMins / 60);
       const diffDays = Math.floor(diffHours / 24);
 
-      if (diffMins < 1) return "À l'instant";
-      if (diffMins < 60) return `Il y a ${diffMins} min`;
-      if (diffHours < 24) return `Il y a ${diffHours}h`;
-      return `Il y a ${diffDays}j`;
+      if (diffMins < 1) return VocaliaI18n.t('admin.just_now');
+      if (diffMins < 60) return VocaliaI18n.t('admin.minutes_ago').replace('{n}', diffMins);
+      if (diffHours < 24) return VocaliaI18n.t('admin.hours_ago').replace('{n}', diffHours);
+      return VocaliaI18n.t('admin.days_ago').replace('{n}', diffDays);
     }
 
     function renderCharts(tenants, sessions) {
-      const months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+      const months = VocaliaI18n.t('admin.months_short').split(',');
       const now = new Date();
       const last6Months = [];
       const mrrByMonth = [];
@@ -1009,13 +1005,13 @@
         createBarChart('#tenant-chart', {
           labels: topTenants.map(t => t[0]),
           datasets: [
-            { label: 'Appels', data: topTenants.map(t => t[1]), color: COLORS.primary }
+            { label: VocaliaI18n.t('admin.calls'), data: topTenants.map(t => t[1]), color: COLORS.primary }
           ]
         });
       } else {
         createBarChart('#tenant-chart', {
-          labels: ['Aucun tenant'],
-          datasets: [{ label: 'Appels', data: [0], color: COLORS.primary }]
+          labels: [VocaliaI18n.t('admin.no_tenant')],
+          datasets: [{ label: VocaliaI18n.t('admin.calls'), data: [0], color: COLORS.primary }]
         });
       }
     }
@@ -1040,7 +1036,7 @@
           const latency = health ? apiLatency : 0;
           const isUp = health && health.status !== 'error';
 
-          el.textContent = isUp ? `Latence: ${latency}ms` : 'Indisponible';
+          el.textContent = isUp ? `${VocaliaI18n.t('admin.latency')}: ${latency}ms` : VocaliaI18n.t('admin.unavailable');
 
           if (isUp && latency < 200) {
             el.className = 'text-xs text-green-600 dark:text-green-400 mt-0.5';
@@ -1057,7 +1053,7 @@
         providers.forEach(p => {
           const el = document.getElementById(`provider-${p}-latency`);
           if (el) {
-            el.textContent = 'Hors ligne';
+            el.textContent = VocaliaI18n.t('admin.offline');
             el.className = 'text-xs text-zinc-500 mt-0.5';
           }
         });

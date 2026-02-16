@@ -15,10 +15,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <!-- Sidebar Component -->
@@ -134,6 +136,35 @@
           </div>
         </div>
 
+        <!-- Voice Performance Metrics (Session 250.214) -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="analytics.speed.title">Performance Vocale</h3>
+            <span class="text-xs px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600" data-i18n="analytics.speed.realtime">Temps reel</span>
+          </div>
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <p class="text-xs text-zinc-500 mb-1" data-i18n="analytics.speed.avg_latency">Temps de reponse moyen</p>
+              <p id="speed-avg" class="text-2xl font-bold text-zinc-900 dark:text-white">--ms</p>
+            </div>
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <p class="text-xs text-zinc-500 mb-1" data-i18n="analytics.speed.p95">P95 Latence</p>
+              <p id="speed-p95" class="text-2xl font-bold text-zinc-900 dark:text-white">--ms</p>
+            </div>
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <p class="text-xs text-zinc-500 mb-1" data-i18n="analytics.speed.sla_rate">SLA (&lt;800ms)</p>
+              <p id="speed-sla" class="text-2xl font-bold text-emerald-600">--%</p>
+            </div>
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <p class="text-xs text-zinc-500 mb-1" data-i18n="analytics.speed.uptime">Uptime</p>
+              <p id="speed-uptime" class="text-2xl font-bold text-emerald-600">--%</p>
+            </div>
+          </div>
+          <div class="h-48">
+            <canvas id="latency-chart"></canvas>
+          </div>
+        </div>
+
         <!-- Voice vs Text Input Methods (E-commerce Widget Phase 1) -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
@@ -210,6 +241,54 @@
           </div>
         </div>
 
+        <!-- Revenue Attribution (Session 250.214) -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="analytics.attribution.title">Attribution Revenue</h3>
+            <span class="text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-600" data-i18n="analytics.attribution.badge">Conversion</span>
+          </div>
+
+          <!-- Funnel -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <i data-lucide="message-circle" class="w-4 h-4 text-indigo-500"></i>
+                <span class="text-xs text-zinc-500" data-i18n="analytics.attribution.conversations">Conversations</span>
+              </div>
+              <p id="attr-conversations" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+            </div>
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>
+                <span class="text-xs text-zinc-500" data-i18n="analytics.attribution.product_intents">Intents produit</span>
+              </div>
+              <p id="attr-intents" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+            </div>
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <i data-lucide="calendar-check" class="w-4 h-4 text-emerald-500"></i>
+                <span class="text-xs text-zinc-500" data-i18n="analytics.attribution.bookings">Bookings</span>
+              </div>
+              <p id="attr-bookings" class="text-2xl font-bold text-emerald-600">--</p>
+            </div>
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+              <div class="flex items-center justify-center gap-1 mb-2">
+                <i data-lucide="trending-up" class="w-4 h-4 text-purple-500"></i>
+                <span class="text-xs text-zinc-500" data-i18n="analytics.attribution.conversion_rate">Taux conversion</span>
+              </div>
+              <p id="attr-rate" class="text-2xl font-bold text-purple-600">--%</p>
+            </div>
+          </div>
+
+          <!-- Top Personas by Conversion -->
+          <div class="border-t border-zinc-200 dark:border-white/[0.08] pt-4">
+            <h4 class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3" data-i18n="analytics.attribution.top_personas">Top personas par conversion</h4>
+            <div id="attr-top-personas" class="space-y-2">
+              <p class="text-sm text-zinc-400" data-i18n="common.loading">Chargement...</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Top Performers -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
@@ -244,10 +323,6 @@
     import { createLineChart, createBarChart, createDoughnutChart, COLORS } from '/src/lib/charts.js';
     import toast from '/src/lib/toast.js';
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
 
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
@@ -264,9 +339,9 @@
 
     const user = auth.getCurrentUser();
     if (user) {
-      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
-      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('user-avatar').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -290,9 +365,15 @@
         // Render top performers table
         renderTopPerformers(sessions);
 
+        // Speed metrics (Session 250.214)
+        renderSpeedMetrics(sessions);
+
+        // Revenue attribution (Session 250.214)
+        renderAttribution(sessions);
+
       } catch (error) {
         console.error('Failed to load analytics:', error);
-        toast.error('Erreur lors du chargement des données');
+        toast.error(VocaliaI18n.t('dashboard.common.load_error'));
         renderEmptyCharts();
         renderEmptyKPIs();
       }
@@ -320,7 +401,7 @@
       const totalCalls = thisMonth.length;
       const lastTotalCalls = lastMonth.length;
       document.getElementById('kpi-calls').textContent = totalCalls.toLocaleString();
-      document.getElementById('kpi-calls-sub').textContent = lastTotalCalls > 0 ? `vs ${lastTotalCalls.toLocaleString()} mois dernier` : 'Ce mois';
+      document.getElementById('kpi-calls-sub').textContent = lastTotalCalls > 0 ? VocaliaI18n.t('dashboard.analytics_page.vs_last_month').replace('{{count}}', lastTotalCalls.toLocaleString()) : VocaliaI18n.t('dashboard.common.this_month');
       updateTrendBadge('kpi-calls-trend', totalCalls, lastTotalCalls);
 
       // Completion rate (sessions with status completed or duration > 0)
@@ -329,7 +410,7 @@
       const lastCompleted = lastMonth.filter(s => s.status === 'completed' || (parseInt(s.duration_sec) || 0) > 30).length;
       const lastConvRate = lastTotalCalls > 0 ? Math.round((lastCompleted / lastTotalCalls) * 100) : 0;
       document.getElementById('kpi-conversion').textContent = `${convRate}%`;
-      document.getElementById('kpi-conv-sub').textContent = `${completed} sessions complètes`;
+      document.getElementById('kpi-conv-sub').textContent = VocaliaI18n.t('dashboard.billing_page.complete_sessions').replace('{{count}}', completed);
       updateTrendBadge('kpi-conv-trend', convRate, lastConvRate);
 
       // Average duration
@@ -338,13 +419,13 @@
       const lastTotalDuration = lastMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0);
       const lastAvgDuration = lastTotalCalls > 0 ? Math.round(lastTotalDuration / lastTotalCalls) : 0;
       document.getElementById('kpi-duration').textContent = formatDuration(avgDuration);
-      document.getElementById('kpi-duration-sub').textContent = lastAvgDuration > 0 ? `vs ${formatDuration(lastAvgDuration)} mois dernier` : 'Total: ' + formatDuration(totalDuration);
+      document.getElementById('kpi-duration-sub').textContent = lastAvgDuration > 0 ? VocaliaI18n.t('dashboard.analytics_page.vs_last_month').replace('{{count}}', formatDuration(lastAvgDuration)) : 'Total: ' + formatDuration(totalDuration);
       updateTrendBadge('kpi-duration-trend', avgDuration, lastAvgDuration);
 
       // Active languages
       const langs = new Set(thisMonth.map(s => (s.lang || s.language || 'fr').toLowerCase()));
       document.getElementById('kpi-languages').textContent = langs.size || 0;
-      document.getElementById('kpi-languages-sub').textContent = langs.size > 0 ? [...langs].map(l => l.toUpperCase()).join(', ') : 'Aucune donnée';
+      document.getElementById('kpi-languages-sub').textContent = langs.size > 0 ? [...langs].map(l => l.toUpperCase()).join(', ') : VocaliaI18n.t('dashboard.common.no_data');
     }
 
     // Update trend badge with color coding
@@ -430,7 +511,7 @@
     // Render empty KPIs
     function renderEmptyKPIs() {
       document.getElementById('kpi-calls').textContent = '0';
-      document.getElementById('kpi-calls-sub').textContent = 'Aucune donnée';
+      document.getElementById('kpi-calls-sub').textContent = VocaliaI18n.t('dashboard.common.no_data');
       document.getElementById('kpi-conversion').textContent = '--%';
       document.getElementById('kpi-conv-sub').textContent = '--';
       document.getElementById('kpi-duration').textContent = '--:--';
@@ -440,7 +521,7 @@
     }
 
     function renderCharts(sessions) {
-      const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+      const dayNames = VocaliaI18n.t('dashboard.common.days_short').split(',');
 
       // Group calls by day of week (last 7 days)
       const callsByDay = Array(7).fill(0);
@@ -538,6 +619,154 @@
       createDoughnutChart('#language-chart', { labels: ['Aucune donnée'], data: [1], colors: [COLORS.slate] });
       createDoughnutChart('#persona-chart', { labels: ['Aucun persona'], data: [1], colors: [COLORS.slate] });
       createBarChart('#hour-chart', { labels: ['9h', '10h', '11h', '12h', '14h', '15h', '16h', '17h'], datasets: [{ label: 'Appels', data: Array(8).fill(0), color: COLORS.info }] });
+    }
+
+    // Speed Metrics calculation (Session 250.214)
+    function renderSpeedMetrics(sessions) {
+      const latencies = sessions
+        .filter(s => s.avg_latency_ms && s.avg_latency_ms > 0)
+        .map(s => s.avg_latency_ms);
+
+      if (latencies.length === 0) {
+        document.getElementById('speed-avg').textContent = '--ms';
+        document.getElementById('speed-p95').textContent = '--ms';
+        document.getElementById('speed-sla').textContent = '--%';
+        document.getElementById('speed-uptime').textContent = '--%';
+        createLineChart('#latency-chart', {
+          labels: ['--'],
+          datasets: [{ label: 'Latence (ms)', data: [0], color: COLORS.primary }]
+        });
+        return;
+      }
+
+      // Average
+      const avg = Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length);
+      document.getElementById('speed-avg').textContent = avg + 'ms';
+
+      // P95
+      const sorted = [...latencies].sort((a, b) => a - b);
+      const p95idx = Math.floor(sorted.length * 0.95);
+      const p95 = sorted[Math.min(p95idx, sorted.length - 1)];
+      document.getElementById('speed-p95').textContent = p95 + 'ms';
+
+      // SLA rate (<800ms)
+      const underSla = latencies.filter(l => l < 800).length;
+      const slaRate = Math.round((underSla / latencies.length) * 100);
+      document.getElementById('speed-sla').textContent = slaRate + '%';
+      document.getElementById('speed-sla').className = slaRate >= 90
+        ? 'text-2xl font-bold text-emerald-600'
+        : slaRate >= 70 ? 'text-2xl font-bold text-amber-600' : 'text-2xl font-bold text-red-600';
+
+      // Uptime (days with sessions / days in month)
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const activeDays = new Set(
+        sessions
+          .filter(s => {
+            const d = new Date(s.created_at || s.timestamp);
+            return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+          })
+          .map(s => new Date(s.created_at || s.timestamp).getDate())
+      );
+      const daysSoFar = Math.min(now.getDate(), daysInMonth);
+      const uptime = daysSoFar > 0 ? Math.round((activeDays.size / daysSoFar) * 100) : 0;
+      document.getElementById('speed-uptime').textContent = uptime + '%';
+
+      // Latency chart by day (last 7 days)
+      const last7 = {};
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        const key = d.toISOString().slice(5, 10);
+        last7[key] = { total: 0, count: 0 };
+      }
+      sessions.forEach(s => {
+        if (!s.avg_latency_ms || s.avg_latency_ms <= 0) return;
+        const d = new Date(s.created_at || s.timestamp);
+        const key = d.toISOString().slice(5, 10);
+        if (last7[key]) {
+          last7[key].total += s.avg_latency_ms;
+          last7[key].count++;
+        }
+      });
+
+      const labels = Object.keys(last7);
+      const data = labels.map(k => last7[k].count > 0 ? Math.round(last7[k].total / last7[k].count) : 0);
+
+      createLineChart('#latency-chart', {
+        labels,
+        datasets: [{ label: VocaliaI18n.t('analytics.speed.latency_label') || 'Latence (ms)', data, color: COLORS.primary }]
+      });
+    }
+
+    // Revenue Attribution (Session 250.214)
+    function renderAttribution(sessions) {
+      const now = new Date();
+      const thisMonth = sessions.filter(s => {
+        const d = new Date(s.created_at || s.timestamp);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      });
+
+      const totalConversations = thisMonth.length;
+
+      // Detect product intents (sessions with lead_score > 0 or status hot/warm)
+      const withIntent = thisMonth.filter(s =>
+        s.status === 'hot' || s.status === 'warm' ||
+        (parseInt(s.lead_score) || 0) > 0 ||
+        s.product_intent
+      );
+
+      // Bookings (sessions with booking_completed or status completed with duration > 60)
+      const withBooking = thisMonth.filter(s =>
+        s.booking_completed ||
+        (s.status === 'completed' && (parseInt(s.duration_sec) || 0) > 60)
+      );
+
+      const convRate = totalConversations > 0
+        ? Math.round((withBooking.length / totalConversations) * 100)
+        : 0;
+
+      document.getElementById('attr-conversations').textContent = totalConversations.toLocaleString();
+      document.getElementById('attr-intents').textContent = withIntent.length.toLocaleString();
+      document.getElementById('attr-bookings').textContent = withBooking.length.toLocaleString();
+      document.getElementById('attr-rate').textContent = convRate + '%';
+
+      // Top personas by conversion
+      const personaConv = {};
+      thisMonth.forEach(s => {
+        const p = s.persona || 'Unknown';
+        if (!personaConv[p]) personaConv[p] = { total: 0, converted: 0 };
+        personaConv[p].total++;
+        if (s.status === 'completed' || s.booking_completed || s.status === 'hot') {
+          personaConv[p].converted++;
+        }
+      });
+
+      const topPersonas = Object.entries(personaConv)
+        .map(([name, data]) => ({
+          name,
+          rate: data.total > 0 ? Math.round((data.converted / data.total) * 100) : 0,
+          total: data.total
+        }))
+        .sort((a, b) => b.rate - a.rate)
+        .slice(0, 3);
+
+      const container = document.getElementById('attr-top-personas');
+      if (topPersonas.length === 0) {
+        container.innerHTML = `<p class="text-sm text-zinc-400">${VocaliaI18n.t('dashboard.common.no_data')}</p>`;
+      } else {
+        container.innerHTML = topPersonas.map(p => `
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-zinc-700 dark:text-zinc-300">${escapeHtml(p.name)}</span>
+            <div class="flex items-center gap-2">
+              <div class="w-24 bg-zinc-200 dark:bg-white/[0.06] rounded-full h-1.5">
+                <div class="bg-purple-500 h-1.5 rounded-full" style="width: ${p.rate}%"></div>
+              </div>
+              <span class="text-sm font-medium text-zinc-900 dark:text-white w-12 text-right">${p.rate}%</span>
+            </div>
+          </div>
+        `).join('');
+      }
     }
 
     loadAnalytics();

@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Dark mode via class strategy (Tailwind v4) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Sidebar layout — single source of truth (used by all dashboard pages) */
+.sidebar { width: 260px; }
+@media (max-width: 1024px) {
+  .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
+  .sidebar.open { transform: translateX(0); }
+}
+
 /* ==========================================================================
    VocalIA Design System v4.0 - Enterprise Dark (Linear/Stripe-inspired)
    Research: GitHub ihlamury/design-skills, Gemini Deep Research

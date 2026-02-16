@@ -15,9 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <!-- Sidebar Component -->
@@ -25,7 +27,7 @@
 
   <!-- Main Content -->
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
@@ -51,7 +53,7 @@
 
       <div class="px-6 py-6 space-y-6">
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
@@ -143,6 +145,57 @@
           <div id="quota-alerts" class="mt-3 space-y-2 hidden"></div>
         </div>
 
+        <!-- KB Quality Score -->
+        <div id="kb-quality-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <i data-lucide="award" class="w-5 h-5 text-indigo-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="kb.quality.title">Score de Qualite</h3>
+          </div>
+          <div class="flex flex-col lg:flex-row items-center gap-6">
+            <!-- SVG Circle -->
+            <div class="relative flex-shrink-0">
+              <svg id="kb-quality-ring" width="140" height="140" viewBox="0 0 140 140">
+                <circle cx="70" cy="70" r="60" fill="none" stroke="currentColor" class="text-zinc-200 dark:text-white/[0.08]" stroke-width="10"/>
+                <circle id="kb-quality-arc" cx="70" cy="70" r="60" fill="none" stroke="#6366f1" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" transform="rotate(-90 70 70)" class="transition-all duration-1000 ease-out"/>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="kb-quality-value" class="text-3xl font-bold text-zinc-900 dark:text-white">--</span>
+                <span class="text-xs text-zinc-500">/100</span>
+              </div>
+            </div>
+            <!-- Badge + Breakdown -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-3">
+                <span id="kb-quality-badge" class="px-3 py-1 text-sm font-semibold rounded-full bg-zinc-200 text-zinc-600"></span>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.entries_count">Nombre d'entrees</span>
+                  <span id="kb-q-entries" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.lang_coverage">Couverture langues</span>
+                  <span id="kb-q-langs" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.entry_depth">Profondeur des entrees</span>
+                  <span id="kb-q-depth" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-full bg-purple-500"></div>
+                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.category_coverage">Categories couvertes</span>
+                  <span id="kb-q-cats" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+                </div>
+              </div>
+            </div>
+            <!-- Recommendations -->
+            <div id="kb-quality-recs" class="flex-1 min-w-0 space-y-2"></div>
+          </div>
+        </div>
+
         <!-- Filters & Search -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
           <div class="flex flex-wrap items-center gap-4">
@@ -175,8 +228,8 @@
         </div>
 
         <!-- KB Entries Table -->
-        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-hidden hover:shadow-lg transition-all duration-200">
-          <div class="overflow-x-auto">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-x-auto hover:shadow-lg transition-all duration-200">
+          <div>
             <table class="w-full">
               <thead class="bg-zinc-50 dark:bg-[#050505]/50 border-b border-zinc-200 dark:border-white/[0.08]">
                 <tr>
@@ -448,6 +501,7 @@
       loadUserInfo();
       await loadKBEntries();
       await loadQuota();
+      renderKBQualityScore();
       setupEventListeners();
     }
 
@@ -510,7 +564,7 @@
         currentTenantId = auth.getTenantId();
         document.getElementById('user-name').textContent = user.name || user.email;
         document.getElementById('user-email').textContent = user.email;
-        document.getElementById('user-initials').textContent = getInitials(user.name || user.email);
+        document.getElementById('user-avatar').textContent = getInitials(user.name || user.email);
       }
     }
 
@@ -540,7 +594,7 @@
           <tr>
             <td colspan="4" class="px-4 py-8 text-center text-zinc-500">
               <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2"></i>
-              <p>Aucune entrée trouvée</p>
+              <p>${VocaliaI18n.t('dashboard.kb_page.no_entries')}</p>
             </td>
           </tr>
         `;
@@ -550,9 +604,9 @@
 
       entriesBody.innerHTML = filtered.map(([key, value]) => {
         const response = typeof value === 'object' ? (value.response || JSON.stringify(value).slice(0, 100)) : String(value);
-        const type = typeof value === 'object' ? 'Objet' : 'Texte';
+        const type = typeof value === 'object' ? VocaliaI18n.t('dashboard.kb_page.type_object') : VocaliaI18n.t('dashboard.kb_page.type_text');
         return `
-          <tr class="hover:bg-zinc-50 dark:hover:bg-white/[0.08]/50">
+          <tr class="hover:bg-zinc-50 dark:hover:bg-white/[0.08]">
             <td class="px-4 py-3">
               <code class="px-2 py-1 bg-zinc-100 dark:bg-white/[0.06] rounded text-sm text-zinc-700 dark:text-zinc-300">${escapeHtml(key)}</code>
             </td>
@@ -593,6 +647,125 @@
       }).catch(() => {});
     }
 
+    // KB Quality Score calculation
+    function computeKBQualityScore(entries, langCount) {
+      const keys = Object.keys(entries).filter(k => k !== '__meta');
+      const count = keys.length;
+
+      // Entries count (0-25)
+      let entriesScore = 0;
+      if (count >= 30) entriesScore = 25;
+      else if (count >= 16) entriesScore = 20;
+      else if (count >= 6) entriesScore = 15;
+      else if (count >= 1) entriesScore = 5;
+
+      // Languages coverage (0-25)
+      const langScoreMap = { 1: 5, 2: 10, 3: 15, 4: 20, 5: 25 };
+      const langsScore = langScoreMap[Math.min(langCount, 5)] || 0;
+
+      // Entry depth (0-25) — % with structured details (object with >1 key)
+      let deepCount = 0;
+      keys.forEach(k => {
+        const val = entries[k];
+        if (typeof val === 'object' && val !== null) {
+          const detailKeys = Object.keys(val).filter(dk => dk !== 'response');
+          if (detailKeys.length > 0) deepCount++;
+        }
+      });
+      const depthPct = count > 0 ? deepCount / count : 0;
+      const depthScore = Math.round(depthPct * 25);
+
+      // Category coverage (0-25) — key categories present
+      const categories = ['livraison', 'retour', 'paiement', 'horaire', 'faq', 'shipping', 'return', 'payment', 'hours', 'contact'];
+      const lowerKeys = keys.map(k => k.toLowerCase());
+      let catsFound = 0;
+      const catGroups = [
+        ['livraison', 'shipping', 'delivery', 'expedition'],
+        ['retour', 'return', 'refund', 'remboursement'],
+        ['paiement', 'payment', 'pay', 'prix', 'price'],
+        ['horaire', 'hours', 'schedule', 'opening', 'ouverture'],
+        ['faq', 'contact', 'aide', 'help', 'support']
+      ];
+      catGroups.forEach(group => {
+        if (lowerKeys.some(k => group.some(g => k.includes(g)))) catsFound++;
+      });
+      const catsScore = catsFound * 5;
+
+      const total = entriesScore + langsScore + depthScore + catsScore;
+      return { total, entriesScore, langsScore, depthScore, catsScore, count, langCount, deepCount, catsFound };
+    }
+
+    function renderKBQualityScore() {
+      // Fetch language count
+      const allLangs = ['fr', 'en', 'es', 'ar', 'ary'];
+      let langCount = 1; // current language has data
+      const langPromises = allLangs.filter(l => l !== currentLanguage).map(l =>
+        api.get(`/tenants/${currentTenantId}/kb`, { lang: l })
+          .then(data => {
+            const keys = Object.keys(data || {}).filter(k => k !== '__meta');
+            if (keys.length > 0) langCount++;
+          })
+          .catch(() => {})
+      );
+
+      Promise.all(langPromises).then(() => {
+        const score = computeKBQualityScore(kbEntries, langCount);
+        const total = score.total;
+
+        // Animate ring
+        const arc = document.getElementById('kb-quality-arc');
+        const circumference = 2 * Math.PI * 60; // ~377
+        const offset = circumference - (total / 100) * circumference;
+        arc.style.strokeDashoffset = offset;
+
+        // Color by score
+        if (total >= 70) arc.setAttribute('stroke', '#10b981');
+        else if (total >= 40) arc.setAttribute('stroke', '#f59e0b');
+        else arc.setAttribute('stroke', '#ef4444');
+
+        // Value
+        document.getElementById('kb-quality-value').textContent = total;
+
+        // Badge
+        const badge = document.getElementById('kb-quality-badge');
+        if (total >= 90) {
+          badge.textContent = 'Platinum';
+          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400';
+        } else if (total >= 70) {
+          badge.textContent = 'Gold';
+          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
+        } else if (total >= 40) {
+          badge.textContent = 'Silver';
+          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-zinc-200 text-zinc-700 dark:bg-white/[0.08] dark:text-zinc-300';
+        } else {
+          badge.textContent = 'Bronze';
+          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
+        }
+
+        // Breakdown
+        document.getElementById('kb-q-entries').textContent = `${score.entriesScore}/25`;
+        document.getElementById('kb-q-langs').textContent = `${score.langsScore}/25`;
+        document.getElementById('kb-q-depth').textContent = `${score.depthScore}/25`;
+        document.getElementById('kb-q-cats').textContent = `${score.catsScore}/25`;
+
+        // Recommendations
+        const recs = [];
+        if (langCount < 2) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_langs'), icon: 'globe' });
+        if (score.depthScore < 13) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_details'), icon: 'file-plus' });
+        if (score.catsFound < 3) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_categories'), icon: 'layers' });
+        if (score.count < 6) recs.push({ text: VocaliaI18n.t('kb.quality.rec_more_entries'), icon: 'plus-circle' });
+
+        const recsDiv = document.getElementById('kb-quality-recs');
+        if (recs.length === 0) {
+          recsDiv.innerHTML = `<div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm"><i data-lucide="check-circle" class="w-4 h-4"></i><span>${VocaliaI18n.t('kb.quality.excellent')}</span></div>`;
+        } else {
+          recsDiv.innerHTML = `<p class="text-xs font-medium text-zinc-500 uppercase mb-1">${VocaliaI18n.t('kb.quality.recommendations')}</p>` +
+            recs.map(r => `<div class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400" onclick="document.getElementById('btn-add-entry').click()"><i data-lucide="${r.icon}" class="w-4 h-4 text-indigo-500"></i><span>${escapeHtml(r.text)}</span></div>`).join('');
+        }
+        lucide.createIcons();
+      });
+    }
+
     // Setup event listeners
     function setupEventListeners() {
       // Search
@@ -607,7 +780,7 @@
       // Add entry button
       document.getElementById('btn-add-entry').addEventListener('click', () => {
         editingKey = null;
-        document.getElementById('entry-modal-title').textContent = 'Ajouter une entrée';
+        document.getElementById('entry-modal-title').textContent = VocaliaI18n.t('dashboard.kb_page.add_entry');
         document.getElementById('entry-key').value = '';
         document.getElementById('entry-key').disabled = false;
         document.getElementById('entry-response').value = '';
@@ -693,7 +866,7 @@
       const value = kbEntries[key];
       editingKey = key;
 
-      document.getElementById('entry-modal-title').textContent = 'Modifier l\'entrée';
+      document.getElementById('entry-modal-title').textContent = VocaliaI18n.t('dashboard.kb_page.edit_entry');
       document.getElementById('entry-key').value = key;
       document.getElementById('entry-key').disabled = true;
       document.getElementById('entry-language').value = currentLanguage;
@@ -719,7 +892,7 @@
       const language = document.getElementById('entry-language').value;
 
       if (!key || !response) {
-        toast.error('Veuillez remplir tous les champs requis');
+        toast.error(VocaliaI18n.t('dashboard.kb_page.fill_required'));
         return;
       }
 
@@ -729,14 +902,14 @@
           const details = JSON.parse(detailsStr);
           value = { ...details, response };
         } catch (e) {
-          toast.error('Format JSON invalide dans les détails');
+          toast.error(VocaliaI18n.t('dashboard.kb_page.invalid_json'));
           return;
         }
       }
 
       try {
         await api.post(`/tenants/${currentTenantId}/kb`, { key, value, language });
-        toast.success(editingKey ? 'Entrée mise à jour' : 'Entrée ajoutée');
+        toast.success(editingKey ? VocaliaI18n.t('dashboard.kb_page.entry_updated') : VocaliaI18n.t('dashboard.kb_page.entry_added'));
         hideModal('entry-modal');
         await loadKBEntries();
       } catch (e) {
@@ -744,25 +917,25 @@
         kbEntries[key] = value;
         renderEntries();
         updateStats();
-        toast.success(editingKey ? 'Entrée mise à jour (local)' : 'Entrée ajoutée (local)');
+        toast.success(editingKey ? VocaliaI18n.t('dashboard.kb_page.entry_updated_local') : VocaliaI18n.t('dashboard.kb_page.entry_added_local'));
         hideModal('entry-modal');
       }
     }
 
     // Delete entry
     async function deleteEntry(key) {
-      if (!confirm(`Supprimer l'entrée "${key}" ?`)) return;
+      if (!confirm(VocaliaI18n.t('dashboard.kb_page.delete_entry_confirm').replace('{{key}}', key))) return;
 
       try {
         await api.delete(`/tenants/${currentTenantId}/kb/${key}`, { params: { lang: currentLanguage } });
-        toast.success('Entrée supprimée');
+        toast.success(VocaliaI18n.t('dashboard.kb_page.entry_deleted'));
         await loadKBEntries();
       } catch (e) {
         // Fallback: update local state
         delete kbEntries[key];
         renderEntries();
         updateStats();
-        toast.success('Entrée supprimée (local)');
+        toast.success(VocaliaI18n.t('dashboard.kb_page.entry_deleted_local'));
       }
     }
 
@@ -787,7 +960,7 @@
           document.getElementById('import-preview').classList.remove('hidden');
           document.getElementById('import-submit').disabled = false;
         } catch (err) {
-          toast.error('Erreur de lecture du fichier: ' + err.message);
+          toast.error(VocaliaI18n.t('dashboard.kb_page.file_read_error') + err.message);
         }
       };
       reader.readAsText(file);
@@ -820,11 +993,11 @@
 
       try {
         const result = await api.post(`/tenants/${currentTenantId}/kb/import`, { data: importData, language, overwrite });
-        toast.success(`Import terminé: ${result.imported || 0} ajoutées, ${result.updated || 0} mises à jour`);
+        toast.success(VocaliaI18n.t('dashboard.kb_page.import_success').replace('{{imported}}', result.imported || 0).replace('{{updated}}', result.updated || 0));
         hideModal('import-modal');
         await loadKBEntries();
       } catch (e) {
-        toast.error('Erreur d\'import: ' + e.message);
+        toast.error(VocaliaI18n.t('dashboard.kb_page.import_error') + e.message);
       }
     }
 
@@ -832,10 +1005,10 @@
     async function rebuildIndex() {
       try {
         const result = await api.post(`/tenants/${currentTenantId}/kb/rebuild-index`, { language: currentLanguage });
-        toast.success(`Index reconstruit: ${result.totalChunks || 0} chunks, ${result.totalVocabulary || 0} termes`);
+        toast.success(VocaliaI18n.t('dashboard.kb_page.index_rebuilt').replace('{{chunks}}', result.totalChunks || 0).replace('{{terms}}', result.totalVocabulary || 0));
         updateStats();
       } catch (e) {
-        toast.error('Erreur de reconstruction: ' + e.message);
+        toast.error(VocaliaI18n.t('dashboard.kb_page.rebuild_error') + e.message);
       }
     }
 
@@ -843,7 +1016,7 @@
     async function crawlWebsite() {
       const url = document.getElementById('crawl-url').value.trim();
       if (!url) {
-        toast.error('Veuillez entrer une URL');
+        toast.error(VocaliaI18n.t('dashboard.kb_page.enter_url'));
         return;
       }
 
@@ -859,15 +1032,15 @@
         const result = await api.post(`/tenants/${currentTenantId}/kb/crawl`, { url, maxPages, language, singlePage });
 
         if (result.success && result.imported) {
-          toast.success(`Crawl terminé: ${result.imported.imported || 0} entrées importées`);
+          toast.success(VocaliaI18n.t('dashboard.kb_page.crawl_success').replace('{{count}}', result.imported.imported || 0));
           hideModal('crawl-modal');
           await loadKBEntries();
           await loadQuota();
         } else {
-          toast.info('Aucune donnée KB extraite de l\'URL');
+          toast.info(VocaliaI18n.t('dashboard.kb_page.crawl_no_data'));
         }
       } catch (e) {
-        toast.error('Erreur de crawl: ' + e.message);
+        toast.error(VocaliaI18n.t('dashboard.kb_page.crawl_error') + e.message);
       } finally {
         document.getElementById('crawl-progress').classList.add('hidden');
         document.getElementById('crawl-submit').disabled = false;
@@ -896,7 +1069,7 @@
       // Search KB
       try {
         const results = await api.get(`/tenants/${currentTenantId}/kb/search`, { q: query, lang: currentLanguage });
-        let response = 'Je n\'ai pas trouvé d\'information à ce sujet.';
+        let response = VocaliaI18n.t('dashboard.kb_page.no_info_found');
 
         if (results.results && results.results.length > 0) {
           const match = results.results[0];
@@ -920,7 +1093,7 @@
           key !== '__meta' && (key.includes(query.toLowerCase()) || JSON.stringify(val).toLowerCase().includes(query.toLowerCase()))
         );
 
-        let response = 'Je n\'ai pas trouvé d\'information à ce sujet.';
+        let response = VocaliaI18n.t('dashboard.kb_page.no_info_found');
         if (matches.length > 0) {
           const [key, val] = matches[0];
           response = typeof val === 'object' ? (val.response || JSON.stringify(val)) : String(val);
@@ -955,11 +1128,6 @@
     window.editEntry = editEntry;
     window.deleteEntry = deleteEntry;
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
 
     function getInitials(name) {
       return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);

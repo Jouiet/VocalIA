@@ -15,17 +15,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
   <script src="/app/components/app-components.js" defer></script>
-  <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
-  </style>
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
 
@@ -99,7 +94,7 @@
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
@@ -147,7 +142,7 @@
         </div>
 
       <!-- Logs List -->
-      <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-hidden hover:shadow-lg transition-all duration-200">
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-x-auto hover:shadow-lg transition-all duration-200">
         <div id="logs-container" class="divide-y divide-zinc-200 dark:divide-white/[0.08] max-h-[600px] overflow-y-auto font-mono text-sm">
           <!-- Logs will be rendered here -->
         </div>
@@ -168,11 +163,6 @@
 
     // Initialize Lucide icons
     lucide.createIcons();
-
-    // Theme init
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
 
     if (!auth.requireRole('admin')) {
       throw new Error('Not authorized');
@@ -203,10 +193,6 @@
       document.addEventListener('app-components:loaded', initSidebar, { once: true });
     }
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
 
     const logsContainer = document.getElementById('logs-container');
     let refreshInterval = null;
@@ -229,7 +215,7 @@
         // Show empty state
         allLogs = [];
         renderLogs([]);
-        toast.error('Erreur lors du chargement des logs');
+        toast.error(VocaliaI18n.t('admin.logs_page.load_error'));
       }
     }
 
@@ -247,7 +233,7 @@
 
     function renderLogs(logs) {
       logsContainer.innerHTML = logs.map(log => `
-        <div class="p-3 hover:bg-zinc-50 dark:hover:bg-white/[0.08]/50 cursor-pointer" onclick="this.querySelector('.details').classList.toggle('hidden')">
+        <div class="p-3 hover:bg-zinc-50 dark:hover:bg-white/[0.08] cursor-pointer" onclick="this.querySelector('.details').classList.toggle('hidden')">
           <div class="flex items-start gap-3">
             <span class="text-xs text-zinc-400 whitespace-nowrap">${new Date(log.timestamp).toLocaleTimeString()}</span>
             <span class="px-1.5 py-0.5 text-xs rounded ${getLevelColor(log.level)} uppercase font-medium">${escapeHtml(log.level)}</span>
@@ -325,7 +311,7 @@
     // Export button
     document.getElementById('export-btn').addEventListener('click', () => {
       if (allLogs.length === 0) {
-        toast.error('Aucun log à exporter');
+        toast.error(VocaliaI18n.t('admin.logs_page.no_export'));
         return;
       }
       const dataStr = JSON.stringify(allLogs, null, 2);
@@ -336,7 +322,7 @@
       a.download = `vocalia-logs-${new Date().toISOString().split('T')[0]}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      toast.success('Logs exportés en JSON');
+      toast.success(VocaliaI18n.t('admin.logs_page.exported'));
     });
   </script>
 </body>

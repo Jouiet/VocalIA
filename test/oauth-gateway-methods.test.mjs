@@ -984,3 +984,30 @@ describe('generateState / verifyState integration', () => {
     assert.strictEqual(result, null);
   });
 });
+
+// ─── B26 regression: OAuth redirect MUST include all user fields ─────────
+
+describe('B26 regression — OAuth login callback redirect params', () => {
+  test('OAuthGateway.cjs login callback redirect includes role, email_verified, oauth_provider, linked_providers', async () => {
+    const { readFileSync } = await import('fs');
+    const { join } = await import('path');
+    const src = readFileSync(join(process.cwd(), 'core', 'OAuthGateway.cjs'), 'utf8');
+
+    // Find the redirect URL construction block (the URLSearchParams in handleLoginCallback)
+    const redirectBlock = src.match(/new URLSearchParams\(\{[\s\S]*?\}\)/g);
+    assert.ok(redirectBlock, 'Should have URLSearchParams construction');
+
+    // Find the one that includes oauth_success (login callback, not integration callback)
+    const loginRedirect = redirectBlock.find(block => {
+      // The redirect that builds the hash fragment for login
+      return block.includes('access_token') && block.includes('user_id');
+    });
+    assert.ok(loginRedirect, 'Should find login redirect URLSearchParams block');
+
+    // B26 fix: These 4 fields MUST be in the redirect params
+    assert.ok(loginRedirect.includes('role'), 'B26 regression: redirect MUST include role');
+    assert.ok(loginRedirect.includes('email_verified'), 'B26 regression: redirect MUST include email_verified');
+    assert.ok(loginRedirect.includes('oauth_provider'), 'B26 regression: redirect MUST include oauth_provider');
+    assert.ok(loginRedirect.includes('linked_providers'), 'B26 regression: redirect MUST include linked_providers');
+  });
+});

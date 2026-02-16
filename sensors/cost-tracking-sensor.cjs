@@ -289,4 +289,6 @@ async function main() {
     updateGPM(pressure, costs, costLog);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { PRICING, BUDGET, calculatePressure, loadLocalCostLog, updateGPM, main };

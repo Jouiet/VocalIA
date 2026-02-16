@@ -1,10 +1,10 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-13 | **Session:** 250.205 (SEO/Email/OAuth/Branding/A11y/Security/PWA — 70+ fixes)
+> **Date:** 2026-02-15 | **Session:** 250.210b (Function coverage 100% — 221/221 exports behaviorally tested)
 > **Code Completeness:** 9.5/10 | **Production Readiness:** 8.5/10 | **Security:** 9.0/10 | **Weighted:** 9.2/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub). **GSC verified** + sitemap submitted. Missing: Stripe, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 46 audit phases across sessions 250.105-250.205. Latest: **SEO/OPTIMIZATION (250.205)** GSC, Resend SMTP, OAuth SSO, VoicalAI→VocalIA, node:22, nodemailer 8.0.1, 27 a11y fixes, cookie consent RGPD, PWA. Prior: Security SOTA (250.200), Veo ADC E2E (250.199), marketing copy (250.195-197). Full history: `memory/session-history.md`
+> **Source:** 52+ audit phases across sessions 250.105-250.210b. Latest: **FUNCTION COVERAGE 100% (250.210b)** 221/221 exports tested, +81 tests, 0 new bugs. Prior: **DEBLOQUER (250.210)** CI fix, quotas, Stripe, alerting, theater→behavioral. Prior: caller/callee (250.209c), CRUD (250.209b), deep audit (250.209), forensic audit (250.207b). Full history: `memory/session-history.md`
 
 ---
 
@@ -21,13 +21,13 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (5,019+ tests, 77 files). **440+ bugs reported across 46+ phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO LIVE (250.205). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). Telephony repriced 0.10→0.24€/min (250.204). SEO/email/branding/a11y (250.205). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
+**Code Completeness: 9.5/10** — Features coded and tested (6,042 tests, 91 files). **221/221 exported functions behaviorally tested (100%).** **457+ bugs reported across 52 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Stripe billing COMPLETE (250.210): checkout, subscriptions, cancel. ErrorScience→ntfy.sh alerting (250.210). Marketing copy remediation COMPLETE (250.195-197). OAuth SSO LIVE (250.205). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
 **Production Readiness: 8.5/10** — VERIFIED 250.205 (13/02/2026) via SSH + curl:
-- `vocalia.ma` ✅ Website live (all 84 pages return 200, 64KB homepage)
+- `vocalia.ma` ✅ Website live (all 85 pages return 200, 64KB homepage)
 - `api.vocalia.ma/health` ✅ Voice API healthy (4 AI providers: Grok, Gemini, Claude, Atlas)
 - `api.vocalia.ma/api/db/health` ✅ DB API connected (Google Sheets: 7 sheets) + security headers (nosniff, X-Frame DENY, HSTS, Referrer-Policy)
 - `api.vocalia.ma/api/auth/login` ✅ Auth endpoint works (JWT_SECRET configured)
-- `api.vocalia.ma/respond` ✅ Quota-limited (demo tenant — needs config.json per tenant)
+- `api.vocalia.ma/respond` ✅ Quota-limited (demo_vocalia: 100 sessions/month configured — 250.210)
 - `api.vocalia.ma/realtime/health` ✅ 7 voices, WebSocket streaming ready
 - `api.vocalia.ma/telephony/health` ✅ Twilio=true, Grok=true, 50 max sessions + HSTS
 - `api.vocalia.ma/oauth/providers` ✅ 5 providers (Google, GitHub, HubSpot, Shopify, Slack) + security headers
@@ -39,37 +39,37 @@
 - Backup: Daily 2 AM UTC, 7-day retention, ~4KB compressed (vocalia-data = 184KB currently).
 - Disk: 20% (19G/96G) — cleaned 63GB of Docker waste (250.200c). Weekly cron prevents reaccumulation.
 - .env VPS: 40 keys SET (JWT_SECRET, VOCALIA_VAULT_KEY, VOCALIA_INTERNAL_KEY, VOICE_API_KEY, GA4_*, all AI providers, RESEND_API_KEY, GOOGLE_SSO_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET)
-- **Still MISSING**: KLING_ACCESS_KEY/SECRET (expired credits), STRIPE_SECRET_KEY (billing), PAYZONE_* (MAD)
-- 0 paying customers, 0 real conversations (quota config needed per tenant), 0 payments, 0 emails sent
+- **Still MISSING**: KLING_ACCESS_KEY/SECRET (expired credits), STRIPE_SECRET_KEY (billing code ready — 250.210), PAYZONE_* (MAD)
+- 0 paying customers, 0 real conversations (demo_vocalia quotas configured — 250.210), 0 payments, 0 emails sent
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
 
-| # | Dimension | Score 250.172 | Score 250.173 | Delta | Justification (250.173 — 74 bugs fixed) |
+| # | Dimension | Score 250.173 | Score 250.211 | Delta | Justification (250.211) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 7.0 | **7.5** | **+0.5** | 3,803 tests pass, 0 fail. 3 test assertions updated for business rule corrections (B2C→B2B, Shopify 2024→2026). |
-| 2 | Sécurité | 6.5 | **8.5** | **+2.0** | sanitizeTenantId now in 20+ modules (30+ sites fixed). JWT split-brain fixed (shared CONFIG). Token hashing unified (SHA-256). Timing-safe API key comparison. Role injection prevented. |
-| 3 | Production readiness | 4.0 | **4.0** | 0 | No deployment — fix session only. /respond still BROKEN on VPS. |
-| 4 | Documentation accuracy | 8.5 | **8.5** | 0 | ROADMAP updated with session results. |
-| 5 | Architecture code | 7.0 | **8.5** | **+1.5** | process.cwd()→__dirname in ALL 11 modules (15 sites). Module-level→lazy init (2 services). Wrong path depths fixed. Body size limits added. |
-| 6 | Multi-tenant | 6.0 | **8.5** | **+2.5** | sanitizeTenantId canonical in 20+ modules. Per-limiter rate limit isolation. Fail-open warnings logged. B2C→B2B defaults corrected. |
-| 7 | i18n | 10.0 | 10.0 | 0 | 4,858 keys × 5 langs verified. No changes. |
-| 8 | Intégrations | 5.0 | **6.5** | **+1.5** | Embedding services lazy init (no more require-time crash). stitch-api env-based paths. Shopify API 2024→2026. |
-| 9 | Developer experience | 8.0 | **8.5** | **+0.5** | Consistent sanitization pattern. Bounded caches. Config-based paths. |
-| 10 | Mémoire & docs | 8.0 | **8.5** | **+0.5** | ROADMAP, MEMORY.md updated. Counter-audit methodology documented. |
+| 1 | Tests unitaires | 7.5 | **9.5** | **+2.0** | 6,042 tests, 0 fail, 91 .mjs, 221/221 functions (100%), 457+ bugs found+fixed |
+| 2 | Sécurité | 8.5 | **9.0** | **+0.5** | CDN SRI 78/78, CSP 22 pages, all containers non-root, HSTS all services, fail2ban+UFW |
+| 3 | Production readiness | 4.0 | **8.5** | **+4.5** | 7 containers HEALTHY, SSL, monitoring v3.0, backup daily, OAuth SSO, SMTP Resend, GSC, checkout flow |
+| 4 | Documentation accuracy | 8.5 | **9.0** | **+0.5** | ROADMAP, BUSINESS-INTELLIGENCE, ARCHITECTURE all updated |
+| 5 | Architecture code | 8.5 | **9.5** | **+1.0** | 58 core modules, 0 TODO, 0 fragmentation, audit 52 phases |
+| 6 | Multi-tenant | 8.5 | **9.0** | **+0.5** | 22 tenants, sanitizeTenantId everywhere, tenant isolation CRUD verified |
+| 7 | i18n | 10.0 | **10.0** | 0 | 5 langs, RTL, geo-detect, hreflang |
+| 8 | Intégrations | 6.5 | **8.0** | **+1.5** | Stripe complete, OAuth SSO, SMTP, MCP 203 tools, video pipeline |
+| 9 | Developer experience | 8.5 | **9.0** | **+0.5** | Health-check 45/45, validator 23/23, caller/callee 0 errors |
+| 10 | Mémoire & docs | 8.5 | **9.0** | **+0.5** | All docs updated, memory clean |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
-| 1 (7.5) | 15% | 1.125 |
-| 2 (8.5) | 15% | 1.275 |
-| 3 (4.0) | 10% | 0.400 |
-| 4 (8.5) | 10% | 0.850 |
-| 5 (8.5) | 10% | 0.850 |
-| 6 (8.5) | 10% | 0.850 |
+| 1 (9.5) | 15% | 1.425 |
+| 2 (9.0) | 15% | 1.350 |
+| 3 (8.5) | 10% | 0.850 |
+| 4 (9.0) | 10% | 0.900 |
+| 5 (9.5) | 10% | 0.950 |
+| 6 (9.0) | 10% | 0.900 |
 | 7 (10.0) | 5% | 0.500 |
-| 8 (6.5) | 10% | 0.650 |
-| 9 (8.5) | 10% | 0.850 |
-| 10 (8.5) | 5% | 0.425 |
-| **TOTAL** | **100%** | **7.775** → **~7.8/10** (250.173 — 74 bugs fixed. All remaining resolved by 250.177b) |
+| 8 (8.0) | 10% | 0.800 |
+| 9 (9.0) | 10% | 0.900 |
+| 10 (9.0) | 5% | 0.450 |
+| **TOTAL** | **100%** | **9.025** → **~9.0/10** (250.211 — 457+ bugs, funnel+checkout fixed, all docs corrected) |
 
 ---
 
@@ -274,7 +274,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Newsletter | ✅ 250.144 — POST to /api/contact |
 | Booking form | ✅ 250.144 — POST to /api/contact |
 | Contact form | ✅ Backend + Google Sheets configured |
-| GA4 | ✅ configured activated (250.163) — 84/84 pages |
+| GA4 | ✅ configured activated (250.163) — 85/85 pages |
 | Social proof | ✅ 250.144 — honest tech metrics |
 | Case studies | ⚠️ Fictional (labeled honestly) |
 
@@ -308,7 +308,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | MCP prompts | 8 | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
-| HTML pages | 84 | `find website -name "*.html" | wc -l` |
+| HTML pages | 85 | `find website -name "*.html" | wc -l` |
 | Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
 | i18n lines | 27,775 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 (nodemailer 8.0.1 patched — 250.205) | `npm audit --json` |
@@ -316,23 +316,24 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 5,019+ tests | 5,019+ pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.205)
+**TOTAL: 6,042 tests | 6,042 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.210b — 15/02/2026)
 
-Top test suites (by count):
+**Function coverage: 221/221 exported functions (100%)** — 213 direct calls + 8 via HTTP E2E.
 
-| Suite | Tests | Quality |
-|:------|:-----:|:-------:|
-| security-utils | 148 | Real I/O |
-| voice-api | 105 | Rebuilt 250.115 |
-| db-api | 94 | Rebuilt 250.115 |
-| widget | 92 | 3 bugs fixed 250.127 |
-| mcp-server | 110 | Rebuilt 250.171c (tools+resources+prompts+logging) |
-| telephony-pure | 76 | Real functions |
-| persona-audit | 711 | 38 × 5 langs |
+Test classification (verified empirically — 250.210b):
 
-77 test files total. Coverage: 39.4% statements, 75.2% branches, 45.0% functions.
-Theater tests: **0** typeof/exports (244 purged in 250.126, 20 purged in 250.114).
-New (250.198-200): oauth-login.test.mjs (16), provision-tenant.test.mjs (24), auth-pages.test.mjs, security-headers.test.mjs, and more.
+| Type | Files | Tests | % | Executes production code? |
+|:-----|:-----:|:-----:|:-:|:------------------------:|
+| PURE_BEHAVIORAL | 38 | 2,294 | 38.0% | YES |
+| BEHAVIORAL | 24 | 1,173 | 19.4% | YES |
+| STATIC_FILE_SCAN | 7 | 1,034 | 17.1% | NO |
+| CONTENT_DATA | 2 | 712 | 11.8% | NO |
+| STRUCTURAL_REQUIRE | 4 | 447 | 7.4% | PARTIAL |
+| HTTP_E2E | 6 | 382 | 6.3% | YES |
+| **Execute real code** | **66** | **3,849** | **63.7%** | — |
+
+91 test files. Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
+Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (167), catalog-connector (164).
 
 ### 5.3 The 25 Function Tools
 
@@ -691,7 +692,7 @@ RESEARCH (not a bug):
 
 **Live Deployment Status (VERIFIED 250.205 — 13/02/2026 via SSH + curl):**
 ```
-✅ vocalia.ma            → Website live, all 84 pages 200 (64KB homepage)
+✅ vocalia.ma            → Website live, all 85 pages 200 (64KB homepage)
 ✅ api.vocalia.ma/health → Voice API healthy (Grok+Gemini+Claude+Atlas) + security headers
 ✅ api.vocalia.ma/api/db/health → DB API connected (Google Sheets: 7 sheets) + security headers
 ✅ api.vocalia.ma/api/auth/login → Auth works (JWT_SECRET configured)
@@ -970,5 +971,5 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 
 ---
 
-*Document mis a jour le 2026-02-10 — Session 250.190*
-*Changelog: sessions 250.105→190 (366 bugs reported across 31 phases, 366 resolved, 0 remaining actionable, 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores verified zero fragmentation (250.190), 100% codebase audited. Caveat: business logic + integration APIs = structurally correct but 0 real-world validation (0 paying customers). Details: `memory/session-history.md`*
+*Document mis a jour le 2026-02-15 — Session 250.211*
+*Changelog: sessions 250.105→211 (457+ bugs reported across 52 phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). 0 paying customers — STRIPE_SECRET_KEY pending. Details: `memory/session-history.md`*

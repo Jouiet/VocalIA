@@ -336,3 +336,32 @@ describe('OAuth + Tenant Provisioning', () => {
     TEST_CLEANUP.push(clientDir);
   });
 });
+
+// ─── B27 regression: Both login pages MUST have all 3 SSO buttons ────────
+
+describe('B27 regression — Login pages SSO buttons', () => {
+  const { readFileSync } = require('fs');
+  const { join } = require('path');
+
+  const loginPages = [
+    { name: 'app/auth/login.html', path: join(process.cwd(), 'website', 'app', 'auth', 'login.html') },
+    { name: 'login.html (root)',   path: join(process.cwd(), 'website', 'login.html') }
+  ];
+
+  for (const page of loginPages) {
+    it(`${page.name} has google-login button`, () => {
+      const html = readFileSync(page.path, 'utf8');
+      assert.ok(html.includes('id="google-login"'), `B27 regression: ${page.name} MUST have google-login button`);
+    });
+
+    it(`${page.name} has github-login button`, () => {
+      const html = readFileSync(page.path, 'utf8');
+      assert.ok(html.includes('id="github-login"'), `B27 regression: ${page.name} MUST have github-login button`);
+    });
+
+    it(`${page.name} has slack-login button`, () => {
+      const html = readFileSync(page.path, 'utf8');
+      assert.ok(html.includes('id="slack-login"'), `B27 regression: ${page.name} MUST have slack-login button`);
+    });
+  }
+});

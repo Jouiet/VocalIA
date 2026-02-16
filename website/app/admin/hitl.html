@@ -15,17 +15,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
   <script src="/app/components/app-components.js" defer></script>
-  <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
-  </style>
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
 
@@ -58,7 +53,7 @@
 
       <div class="px-6 py-6">
         <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
@@ -116,7 +111,7 @@
         <!-- Recent Actions -->
         <div>
           <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="admin.hitl.recent_actions">Actions récentes</h2>
-          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-hidden hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-x-auto hover:shadow-lg transition-all duration-200">
             <table class="w-full text-sm">
               <thead>
                 <tr class="text-left text-zinc-500 border-b border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]">
@@ -152,15 +147,6 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
-
-    // Theme init
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
 
     if (!auth.requireRole('admin')) {
       throw new Error('Not authorized');
@@ -228,7 +214,7 @@
 
       } catch (error) {
         console.error('Failed to load HITL data:', error);
-        toast.error('Erreur lors du chargement des données HITL');
+        toast.error(VocaliaI18n.t('admin.hitl_page.load_error'));
       } finally {
         isLoading = false;
       }
@@ -267,7 +253,7 @@
             <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
             </div>
-            <p class="text-zinc-600 dark:text-zinc-400">Aucune approbation en attente</p>
+            <p class="text-zinc-600 dark:text-zinc-400">${VocaliaI18n.t('admin.hitl_page.no_pending')}</p>
           </div>
         `;
         lucide.createIcons();
@@ -288,7 +274,7 @@
             </div>
             <div class="text-right">
               <p class="text-2xl font-bold ${item.score >= 70 ? 'text-green-600' : item.score >= 50 ? 'text-amber-600' : 'text-red-600'}">${item.score}%</p>
-              <p class="text-xs text-zinc-500">Score BANT</p>
+              <p class="text-xs text-zinc-500">${VocaliaI18n.t('admin.hitl_page.bant_score')}</p>
             </div>
           </div>
 
@@ -306,15 +292,15 @@
           ` : ''}
 
           <div class="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-white/[0.08]">
-            <p class="text-xs text-zinc-500">Il y a ${Math.round((Date.now() - item.created_at) / 60000)} min</p>
+            <p class="text-xs text-zinc-500">${VocaliaI18n.t('admin.hitl_page.ago_minutes').replace('{{n}}', Math.round((Date.now() - item.created_at) / 60000))}</p>
             <div class="flex items-center gap-2">
               <button onclick="rejectItem('${item.id}')" class="px-4 py-2 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                 <i data-lucide="x" class="w-4 h-4 inline mr-1"></i>
-                Rejeter
+                ${VocaliaI18n.t('admin.hitl_page.reject')}
               </button>
               <button onclick="approveItem('${item.id}')" class="px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                 <i data-lucide="check" class="w-4 h-4 inline mr-1"></i>
-                Approuver
+                ${VocaliaI18n.t('admin.hitl_page.approve')}
               </button>
             </div>
           </div>
@@ -338,7 +324,7 @@
           </td>
           <td class="px-4 py-3">
             <span class="px-2 py-1 text-xs rounded ${item.decision === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'}">
-              ${item.decision === 'approved' ? 'Approuvé' : 'Rejeté'}
+              ${item.decision === 'approved' ? VocaliaI18n.t('admin.hitl_page.approved') : VocaliaI18n.t('admin.hitl_page.rejected')}
             </span>
           </td>
           <td class="px-4 py-3 text-zinc-500">${escapeHtml(item.by)}</td>
@@ -352,34 +338,34 @@
       if (!item) return;
 
       const confirmed = await modal.confirm(
-        `Approuver cette demande de ${item.type} pour ${item.tenant} ?`,
-        { title: 'Confirmer l\'approbation', confirmText: 'Approuver' }
+        VocaliaI18n.t('admin.hitl_page.approve_confirm').replace('{{type}}', item.type).replace('{{tenant}}', item.tenant),
+        { title: VocaliaI18n.t('admin.hitl_page.approve_title'), confirmText: VocaliaI18n.t('admin.hitl_page.approve') }
       );
 
       if (confirmed) {
         try {
           await api.hitl.approve(id, user?.name || 'Admin');
-          toast.success('Demande approuvée');
+          toast.success(VocaliaI18n.t('admin.hitl_page.approved_toast'));
           await loadHITLData();
         } catch (error) {
           console.error('Approve failed:', error);
-          toast.error('Erreur lors de l\'approbation');
+          toast.error(VocaliaI18n.t('admin.hitl_page.approve_error'));
         }
       }
     };
 
     window.rejectItem = async (id) => {
-      const reason = await modal.prompt('Raison du rejet (optionnel)', {
-        title: 'Rejeter la demande'
+      const reason = await modal.prompt(VocaliaI18n.t('admin.hitl_page.reject_prompt'), {
+        title: VocaliaI18n.t('admin.hitl_page.reject_title')
       });
 
       try {
         await api.hitl.reject(id, user?.name || 'Admin', reason || '');
-        toast.success('Demande rejetée');
+        toast.success(VocaliaI18n.t('admin.hitl_page.rejected_toast'));
         await loadHITLData();
       } catch (error) {
         console.error('Reject failed:', error);
-        toast.error('Erreur lors du rejet');
+        toast.error(VocaliaI18n.t('admin.hitl_page.reject_error'));
       }
     };
 

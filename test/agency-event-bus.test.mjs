@@ -393,3 +393,91 @@ describe('AgencyEventBus shutdown', () => {
 });
 
 // NOTE: Exports are proven by behavioral tests above (publish, subscribe, EVENT_SCHEMAS, metrics, etc.)
+
+// ─── replay ──────────────────────────────────────────────────────────
+
+describe('AgencyEventBus replay', () => {
+  test('replays events from JSONL files and delivers to subscribers', async () => {
+    const { bus, tmpDir } = createTestBus();
+    const tenantDir = path.join(tmpDir, 'replay_tenant');
+    fs.mkdirSync(tenantDir, { recursive: true });
+    const today = new Date().toISOString().split('T')[0];
+    const events = [
+      { type: 'lead.qualified', payload: { sessionId: 's1', score: 80, status: 'hot' }, metadata: { tenantId: 'replay_tenant' } },
+      { type: 'booking.confirmed', payload: { bookingId: 'b1', date: '2026-02-14', time: '10:00' }, metadata: { tenantId: 'replay_tenant' } }
+    ];
+    fs.writeFileSync(path.join(tenantDir, `${today}.jsonl`), events.map(e => JSON.stringify(e)).join('\n') + '\n');
+
+    let deliveredCount = 0;
+    bus.subscribe('lead.qualified', async () => { deliveredCount++; });
+    bus.subscribe('booking.confirmed', async () => { deliveredCount++; });
+
+    const result = await bus.replay('replay_tenant');
+    assert.strictEqual(result.replayed, 2);
+    assert.strictEqual(deliveredCount, 2);
+    cleanup(bus, tmpDir);
+  });
+
+  test('no tenant dir → returns {replayed: 0}', async () => {
+    const { bus, tmpDir } = createTestBus();
+    const result = await bus.replay('nonexistent_tenant');
+    assert.strictEqual(result.replayed, 0);
+    cleanup(bus, tmpDir);
+  });
+
+  test('filters by eventTypes option', async () => {
+    const { bus, tmpDir } = createTestBus();
+    const tenantDir = path.join(tmpDir, 'filter_tenant');
+    fs.mkdirSync(tenantDir, { recursive: true });
+    const today = new Date().toISOString().split('T')[0];
+    const events = [
+      { type: 'lead.qualified', payload: { sessionId: 's1', score: 80, status: 'hot' } },
+      { type: 'booking.confirmed', payload: { bookingId: 'b1', date: '2026-02-14', time: '10:00' } }
+    ];
+    fs.writeFileSync(path.join(tenantDir, `${today}.jsonl`), events.map(e => JSON.stringify(e)).join('\n') + '\n');
+
+    let deliveredCount = 0;
+    bus.subscribe('lead.qualified', async () => { deliveredCount++; });
+
+    const result = await bus.replay('filter_tenant', { eventTypes: ['lead.qualified'] });
+    assert.strictEqual(result.replayed, 1);
+    assert.strictEqual(deliveredCount, 1);
+    cleanup(bus, tmpDir);
+  });
+});
+
+// ─── processDLQ ─────────────────────────────────────────────────────
+
+describe('AgencyEventBus processDLQ', () => {
+  test('retries DLQ events and removes file on full success', async () => {
+    const { bus, tmpDir } = createTestBus();
+    const dlqEvent = {
+      type: 'system.error',
+      payload: { component: 'test', error: 'timeout', severity: 'medium' },
+      metadata: { tenantId: 'dlq_tenant' },
+      dlq: { error: 'original failure', sentAt: new Date().toISOString() }
+    };
+    fs.writeFileSync(
+      path.join(bus.dlqDir, 'dlq_tenant_dlq.jsonl'),
+      JSON.stringify(dlqEvent) + '\n'
+    );
+
+    let delivered = false;
+    bus.subscribe('system.error', async () => { delivered = true; });
+
+    const result = await bus.processDLQ('dlq_tenant');
+    assert.strictEqual(result.processed, 1);
+    assert.strictEqual(result.succeeded, 1);
+    assert.strictEqual(delivered, true);
+    assert.strictEqual(fs.existsSync(path.join(bus.dlqDir, 'dlq_tenant_dlq.jsonl')), false);
+    cleanup(bus, tmpDir);
+  });
+
+  test('empty DLQ → {processed:0, succeeded:0}', async () => {
+    const { bus, tmpDir } = createTestBus();
+    const result = await bus.processDLQ('no_dlq');
+    assert.strictEqual(result.processed, 0);
+    assert.strictEqual(result.succeeded, 0);
+    cleanup(bus, tmpDir);
+  });
+});

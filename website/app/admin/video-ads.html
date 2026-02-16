@@ -8,7 +8,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
-    <title>Sovereign Studio - VocalIA Production</title>
+    <title>Video Studio - VocalIA Admin</title>
 
     <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,19 +16,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <script src="/src/lib/dark-mode-init.js"></script>
     <link href="/public/css/style.css?v=250197" rel="stylesheet">
     <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
     <script src="/src/lib/i18n.js"></script>
+    <script src="/src/lib/escape-html.js"></script>
     <script src="/app/components/app-components.js" defer></script>
 
     <style>
-        /* Sidebar layout (shared pattern across all admin pages) */
-        .sidebar { width: 260px; }
-        @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-            .sidebar.open { transform: translateX(0); }
-        }
-
         :root {
             --primary: #3b82f6;
             --indigo: #6366f1;
@@ -128,14 +123,17 @@
 
 <body class="min-h-screen">
 
-    <div data-app-component="admin-sidebar" class="hidden lg:block"></div>
+    <div data-app-component="admin-sidebar"></div>
 
-    <main class="lg:ml-[260px] p-6 lg:p-10 space-y-10">
+    <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] p-6 lg:p-10 space-y-10">
 
         <!-- Grand Header -->
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div class="space-y-2">
                 <div class="flex items-center gap-3">
+                    <button id="menu-toggle" class="lg:hidden p-2 text-zinc-400 hover:bg-white/[0.06] rounded-lg -ml-2 mr-1">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
                     <span
                         class="px-2 py-1 bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-widest rounded-md border border-blue-500/20 uppercase">Sovereign
                         Edition</span>
@@ -509,16 +507,6 @@
             ? 'http://localhost:3012'
             : 'https://api.vocalia.ma/hitl';
 
-        // XSS prevention
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
 
         const adQueueList = document.getElementById('ad-queue-list');
         const refreshBtn = document.getElementById('refresh-btn');

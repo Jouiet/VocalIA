@@ -1,13 +1,42 @@
 # VocalIA MCP Server
 
+[![npm version](https://img.shields.io/npm/v/@vocalia/mcp-server.svg)](https://www.npmjs.com/package/@vocalia/mcp-server)
+![MCP Tools](https://img.shields.io/badge/MCP_tools-203-blue)
+![MCP Resources](https://img.shields.io/badge/resources-6-green)
+![MCP Prompts](https://img.shields.io/badge/prompts-8-orange)
+
 > **Version:** 1.0.0 | **Tools:** 203 | **Resources:** 6 | **Prompts:** 8 | **Transports:** stdio + Streamable HTTP
 
 Model Context Protocol server for the [VocalIA Voice AI Platform](https://vocalia.ma). 203 tools across voice AI, telephony, e-commerce (7 platforms), CRM, billing, exports, and iPaaS integrations.
+
+## Important: Transport Modes
+
+| Mode | Use case | Standalone? |
+|:-----|:---------|:------------|
+| **HTTP remote** | Connect to the hosted VocalIA API at `https://api.vocalia.ma/mcp` | Yes |
+| **stdio (npx)** | Local development with the full VocalIA repository cloned | No — requires the complete project tree |
+
+**For standalone usage, HTTP remote mode is recommended.** The stdio mode resolves internal modules (`../core/`, `../personas/`) that are only present in the full VocalIA installation.
 
 ## Quick Start
 
 ```bash
 npx @vocalia/mcp-server
+```
+
+## Remote Server (Recommended for Standalone)
+
+Connect directly to the hosted VocalIA MCP server — no local installation needed:
+
+```json
+{
+  "mcpServers": {
+    "vocalia": {
+      "type": "url",
+      "url": "https://api.vocalia.ma/mcp"
+    }
+  }
+}
 ```
 
 ## Installation
@@ -169,28 +198,86 @@ Environment variables:
 | `ar` | Arabic MSA |
 | `ary` | Darija (Moroccan Arabic) |
 
-## Development
+## Architectural Overview
+
+VocalIA MCP operates as a high-density integration layer. Unlike traditional MCP servers that provide 5-10 utility tools, VocalIA exposes **203 specialized tools** that interface directly with the core VocalIA Voice Engine and external ecosystem (7 e-commerce platforms, 4 CRMs, 3 iPaaS).
+
+### High-Density Tooling
+
+- **Dynamic Personas:** Toggle between 38 industry-trained AI personalities.
+- **Unified E-commerce API:** A single set of tools (`orders_*`, `products_*`, `customers_*`) that works transparently across Shopify, Magento, WooCommerce, etc.
+- **Contextual Telemetry:** Tools provide rich metadata back to the LLM to improve reasoning accuracy during voice dialogues.
+
+## Prompt Examples for LLMs
+
+To get the most out of VocalIA tools in Claude, Cursor, or Cline, use specific prompts:
+
+### Example 1: Lead Qualification Setup
+>
+> "Check my current tenant configuration using `vocalia://config`. Then, identify the `SAAS` persona and set up a BANT qualification flow for my website visitors."
+
+### Example 2: Multi-Platform Inventory Audit
+>
+> "List all out-of-stock products across my Shopify and WooCommerce stores using the e-commerce tools, and generate a consolidated PDF report using the `exports` tools."
+
+### Example 3: Voice Response Tuning
+>
+> "Analyze the last 5 voice transcripts from `vocalia://tenant/{id}/analytics` and propose a refined system prompt for the `HEALTHCARE` persona to improve empathy scores."
+
+## Security & Compliance
+
+VocalIA MCP is built for enterprise-grade security, implementing the latest RFCs and best practices:
+
+### Authorization (OAuth 2.1)
+
+When running in HTTP mode with `MCP_OAUTH=true`, the server implements:
+
+- **RFC 6749/6750:** Standardized Bearer token usage.
+- **RFC 7636 (PKCE):** Proof Key for Code Exchange with S256 for secure client-side auth.
+- **RFC 7591:** Dynamic Client Registration for automated onboarding of MCP clients.
+- **RFC 8414:** Authorization Server Metadata discovery.
+
+### Operational Security
+
+- **Session Isolation:** Each MCP session is isolated with its own memory space for tool context.
+- **Rate Limiting:** Defaults to 100 requests/minute per session to prevent API abuse.
+- **DNS Rebinding Protection:** Built-in safeguards against local network exploration via the MCP client.
+- **CVE-2026-25536 Safe:** Uses the recommended session-per-request pattern to avoid cross-session contamination.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|:---------|:--------|:------------|
+| `MCP_TRANSPORT` | `stdio` | `stdio` (local pipe) or `http` (SSE). |
+| `MCP_PORT` | `3015` | Listener port for HTTP mode. |
+| `MCP_OAUTH` | `false` | Enable/Disable OAuth 2.1 layer. |
+| `MCP_CORS_ORIGINS` | `*` | Authorized origins for cross-site requests. |
+| `MCP_RATE_LIMIT` | `100` | Max requests per minute per identifier. |
+| `VOCALIA_API_URL` | `https://api.vocalia.ma` | Root URL for the VocalIA ecosystem. |
+
+## Development & Extension
+
+The server is written in TypeScript and uses a modular tool registration pattern.
 
 ```bash
-npm run build       # Build TypeScript
-npm run dev         # Watch mode
-npm start           # Run stdio
-npm run start:http  # Run HTTP
-npm run inspector   # MCP Inspector
+npm run build       # Compile TS to JS in dist/
+npm run inspector   # Launch the MCP Inspector tool
 ```
 
-## Requirements
+### Adding New Tools
 
-- Node.js >= 18.0.0
-- MCP SDK >= 1.26.0
+Tools are located in `dist/tools/`. To add a new integration, follow the pattern in `dist/tools/shopify.js` ensuring full type-safety for arguments.
 
-## Security
+## Enterprise & White-Label
 
-- SDK v1.26.0 — CVE-2026-25536 safe (session-per-request pattern)
-- OAuth 2.1 with PKCE (S256), dynamic client registration
-- DNS rebinding protection (SDK built-in)
-- Configurable CORS and rate limiting
+VocalIA provides managed MCP instances for enterprise clients. This includes:
+
+- **Private Registries:** Host your own MCP tools securely.
+- **Custom Adapters:** Build proprietary connectors to internal legacy systems.
+- **Guaranteed SLIs:** 99.99% availability for the Hosted MCP layer.
+
+Contact [dev@vocalia.ma](mailto:dev@vocalia.ma) for API keys and integration support.
 
 ## License
 
-MIT
+MIT © [Jouiet/VocalIA](https://github.com/Jouiet/VocalIA)

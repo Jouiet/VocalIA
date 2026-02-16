@@ -155,7 +155,9 @@ async function sendCartRecoveryEmail({ to, tenantId, cart, discount, language, r
 
   const subject = subjects[lang] || subjects.fr;
 
-  const cartItemsHtml = (cart || []).map(item => `
+  // BUG FIX 250.207b: db-api passes cart as { total, items } object, not array
+  const cartItems = Array.isArray(cart) ? cart : (cart?.items || []);
+  const cartItemsHtml = cartItems.map(item => `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
         ${item.image ? `<img src="${escapeHtml(item.image)}" alt="" width="50" height="50" style="border-radius: 6px; object-fit: cover;">` : ''}
@@ -200,9 +202,9 @@ async function sendCartRecoveryEmail({ to, tenantId, cart, discount, language, r
           <thead>
             <tr style="background: #f3f4f6;">
               <th style="padding: 10px; text-align: left; font-size: 12px; text-transform: uppercase; color: #6b7280;"></th>
-              <th style="padding: 10px; text-align: left; font-size: 12px; text-transform: uppercase; color: #6b7280;">${lang === 'fr' ? 'Produit' : lang === 'en' ? 'Product' : 'Producto'}</th>
-              <th style="padding: 10px; text-align: center; font-size: 12px; text-transform: uppercase; color: #6b7280;">${lang === 'fr' ? 'Qté' : 'Qty'}</th>
-              <th style="padding: 10px; text-align: right; font-size: 12px; text-transform: uppercase; color: #6b7280;">${lang === 'fr' ? 'Prix' : 'Price'}</th>
+              <th style="padding: 10px; text-align: left; font-size: 12px; text-transform: uppercase; color: #6b7280;">${{ fr: 'Produit', en: 'Product', es: 'Producto', ar: 'المنتج', ary: 'المنتوج' }[lang] || 'Produit'}</th>
+              <th style="padding: 10px; text-align: center; font-size: 12px; text-transform: uppercase; color: #6b7280;">${{ fr: 'Qté', en: 'Qty', es: 'Cant.', ar: 'الكمية', ary: 'الكمية' }[lang] || 'Qté'}</th>
+              <th style="padding: 10px; text-align: right; font-size: 12px; text-transform: uppercase; color: #6b7280;">${{ fr: 'Prix', en: 'Price', es: 'Precio', ar: 'السعر', ary: 'التمن' }[lang] || 'Prix'}</th>
             </tr>
           </thead>
           <tbody>${cartItemsHtml}</tbody>
@@ -222,28 +224,38 @@ async function sendCartRecoveryEmail({ to, tenantId, cart, discount, language, r
 </body>
 </html>`;
 
-  return sendEmail({ to, subject, html });
+  return module.exports.sendEmail({ to, subject, html });
 }
 
 /**
  * Send email verification link
  */
-async function sendVerificationEmail(email, token, name = '') {
+async function sendVerificationEmail(email, token, name = '', lang = 'fr') {
   const baseUrl = ENV.APP_URL || 'https://vocalia.ma';
   const verifyUrl = `${baseUrl}/app/auth/verify-email.html?token=${encodeURIComponent(token)}`;
+  const isRtl = lang === 'ar' || lang === 'ary';
 
-  return sendEmail({
+  const i18n = {
+    fr: { subject: 'Vérifiez votre email — VocalIA', welcome: 'Bienvenue sur VocalIA', cta: 'Vérifier mon email', instructions: 'Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :', expires: 'Ce lien expire dans 24 heures.', ignore: 'Si vous n\'avez pas créé de compte, ignorez cet email.' },
+    en: { subject: 'Verify your email — VocalIA', welcome: 'Welcome to VocalIA', cta: 'Verify my email', instructions: 'Click the button below to verify your email address:', expires: 'This link expires in 24 hours.', ignore: 'If you didn\'t create an account, ignore this email.' },
+    es: { subject: 'Verifica tu email — VocalIA', welcome: 'Bienvenido a VocalIA', cta: 'Verificar mi email', instructions: 'Haz clic en el botón para verificar tu dirección de email:', expires: 'Este enlace expira en 24 horas.', ignore: 'Si no creaste una cuenta, ignora este email.' },
+    ar: { subject: 'تحقق من بريدك — VocalIA', welcome: 'مرحبا بك في VocalIA', cta: 'تحقق من بريدي', instructions: 'اضغط على الزر أدناه للتحقق من عنوان بريدك الإلكتروني:', expires: 'تنتهي صلاحية هذا الرابط خلال 24 ساعة.', ignore: 'إذا لم تنشئ حسابا، تجاهل هذا البريد.' },
+    ary: { subject: 'تأكد من الإيميل ديالك — VocalIA', welcome: 'مرحبا بيك ف VocalIA', cta: 'تأكد من الإيميل ديالي', instructions: 'كليكي على البوطون باش تأكد الإيميل ديالك:', expires: 'هاد اللينك كيتقادا ف 24 ساعة.', ignore: 'إلا ماكرياتيش حساب، تجاهل هاد الإيميل.' }
+  };
+  const t = i18n[lang] || i18n.fr;
+
+  return module.exports.sendEmail({
     to: email,
-    subject: 'Vérifiez votre email — VocalIA',
+    subject: t.subject,
     html: `
-      <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;">
-        <h2 style="color: #5E6AD2;">Bienvenue sur VocalIA${name ? ', ' + escapeHtml(name) : ''} !</h2>
-        <p>Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :</p>
+      <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;" dir="${isRtl ? 'rtl' : 'ltr'}">
+        <h2 style="color: #5E6AD2;">${t.welcome}${name ? ', ' + escapeHtml(name) : ''} !</h2>
+        <p>${t.instructions}</p>
         <a href="${verifyUrl}" style="display: inline-block; background: #5E6AD2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
-          Vérifier mon email
+          ${t.cta}
         </a>
-        <p style="color: #71717a; font-size: 14px;">Ce lien expire dans 24 heures.</p>
-        <p style="color: #71717a; font-size: 12px;">Si vous n'avez pas créé de compte, ignorez cet email.</p>
+        <p style="color: #71717a; font-size: 14px;">${t.expires}</p>
+        <p style="color: #71717a; font-size: 12px;">${t.ignore}</p>
       </div>
     `
   });
@@ -252,22 +264,32 @@ async function sendVerificationEmail(email, token, name = '') {
 /**
  * Send password reset link
  */
-async function sendPasswordResetEmail(email, token, name = '') {
+async function sendPasswordResetEmail(email, token, name = '', lang = 'fr') {
   const baseUrl = ENV.APP_URL || 'https://vocalia.ma';
   const resetUrl = `${baseUrl}/app/auth/forgot-password.html?token=${encodeURIComponent(token)}`;
+  const isRtl = lang === 'ar' || lang === 'ary';
 
-  return sendEmail({
+  const i18n = {
+    fr: { subject: 'Réinitialisation de mot de passe — VocalIA', title: 'Réinitialisation de mot de passe', body: 'Vous avez demandé une réinitialisation de mot de passe.', cta: 'Réinitialiser mon mot de passe', expires: 'Ce lien expire dans 6 heures.', ignore: 'Si vous n\'avez pas fait cette demande, ignorez cet email.' },
+    en: { subject: 'Password reset — VocalIA', title: 'Password reset', body: 'You requested a password reset.', cta: 'Reset my password', expires: 'This link expires in 6 hours.', ignore: 'If you didn\'t make this request, ignore this email.' },
+    es: { subject: 'Restablecimiento de contraseña — VocalIA', title: 'Restablecimiento de contraseña', body: 'Has solicitado un restablecimiento de contraseña.', cta: 'Restablecer mi contraseña', expires: 'Este enlace expira en 6 horas.', ignore: 'Si no hiciste esta solicitud, ignora este email.' },
+    ar: { subject: 'إعادة تعيين كلمة المرور — VocalIA', title: 'إعادة تعيين كلمة المرور', body: 'لقد طلبت إعادة تعيين كلمة المرور.', cta: 'إعادة تعيين كلمة المرور', expires: 'تنتهي صلاحية هذا الرابط خلال 6 ساعات.', ignore: 'إذا لم تقم بهذا الطلب، تجاهل هذا البريد.' },
+    ary: { subject: 'بدل كلمة السر — VocalIA', title: 'بدل كلمة السر', body: 'طلبتي تبدل كلمة السر.', cta: 'بدل كلمة السر ديالي', expires: 'هاد اللينك كيتقادا ف 6 سوايع.', ignore: 'إلا ماطلبتيش هادشي، تجاهل هاد الإيميل.' }
+  };
+  const t = i18n[lang] || i18n.fr;
+
+  return module.exports.sendEmail({
     to: email,
-    subject: 'Réinitialisation de mot de passe — VocalIA',
+    subject: t.subject,
     html: `
-      <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;">
-        <h2 style="color: #5E6AD2;">Réinitialisation de mot de passe</h2>
-        <p>${name ? escapeHtml(name) + ', v' : 'V'}ous avez demandé une réinitialisation de mot de passe.</p>
+      <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;" dir="${isRtl ? 'rtl' : 'ltr'}">
+        <h2 style="color: #5E6AD2;">${t.title}</h2>
+        <p>${name ? escapeHtml(name) + ', ' : ''}${t.body}</p>
         <a href="${resetUrl}" style="display: inline-block; background: #5E6AD2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
-          Réinitialiser mon mot de passe
+          ${t.cta}
         </a>
-        <p style="color: #71717a; font-size: 14px;">Ce lien expire dans 6 heures.</p>
-        <p style="color: #71717a; font-size: 12px;">Si vous n'avez pas fait cette demande, ignorez cet email.</p>
+        <p style="color: #71717a; font-size: 14px;">${t.expires}</p>
+        <p style="color: #71717a; font-size: 12px;">${t.ignore}</p>
       </div>
     `
   });
@@ -326,7 +348,7 @@ async function sendTransactionalEmail({ to, subject, template, data = {}, langua
 </body>
 </html>`;
 
-  return sendEmail({ to, subject, html });
+  return module.exports.sendEmail({ to, subject, html });
 }
 
 module.exports = {

@@ -30,6 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Lucide Icons -->
@@ -326,7 +327,7 @@
       const rememberMe = rememberCheckbox.checked;
 
       if (!email || !password) {
-        showError('Veuillez remplir tous les champs');
+        showError(VocaliaI18n.t('auth.fill_all_fields'));
         return;
       }
 
@@ -334,7 +335,7 @@
 
       try {
         await auth.login({ email, password, rememberMe });
-        toast.success('Connexion réussie !');
+        toast.success(VocaliaI18n.t('auth.login_success'));
 
         // Redirect after short delay
         setTimeout(() => {
@@ -347,9 +348,9 @@
         if (error.code === 'ACCOUNT_LOCKED') {
           showError(error.message);
         } else if (error.code === 'INVALID_CREDENTIALS') {
-          showError('Email ou mot de passe incorrect');
+          showError(VocaliaI18n.t('auth.invalid_credentials'));
         } else {
-          showError(error.message || 'Une erreur est survenue');
+          showError(error.message || VocaliaI18n.t('auth.generic_error'));
         }
 
         setLoading(false);

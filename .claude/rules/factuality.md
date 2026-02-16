@@ -12,8 +12,8 @@
 | MCP Prompts | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` | 8 |
 | Widgets | `ls widget/*.js \| wc -l` | 7 |
 | Languages | `ls website/src/locales/*.json \| wc -l` | 5 |
-| Tests | `ls test/*.mjs \| wc -l` | 77 |
-| HTML pages | `find website -name "*.html" \| wc -l` | 84 |
+| Tests | `ls test/*.mjs \| wc -l` | 91 |
+| HTML pages | `find website -name "*.html" \| wc -l` | 85 |
 | Registry | `node -e "const r=require('./personas/client_registry.json'); console.log(Object.keys(r.clients).length)"` | 22 |
 
 ## Deployment Reality (7 containers deployed, 0 revenue)

@@ -14,6 +14,10 @@
  * - Empty states
  */
 
+function _t(key) {
+  return (typeof VocaliaI18n !== 'undefined' && VocaliaI18n.t) ? VocaliaI18n.t(key) : key;
+}
+
 const DEFAULT_CONFIG = {
   pageSize: 10,
   pageSizes: [10, 25, 50, 100],
@@ -21,9 +25,9 @@ const DEFAULT_CONFIG = {
   sortable: true,
   selectable: false,
   exportable: true,
-  emptyMessage: 'Aucune donnée disponible',
-  loadingMessage: 'Chargement...',
-  searchPlaceholder: 'Rechercher...'
+  emptyMessage: null,
+  loadingMessage: null,
+  searchPlaceholder: null
 };
 
 class DataTable {
@@ -82,7 +86,7 @@ class DataTable {
       searchWrapper.innerHTML = `
         <input type="text"
           class="w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
-          placeholder="${this.config.searchPlaceholder}"
+          placeholder="${this.config.searchPlaceholder || _t('datatable.search')}"
         >
         <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
           <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,7 +121,7 @@ class DataTable {
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
-        Export CSV
+        ${_t('datatable.export_csv')}
       `;
       exportBtn.addEventListener('click', () => this.exportCSV());
       actionsWrapper.appendChild(exportBtn);
@@ -309,7 +313,7 @@ class DataTable {
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span class="text-slate-500">${this.config.loadingMessage}</span>
+        <span class="text-slate-500">${this.config.loadingMessage || _t('datatable.loading')}</span>
       </div>
     `;
     tr.appendChild(td);
@@ -329,7 +333,7 @@ class DataTable {
         <svg class="w-12 h-12 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
         </svg>
-        <span class="text-slate-500">${this.config.emptyMessage}</span>
+        <span class="text-slate-500">${this.config.emptyMessage || _t('datatable.empty')}</span>
       </div>
     `;
     tr.appendChild(td);
@@ -347,12 +351,12 @@ class DataTable {
 
     this.paginationWrapper.innerHTML = `
       <div class="text-sm text-slate-600 dark:text-slate-400">
-        ${total > 0 ? `Affichage ${start}-${end} sur ${total}` : ''}
+        ${total > 0 ? _t('datatable.showing').replace('{start}', start).replace('{end}', end).replace('{total}', total) : ''}
       </div>
       <div class="flex items-center gap-2">
         <select class="page-size px-2 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
           ${this.config.pageSizes.map(size => `
-            <option value="${size}" ${size === this.config.pageSize ? 'selected' : ''}>${size} / page</option>
+            <option value="${size}" ${size === this.config.pageSize ? 'selected' : ''}>${size} / ${_t('datatable.page')}</option>
           `).join('')}
         </select>
         <nav class="flex items-center gap-1">

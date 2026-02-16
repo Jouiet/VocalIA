@@ -73,6 +73,7 @@
         primaryDark: '#4f46e5',
         accentColor: '#10B981',
         darkBg: '#0f172a',
+        widgetPosition: null, // null = auto (RTL→left, LTR→right), 'bottom-left', 'bottom-right'
 
         // Paths - FIXED Session 250.179: Absolute URL for third-party embedding (like B2B)
         LANG_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
@@ -238,6 +239,9 @@
                         root.style.setProperty('--va-primary', CONFIG.primaryColor);
                     }
                 }
+                if (data.position && ['bottom-right', 'bottom-left'].includes(data.position)) {
+                    CONFIG.widgetPosition = data.position;
+                }
                 state.tenantConfig = data;
                 // Session 250.146: Store plan features for sub-widget gating
                 if (data.plan_features) {
@@ -324,6 +328,7 @@
         const eventData = {
             event_category: 'voice_assistant',
             language: state.currentLang,
+            session_id: state.sessionId,
             attribution: state.conversationContext.attribution,
             ...params
         };
@@ -363,7 +368,10 @@
 
         const L = state.langData;
         const isRTL = L.meta.rtl;
-        const position = isRTL ? 'left' : 'right';
+        // Position: explicit config > RTL auto-detect
+        const position = CONFIG.widgetPosition === 'bottom-left' ? 'left' :
+                          CONFIG.widgetPosition === 'bottom-right' ? 'right' :
+                          isRTL ? 'left' : 'right';
 
         const host = document.createElement('div');
         host.id = 'voice-assistant-widget';
@@ -749,7 +757,9 @@
     function showNotificationBubble() {
         const L = state.langData;
         const isRTL = L.meta.rtl;
-        const position = isRTL ? 'left' : 'right';
+        const position = CONFIG.widgetPosition === 'bottom-left' ? 'left' :
+                          CONFIG.widgetPosition === 'bottom-right' ? 'right' :
+                          isRTL ? 'left' : 'right';
 
         const trigger = $id('va-trigger');
         const bubble = document.createElement('div');
@@ -3624,7 +3634,8 @@
         'EXIT_INTENT_DELAY', 'EXIT_INTENT_SENSITIVITY', 'EXIT_INTENT_COOLDOWN',
         'EXIT_INTENT_MOBILE_SCROLL_RATIO', 'EXIT_INTENT_PAGES',
         'SOCIAL_PROOF_ENABLED', 'SOCIAL_PROOF_INTERVAL', 'SOCIAL_PROOF_DURATION',
-        'SOCIAL_PROOF_MAX_SHOWN', 'MAX_CAROUSEL_ITEMS', 'AI_MODE', 'API_TIMEOUT'
+        'SOCIAL_PROOF_MAX_SHOWN', 'MAX_CAROUSEL_ITEMS', 'AI_MODE', 'API_TIMEOUT',
+        'widgetPosition'
     ]);
 
     function safeConfigMerge(source) {

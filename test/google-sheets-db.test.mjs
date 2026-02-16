@@ -699,6 +699,51 @@ describe('GoogleSheetsDB schema column counts', () => {
     assert.ok(SCHEMAS.tenants.columns.includes('slack_channel'));
   });
 
+  test('B24 regression: ALL 8 settings columns present in tenants schema', () => {
+    const settingsFields = [
+      'webhook_url', 'webhook_secret', 'webhook_events',
+      'api_keys', 'integrations', 'notifications',
+      'slack_notifications_enabled', 'slack_channel'
+    ];
+    for (const field of settingsFields) {
+      assert.ok(
+        SCHEMAS.tenants.columns.includes(field),
+        `B24 regression: tenants schema MUST include '${field}' — without it, settings.update() silently loses this field`
+      );
+    }
+  });
+
+  test('B24 regression: settings JSON fields survive objectToRow → rowToObject round-trip', () => {
+    const db = new GoogleSheetsDB();
+    // Realistic tenant with ALL settings populated (as dashboard would write)
+    const tenant = {};
+    SCHEMAS.tenants.columns.forEach(col => { tenant[col] = ''; });
+    Object.assign(tenant, {
+      id: 'tenant_test_b24', name: 'B24 Test Corp', email: 'b24@test.com',
+      webhook_url: 'https://hooks.example.com/vocalia',
+      webhook_secret: 'whsec_abc123',
+      webhook_events: ['order.created', 'lead.qualified', 'session.end'],
+      api_keys: [{ key: 'vk_live_abc', name: 'Production', created: '2026-01-01' }],
+      integrations: [{ type: 'slack', connected: true, channel: '#alerts' }, { type: 'hubspot', connected: false }],
+      notifications: { email: true, slack: true, sms: false, webhook: true },
+      slack_notifications_enabled: 'true',
+      slack_channel: 'C_VOCALIA_ALERTS'
+    });
+
+    const row = db.objectToRow('tenants', tenant);
+    const restored = db.rowToObject('tenants', row);
+
+    // B24: These fields MUST survive the round-trip (were silently lost before fix)
+    assert.strictEqual(restored.webhook_url, 'https://hooks.example.com/vocalia');
+    assert.strictEqual(restored.webhook_secret, 'whsec_abc123');
+    assert.deepStrictEqual(restored.webhook_events, ['order.created', 'lead.qualified', 'session.end']);
+    assert.deepStrictEqual(restored.api_keys, [{ key: 'vk_live_abc', name: 'Production', created: '2026-01-01' }]);
+    assert.deepStrictEqual(restored.integrations, [{ type: 'slack', connected: true, channel: '#alerts' }, { type: 'hubspot', connected: false }]);
+    assert.deepStrictEqual(restored.notifications, { email: true, slack: true, sms: false, webhook: true });
+    assert.strictEqual(restored.slack_notifications_enabled, 'true');
+    assert.strictEqual(restored.slack_channel, 'C_VOCALIA_ALERTS');
+  });
+
   test('sessions has 8 columns', () => {
     assert.strictEqual(SCHEMAS.sessions.columns.length, 8);
   });

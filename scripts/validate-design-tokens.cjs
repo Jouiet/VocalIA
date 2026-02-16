@@ -65,7 +65,7 @@ const APPROVED_HEX = new Set([
   // Visualizer (electric blue)
   '#5dade2', '#85c1e9',
   // Widget
-  '#0f172a',
+  '#0f172a', '#4fbaf1', '#2b6685',
   // White/black
   '#ffffff', '#000000',
 ]);
@@ -364,10 +364,13 @@ function validate() {
     ...findFiles(path.join(ROOT_DIR, 'data'), ['.json']),
     ...findFiles(path.join(ROOT_DIR, 'scripts'), ['.cjs', '.js']),
   ];
-  // Exclude: this validator, coverage, generated indexes
+  // Exclude: this validator, coverage, generated indexes, test-generated data
   const codebaseFilesFiltered = codebaseFiles.filter(f =>
     !f.includes('validate-design-tokens') && !f.includes('coverage')
     && !f.includes('tfidf_index') && !f.includes('automations-registry-index')
+    && !f.includes('remotion-hitl') && !f.includes('data/conversations/')
+    && !f.includes('data/ucp/') && !f.includes('data/kb-usage/')
+    && !f.includes('data/feedback/') && !f.includes('data/audit/')
   );
 
   for (const file of codebaseFilesFiltered) {
@@ -500,6 +503,10 @@ function validate() {
     if (parts[0] === 'app' && parts[1] === 'components') continue;
     // Skip offline.html (PWA Service Worker fallback — self-contained by design)
     if (path.basename(file) === 'offline.html') continue;
+    // Skip Google verification files (e.g. googled735a48fbe6cba7f.html)
+    if (/^google[a-f0-9]+\.html$/.test(path.basename(file))) continue;
+    // Skip 500.html error page (self-contained by design)
+    if (path.basename(file) === '500.html') continue;
 
     const content = fs.readFileSync(file, 'utf-8');
     const rel = relPath(file);

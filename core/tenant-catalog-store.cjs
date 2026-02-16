@@ -771,7 +771,7 @@ class TenantCatalogStore {
    * @param {string} catalogType - Type: PRODUCTS, MENU, SERVICES, FLEET, TRIPS, PACKAGES
    * @returns {Array} Array of items
    */
-  getItems(tenantId, catalogType = 'PRODUCTS') {
+  getItems(tenantId, catalogType = 'products') {
     const connector = this.connectors.get(tenantId);
     if (!connector) {
       return [];

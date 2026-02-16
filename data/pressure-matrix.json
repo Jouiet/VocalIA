@@ -1,7 +1,7 @@
 {
   "platform": "VocalIA",
   "version": "1.0.0",
-  "last_updated": "2026-02-12T22:38:54.327Z",
+  "last_updated": "2026-02-16T00:51:10.804Z",
   "update_frequency": "5m",
   "sectors": {
     "voice": {
@@ -66,8 +66,8 @@
     "sales": {
       "lead_velocity": {
         "pressure": 90,
-        "trend": "DOWN",
-        "last_check": "2026-02-12T22:38:53.804Z",
+        "trend": "UP",
+        "last_check": "2026-02-16T00:51:10.782Z",
         "sensor_data": {
           "leads_last_24h": 0
         }
@@ -76,61 +76,63 @@
     "finance": {
       "api_costs": {
         "label": "API Costs",
-        "pressure": 0,
+        "pressure": 25,
         "trend": "STABLE",
-        "last_check": "2026-02-12T22:38:54.006Z",
+        "last_check": "2026-02-16T00:51:10.798Z",
         "sensor_data": {
-          "projected_month_usd": null,
-          "daily_avg_usd": null,
+          "current_month_usd": 10,
+          "projected_month_usd": 17.5,
+          "daily_avg_usd": 0.63,
           "budget_warning_usd": 100,
           "budget_critical_usd": 250,
           "budget_status": "OK",
-          "providers_tracked": 0,
-          "provider_details": []
+          "providers_tracked": 1,
+          "provider_details": [
+            {
+              "name": "Test",
+              "cost_usd": 10
+            }
+          ]
         }
       }
     },
     "technology": {
       "voice_quality": {
         "label": "Voice Quality",
-        "pressure": 90,
+        "pressure": 0,
         "trend": "STABLE",
-        "last_check": "2026-02-12T22:38:54.327Z",
+        "last_check": "2026-02-16T00:51:10.804Z",
         "sensor_data": {
-          "endpoints_healthy": 0,
-          "endpoints_total": 3,
-          "providers_healthy": 0,
-          "providers_configured": 2,
-          "avg_latency_ms": 223,
+          "endpoints_healthy": 1,
+          "endpoints_total": 1,
+          "providers_healthy": 1,
+          "providers_configured": 1,
+          "avg_latency_ms": 75,
           "endpoint_details": [
             {
-              "name": "Voice API",
-              "status": "DOWN",
-              "latency_ms": -1
-            },
-            {
-              "name": "Grok Realtime",
-              "status": "DOWN",
-              "latency_ms": -1
-            },
-            {
-              "name": "Telephony Bridge",
-              "status": "DOWN",
-              "latency_ms": -1
+              "name": "A",
+              "status": "HEALTHY",
+              "latency_ms": 50
             }
           ],
           "provider_details": [
             {
-              "name": "ElevenLabs",
-              "status": "ERROR",
-              "latency_ms": 221
-            },
-            {
-              "name": "OpenAI Whisper",
-              "status": "ERROR",
-              "latency_ms": 224
+              "name": "EL",
+              "status": "HEALTHY",
+              "latency_ms": 100
             }
           ]
+        }
+      }
+    },
+    "marketing": {
+      "retention": {
+        "pressure": 30,
+        "trend": "DOWN",
+        "last_check": "2026-02-16T00:51:10.787Z",
+        "sensor_data": {
+          "order_count": 25,
+          "high_risk_indicator": 30
         }
       }
     }

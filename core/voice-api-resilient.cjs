@@ -64,6 +64,9 @@ function checkAdminAuth(req, res) {
   }
 }
 
+// Session 250.210: Error alerting via ntfy.sh
+const errorScience = require('./ErrorScience.cjs');
+
 // Session 250.174: Shared tenant CORS module (was duplicated with db-api.cjs — NM7 fix)
 const tenantCors = require('./tenant-cors.cjs');
 const { isOriginAllowed, validateOriginTenant, validateApiKey: _validateApiKeyCors, getRegistry: _getRegistry } = tenantCors;
@@ -1795,7 +1798,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
       typeof ECOM_TOOLS.checkOrderStatus === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     if (session?.extractedData?.email) {
       try {
-        const order = await ECOM_TOOLS.checkOrderStatus(session.extractedData.email, null, tenantId);
+        const order = await ECOM_TOOLS.checkOrderStatus(session.extractedData.email, null, tenantId, language);
         if (order.found) {
           toolContext += `\nVERIFIED_SENSOR_DATA (Shopify): Order ${order.orderId} status is officially "${order.status}".`;
           ragContext = ragContext.replace(/Order status: [^.\n]+/i, `Order status: ${order.status} (Verified)`);
@@ -2299,12 +2302,23 @@ function startServer(port = 3004) {
       req.on('data', chunk => body += chunk);
       req.on('end', async () => {
         try {
-          const { name, plan, tenantId, email } = JSON.parse(body);
+          const parsed = safeJsonParse(body, '/admin/tenants request body');
+          if (!parsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${parsed.error}` }));
+            return;
+          }
+          const { name, plan, tenantId, email } = parsed.data;
+          if (!name) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'name is required' }));
+            return;
+          }
           const tenant = await registerTenant(tenantId, name, plan || 'starter', email);
           res.writeHead(201, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify(tenant, null, 2));
         } catch (e) {
-          res.writeHead(e.message.includes('Invalid JSON') ? 400 : 500, { 'Content-Type': 'application/json' });
+          res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: e.message || 'Failed to create tenant' }));
         }
       });
@@ -2336,6 +2350,60 @@ function startServer(port = 3004) {
       addSystemLog('INFO', 'Health check completed: 39/39 passed');
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(health, null, 2));
+      return;
+    }
+
+    // Session 250.206: Widget Embed Code Generator (self-service install)
+    if (req.url.startsWith('/api/widget/embed-code') && req.method === 'GET') {
+      const embedUrl = new URL(req.url, 'http://localhost');
+      const tenantId = embedUrl.searchParams.get('tenantId');
+      const platform = embedUrl.searchParams.get('platform') || 'html';
+
+      if (!tenantId || !/^[a-z0-9_-]+$/i.test(tenantId)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Valid tenantId required' }));
+        return;
+      }
+
+      const validPlatforms = ['html', 'shopify', 'wordpress', 'react', 'wix'];
+      if (!validPlatforms.includes(platform)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: `Invalid platform. Use: ${validPlatforms.join(', ')}` }));
+        return;
+      }
+
+      const baseUrl = 'https://api.vocalia.ma';
+      const snippets = {
+        html: {
+          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
+          instructions: 'Collez ce code juste avant </body> dans votre page HTML.'
+        },
+        shopify: {
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
+          instructions: 'Dans Shopify Admin : Online Store > Themes > Edit Code > layout/theme.liquid > collez avant </body>.'
+        },
+        wordpress: {
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
+          instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA.'
+        },
+        react: {
+          snippet: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${baseUrl}/voice-assistant/voice-widget-v3.js';\n    script.defer = true;\n    script.dataset.tenantId = '${tenantId}';\n    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> dans votre layout`,
+          instructions: 'Ajoutez le composant VocalIAWidget dans votre layout principal (App.jsx ou layout.tsx).'
+        },
+        wix: {
+          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
+          instructions: 'Dans Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
+        }
+      };
+
+      const result = snippets[platform];
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        platform,
+        tenantId,
+        snippet: result.snippet,
+        instructions: result.instructions
+      }));
       return;
     }
 
@@ -2672,16 +2740,21 @@ function startServer(port = 3004) {
         // Derive currency from client registry or tenant config
         const tenantCurrency = client.currency || tenantConfig.default_currency || 'EUR';
 
+        // Widget config from dashboard (install-widget page customization)
+        const widgetBranding = tenantConfig.widget_config?.branding || {};
+        const widgetPosition = tenantConfig.widget_config?.position || null;
+
         const config = {
           success: true,
           tenantId: safeTId,
           plan: tenantPlan,
           currency: tenantCurrency,
           branding: {
-            primaryColor: client.primary_color || persona.primaryColor || '#5E6AD2',
+            primaryColor: widgetBranding.primary_color || client.primary_color || persona.primaryColor || '#5E6AD2',
             botName: persona.name || 'VocalIA',
             avatar: persona.avatar || null
           },
+          position: widgetPosition,
           features: {
             ecommerce: persona.widget_types?.includes('ECOM') || false,
             voice: true,
@@ -2883,6 +2956,13 @@ function startServer(port = 3004) {
           // Add AI response to session
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });
 
+          // Session 250.214: Accumulate latency for Speed Metrics dashboard
+          if (result.latencyMs) {
+            session.latency_total = (session.latency_total || 0) + result.latencyMs;
+            session.latency_count = (session.latency_count || 0) + 1;
+            session.avg_latency_ms = Math.round(session.latency_total / session.latency_count);
+          }
+
           // Session 250.57: Persist conversation (multi-tenant)
           // ⛔ RULE: This is for CLIENT CONSULTATION ONLY - NEVER for KB/RAG
           try {
@@ -3036,6 +3116,7 @@ function startServer(port = 3004) {
           }
         } catch (err) {
           console.error('[Voice API] Error:', err.message);
+          errorScience.recordError({ component: 'VoiceAPI', error: err, severity: 'high', tenantId });
           res.writeHead(500, { 'Content-Type': 'application/json' });
           // BL14 fix: Generic error to client, full detail in server logs only
           res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));

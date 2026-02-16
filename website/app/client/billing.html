@@ -16,9 +16,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
 </head>
 
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
@@ -28,7 +30,7 @@
   <!-- Main Content -->
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
       <header
-        class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+        class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
@@ -107,7 +109,7 @@
             <span id="plan-badge" class="text-xs px-2.5 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">--</span>
           </div>
           <div id="features-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <p class="text-zinc-400 text-sm col-span-2">Chargement...</p>
+            <p class="text-zinc-400 text-sm col-span-2" data-i18n="common.loading">Chargement...</p>
           </div>
         </div>
 
@@ -207,10 +209,6 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
 
     if (!auth.requireAuth()) {
       throw new Error('Not authenticated');
@@ -221,9 +219,9 @@
     let billingData = null;
 
     if (user) {
-      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
-      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('user-avatar').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -250,7 +248,7 @@
         // Calculate renewal date (next month 15th)
         const now = new Date();
         const renewalDate = new Date(now.getFullYear(), now.getMonth() + 1, 15);
-        document.getElementById('plan-renewal').textContent = `Renouvellement le ${renewalDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+        document.getElementById('plan-renewal').textContent = VocaliaI18n.t('dashboard.billing_page.renewal').replace('{{date}}', renewalDate.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }));
 
         // Usage stats from real session data
         const thisMonth = sessionsData.filter(s => {
@@ -276,7 +274,7 @@
         }
 
         document.getElementById('usage-calls').textContent = thisMonth.length.toLocaleString();
-        document.getElementById('usage-calls-sub').textContent = plan === 'starter' ? `Limité à 500/mois` : 'Illimité sur votre plan';
+        document.getElementById('usage-calls-sub').textContent = plan === 'starter' ? VocaliaI18n.t('dashboard.billing_page.limited_monthly') : VocaliaI18n.t('dashboard.billing_page.unlimited_plan');
 
         // Integrations count from tenant config
         const integrations = tenant?.integrations || [];
@@ -305,9 +303,25 @@
           renderInvoices([]);
         }
 
+        // Check subscription status — show "S'abonner" or "Gérer"
+        let hasSubscription = false;
+        try {
+          const subRes = await api.get(`/tenants/${tenantId}/billing/subscription`);
+          hasSubscription = subRes.subscription && subRes.subscription.status === 'active';
+        } catch (e) {
+          // No subscription endpoint or no subscription
+        }
+        const upgradeBtn = document.getElementById('upgrade-btn');
+        if (!hasSubscription) {
+          upgradeBtn.textContent = VocaliaI18n.t('dashboard.billing_page.subscribe');
+          upgradeBtn.dataset.action = 'checkout';
+        } else {
+          upgradeBtn.dataset.action = 'portal';
+        }
+
       } catch (error) {
         console.error('Failed to load billing data:', error);
-        toast.error('Erreur lors du chargement des données');
+        toast.error(VocaliaI18n.t('dashboard.common.load_error'));
       }
     }
 
@@ -320,7 +334,7 @@
           <tr>
             <td colspan="5" class="py-6 text-center text-zinc-400">
               <i data-lucide="receipt" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
-              <p>Aucune facture pour le moment</p>
+              <p>${VocaliaI18n.t('dashboard.billing_page.no_invoices')}</p>
             </td>
           </tr>
         `;
@@ -335,18 +349,26 @@
           <td class="py-3 text-zinc-900 dark:text-white font-medium">${inv.amount} ${inv.currency}</td>
           <td class="py-3">
             <span class="text-xs px-2 py-1 ${inv.status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'} rounded">
-              ${inv.status === 'paid' ? 'Payée' : 'En attente'}
+              ${inv.status === 'paid' ? VocaliaI18n.t('dashboard.billing_page.paid') : VocaliaI18n.t('dashboard.billing_page.pending')}
             </span>
           </td>
           <td class="py-3">
             ${inv.hosted_url && inv.hosted_url.startsWith('https://') ?
-          `<a href="${escapeHtml(inv.hosted_url)}" target="_blank" rel="noopener" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Voir</a>` :
-          `<button disabled class="text-zinc-400 text-sm">Indisponible</button>`
+          `<a href="${escapeHtml(inv.hosted_url)}" target="_blank" rel="noopener" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">${VocaliaI18n.t('common.view')}</a>` :
+          `<button disabled class="text-zinc-400 text-sm">${VocaliaI18n.t('common.unavailable')}</button>`
         }
           </td>
         </tr>
       `).join('');
     }
+
+    // Stripe Price IDs (à configurer après création dans Stripe Dashboard)
+    const STRIPE_PRICES = {
+      starter:   'price_PLACEHOLDER_STARTER',
+      pro:       'price_PLACEHOLDER_PRO',
+      ecommerce: 'price_PLACEHOLDER_ECOMMERCE',
+      telephony: 'price_PLACEHOLDER_TELEPHONY'
+    };
 
     // Plan features matrix (mirrors PLAN_FEATURES from voice-api-resilient.cjs)
     const PLAN_FEATURES = {
@@ -424,14 +446,51 @@
     // Initialize
     loadBillingData();
 
-    // Upgrade button - Portal
+    // Handle Stripe Checkout return
+    const billingParams = new URLSearchParams(window.location.search);
+    if (billingParams.get('success') === '1') {
+      toast.success('Paiement réussi ! Votre abonnement est actif.');
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (billingParams.get('canceled') === '1') {
+      toast.error('Paiement annulé. Vous pouvez réessayer à tout moment.');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
+    // Upgrade button - Checkout or Portal
     document.getElementById('upgrade-btn').addEventListener('click', async () => {
       const tenantId = auth.getTenantId();
-      try {
-        const res = await api.post(`/tenants/${tenantId}/billing/portal`);
-        if (res.url) window.location.href = res.url;
-      } catch (e) {
-        window.location.href = '/pricing';
+      const action = document.getElementById('upgrade-btn').dataset.action || 'portal';
+
+      if (action === 'checkout') {
+        // New subscription — create Stripe Checkout Session
+        const tenant = await api.get(`/tenants/${tenantId}`).catch(() => null);
+        const plan = tenant?.plan || 'starter';
+        const priceId = STRIPE_PRICES[plan];
+
+        if (!priceId || priceId.startsWith('price_PLACEHOLDER')) {
+          toast.error('Configuration Stripe en cours. Contactez-nous.');
+          return;
+        }
+
+        try {
+          const res = await api.post(`/tenants/${tenantId}/billing/checkout`, { priceId });
+          if (res.url) {
+            window.location.href = res.url;
+          } else {
+            toast.error('Erreur lors de la création du checkout');
+          }
+        } catch (e) {
+          console.error('[Billing] Checkout error:', e);
+          toast.error('Erreur: ' + (e.message || 'Impossible de créer le checkout'));
+        }
+      } else {
+        // Existing subscription — go to Stripe Portal
+        try {
+          const res = await api.post(`/tenants/${tenantId}/billing/portal`);
+          if (res.url) window.location.href = res.url;
+        } catch (e) {
+          window.location.href = '/pricing';
+        }
       }
     });
 

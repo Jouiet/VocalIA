@@ -16,7 +16,7 @@
  */
 
 
-import { test, describe, beforeEach, afterEach } from 'node:test';
+import { test, describe, beforeEach, afterEach, after } from 'node:test';
 import assert from 'node:assert';
 import fs from 'fs';
 import path from 'path';
@@ -25,6 +25,22 @@ import abAnalytics from '../core/ab-analytics.cjs';
 const { logEvent, getExperimentStats, getAllExperiments, createAnalyticsMiddleware } = abAnalytics;
 
 const DATA_DIR = path.join(import.meta.dirname, '../data/ab-analytics');
+
+// BUG FIX 250.207b: Clean up __test_ data after all tests complete
+// Without this, test data accumulates across runs (55K+ lines, 1206 experiments)
+// causing getAllExperiments() to timeout (even with the single-pass fix)
+after(() => {
+  try {
+    const files = fs.readdirSync(DATA_DIR).filter(f => f.endsWith('.jsonl'));
+    for (const f of files) {
+      const filepath = path.join(DATA_DIR, f);
+      const content = fs.readFileSync(filepath, 'utf8');
+      const lines = content.split('\n');
+      const clean = lines.filter(l => !l.includes('__test_'));
+      fs.writeFileSync(filepath, clean.join('\n'));
+    }
+  } catch {}
+});
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -448,5 +464,56 @@ describe('AB Analytics createAnalyticsMiddleware', () => {
     middleware(req, res, () => {});
 
     assert.strictEqual(res.headers['Content-Type'], 'application/json');
+  });
+});
+
+// ─── purgeOldFiles (Session 250.208) ────────────────────────────────
+
+describe('purgeOldFiles', () => {
+  const { purgeOldFiles } = abAnalytics;
+
+  test('purges files older than retention days', () => {
+    // Create a fake old file
+    const oldDate = new Date();
+    oldDate.setDate(oldDate.getDate() - 60);
+    const oldDateStr = oldDate.toISOString().split('T')[0];
+    const oldFile = path.join(DATA_DIR, `ab-events-${oldDateStr}.jsonl`);
+
+    fs.writeFileSync(oldFile, '{"experiment":"__test_purge_old__","eventType":"impression"}\n');
+
+    const purged = purgeOldFiles(30);
+    assert.ok(purged >= 1, 'should purge at least the old file');
+    assert.ok(!fs.existsSync(oldFile), 'old file should be deleted');
+  });
+
+  test('keeps files newer than retention days', () => {
+    // Create a recent file (today)
+    const today = new Date().toISOString().split('T')[0];
+    const recentFile = path.join(DATA_DIR, `ab-events-${today}.jsonl`);
+    const existed = fs.existsSync(recentFile);
+
+    if (!existed) {
+      fs.writeFileSync(recentFile, '{"experiment":"__test_purge_recent__","eventType":"impression"}\n');
+    }
+
+    purgeOldFiles(30);
+    assert.ok(fs.existsSync(recentFile), 'recent file should NOT be deleted');
+
+    // Clean up if we created it
+    if (!existed) {
+      fs.unlinkSync(recentFile);
+    }
+  });
+
+  test('returns 0 when no files to purge', () => {
+    // With default retention and no very old files
+    const purged = purgeOldFiles(99999); // 99999 days = nothing is old
+    assert.strictEqual(purged, 0);
+  });
+
+  test('returns number of purged files', () => {
+    const result = purgeOldFiles(30);
+    assert.strictEqual(typeof result, 'number');
+    assert.ok(result >= 0);
   });
 });

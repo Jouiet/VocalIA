@@ -556,3 +556,81 @@ describe('ProductEmbeddingService getQueryEmbedding', () => {
 
 // NOTE: All exports tested behaviorally above (cosineSimilarity, EMBEDDING_DIM,
 // _generateProductText, _getPriceRange, getStats, clearCache, etc.).
+
+// ─── batchEmbed (behavioral) ──────────────────────────────────────────
+
+describe('ProductEmbeddingService batchEmbed', () => {
+  test('iterates products, generates embeddings, returns summary', async () => {
+    const svc = new ProductEmbeddingService();
+    const tid = 't_batch_1';
+    svc.caches[tid] = {}; // bypass disk read
+    svc._saveCache = () => {}; // bypass disk write
+    const fakeVector = Array.from({ length: 768 }, () => 0.01);
+    svc._getInternalEmbedding = async () => fakeVector;
+
+    const result = await svc.batchEmbed(tid, [
+      { id: 'b1', title: 'Shoe A', category: 'shoes', price: '50' },
+      { id: 'b2', title: 'Bag B', category: 'bags', price: '80' }
+    ], { rateLimit: 1, batchSize: 100 });
+
+    assert.strictEqual(result.total, 2);
+    assert.strictEqual(result.processed, 2);
+    assert.strictEqual(result.generated, 2);
+    assert.strictEqual(result.errors, 0);
+    assert.strictEqual(result.tenantId, tid);
+  });
+
+  test('skips products without id/sku → errors++', async () => {
+    const svc = new ProductEmbeddingService();
+    const tid = 't_batch_2';
+    svc.caches[tid] = {};
+    svc._saveCache = () => {};
+    svc._getInternalEmbedding = async () => [0.1];
+
+    const result = await svc.batchEmbed(tid, [
+      { title: 'No ID' },
+      { id: 'ok', title: 'Has ID' }
+    ], { rateLimit: 1 });
+
+    assert.strictEqual(result.errors, 1);
+    assert.strictEqual(result.generated, 1);
+  });
+
+  test('uses cache for already-embedded products', async () => {
+    const svc = new ProductEmbeddingService();
+    svc.caches['t_batch_cache'] = { 'cached_p': { embedding: [0.1], generatedAt: '2026-01-01' } };
+    svc._saveCache = () => {};
+    let embedCallCount = 0;
+    svc._getInternalEmbedding = async () => { embedCallCount++; return [0.2]; };
+
+    const result = await svc.batchEmbed('t_batch_cache', [
+      { id: 'cached_p', title: 'Already cached' },
+      { id: 'new_p', title: 'Not cached' }
+    ], { rateLimit: 1 });
+
+    assert.strictEqual(result.cached, 1);
+    assert.strictEqual(result.generated, 1);
+    assert.strictEqual(embedCallCount, 1);
+  });
+
+  test('embedding failure → errors++ and continues', async () => {
+    const svc = new ProductEmbeddingService();
+    const tid = 't_batch_fail';
+    svc.caches[tid] = {};
+    svc._saveCache = () => {};
+    let callCount = 0;
+    svc._getInternalEmbedding = async () => {
+      callCount++;
+      if (callCount === 1) return null;
+      return [0.1];
+    };
+
+    const result = await svc.batchEmbed(tid, [
+      { id: 'fail_p', title: 'Will fail' },
+      { id: 'ok_p', title: 'Will succeed' }
+    ], { rateLimit: 1 });
+
+    assert.strictEqual(result.errors, 1);
+    assert.strictEqual(result.generated, 1);
+  });
+});

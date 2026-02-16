@@ -6,7 +6,8 @@
  * Version: 1.0.0
  * Author: VocalIA
  * Author URI: https://vocalia.ma
- * License: MIT
+ * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: vocalia-voice-widget
  * Domain Path: /languages
  * Requires at least: 5.0
@@ -76,6 +77,12 @@ class VocalIA_Voice_Widget {
             'type' => 'string',
             'default' => '',
             'sanitize_callback' => 'sanitize_text_field'
+        ));
+
+        register_setting('vocalia_settings', 'vocalia_external_consent', array(
+            'type' => 'boolean',
+            'default' => false,
+            'sanitize_callback' => 'rest_sanitize_boolean'
         ));
 
         // Appearance settings
@@ -154,6 +161,7 @@ class VocalIA_Voice_Widget {
         settings_errors('vocalia_messages');
 
         $enabled = get_option('vocalia_enabled', false);
+        $external_consent = get_option('vocalia_external_consent', false);
         $tenant_id = get_option('vocalia_tenant_id', '');
         $api_key = get_option('vocalia_api_key', '');
         $position = get_option('vocalia_position', 'bottom-right');
@@ -227,6 +235,18 @@ class VocalIA_Voice_Widget {
                                         <input type="checkbox" name="vocalia_enabled" value="1" <?php checked($enabled); ?>>
                                         <?php _e('Show voice widget on site', 'vocalia-voice-widget'); ?>
                                     </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php _e('External Script', 'vocalia-voice-widget'); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="vocalia_external_consent" value="1" <?php checked($external_consent); ?>>
+                                        <?php _e('I consent to loading the VocalIA voice widget script from vocalia.ma (required for the widget to function)', 'vocalia-voice-widget'); ?>
+                                    </label>
+                                    <p class="description">
+                                        <?php _e('This plugin loads a JavaScript file from vocalia.ma to power the voice assistant. No personal data is collected by the script.', 'vocalia-voice-widget'); ?>
+                                    </p>
                                 </td>
                             </tr>
                         </table>
@@ -422,8 +442,11 @@ class VocalIA_Voice_Widget {
      * Render widget in footer
      */
     public function render_widget() {
-        // Check if enabled
+        // Check if enabled and external script consent given
         if (!get_option('vocalia_enabled', false)) {
+            return;
+        }
+        if (!get_option('vocalia_external_consent', false)) {
             return;
         }
 
@@ -493,6 +516,7 @@ register_activation_hook(__FILE__, 'vocalia_voice_widget_activate');
 function vocalia_voice_widget_activate() {
     // Set default options
     add_option('vocalia_enabled', false);
+    add_option('vocalia_external_consent', false);
     add_option('vocalia_position', 'bottom-right');
     add_option('vocalia_primary_color', '#5E6AD2');
     add_option('vocalia_button_size', '60');

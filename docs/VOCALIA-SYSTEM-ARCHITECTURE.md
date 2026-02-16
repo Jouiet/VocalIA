@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 2.7.0 | 13/02/2026 | Session 250.205 (7 deployed + 1 non-deployed. ALL non-root, node:22-alpine. Resend SMTP LIVE. OAuth SSO LIVE. GSC verified.)
+### Version 2.8.0 | 14/02/2026 | Session 250.209c (7 deployed + 1 non-deployed. ALL non-root, node:22-alpine. 5,919 tests. 457+ bugs fixed. Caller/callee verified.)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -36,23 +36,23 @@
 | **Produits** | Voice Widget (Browser) + Voice Telephony (PSTN) |
 | **Langues** | 5 (FR, EN, ES, AR, ARY/Darija) |
 
-### 1.2 Metriques Globales (VERIFIE `wc -l` 13/02/2026 — Session 250.205)
+### 1.2 Metriques Globales (VERIFIE `wc -l` 14/02/2026 — Session 250.209c)
 
 | Composant | Fichiers | Lignes | Verification |
 |:----------|:--------:|:------:|:-------------|
-| Core Backend | 58 | **37,649** | `wc -l core/*.cjs` |
-| Telephony | 1 | **4,843** | `wc -l telephony/*.cjs` |
+| Core Backend | 58 | **38,021** | `wc -l core/*.cjs` |
+| Telephony | 1 | **4,842** | `wc -l telephony/*.cjs` |
 | Personas | 3 | **8,797** | `wc -l personas/*.cjs personas/*.json` |
-| Widget | 7 | **11,001** | `wc -l widget/*.js` |
-| Sensors | 4 | **852** | `wc -l sensors/*.cjs` |
+| Widget | 7 | **11,011** | `wc -l widget/*.js` |
+| Sensors | 4 | **860** | `wc -l sensors/*.cjs` |
 | Integrations | 7 | **2,275** | `wc -l integrations/*.cjs` |
 | Lib | 1 | **944** | `wc -l lib/*.cjs` |
 | MCP Server (TS) | 33 | **19,324** | `find mcp-server/src -name "*.ts" -exec wc -l {} +` |
 | Website Libs (JS) | 21 | **7,806** | `wc -l website/src/lib/*.js` |
-| Website HTML | **84** | ~28,500 | `find website -name "*.html"` |
-| Locales (JSON) | 5 | **27,805** | `wc -l website/src/locales/*.json` |
-| **TOTAL Backend** | **~81** | **~66,361** | (core+telephony+personas+widget+sensors+integrations+lib) |
-| **TOTAL avec MCP** | **~114** | **~85,685** | Backend + MCP |
+| Website HTML | **85** | ~45,945 | `find website -name "*.html" -exec wc -l {} +` |
+| Locales (JSON) | 5 | **27,945** | `wc -l website/src/locales/*.json` |
+| **TOTAL Backend** | **~81** | **~66,750** | (core+telephony+personas+widget+sensors+integrations+lib) |
+| **TOTAL avec MCP** | **~114** | **~86,074** | Backend + MCP |
 
 ### 1.3 Diagramme d'Architecture Globale
 
@@ -1068,7 +1068,7 @@ MCP (3015) ──► 0 imports from core ──► standalone, talks to external
 | `TWILIO_PHONE_NUMBER` | Telephony | ✅ For PSTN |
 | `GOOGLE_SHEETS_CREDENTIALS` | Database | ✅ Critical |
 | `JWT_SECRET` | Authentication | ✅ Critical |
-| `VOCALIA_VAULT_KEY` | SecretVault | ⚠️ Production |
+| `VOCALIA_VAULT_KEY` | SecretVault | ✅ Critical |
 | `RESEND_API_KEY` | Email (Resend SMTP) | ✅ Critical |
 | `GOOGLE_SSO_CLIENT_ID` | OAuth SSO (Google) | ✅ For SSO |
 | `GOOGLE_SSO_CLIENT_SECRET` | OAuth SSO (Google) | ✅ For SSO |

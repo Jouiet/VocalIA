@@ -18,16 +18,22 @@
   "transport": ["stdio", "streamable-http"],
   "commands": {
     "stdio": {
+      "description": "Local stdio mode — requires the full VocalIA project tree (core/, personas/, etc.)",
       "command": "npx",
       "args": ["-y", "@vocalia/mcp-server"]
     },
     "http": {
+      "description": "Self-hosted HTTP mode — requires the full VocalIA project tree",
       "command": "npx",
       "args": ["-y", "@vocalia/mcp-server", "--http"],
       "env": {
         "MCP_TRANSPORT": "http",
         "MCP_PORT": "3015"
       }
+    },
+    "remote": {
+      "description": "Hosted VocalIA MCP server — no local installation needed (recommended for standalone)",
+      "url": "https://api.vocalia.ma/mcp"
     }
   },
   "auth": {
@@ -85,6 +91,6 @@
   "languages": ["fr", "en", "es", "ar", "ary"],
   "personas": 38,
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   }
 }

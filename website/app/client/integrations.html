@@ -15,9 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <!-- Sidebar Component -->
@@ -25,7 +27,7 @@
 
   <!-- Main Content -->
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
@@ -67,7 +69,7 @@
         <!-- Webhook Health Dashboard -->
         <section>
           <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4">Webhook Health</h2>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
               <div class="flex items-center gap-2 mb-2">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
@@ -319,11 +321,6 @@
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
-    // XSS protection
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
 
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
@@ -340,9 +337,9 @@
 
     const user = auth.getCurrentUser();
     if (user) {
-      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
-      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('user-avatar').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -389,7 +386,7 @@
     function renderConnectedIntegrations(integrations) {
       const container = document.getElementById('connected-integrations');
       if (!integrations || integrations.length === 0) {
-        container.innerHTML = '<p class="text-zinc-500 text-sm">Aucune intégration connectée</p>';
+        container.innerHTML = `<p class="text-zinc-500 text-sm">${VocaliaI18n.t('dashboard.integrations_page.no_integrations')}</p>`;
         return;
       }
 
@@ -409,7 +406,7 @@
               <div>
                 <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(meta.name)}</p>
                 <div class="flex items-center gap-3 text-xs text-zinc-500">
-                  <span>Connecté le ${new Date(i.connected_at).toLocaleDateString()}</span>
+                  <span>${VocaliaI18n.t('dashboard.integrations_page.connected_on').replace('{{date}}', new Date(i.connected_at).toLocaleDateString())}</span>
                   ${syncLabel ? '<span class="text-green-500">' + escapeHtml(syncLabel) + '</span>' : ''}
                 </div>
               </div>
@@ -419,7 +416,7 @@
                 <i data-lucide="activity" class="w-4 h-4 inline"></i>
               </button>
               <button onclick="disconnectIntegration('${escapeHtml(i.name)}')" class="px-3 py-1.5 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
-                Déconnecter
+                ${VocaliaI18n.t('dashboard.common.disconnect')}
               </button>
             </div>
           </div>
@@ -436,12 +433,12 @@
         const isConnected = connectedIntegrations.some(i => i.name === integrationName);
 
         if (isConnected) {
-          btn.textContent = 'Déconnecter';
+          btn.textContent = VocaliaI18n.t('dashboard.common.disconnect');
           btn.classList.remove('bg-zinc-100', 'dark:bg-white/[0.06]', 'text-zinc-700', 'dark:text-zinc-200');
           btn.classList.add('bg-red-100', 'dark:bg-red-900/30', 'text-red-700', 'dark:text-red-300');
           if (status) status.classList.remove('hidden');
         } else {
-          btn.textContent = 'Connecter';
+          btn.textContent = VocaliaI18n.t('dashboard.common.connect');
           btn.classList.add('bg-zinc-100', 'dark:bg-white/[0.06]', 'text-zinc-700', 'dark:text-zinc-200');
           btn.classList.remove('bg-red-100', 'dark:bg-red-900/30', 'text-red-700', 'dark:text-red-300');
           if (status) status.classList.add('hidden');
@@ -453,18 +450,18 @@
     window.disconnectIntegration = async (name) => {
       const meta = INTEGRATIONS_META[name] || { name };
       const confirmed = await modal.confirm(
-        `Voulez-vous déconnecter ${meta.name} ?`,
-        { title: 'Déconnecter', confirmText: 'Déconnecter', danger: true }
+        VocaliaI18n.t('dashboard.integrations_page.disconnect_confirm').replace('{{name}}', meta.name),
+        { title: VocaliaI18n.t('dashboard.integrations_page.disconnect_title'), confirmText: VocaliaI18n.t('dashboard.common.disconnect'), danger: true }
       );
 
       if (confirmed) {
         try {
           const tenantId = auth.getTenantId() || user?.tenant_id;
           await api.integrations.disconnect(tenantId, name);
-          toast.success(`${meta.name} déconnecté`);
+          toast.success(VocaliaI18n.t('dashboard.integrations_page.disconnected').replace('{{name}}', meta.name));
           await loadIntegrations();
         } catch (error) {
-          toast.error('Erreur lors de la déconnexion');
+          toast.error(VocaliaI18n.t('dashboard.common.disconnect_error'));
         }
       }
     };
@@ -489,17 +486,17 @@
     // Test integration connectivity
     window.testIntegration = async (name) => {
       const meta = INTEGRATIONS_META[name] || { name };
-      toast.info(`Test de ${meta.name}...`);
+      toast.info(VocaliaI18n.t('dashboard.integrations_page.test_connection').replace('{{name}}', meta.name));
       try {
         const tenantId = auth.getTenantId() || user?.tenant_id;
         const result = await api.get(`/tenants/${tenantId}/integrations/${name}/test`);
         if (result.success) {
-          toast.success(`${meta.name} — connexion OK (${result.latency_ms || 0}ms)`);
+          toast.success(VocaliaI18n.t('dashboard.integrations_page.test_ok').replace('{{name}}', meta.name).replace('{{latency}}', result.latency_ms || 0));
         } else {
           toast.warning(`${meta.name} — ${result.error || 'test failed'}`);
         }
       } catch (error) {
-        toast.error(`${meta.name} — erreur de test`);
+        toast.error(VocaliaI18n.t('dashboard.integrations_page.test_error').replace('{{name}}', meta.name));
       }
     };
 
@@ -540,7 +537,7 @@
           window.location.href = `${baseUrl}/oauth/start/slack?tenantId=${encodeURIComponent(tid)}`;
           return;
         } else {
-          const loading = modal.loading(`Connexion à ${meta.name}...`);
+          const loading = modal.loading(VocaliaI18n.t('integrations.connecting').replace('{name}', meta.name));
           try {
             const tenantId = auth.getTenantId() || user?.tenant_id;
             await api.integrations.connect(tenantId, { name: integrationName, status: 'active' });

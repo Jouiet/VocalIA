@@ -1,8 +1,9 @@
 {
     "name": "vocalia-widget",
     "version": "1.0.0",
-    "description": "official VocalIA Voice Agent Widget for generic web integration.",
+    "description": "AI-powered voice assistant widget for websites. 38 industry personas, 5 languages (FR/EN/ES/AR/Darija), BANT lead qualification, RTL support. Zero API cost via Web Speech API.",
     "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -10,12 +11,35 @@
         "voice-ai",
         "vocalia",
         "widget",
-        "voice-commerce"
+        "voice-assistant",
+        "voice-commerce",
+        "chatbot",
+        "lead-qualification",
+        "multilingual",
+        "rtl",
+        "darija",
+        "morocco",
+        "web-speech-api"
     ],
-    "author": "VocalIA",
-    "license": "ISC",
+    "author": "VocalIA <dev@vocalia.ma>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Jouiet/VocalIA.git",
+        "directory": "distribution/npm/vocalia-widget"
+    },
+    "homepage": "https://vocalia.ma",
+    "bugs": {
+        "url": "https://github.com/Jouiet/VocalIA/issues"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
     "files": [
         "src",
-        "index.js"
+        "index.js",
+        "index.d.ts",
+        "README.md",
+        "LICENSE"
     ]
 }

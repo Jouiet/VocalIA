@@ -15,9 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
   <style>
     /* Static waveform visualization for call preview */
     .waveform-container {
@@ -53,7 +55,7 @@
   <!-- Main Content -->
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
       <!-- Header -->
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
@@ -88,10 +90,10 @@
               </div>
             </div>
             <select id="date-range" class="px-3 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
-              <option value="7d">7 derniers jours</option>
-              <option value="30d" selected>30 derniers jours</option>
-              <option value="90d">90 derniers jours</option>
-              <option value="custom">Personnalisé</option>
+              <option value="7d" data-i18n="common.last_7d">7 derniers jours</option>
+              <option value="30d" selected data-i18n="common.last_30d">30 derniers jours</option>
+              <option value="90d" data-i18n="common.last_90d">90 derniers jours</option>
+              <option value="custom" data-i18n="common.custom">Personnalisé</option>
             </select>
           </div>
         </div>
@@ -110,7 +112,7 @@
 
       <!-- Stats -->
       <div class="px-6 py-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -118,7 +120,7 @@
               </div>
               <div>
                 <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-total">--</p>
-                <p class="text-sm text-zinc-500">Total appels</p>
+                <p class="text-sm text-zinc-500" data-i18n="calls.stat_total">Total appels</p>
               </div>
             </div>
           </div>
@@ -129,7 +131,7 @@
               </div>
               <div>
                 <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-success">--</p>
-                <p class="text-sm text-zinc-500">Appels réussis</p>
+                <p class="text-sm text-zinc-500" data-i18n="calls.stat_success">Appels réussis</p>
               </div>
             </div>
           </div>
@@ -140,7 +142,7 @@
               </div>
               <div>
                 <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-duration">--</p>
-                <p class="text-sm text-zinc-500">Durée moyenne</p>
+                <p class="text-sm text-zinc-500" data-i18n="calls.stat_duration">Durée moyenne</p>
               </div>
             </div>
           </div>
@@ -151,7 +153,7 @@
               </div>
               <div>
                 <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-conversion">--</p>
-                <p class="text-sm text-zinc-500">Taux conversion</p>
+                <p class="text-sm text-zinc-500" data-i18n="calls.stat_conversion">Taux conversion</p>
               </div>
             </div>
           </div>
@@ -204,9 +206,9 @@
     // Load user info
     const user = auth.getCurrentUser();
     if (user) {
-      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
-      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('user-avatar').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     // Logout
@@ -273,8 +275,8 @@
         }
       ],
       pageSize: 25,
-      searchPlaceholder: 'Rechercher un appel...',
-      emptyMessage: 'Aucun appel trouvé',
+      searchPlaceholder: VocaliaI18n.t('dashboard.calls_page.search_placeholder'),
+      emptyMessage: VocaliaI18n.t('dashboard.calls_page.no_calls'),
       onRowClick: (row) => showCallDetail(row.id)
     });
 
@@ -302,7 +304,7 @@
 
       } catch (error) {
         console.error('Failed to load calls:', error);
-        toast.error('Erreur lors du chargement des appels');
+        toast.error(VocaliaI18n.t('dashboard.calls_page.load_error'));
       }
     }
 
@@ -349,11 +351,6 @@
       }).join('');
     }
 
-    function escapeHtml(str) {
-      var div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
 
     // Show call detail
     window.showCallDetail = async (id) => {
@@ -389,27 +386,27 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <p class="text-sm text-zinc-500">Numéro</p>
+                <p class="text-sm text-zinc-500">${VocaliaI18n.t('dashboard.calls_page.number')}</p>
                 <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(call.caller_phone) || '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-zinc-500">Date</p>
+                <p class="text-sm text-zinc-500">${VocaliaI18n.t('dashboard.calls_page.date')}</p>
                 <p class="font-medium text-zinc-900 dark:text-white">${new Date(call.created_at).toLocaleString()}</p>
               </div>
               <div>
-                <p class="text-sm text-zinc-500">Agent</p>
+                <p class="text-sm text-zinc-500">${VocaliaI18n.t('dashboard.calls_page.agent')}</p>
                 <p class="font-medium text-zinc-900 dark:text-white">${call.persona || '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-zinc-500">Durée</p>
+                <p class="text-sm text-zinc-500">${VocaliaI18n.t('dashboard.calls_page.duration')}</p>
                 <p class="font-medium text-zinc-900 dark:text-white">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-zinc-500">Statut</p>
+                <p class="text-sm text-zinc-500">${VocaliaI18n.t('dashboard.calls_page.status')}</p>
                 <p class="font-medium text-zinc-900 dark:text-white">${call.status || '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-zinc-500">Score lead</p>
+                <p class="text-sm text-zinc-500">${VocaliaI18n.t('dashboard.calls_page.lead_score')}</p>
                 <p class="font-medium text-zinc-900 dark:text-white">${call.lead_score ? call.lead_score + '%' : '-'}</p>
               </div>
             </div>
@@ -418,27 +415,27 @@
             <div>
               <p class="text-sm text-zinc-500 mb-2 flex items-center gap-2">
                 <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-                AI Insights
+                ${VocaliaI18n.t('dashboard.calls_page.ai_insights')}
               </p>
               <div class="grid grid-cols-3 gap-2">
                 <div class="text-center p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg">
                   <p class="text-lg">${call.sentiment === 'positive' ? '😊' : call.sentiment === 'negative' ? '😞' : '😐'}</p>
-                  <p class="text-xs text-zinc-500 mt-1">Sentiment</p>
+                  <p class="text-xs text-zinc-500 mt-1">${VocaliaI18n.t('dashboard.calls_page.sentiment')}</p>
                 </div>
                 <div class="text-center p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg">
                   <p class="text-sm font-bold text-indigo-600 dark:text-indigo-400">${escapeHtml(call.intent) || 'info'}</p>
-                  <p class="text-xs text-zinc-500 mt-1">Intent</p>
+                  <p class="text-xs text-zinc-500 mt-1">${VocaliaI18n.t('dashboard.calls_page.intent')}</p>
                 </div>
                 <div class="text-center p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg">
                   <p class="text-sm font-bold ${(call.confidence || 0) >= 80 ? 'text-green-600' : 'text-amber-600'}">${call.confidence || '--'}%</p>
-                  <p class="text-xs text-zinc-500 mt-1">Confiance</p>
+                  <p class="text-xs text-zinc-500 mt-1">${VocaliaI18n.t('dashboard.calls_page.confidence')}</p>
                 </div>
               </div>
             </div>
 
             ${call.transcript ? `
               <div>
-                <p class="text-sm text-zinc-500 mb-2">Transcription</p>
+                <p class="text-sm text-zinc-500 mb-2">${VocaliaI18n.t('dashboard.calls_page.transcript')}</p>
                 <div class="bg-zinc-50 dark:bg-[#050505] rounded-lg p-4 max-h-64 overflow-y-auto space-y-3">
                   ${formatTranscript(call.transcript)}
                 </div>
@@ -447,14 +444,14 @@
 
             ${call.summary ? `
               <div>
-                <p class="text-sm text-zinc-500 mb-2">Résumé</p>
+                <p class="text-sm text-zinc-500 mb-2">${VocaliaI18n.t('dashboard.calls_page.summary')}</p>
                 <p class="text-zinc-700 dark:text-zinc-300">${escapeHtml(call.summary)}</p>
               </div>
             ` : ''}
 
             ${call.bant_score ? `
               <div>
-                <p class="text-sm text-zinc-500 mb-2">Qualification BANT</p>
+                <p class="text-sm text-zinc-500 mb-2">${VocaliaI18n.t('dashboard.calls_page.bant_qualification')}</p>
                 <div class="grid grid-cols-4 gap-2">
                   ${['budget', 'authority', 'need', 'timeline'].map(key => `
                     <div class="text-center p-2 bg-zinc-50 dark:bg-[#050505] rounded-lg">
@@ -468,7 +465,7 @@
           </div>
         `;
       } catch (error) {
-        content.innerHTML = '<p class="text-red-500">Erreur lors du chargement des détails</p>';
+        content.innerHTML = `<p class="text-red-500">${VocaliaI18n.t('dashboard.calls_page.detail_error')}</p>`;
       }
 
       lucide.createIcons();

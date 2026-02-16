@@ -18,7 +18,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { STATES, queueVideo, getPending, getVideo, approveVideo, rejectVideo, markRendering, markCompleted, markFailed, getStats, getAuditLog, hitlEvents } from '../core/remotion-hitl.cjs';
+import { STATES, queueVideo, getPending, getVideo, updateVideo, approveVideo, rejectVideo, markRendering, markGenerating, markCompleted, markFailed, getStats, getAuditLog, hitlEvents } from '../core/remotion-hitl.cjs';
 
 
 // ─── STATES ─────────────────────────────────────────────────────────
@@ -196,10 +196,11 @@ describe('RemotionHITL getStats', () => {
     assert.ok(stats.failed >= 0, 'failed should be non-negative');
   });
 
-  test('total equals sum of all states', () => {
+  test('total equals sum of all 7 states', () => {
     const stats = getStats();
+    // BUG FIX 250.208: Was missing stats.generating in sum (7 states, not 6)
     const sum = stats.pending + stats.approved + stats.rejected +
-                stats.rendering + stats.completed + stats.failed;
+                stats.generating + stats.rendering + stats.completed + stats.failed;
     assert.strictEqual(stats.total, sum);
   });
 
@@ -262,5 +263,78 @@ describe('RemotionHITL hitlEvents', () => {
       done();
     });
     rejectVideo(item.id, 'event-tester', 'bad');
+  });
+});
+
+// ─── updateVideo (Session 250.208) ──────────────────────────────────
+
+describe('RemotionHITL updateVideo', () => {
+  test('updates fields on existing video', () => {
+    const item = queueVideo({ composition: 'test-update-fields' });
+    const updated = updateVideo(item.id, { previewUrl: 'https://example.com/preview.mp4' });
+    assert.strictEqual(updated.previewUrl, 'https://example.com/preview.mp4');
+    assert.strictEqual(updated.id, item.id);
+    assert.strictEqual(updated.composition, 'test-update-fields');
+  });
+
+  test('throws for non-existent ID', () => {
+    assert.throws(
+      () => updateVideo('vid_nonexistent_update_999', { state: 'approved' }),
+      { message: /not found/i }
+    );
+  });
+
+  test('preserves existing fields not in updates', () => {
+    const item = queueVideo({ composition: 'test-preserve', language: 'en', requestedBy: 'tester' });
+    const updated = updateVideo(item.id, { reviewNotes: 'Added note' });
+    assert.strictEqual(updated.composition, 'test-preserve');
+    assert.strictEqual(updated.language, 'en');
+    assert.strictEqual(updated.requestedBy, 'tester');
+    assert.strictEqual(updated.reviewNotes, 'Added note');
+  });
+
+  test('can change state directly', () => {
+    const item = queueVideo({ composition: 'test-state-change' });
+    const updated = updateVideo(item.id, { state: STATES.APPROVED });
+    assert.strictEqual(updated.state, STATES.APPROVED);
+  });
+
+  test('persists changes (getVideo reflects update)', () => {
+    const item = queueVideo({ composition: 'test-persist-update' });
+    updateVideo(item.id, { outputPath: '/output/test.mp4' });
+    const fetched = getVideo(item.id);
+    assert.strictEqual(fetched.outputPath, '/output/test.mp4');
+  });
+});
+
+// ─── markGenerating (Session 250.208) ───────────────────────────────
+
+describe('RemotionHITL markGenerating', () => {
+  test('sets state to generating', () => {
+    const item = queueVideo({ composition: 'test-generating' });
+    const result = markGenerating(item.id);
+    assert.strictEqual(result.state, STATES.GENERATING);
+  });
+
+  test('throws for non-existent ID', () => {
+    assert.throws(
+      () => markGenerating('vid_nonexistent_gen_999'),
+      { message: /not found/i }
+    );
+  });
+
+  test('preserves other fields', () => {
+    const item = queueVideo({ composition: 'test-gen-preserve', language: 'ar' });
+    const result = markGenerating(item.id);
+    assert.strictEqual(result.composition, 'test-gen-preserve');
+    assert.strictEqual(result.language, 'ar');
+    assert.strictEqual(result.state, STATES.GENERATING);
+  });
+
+  test('persists state change', () => {
+    const item = queueVideo({ composition: 'test-gen-persist' });
+    markGenerating(item.id);
+    const fetched = getVideo(item.id);
+    assert.strictEqual(fetched.state, STATES.GENERATING);
   });
 });

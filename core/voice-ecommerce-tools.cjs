@@ -133,29 +133,44 @@ async function woocommerceRequest(siteUrl, key, secret, endpoint) {
 /**
  * Map fulfillment/order status to voice-friendly message
  */
-function getVoiceFriendlyStatus(status, fulfillmentStatus, platform) {
-  const statusMap = {
-    // Shopify statuses
-    'FULFILLED': 'expédiée et en route vers vous',
-    'UNFULFILLED': 'confirmée et en cours de préparation',
-    'PARTIALLY_FULFILLED': 'partiellement expédiée',
-    'PENDING': 'en attente de paiement',
-    'PAID': 'payée et en cours de traitement',
-    'REFUNDED': 'remboursée',
-    'CANCELLED': 'annulée',
-    // WooCommerce statuses
-    'completed': 'livrée',
-    'processing': 'en cours de préparation',
-    'on-hold': 'en attente',
-    'pending': 'en attente de paiement',
-    'cancelled': 'annulée',
-    'refunded': 'remboursée',
-    'failed': 'échouée'
+function getVoiceFriendlyStatus(status, fulfillmentStatus, platform, lang = 'fr') {
+  const statusMaps = {
+    fr: {
+      'FULFILLED': 'expédiée et en route vers vous', 'UNFULFILLED': 'confirmée et en cours de préparation',
+      'PARTIALLY_FULFILLED': 'partiellement expédiée', 'PENDING': 'en attente de paiement',
+      'PAID': 'payée et en cours de traitement', 'REFUNDED': 'remboursée', 'CANCELLED': 'annulée',
+      'completed': 'livrée', 'processing': 'en cours de préparation', 'on-hold': 'en attente',
+      'pending': 'en attente de paiement', 'cancelled': 'annulée', 'refunded': 'remboursée', 'failed': 'échouée'
+    },
+    en: {
+      'FULFILLED': 'shipped and on its way', 'UNFULFILLED': 'confirmed and being prepared',
+      'PARTIALLY_FULFILLED': 'partially shipped', 'PENDING': 'pending payment',
+      'PAID': 'paid and being processed', 'REFUNDED': 'refunded', 'CANCELLED': 'cancelled',
+      'completed': 'delivered', 'processing': 'being prepared', 'on-hold': 'on hold',
+      'pending': 'pending payment', 'cancelled': 'cancelled', 'refunded': 'refunded', 'failed': 'failed'
+    },
+    es: {
+      'FULFILLED': 'enviada y en camino', 'UNFULFILLED': 'confirmada y en preparación',
+      'PARTIALLY_FULFILLED': 'parcialmente enviada', 'PENDING': 'pendiente de pago',
+      'PAID': 'pagada y en proceso', 'REFUNDED': 'reembolsada', 'CANCELLED': 'cancelada',
+      'completed': 'entregada', 'processing': 'en preparación', 'on-hold': 'en espera',
+      'pending': 'pendiente de pago', 'cancelled': 'cancelada', 'refunded': 'reembolsada', 'failed': 'fallida'
+    },
+    ar: {
+      'FULFILLED': 'تم شحنها وفي الطريق', 'UNFULFILLED': 'مؤكدة وقيد التحضير',
+      'PARTIALLY_FULFILLED': 'شحنت جزئيا', 'PENDING': 'في انتظار الدفع',
+      'PAID': 'مدفوعة وقيد المعالجة', 'REFUNDED': 'مستردة', 'CANCELLED': 'ملغاة',
+      'completed': 'تم التسليم', 'processing': 'قيد التحضير', 'on-hold': 'في الانتظار',
+      'pending': 'في انتظار الدفع', 'cancelled': 'ملغاة', 'refunded': 'مستردة', 'failed': 'فشلت'
+    }
   };
+  statusMaps.ary = statusMaps.ar; // Darija uses same status terms
 
-  // Priority: fulfillmentStatus > status
+  const map = statusMaps[lang] || statusMaps.fr;
+  const fallbackMap = statusMaps.fr;
+
   const key = fulfillmentStatus || status;
-  return statusMap[key] || statusMap[key?.toUpperCase()] || `en statut ${status}`;
+  return map[key] || map[key?.toUpperCase()] || fallbackMap[key] || fallbackMap[key?.toUpperCase()] || `en statut ${status}`;
 }
 
 module.exports = {
@@ -169,10 +184,20 @@ module.exports = {
    * @param {string} email - Customer email (for verification)
    * @param {string} orderId - Order ID or order number
    * @param {string} tenantId - Tenant identifier
+   * @param {string} lang - Language code (fr/en/es/ar/ary)
    */
-  checkOrderStatus: async (email, orderId, tenantId) => {
+  checkOrderStatus: async (email, orderId, tenantId, lang = 'fr') => {
     try {
       console.log(`[VoiceEcom] Checking order ${orderId} for ${email} (Tenant: ${tenantId})`);
+
+      const msgs = {
+        fr: { email_required: 'Veuillez fournir votre email pour vérifier la commande.', email_mismatch: 'Cette commande ne correspond pas à votre email.', order_status: (id, s) => `Votre commande ${id} est ${s}.`, not_found: 'Commande introuvable dans notre système.', no_creds: "Le suivi de commande n'est pas encore configuré pour ce marchand.", check_number: 'Commande introuvable. Veuillez vérifier le numéro de commande.' },
+        en: { email_required: 'Please provide your email to verify the order.', email_mismatch: 'This order does not match your email.', order_status: (id, s) => `Your order ${id} is ${s}.`, not_found: 'Order not found in our system.', no_creds: 'Order tracking is not yet configured for this merchant.', check_number: 'Order not found. Please check the order number.' },
+        es: { email_required: 'Por favor proporcione su email para verificar el pedido.', email_mismatch: 'Este pedido no corresponde a su email.', order_status: (id, s) => `Su pedido ${id} está ${s}.`, not_found: 'Pedido no encontrado en nuestro sistema.', no_creds: 'El seguimiento de pedidos no está configurado para este comerciante.', check_number: 'Pedido no encontrado. Verifique el número de pedido.' },
+        ar: { email_required: 'يرجى تقديم بريدك الإلكتروني للتحقق من الطلب.', email_mismatch: 'هذا الطلب لا يتطابق مع بريدك الإلكتروني.', order_status: (id, s) => `طلبك ${id} حالته ${s}.`, not_found: 'الطلب غير موجود في نظامنا.', no_creds: 'تتبع الطلبات غير مفعل لهذا التاجر.', check_number: 'الطلب غير موجود. يرجى التحقق من رقم الطلب.' },
+        ary: { email_required: 'عافاك دخل الإيميل ديالك باش نتأكدو من الطلبية.', email_mismatch: 'هاد الطلبية ما كتوافقش مع الإيميل ديالك.', order_status: (id, s) => `الطلبية ديالك ${id} ${s}.`, not_found: 'الطلبية ما لقيناهاش فالسيستيم.', no_creds: 'تتبع الطلبيات مازال ما تفعلش عند هاد التاجر.', check_number: 'الطلبية ما لقيناهاش. تأكد من رقم الطلبية.' }
+      };
+      const m = msgs[lang] || msgs.fr;
 
       const creds = await SecretVault.loadCredentials(tenantId);
 
@@ -218,22 +243,22 @@ module.exports = {
 
             // Verify email matches (security) — email REQUIRED to prevent order enumeration
             if (!email) {
-              return { found: false, message: 'Veuillez fournir votre email pour vérifier la commande.' };
+              return { found: false, message: m.email_required };
             }
             if (order.email && order.email.toLowerCase() !== email.toLowerCase()) {
               console.warn(`[VoiceEcom] Email mismatch for order ${orderId}`);
-              return { found: false, message: 'Cette commande ne correspond pas à votre email.' };
+              return { found: false, message: m.email_mismatch };
             }
 
             const tracking = order.fulfillments?.[0]?.trackingInfo?.[0];
-            const statusMessage = getVoiceFriendlyStatus(order.displayFinancialStatus, order.displayFulfillmentStatus, 'shopify');
+            const statusMessage = getVoiceFriendlyStatus(order.displayFinancialStatus, order.displayFulfillmentStatus, 'shopify', lang);
 
             return {
               found: true,
               source: 'shopify',
               orderId: order.name,
               status: order.displayFulfillmentStatus || order.displayFinancialStatus,
-              statusMessage: `Votre commande ${order.name} est ${statusMessage}.`,
+              statusMessage: m.order_status(order.name, statusMessage),
               total: `${order.totalPriceSet.shopMoney.amount} ${order.totalPriceSet.shopMoney.currencyCode}`,
               createdAt: order.createdAt,
               tracking: tracking ? {
@@ -244,7 +269,7 @@ module.exports = {
             };
           }
 
-          return { found: false, source: 'shopify', message: 'Commande introuvable dans notre système.' };
+          return { found: false, source: 'shopify', message: m.not_found };
         } catch (shopifyError) {
           console.warn(`[VoiceEcom] Shopify lookup failed: ${shopifyError.message}`);
           // Fall through to WooCommerce
@@ -265,21 +290,21 @@ module.exports = {
 
           // BL7 fix: Email REQUIRED for WooCommerce too (prevents order enumeration)
           if (!email) {
-            return { found: false, message: 'Veuillez fournir votre email pour vérifier la commande.' };
+            return { found: false, message: m.email_required };
           }
           if (order.billing?.email && order.billing.email.toLowerCase() !== email.toLowerCase()) {
             console.warn(`[VoiceEcom] Email mismatch for WooCommerce order ${orderId}`);
-            return { found: false, message: 'Cette commande ne correspond pas à votre email.' };
+            return { found: false, message: m.email_mismatch };
           }
 
-          const statusMessage = getVoiceFriendlyStatus(order.status, null, 'woocommerce');
+          const statusMessage = getVoiceFriendlyStatus(order.status, null, 'woocommerce', lang);
 
           return {
             found: true,
             source: 'woocommerce',
             orderId: `#${order.id}`,
             status: order.status,
-            statusMessage: `Votre commande #${order.id} est ${statusMessage}.`,
+            statusMessage: m.order_status(`#${order.id}`, statusMessage),
             total: `${order.total} ${order.currency}`,
             createdAt: order.date_created,
             tracking: null // WooCommerce tracking depends on plugins
@@ -294,11 +319,11 @@ module.exports = {
         return {
           found: false,
           reason: 'no_credentials',
-          message: "Le suivi de commande n'est pas encore configuré pour ce marchand."
+          message: m.no_creds
         };
       }
 
-      return { found: false, message: 'Commande introuvable. Veuillez vérifier le numéro de commande.' };
+      return { found: false, message: m.check_number };
 
     } catch (error) {
       console.error('[VoiceEcom] Order check failed:', error);

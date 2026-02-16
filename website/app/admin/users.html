@@ -15,17 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
   <script src="/app/components/app-components.js" defer></script>
-  <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
-  </style>
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
 
@@ -53,7 +47,7 @@
 
       <div class="px-6 py-6">
         <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <p class="text-sm text-zinc-500">Total utilisateurs</p>
             <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-total">--</p>
@@ -95,11 +89,6 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
-    // Theme init
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
-
     if (!auth.requireRole('admin')) {
       throw new Error('Not authorized');
     }
@@ -135,22 +124,22 @@
     // Initialize table
     const usersTable = new DataTable('#users-table', {
       columns: [
-        { key: 'name', label: 'Nom', sortable: true },
-        { key: 'email', label: 'Email', sortable: true },
-        { key: 'role', label: 'Rôle', type: 'badge',
+        { key: 'name', label: VocaliaI18n.t('admin.users_page.col_name'), sortable: true },
+        { key: 'email', label: VocaliaI18n.t('admin.users_page.col_email'), sortable: true },
+        { key: 'role', label: VocaliaI18n.t('admin.users_page.col_role'), type: 'badge',
           badgeColors: {
             'admin': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
             'user': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
             'viewer': 'bg-zinc-100 text-zinc-800 dark:bg-white/[0.06] dark:text-zinc-300'
           }
         },
-        { key: 'tenant_name', label: 'Tenant', sortable: true },
-        { key: 'email_verified', label: 'Vérifié', type: 'boolean' },
-        { key: 'created_at', label: 'Créé', type: 'date', sortable: true },
+        { key: 'tenant_name', label: VocaliaI18n.t('admin.users_page.col_tenant'), sortable: true },
+        { key: 'email_verified', label: VocaliaI18n.t('admin.users_page.col_verified'), type: 'boolean' },
+        { key: 'created_at', label: VocaliaI18n.t('admin.users_page.col_created'), type: 'date', sortable: true },
         { key: 'actions', label: '',
           render: (val, row) => `
             <div class="flex items-center gap-1">
-              <button onclick="editUser('${row.id}')" class="p-1 rounded hover:bg-zinc-100 dark:hover:bg-white/[0.08]" title="Modifier">
+              <button onclick="editUser('${row.id}')" class="p-1 rounded hover:bg-zinc-100 dark:hover:bg-white/[0.08]" title="${VocaliaI18n.t('admin.users_page.btn_edit')}">
                 <svg class="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
@@ -160,7 +149,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
                 </svg>
               </button>
-              <button onclick="deleteUser('${row.id}')" class="p-1 rounded hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-red-500" title="Supprimer">
+              <button onclick="deleteUser('${row.id}')" class="p-1 rounded hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-red-500" title="${VocaliaI18n.t('admin.users_page.btn_delete')}">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                 </svg>
@@ -170,8 +159,8 @@
         }
       ],
       pageSize: 25,
-      searchPlaceholder: 'Rechercher un utilisateur...',
-      emptyMessage: 'Aucun utilisateur trouvé'
+      searchPlaceholder: VocaliaI18n.t('admin.users_page.search'),
+      emptyMessage: VocaliaI18n.t('admin.users_page.empty')
     });
 
     // Load users
@@ -191,7 +180,7 @@
 
       } catch (error) {
         console.error('Failed to load users:', error);
-        toast.error('Erreur lors du chargement des utilisateurs');
+        toast.error(VocaliaI18n.t('admin.users_page.load_error'));
       }
     }
 
@@ -201,76 +190,76 @@
       try {
         const user = await api.users.get(id);
 
-        const role = await modal.prompt('Rôle (admin, user, viewer)', {
-          title: `Modifier ${user.name}`,
+        const role = await modal.prompt(VocaliaI18n.t('admin.users_page.role_prompt'), {
+          title: VocaliaI18n.t('admin.users_page.edit_title').replace('{{name}}', user.name),
           defaultValue: user.role
         });
 
         if (role && ['admin', 'user', 'viewer'].includes(role)) {
           await api.users.update(id, { role });
-          toast.success('Utilisateur mis à jour');
+          toast.success(VocaliaI18n.t('admin.users_page.updated'));
           loadUsers();
         }
       } catch (error) {
-        toast.error('Erreur lors de la modification');
+        toast.error(VocaliaI18n.t('admin.users_page.update_error'));
       }
     };
 
     window.resetPassword = async (id) => {
       const confirmed = await modal.confirm(
-        'Le mot de passe sera réinitialisé. L\'utilisateur devra se reconnecter.',
-        { title: 'Réinitialiser le mot de passe', confirmText: 'Réinitialiser' }
+        VocaliaI18n.t('admin.users_page.reset_confirm'),
+        { title: VocaliaI18n.t('admin.users_page.reset_title'), confirmText: VocaliaI18n.t('admin.users_page.reset_btn') }
       );
 
       if (confirmed) {
         try {
           const targetUser = allUsers.find(u => u.id === id);
           if (!targetUser) {
-            toast.error('Utilisateur non trouvé');
+            toast.error(VocaliaI18n.t('admin.users_page.not_found'));
             return;
           }
           // Generate a temporary password and update the user
           const tempPassword = 'Temp' + Date.now().toString(36) + '!';
           await api.users.update(id, { password_reset_required: true, temp_password: tempPassword });
-          toast.success(`Mot de passe réinitialisé pour ${targetUser.name || targetUser.email}`);
+          toast.success(VocaliaI18n.t('admin.users_page.reset_success').replace('{{name}}', targetUser.name || targetUser.email));
           loadUsers();
         } catch (error) {
-          toast.error('Erreur lors de la réinitialisation');
+          toast.error(VocaliaI18n.t('admin.users_page.reset_error'));
         }
       }
     };
 
     window.deleteUser = async (id) => {
       const confirmed = await modal.confirm(
-        'Cette action est irréversible. L\'utilisateur perdra l\'accès immédiatement.',
-        { title: 'Supprimer l\'utilisateur', confirmText: 'Supprimer', danger: true }
+        VocaliaI18n.t('admin.users_page.delete_confirm'),
+        { title: VocaliaI18n.t('admin.users_page.delete_title'), confirmText: VocaliaI18n.t('admin.users_page.delete_btn'), danger: true }
       );
 
       if (confirmed) {
         try {
           await api.users.delete(id);
-          toast.success('Utilisateur supprimé');
+          toast.success(VocaliaI18n.t('admin.users_page.deleted'));
           loadUsers();
         } catch (error) {
-          toast.error('Erreur lors de la suppression');
+          toast.error(VocaliaI18n.t('admin.users_page.delete_error'));
         }
       }
     };
 
     // New user button
     document.getElementById('new-user-btn').addEventListener('click', async () => {
-      const email = await modal.prompt('Email de l\'utilisateur', { title: 'Nouvel utilisateur' });
+      const email = await modal.prompt(VocaliaI18n.t('admin.users_page.email_prompt'), { title: VocaliaI18n.t('admin.users_page.new_user') });
       if (!email) return;
 
-      const name = await modal.prompt('Nom complet', { title: 'Nouvel utilisateur' });
+      const name = await modal.prompt(VocaliaI18n.t('admin.users_page.name_prompt'), { title: VocaliaI18n.t('admin.users_page.new_user') });
       if (!name) return;
 
       try {
         await api.users.create({ email, name, role: 'user' });
-        toast.success('Utilisateur créé. Un email d\'activation a été envoyé.');
+        toast.success(VocaliaI18n.t('admin.users_page.created'));
         loadUsers();
       } catch (error) {
-        toast.error('Erreur lors de la création');
+        toast.error(VocaliaI18n.t('admin.users_page.create_error'));
       }
     });
   </script>

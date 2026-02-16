@@ -30,6 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Lucide Icons -->
@@ -222,7 +223,7 @@
 
     async function verifyEmail() {
       if (!token) {
-        errorMessage.textContent = 'Lien de vérification invalide. Aucun token fourni.';
+        errorMessage.textContent = VocaliaI18n.t('auth.invalid_token_no_token');
         showView('error-view');
         return;
       }
@@ -241,10 +242,10 @@
         if (error.code === 'ALREADY_VERIFIED') {
           showView('already-verified-view');
         } else if (error.code === 'INVALID_TOKEN' || error.code === 'TOKEN_EXPIRED') {
-          errorMessage.textContent = 'Le lien de vérification est invalide ou a expiré.';
+          errorMessage.textContent = VocaliaI18n.t('auth.invalid_token_message');
           showView('error-view');
         } else {
-          errorMessage.textContent = error.message || 'Une erreur est survenue lors de la vérification.';
+          errorMessage.textContent = error.message || VocaliaI18n.t('auth.verification_error');
           showView('error-view');
         }
       }
@@ -264,14 +265,14 @@
         // Get email from localStorage if available
         const email = localStorage.getItem('vocalia_pending_verification_email');
         if (!email) {
-          toast.error('Email non trouvé. Veuillez vous réinscrire.');
+          toast.error(VocaliaI18n.t('auth.email_not_found'));
           return;
         }
         await auth.resendVerificationEmail(email);
         showView('resend-success-view');
       } catch (error) {
         console.error('Resend error:', error);
-        toast.error('Impossible de renvoyer l\'email. Veuillez réessayer plus tard.');
+        toast.error(VocaliaI18n.t('auth.resend_failed'));
         resendBtn.disabled = false;
         resendBtn.innerHTML = `
           <i data-lucide="mail" class="w-4 h-4"></i>

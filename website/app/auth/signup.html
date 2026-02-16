@@ -30,6 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Lucide Icons -->
@@ -68,7 +69,7 @@
       <div class="text-center mb-6">
         <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="auth.signup_title">Créer un compte</h1>
         <p class="text-zinc-600 dark:text-zinc-400 mt-2" data-i18n="auth.signup_subtitle">
-          Commencez gratuitement avec VocalIA
+          Deployer votre assistant vocal IA en minutes
         </p>
       </div>
 
@@ -394,6 +395,10 @@
       }
     }
 
+    // Capture plan from URL (pricing.html → /signup?plan=pro)
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedPlan = urlParams.get('plan');
+
     // Handle form submit
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -406,42 +411,51 @@
 
       // Validate
       if (!name || !email || !password) {
-        showError('Veuillez remplir tous les champs');
+        showError(VocaliaI18n.t('auth.fill_all_fields'));
         return;
       }
 
       if (password !== confirmPassword) {
-        showError('Les mots de passe ne correspondent pas');
+        showError(VocaliaI18n.t('auth.passwords_mismatch'));
         return;
       }
 
       const { strength } = checkPasswordStrength(password);
       if (strength < 75) {
-        showError('Mot de passe trop faible. Ajoutez des majuscules, chiffres, etc.');
+        showError(VocaliaI18n.t('auth.weak_password'));
         return;
       }
 
       if (!termsCheckbox.checked) {
-        showError('Vous devez accepter les conditions d\'utilisation');
+        showError(VocaliaI18n.t('auth.accept_terms'));
         return;
       }
 
       setLoading(true);
 
       try {
-        await auth.register({ email, password, name });
+        await auth.register({ email, password, name, plan: selectedPlan });
         showSuccess();
-        toast.success('Compte créé ! Vérifiez votre email.');
+        toast.success(VocaliaI18n.t('auth.account_created'));
+        // Si plan choisi, indiquer qu'il faudra s'abonner après vérification
+        if (selectedPlan) {
+          const successEl = document.querySelector('.success-message, [data-success]');
+          if (successEl) {
+            successEl.insertAdjacentHTML('beforeend',
+              `<p class="mt-4 text-sm text-zinc-500">Après vérification, connectez-vous pour activer votre plan <strong>${selectedPlan}</strong>.</p>`
+            );
+          }
+        }
 
       } catch (error) {
         console.error('Signup error:', error);
 
         if (error.code === 'EMAIL_EXISTS') {
-          showError('Un compte existe déjà avec cet email');
+          showError(VocaliaI18n.t('auth.account_exists'));
         } else if (error.code === 'WEAK_PASSWORD') {
           showError(error.message);
         } else {
-          showError(error.message || 'Une erreur est survenue');
+          showError(error.message || VocaliaI18n.t('auth.generic_error'));
         }
 
         setLoading(false);

@@ -132,9 +132,13 @@ function getExperimentStats(experimentName, startDate = null, endDate = null) {
 
 /**
  * Get all experiments summary
+ * BUG FIX 250.207b: Single-pass aggregation instead of O(N × M)
+ * Old code: collected N experiment names, then called getExperimentStats(exp) for each one
+ * → re-read ALL files N times = O(N × total_lines). With 1206 experiments × 55K lines = 66.5M JSON.parse
+ * New code: aggregates everything in one pass = O(total_lines)
  */
 function getAllExperiments() {
-  const experiments = new Set();
+  const statsMap = {};
 
   const files = fs.readdirSync(DATA_DIR)
     .filter(f => f.startsWith('ab-events-') && f.endsWith('.jsonl'));
@@ -147,8 +151,47 @@ function getAllExperiments() {
     for (const line of lines) {
       try {
         const event = JSON.parse(line);
-        if (event.experiment) {
-          experiments.add(event.experiment);
+        if (!event.experiment) continue;
+
+        const expName = event.experiment;
+        if (!statsMap[expName]) {
+          statsMap[expName] = {
+            experiment: expName,
+            variants: {},
+            totalImpressions: 0,
+            totalClicks: 0,
+            totalConversions: 0,
+            conversionRate: 0,
+            clickThroughRate: 0
+          };
+        }
+
+        const stats = statsMap[expName];
+        const variant = event.variant || 'unknown';
+
+        if (!stats.variants[variant]) {
+          stats.variants[variant] = {
+            impressions: 0,
+            clicks: 0,
+            conversions: 0,
+            conversionRate: 0,
+            clickThroughRate: 0
+          };
+        }
+
+        switch (event.eventType) {
+          case 'impression':
+            stats.variants[variant].impressions++;
+            stats.totalImpressions++;
+            break;
+          case 'click':
+            stats.variants[variant].clicks++;
+            stats.totalClicks++;
+            break;
+          case 'conversion':
+            stats.variants[variant].conversions++;
+            stats.totalConversions++;
+            break;
         }
       } catch (e) {
         // Skip malformed lines
@@ -156,7 +199,21 @@ function getAllExperiments() {
     }
   }
 
-  return Array.from(experiments).map(exp => getExperimentStats(exp));
+  // Calculate rates for all experiments
+  for (const stats of Object.values(statsMap)) {
+    if (stats.totalImpressions > 0) {
+      stats.conversionRate = (stats.totalConversions / stats.totalImpressions * 100).toFixed(2);
+      stats.clickThroughRate = (stats.totalClicks / stats.totalImpressions * 100).toFixed(2);
+    }
+    for (const data of Object.values(stats.variants)) {
+      if (data.impressions > 0) {
+        data.conversionRate = (data.conversions / data.impressions * 100).toFixed(2);
+        data.clickThroughRate = (data.clicks / data.impressions * 100).toFixed(2);
+      }
+    }
+  }
+
+  return Object.values(statsMap);
 }
 
 /**

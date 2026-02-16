@@ -15,9 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <!-- Sidebar Component -->
@@ -110,7 +112,7 @@
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.linked_accounts.title">Comptes liés</h3>
           <div id="linked-accounts" class="space-y-3">
-            <p class="text-zinc-500 text-sm">Chargement...</p>
+            <p class="text-zinc-500 text-sm" data-i18n="common.loading">Chargement...</p>
           </div>
         </div>
 
@@ -337,11 +339,6 @@
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
-    // XSS protection
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
 
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
@@ -361,10 +358,10 @@
     let settings = { api_keys: [], webhook_url: '', webhook_secret: '', webhook_events: [] };
 
     if (user) {
-      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
       const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
-      document.getElementById('user-initials').textContent = initials;
+      document.getElementById('user-avatar').textContent = initials;
       document.getElementById('profile-initials').textContent = initials;
       document.getElementById('profile-name').value = user.name || '';
       document.getElementById('profile-email').value = user.email || '';
@@ -406,7 +403,7 @@
     function renderApiKeys(keys) {
       const container = document.getElementById('api-keys-list');
       if (!keys || keys.length === 0) {
-        container.innerHTML = '<p class="text-zinc-500 text-sm">Aucune clé API. Cliquez sur "Nouvelle clé" pour en créer une.</p>';
+        container.innerHTML = `<p class="text-zinc-500 text-sm">${VocaliaI18n.t('dashboard.settings_page.no_api_keys')}</p>`;
         return;
       }
 
@@ -430,17 +427,17 @@
     // Delete API key
     window.deleteApiKey = async (keyId) => {
       const confirmed = await modal.confirm(
-        'Supprimer cette clé API ? Les intégrations utilisant cette clé cesseront de fonctionner.',
-        { title: 'Supprimer la clé', confirmText: 'Supprimer', danger: true }
+        VocaliaI18n.t('dashboard.settings_page.delete_key_confirm'),
+        { title: VocaliaI18n.t('dashboard.settings_page.delete_key_title'), confirmText: VocaliaI18n.t('dashboard.common.delete'), danger: true }
       );
 
       if (confirmed) {
         try {
           await api.settings.deleteApiKey(tenantId, keyId);
-          toast.success('Clé API supprimée');
+          toast.success(VocaliaI18n.t('dashboard.settings_page.key_deleted'));
           await loadSettings();
         } catch (error) {
-          toast.error('Erreur lors de la suppression');
+          toast.error(VocaliaI18n.t('dashboard.common.delete_error'));
         }
       }
     };
@@ -466,10 +463,10 @@
     // Save widget features
     document.getElementById('save-widget-features-btn').addEventListener('click', async () => {
       if (!tenantId) {
-        toast.error('Tenant non identifié');
+        toast.error(VocaliaI18n.t('dashboard.common.tenant_not_found'));
         return;
       }
-      const loading = modal.loading('Enregistrement...');
+      const loading = modal.loading(VocaliaI18n.t('dashboard.common.saving'));
       try {
         await api.settings.update(tenantId, {
           widget_features: {
@@ -479,10 +476,10 @@
           }
         });
         loading.close();
-        toast.success('Fonctionnalités widget mises à jour');
+        toast.success(VocaliaI18n.t('dashboard.settings_page.widget_features_updated'));
       } catch (error) {
         loading.close();
-        toast.error('Erreur lors de la sauvegarde');
+        toast.error(VocaliaI18n.t('dashboard.common.save_error'));
       }
     });
 
@@ -502,7 +499,7 @@
           <div class="flex items-center gap-3">
             <span class="font-medium ${p.color}">${escapeHtml(p.name)}</span>
           </div>
-          <span class="${isLinked ? 'text-green-600 dark:text-green-400' : 'text-zinc-400'} text-sm">${isLinked ? 'Lié' : 'Non lié'}</span>
+          <span class="${isLinked ? 'text-green-600 dark:text-green-400' : 'text-zinc-400'} text-sm">${isLinked ? VocaliaI18n.t('dashboard.common.linked') : VocaliaI18n.t('dashboard.common.not_linked')}</span>
         </div>`;
       }).join('');
     }
@@ -518,9 +515,9 @@
           slack_notifications_enabled: notifSlack.checked,
           slack_channel: document.getElementById('slack-channel').value || ''
         });
-        toast.success(notifSlack.checked ? 'Notifications Slack activées' : 'Notifications Slack désactivées');
+        toast.success(notifSlack.checked ? VocaliaI18n.t('dashboard.settings_page.slack_enabled') : VocaliaI18n.t('dashboard.settings_page.slack_disabled'));
       } catch (e) {
-        toast.error('Erreur lors de la sauvegarde');
+        toast.error(VocaliaI18n.t('dashboard.common.save_error'));
       }
     });
 
@@ -547,7 +544,7 @@
     // Profile form
     document.getElementById('profile-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const loading = modal.loading('Enregistrement...');
+      const loading = modal.loading(VocaliaI18n.t('dashboard.common.saving'));
 
       try {
         await auth.updateProfile({
@@ -556,10 +553,10 @@
           title: document.getElementById('profile-title').value
         });
         loading.close();
-        toast.success('Profil mis à jour');
+        toast.success(VocaliaI18n.t('dashboard.settings_page.profile_updated'));
       } catch (error) {
         loading.close();
-        toast.error('Erreur lors de la mise à jour');
+        toast.error(VocaliaI18n.t('dashboard.common.update_error'));
       }
     });
 
@@ -572,32 +569,32 @@
       const confirm = document.getElementById('confirm-password').value;
 
       if (newPass !== confirm) {
-        toast.error('Les mots de passe ne correspondent pas');
+        toast.error(VocaliaI18n.t('dashboard.settings_page.passwords_mismatch'));
         return;
       }
 
       if (newPass.length < 8) {
-        toast.error('Le mot de passe doit contenir au moins 8 caractères');
+        toast.error(VocaliaI18n.t('dashboard.settings_page.password_min_length'));
         return;
       }
 
-      const loading = modal.loading('Modification...');
+      const loading = modal.loading(VocaliaI18n.t('dashboard.common.modifying'));
 
       try {
         await auth.changePassword(current, newPass);
         loading.close();
-        toast.success('Mot de passe modifié');
+        toast.success(VocaliaI18n.t('dashboard.settings_page.password_changed'));
         document.getElementById('password-form').reset();
       } catch (error) {
         loading.close();
-        toast.error(error.message || 'Erreur lors de la modification');
+        toast.error(error.message || VocaliaI18n.t('dashboard.common.update_error'));
       }
     });
 
     // Webhook form
     document.getElementById('webhook-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const loading = modal.loading('Enregistrement...');
+      const loading = modal.loading(VocaliaI18n.t('dashboard.common.saving'));
 
       try {
         const webhook_events = Array.from(document.querySelectorAll('[name="webhook_events"]:checked')).map(cb => cb.value);
@@ -607,10 +604,10 @@
           webhook_events
         });
         loading.close();
-        toast.success('Webhook configuré');
+        toast.success(VocaliaI18n.t('dashboard.settings_page.webhook_configured'));
       } catch (error) {
         loading.close();
-        toast.error('Erreur lors de la configuration');
+        toast.error(VocaliaI18n.t('dashboard.common.config_error'));
       }
     });
 
@@ -618,13 +615,13 @@
     document.getElementById('generate-secret-btn').addEventListener('click', () => {
       const secret = 'whsec_' + crypto.randomUUID().replace(/-/g, '');
       document.getElementById('webhook-secret').value = secret;
-      toast.info('Secret généré - pensez à enregistrer');
+      toast.info(VocaliaI18n.t('settings.secret_generated'));
     });
 
     // Preferences
     document.getElementById('pref-language').addEventListener('change', (e) => {
       localStorage.setItem('vocalia_lang', e.target.value);
-      toast.success('Langue modifiée');
+      toast.success(VocaliaI18n.t('settings.language_changed'));
     });
 
     document.getElementById('pref-theme').addEventListener('change', (e) => {
@@ -635,36 +632,36 @@
         document.documentElement.classList.remove('dark');
       }
       localStorage.setItem('vocalia_theme', theme);
-      toast.success('Thème modifié');
+      toast.success(VocaliaI18n.t('settings.theme_changed'));
     });
 
     // New API key
     document.getElementById('new-key-btn').addEventListener('click', async () => {
-      const name = await modal.prompt('Nom de la clé', {
-        title: 'Nouvelle clé API',
-        placeholder: 'Ex: Webhook Integration'
+      const name = await modal.prompt(VocaliaI18n.t('dashboard.settings_page.new_key_name_prompt'), {
+        title: VocaliaI18n.t('dashboard.settings_page.new_key_title'),
+        placeholder: VocaliaI18n.t('dashboard.settings_page.new_key_placeholder')
       });
 
       if (name) {
-        const type = await modal.prompt('Type (production ou test)', {
-          title: 'Type de clé',
+        const type = await modal.prompt(VocaliaI18n.t('dashboard.settings_page.key_type_prompt'), {
+          title: VocaliaI18n.t('dashboard.settings_page.key_type_title'),
           defaultValue: 'production'
         });
 
         if (type && ['production', 'test'].includes(type)) {
           try {
             const newKey = await api.settings.createApiKey(tenantId, name, type);
-            toast.success('Clé API créée');
+            toast.success(VocaliaI18n.t('dashboard.settings_page.key_created'));
 
             // Show full key once
             await modal.alert(
-              `Copiez cette clé maintenant, elle ne sera plus affichée:\n\n${newKey.key}`,
-              { title: 'Nouvelle clé créée' }
+              `${VocaliaI18n.t('dashboard.settings_page.copy_key_message')}\n\n${newKey.key}`,
+              { title: VocaliaI18n.t('dashboard.settings_page.new_key_created_title') }
             );
 
             await loadSettings();
           } catch (error) {
-            toast.error('Erreur lors de la création');
+            toast.error(VocaliaI18n.t('dashboard.common.create_error'));
           }
         }
       }
@@ -673,20 +670,20 @@
     // Delete account
     document.getElementById('delete-account-btn').addEventListener('click', async () => {
       const confirmed = await modal.confirm(
-        'Cette action est irréversible. Toutes vos données, appels, et configurations seront définitivement supprimés.',
-        { title: 'Supprimer le compte', confirmText: 'Supprimer définitivement', danger: true }
+        VocaliaI18n.t('dashboard.settings_page.delete_account_confirm'),
+        { title: VocaliaI18n.t('dashboard.settings_page.delete_account_title'), confirmText: VocaliaI18n.t('dashboard.settings_page.delete_account_btn'), danger: true }
       );
 
       if (confirmed) {
-        const email = await modal.prompt('Tapez votre email pour confirmer', {
-          title: 'Confirmation requise',
+        const email = await modal.prompt(VocaliaI18n.t('dashboard.settings_page.confirm_email_prompt'), {
+          title: VocaliaI18n.t('dashboard.settings_page.confirm_required'),
           placeholder: user?.email
         });
 
         if (email === user?.email) {
-          toast.info('Demande de suppression envoyée');
+          toast.info(VocaliaI18n.t('dashboard.settings_page.deletion_requested'));
         } else if (email) {
-          toast.error('Email incorrect');
+          toast.error(VocaliaI18n.t('dashboard.settings_page.email_incorrect'));
         }
       }
     });

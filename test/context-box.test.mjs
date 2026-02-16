@@ -441,3 +441,93 @@ describe('ContextBox cleanupStale', () => {
     cleanup(tmpDir);
   });
 });
+
+// ─── handoff ───────────────────────────────────────────────────────────
+
+describe('ContextBox handoff', () => {
+  test('logs HANDOFF event with context snapshot', () => {
+    const { box, tmpDir } = createTestBox();
+    box.set('handoff-1', {
+      pillars: {
+        identity: { email: 'lead@test.com' },
+        intent: { type: 'booking' },
+        qualification: { score: 65, budget: '500€' },
+        keyFacts: [{ type: 'budget', value: '500€' }]
+      }
+    });
+
+    box.handoff('handoff-1', 'VoiceAgent', 'BookingAgent', 'qualified lead');
+
+    const ctx = box.get('handoff-1');
+    const handoffEvent = ctx.pillars.history.find(e => e.event === 'HANDOFF');
+    assert.ok(handoffEvent, 'Should have HANDOFF event in history');
+    assert.strictEqual(handoffEvent.agent, 'VoiceAgent');
+    assert.strictEqual(handoffEvent.target, 'BookingAgent');
+    assert.strictEqual(handoffEvent.reason, 'qualified lead');
+    assert.ok(handoffEvent.contextSnapshot);
+    assert.ok(handoffEvent.contextSnapshot.keyFacts);
+    assert.ok(handoffEvent.contextSnapshot.intent);
+    assert.ok(handoffEvent.contextSnapshot.qualification);
+    cleanup(tmpDir);
+  });
+
+  test('handoff on empty context still works', () => {
+    const { box, tmpDir } = createTestBox();
+    assert.doesNotThrow(() => {
+      box.handoff('handoff-empty', 'AgentA', 'AgentB', 'reason');
+    });
+    const ctx = box.get('handoff-empty');
+    const handoffEvent = ctx.pillars.history.find(e => e.event === 'HANDOFF');
+    assert.ok(handoffEvent);
+    cleanup(tmpDir);
+  });
+});
+
+// ─── getWithPrediction ─────────────────────────────────────────────────
+
+describe('ContextBox getWithPrediction', () => {
+  test('returns {primary, related, prediction} with correct structure', () => {
+    const { box, tmpDir } = createTestBox();
+    box.set('predict-1', {
+      pillars: {
+        qualification: { score: 75, budget: '500€' },
+        intent: {},
+        history: []
+      }
+    });
+
+    const result = box.getWithPrediction('predict-1');
+    assert.ok(result.primary);
+    assert.ok(Array.isArray(result.related));
+    assert.ok(result.prediction);
+    assert.strictEqual(result.prediction.likelyNextAgent, 'BillingAgent');
+    assert.ok(Array.isArray(result.prediction.suggestedActions));
+    cleanup(tmpDir);
+  });
+
+  test('includes related contexts when provided', () => {
+    const { box, tmpDir } = createTestBox();
+    box.set('main-ctx', { pillars: { identity: { email: 'a@a.com' } } });
+    box.set('related-ctx', { pillars: { identity: { email: 'b@b.com' } } });
+
+    const result = box.getWithPrediction('main-ctx', ['related-ctx']);
+    assert.strictEqual(result.related.length, 1);
+    assert.strictEqual(result.related[0].id, 'related-ctx');
+    assert.ok(result.related[0].context);
+    cleanup(tmpDir);
+  });
+
+  test('medium score → predicts BookingAgent', () => {
+    const { box, tmpDir } = createTestBox();
+    box.set('predict-med', {
+      pillars: {
+        qualification: { score: 50 },
+        history: []
+      }
+    });
+
+    const result = box.getWithPrediction('predict-med');
+    assert.strictEqual(result.prediction.likelyNextAgent, 'BookingAgent');
+    cleanup(tmpDir);
+  });
+});

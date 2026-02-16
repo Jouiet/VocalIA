@@ -15,9 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
   <script src="/src/lib/voice-visualizer.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
@@ -26,7 +28,7 @@
 
   <!-- Main Content -->
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
@@ -83,24 +85,24 @@
           <div id="active-persona" class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
             <div class="flex items-start justify-between">
               <div>
-                <h3 class="text-xl font-bold" id="active-persona-name">Chargement...</h3>
+                <h3 class="text-xl font-bold" id="active-persona-name" data-i18n="common.loading">Chargement...</h3>
                 <p class="text-indigo-100 mt-1" id="active-persona-desc">-</p>
               </div>
               <div class="flex items-center gap-2">
-                <span class="px-2 py-1 bg-white/20 rounded text-sm">Actif</span>
+                <span class="px-2 py-1 bg-white/20 rounded text-sm" data-i18n="agents.active">Actif</span>
               </div>
             </div>
-            <div class="mt-4 grid grid-cols-3 gap-4">
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <p class="text-indigo-200 text-sm">Appels traités</p>
+                <p class="text-indigo-200 text-sm" data-i18n="agents.calls_handled">Appels traités</p>
                 <p class="text-2xl font-bold" id="active-persona-calls">-</p>
               </div>
               <div>
-                <p class="text-indigo-200 text-sm">Score moyen</p>
+                <p class="text-indigo-200 text-sm" data-i18n="agents.avg_score">Score moyen</p>
                 <p class="text-2xl font-bold" id="active-persona-score">-</p>
               </div>
               <div>
-                <p class="text-indigo-200 text-sm">Langues</p>
+                <p class="text-indigo-200 text-sm" data-i18n="agents.languages">Langues</p>
                 <p class="text-2xl font-bold" id="active-persona-langs">-</p>
               </div>
             </div>
@@ -237,10 +239,6 @@
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
 
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
@@ -275,9 +273,9 @@
 
     const user = auth.getCurrentUser();
     if (user) {
-      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
-      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('user-avatar').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -367,7 +365,7 @@
               ${['🇫🇷', '🇬🇧', '🇪🇸', '🇸🇦', '🇲🇦'].map(f => `<span class="text-sm">${f}</span>`).join('')}
             </div>
             <button class="opacity-0 group-hover:opacity-100 text-sm text-indigo-600 dark:text-indigo-400 font-medium transition-opacity">
-              Activer
+              ${VocaliaI18n.t('dashboard.common.activate')}
             </button>
           </div>
         </div>
@@ -382,8 +380,8 @@
           const persona = PERSONAS.find(p => p.key === key);
 
           const confirmed = await modal.confirm(
-            `Voulez-vous activer le persona "${persona.name}" ?`,
-            { title: 'Changer de persona', confirmText: 'Activer', danger: false }
+            VocaliaI18n.t('dashboard.agents_page.activate_confirm').replace('{{name}}', persona.name),
+            { title: VocaliaI18n.t('dashboard.agents_page.change_persona_title'), confirmText: VocaliaI18n.t('dashboard.common.activate'), danger: false }
           );
 
           if (confirmed) {
@@ -394,10 +392,10 @@
               }
               activePersona = persona;
               renderActivePersona();
-              toast.success(`Persona "${persona.name}" activé`);
+              toast.success(VocaliaI18n.t('dashboard.agents_page.persona_activated').replace('{{name}}', persona.name));
             } catch (error) {
               console.error('Failed to update persona:', error);
-              toast.error('Erreur lors de l\'activation du persona');
+              toast.error(VocaliaI18n.t('dashboard.common.activation_error'));
             }
           }
         });

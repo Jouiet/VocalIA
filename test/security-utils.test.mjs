@@ -886,3 +886,310 @@ describe('throttle', () => {
     assert.strictEqual(count, 1);
   });
 });
+
+// ─── retryWithExponentialBackoff ─────────────────────────────────────────────
+
+describe('retryWithExponentialBackoff', () => {
+  test('returns result on first success', async () => {
+    const result = await sec.retryWithExponentialBackoff(() => 'ok', {
+      maxRetries: 3, baseDelayMs: 1
+    });
+    assert.strictEqual(result, 'ok');
+  });
+
+  test('retries on failure then succeeds', async () => {
+    let attempt = 0;
+    const result = await sec.retryWithExponentialBackoff(() => {
+      attempt++;
+      if (attempt < 3) throw new Error('fail');
+      return 'recovered';
+    }, { maxRetries: 5, baseDelayMs: 1, jitter: false });
+    assert.strictEqual(result, 'recovered');
+    assert.strictEqual(attempt, 3);
+  });
+
+  test('throws after maxRetries exhausted', async () => {
+    await assert.rejects(
+      () => sec.retryWithExponentialBackoff(() => { throw new Error('always fail'); }, {
+        maxRetries: 2, baseDelayMs: 1, jitter: false
+      }),
+      /failed after 3 attempts/
+    );
+  });
+
+  test('calls onRetry callback with correct args', async () => {
+    const retries = [];
+    try {
+      await sec.retryWithExponentialBackoff(() => { throw new Error('fail'); }, {
+        maxRetries: 2, baseDelayMs: 1, jitter: false,
+        onRetry: (attempt, delay, error) => retries.push({ attempt, delay, msg: error.message })
+      });
+    } catch { /* expected */ }
+    assert.strictEqual(retries.length, 2);
+    assert.strictEqual(retries[0].attempt, 1);
+    assert.strictEqual(retries[0].msg, 'fail');
+    // Second retry delay should be baseDelayMs * factor^1 = 2
+    assert.strictEqual(retries[1].delay, 2);
+  });
+
+  test('respects maxDelayMs cap', async () => {
+    const retries = [];
+    try {
+      await sec.retryWithExponentialBackoff(() => { throw new Error('fail'); }, {
+        maxRetries: 5, baseDelayMs: 100, maxDelayMs: 150, jitter: false,
+        onRetry: (attempt, delay) => retries.push(delay)
+      });
+    } catch { /* expected */ }
+    // All delays should be <= maxDelayMs
+    for (const d of retries) {
+      assert.ok(d <= 150, `Delay ${d} exceeds maxDelayMs 150`);
+    }
+  });
+});
+
+// ─── safePoll ────────────────────────────────────────────────────────────────
+
+describe('safePoll', () => {
+  test('returns result when done=true', async () => {
+    let call = 0;
+    const result = await sec.safePoll(() => {
+      call++;
+      return { done: call >= 2, result: 'complete', status: 'checking' };
+    }, { maxRetries: 10, intervalMs: 1, maxTimeMs: 5000 });
+    assert.strictEqual(result, 'complete');
+    assert.strictEqual(call, 2);
+  });
+
+  test('throws after maxRetries', async () => {
+    await assert.rejects(
+      () => sec.safePoll(() => ({ done: false, status: 'waiting' }), {
+        maxRetries: 3, intervalMs: 1, maxTimeMs: 60000
+      }),
+      /failed after 3 attempts/
+    );
+  });
+
+  test('calls onProgress callback', async () => {
+    const progress = [];
+    await sec.safePoll(() => {
+      return { done: progress.length >= 1, result: 'ok', status: 'step' };
+    }, {
+      maxRetries: 5, intervalMs: 1, maxTimeMs: 5000,
+      onProgress: (attempts, status, elapsed) => progress.push({ attempts, status })
+    });
+    assert.ok(progress.length >= 1);
+    assert.strictEqual(progress[0].status, 'step');
+  });
+
+  test('continues polling on checkFn error', async () => {
+    let call = 0;
+    const result = await sec.safePoll(() => {
+      call++;
+      if (call === 1) throw new Error('transient');
+      return { done: true, result: 'recovered' };
+    }, { maxRetries: 5, intervalMs: 1, maxTimeMs: 5000 });
+    assert.strictEqual(result, 'recovered');
+    assert.strictEqual(call, 2);
+  });
+});
+
+// ─── corsMiddleware ──────────────────────────────────────────────────────────
+
+describe('corsMiddleware', () => {
+  test('sets CORS headers for allowed origin', () => {
+    const mw = sec.corsMiddleware(['https://vocalia.ma']);
+    const headers = {};
+    const mockReq = { method: 'GET', headers: { origin: 'https://vocalia.ma' } };
+    const mockRes = { setHeader: (k, v) => { headers[k] = v; } };
+    let called = false;
+    mw(mockReq, mockRes, () => { called = true; });
+    assert.strictEqual(headers['Access-Control-Allow-Origin'], 'https://vocalia.ma');
+    assert.ok(called);
+  });
+
+  test('does NOT set CORS for disallowed origin', () => {
+    const mw = sec.corsMiddleware(['https://vocalia.ma']);
+    const headers = {};
+    const mockReq = { method: 'GET', headers: { origin: 'https://evil.com' } };
+    const mockRes = { setHeader: (k, v) => { headers[k] = v; } };
+    mw(mockReq, mockRes, () => {});
+    assert.strictEqual(headers['Access-Control-Allow-Origin'], undefined);
+  });
+
+  test('handles OPTIONS preflight with 204', () => {
+    const mw = sec.corsMiddleware(['https://vocalia.ma']);
+    const mockReq = { method: 'OPTIONS', headers: { origin: 'https://vocalia.ma' } };
+    let status;
+    let ended = false;
+    const mockRes = {
+      setHeader: () => {},
+      set statusCode(s) { status = s; },
+      get statusCode() { return status; },
+      end: () => { ended = true; }
+    };
+    let nextCalled = false;
+    mw(mockReq, mockRes, () => { nextCalled = true; });
+    assert.strictEqual(status, 204);
+    assert.ok(ended);
+    assert.ok(!nextCalled, 'next() should NOT be called for OPTIONS');
+  });
+
+  test('allows all origins when allowedOrigins is empty', () => {
+    const mw = sec.corsMiddleware([]);
+    const headers = {};
+    const mockReq = { method: 'GET', headers: { origin: 'https://anything.com' } };
+    const mockRes = { setHeader: (k, v) => { headers[k] = v; } };
+    mw(mockReq, mockRes, () => {});
+    assert.strictEqual(headers['Access-Control-Allow-Origin'], 'https://anything.com');
+  });
+
+  test('sets Max-Age header', () => {
+    const mw = sec.corsMiddleware(['https://vocalia.ma']);
+    const headers = {};
+    const mockReq = { method: 'GET', headers: { origin: 'https://vocalia.ma' } };
+    const mockRes = { setHeader: (k, v) => { headers[k] = v; } };
+    mw(mockReq, mockRes, () => {});
+    assert.strictEqual(headers['Access-Control-Max-Age'], '86400');
+  });
+});
+
+// ─── requestSizeLimiter ──────────────────────────────────────────────────────
+
+describe('requestSizeLimiter', () => {
+  test('returns a middleware function', () => {
+    const mw = sec.requestSizeLimiter(1024);
+    assert.strictEqual(typeof mw, 'function');
+  });
+
+  test('rejects oversized Content-Length with 413', () => {
+    const mw = sec.requestSizeLimiter(100);
+    let status;
+    let body;
+    const mockReq = { headers: { 'content-length': '200' }, on: () => {} };
+    const mockRes = {
+      set statusCode(s) { status = s; },
+      end: (b) => { body = b; }
+    };
+    mw(mockReq, mockRes, () => {});
+    assert.strictEqual(status, 413);
+    assert.ok(body.includes('too large'));
+  });
+
+  test('calls next() for acceptable Content-Length', () => {
+    const mw = sec.requestSizeLimiter(1000);
+    const mockReq = { headers: { 'content-length': '500' }, on: () => {} };
+    const mockRes = {};
+    let called = false;
+    mw(mockReq, mockRes, () => { called = true; });
+    assert.ok(called);
+  });
+});
+
+// ─── RateLimiter maxEntries (memory DoS prevention) ──────────────────────────
+
+describe('RateLimiter maxEntries', () => {
+  test('prevents memory DoS via maxEntries limit', () => {
+    const limiter = new sec.RateLimiter({ maxRequests: 100, maxEntries: 3, windowMs: 60000 });
+    limiter.check('a');
+    limiter.check('b');
+    limiter.check('c');
+    const result = limiter.check('d'); // 4th unique key exceeds maxEntries
+    assert.ok(!result.allowed, 'Should block new keys beyond maxEntries');
+    assert.strictEqual(result.remaining, 0);
+    limiter.destroy();
+  });
+});
+
+// ─── securityHeadersMiddleware ───────────────────────────────────────────────
+
+describe('securityHeadersMiddleware', () => {
+  test('returns a middleware function', () => {
+    const mw = sec.securityHeadersMiddleware();
+    assert.strictEqual(typeof mw, 'function');
+  });
+
+  test('sets headers and calls next()', () => {
+    const mw = sec.securityHeadersMiddleware();
+    const headers = {};
+    const mockReq = {};
+    const mockRes = { setHeader: (k, v) => { headers[k] = v; } };
+    let called = false;
+    mw(mockReq, mockRes, () => { called = true; });
+    assert.ok(called);
+    assert.strictEqual(headers['X-Frame-Options'], 'DENY');
+  });
+});
+
+// ─── Integration chains ──────────────────────────────────────────────────────
+
+describe('Integration chains', () => {
+  test('sanitizeInput → encodeHTML double-encoding is safe', () => {
+    const input = '<script>alert("xss")</script>';
+    const sanitized = sec.sanitizeInput(input);
+    const encoded = sec.encodeHTML(sanitized);
+    assert.ok(!encoded.includes('<script>'));
+  });
+
+  test('validateRequestBody + sanitizeInput chain prevents XSS', () => {
+    const schema = { comment: { required: true, maxLength: 500 } };
+    const body = { comment: '<img onerror="alert(document.cookie)">' };
+    const result = sec.validateRequestBody(body, schema);
+    assert.ok(result.valid);
+    assert.ok(!result.sanitized.comment.includes('<img'), 'XSS should be escaped');
+  });
+
+  test('CSRF token generation → validation round-trip', () => {
+    const token = sec.generateCsrfToken();
+    assert.ok(sec.validateCsrfToken(token, token));
+    assert.ok(!sec.validateCsrfToken(token, token + 'x'));
+  });
+
+  test('sanitizePath + isValidFilename combined security', () => {
+    const filename = 'report.pdf';
+    assert.ok(sec.isValidFilename(filename));
+    const fullPath = sec.sanitizePath(filename, '/uploads');
+    assert.strictEqual(fullPath, path.resolve('/uploads', filename));
+  });
+
+  test('sanitizePath + isValidFilename rejects traversal', () => {
+    const malicious = '../../../etc/passwd';
+    assert.ok(!sec.isValidFilename(malicious));
+    assert.throws(() => sec.sanitizePath(malicious, '/uploads'), /Path traversal/);
+  });
+
+  test('validateUrl + sanitizeURL combined check', () => {
+    assert.strictEqual(sec.sanitizeURL('javascript:alert(1)'), null);
+    assert.ok(!sec.validateUrl('http://192.168.1.1/admin'));
+    const good = 'https://api.vocalia.ma/health';
+    assert.strictEqual(sec.sanitizeURL(good), good);
+    assert.ok(sec.validateUrl(good));
+  });
+
+  test('redactSensitive preserves structure for safe logging', () => {
+    const data = {
+      user: 'admin',
+      password: 'secret',
+      nested: { api_key: 'sk_live_xxx', value: 42 }
+    };
+    const redacted = sec.redactSensitive(data);
+    assert.strictEqual(redacted.user, 'admin');
+    assert.strictEqual(redacted.password, '[REDACTED]');
+    assert.strictEqual(redacted.nested.api_key, '[REDACTED]');
+    assert.strictEqual(redacted.nested.value, 42);
+  });
+
+  test('RateLimiter + timingSafeEqual for auth flow', () => {
+    const limiter = new sec.RateLimiter({ maxRequests: 3, windowMs: 60000 });
+    const apiKey = sec.secureRandomString(32);
+
+    // Simulate 3 auth attempts
+    for (let i = 0; i < 3; i++) {
+      const allowed = limiter.isAllowed('auth-ip');
+      assert.ok(allowed);
+      sec.timingSafeEqual(apiKey, apiKey); // constant-time compare
+    }
+    // 4th attempt blocked
+    assert.ok(!limiter.isAllowed('auth-ip'));
+    limiter.destroy();
+  });
+});

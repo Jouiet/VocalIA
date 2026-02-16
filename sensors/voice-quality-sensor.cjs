@@ -286,4 +286,6 @@ async function main() {
     updateGPM(pressure, endpoints, providers);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { VOICE_ENDPOINTS, AI_PROVIDERS, calculatePressure, updateGPM, main };

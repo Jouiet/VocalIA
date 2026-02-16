@@ -19,6 +19,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Dark Mode (before CSS to prevent FOUC) -->
+  <script src="/src/lib/dark-mode-init.js"></script>
+
   <!-- Tailwind CSS -->
   <link href="/public/css/style.css" rel="stylesheet">
 
@@ -35,11 +38,6 @@
   <script src="/src/lib/gsap-animations.js"></script>
 
   <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
     /* Stat card accent borders */
     .stat-accent { position: relative; overflow: hidden; }
     .stat-accent::before {
@@ -573,13 +571,8 @@
     // Theme toggle
     themeToggle?.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+      localStorage.setItem('vocalia_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     });
-
-    // Initialize theme
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
 
     // Logout
     logoutBtn?.addEventListener('click', async () => {
@@ -792,7 +785,7 @@
 
         const badge = document.createElement('span');
         badge.className = 'px-2.5 py-1 text-xs font-medium rounded-full bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 flex-shrink-0';
-        badge.textContent = 'Terminé';
+        badge.textContent = VocaliaI18n.t('common.completed');
 
         row.appendChild(avatar);
         row.appendChild(info);

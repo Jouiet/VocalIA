@@ -695,7 +695,7 @@ rateLimitCleanupInterval.unref();
 // TWILIO SIGNATURE VALIDATION
 // ============================================
 
-const SecretVault = require('../core/SecretVault.cjs');
+const secretVault = require('../core/SecretVault.cjs');
 const ClientRegistry = require('../core/client-registry.cjs');
 
 /**
@@ -752,9 +752,8 @@ async function validateTwilioSignature(req, body, rawBody) {
 
     if (tenantId) {
       try {
-        // Lazy instantiate SecretVault
-        const vault = new SecretVault();
-        const creds = await vault.loadCredentials(tenantId);
+        // B13 fix: use singleton vault instance directly (not constructor)
+        const creds = await secretVault.loadCredentials(tenantId);
 
         if (creds && creds.TWILIO_AUTH_TOKEN) {
           if (checkValidity(creds.TWILIO_AUTH_TOKEN, `BYOK/${tenantId}`)) {
@@ -1953,6 +1952,34 @@ function getTenantCurrencySymbol(tenantId) {
 }
 
 /**
+ * Multilingual voice error/fallback messages for telephony handlers
+ * B32 fix: Replace FR-hardcoded voiceResponse strings
+ */
+const VOICE_MSGS = {
+  generic_error:      { fr: "Une erreur s'est produite.", en: 'An error occurred.', es: 'Se produjo un error.', ar: 'حدث خطأ.', ary: 'وقع مشكل.' },
+  catalog_unavail:    { fr: "Je n'ai pas accès au catalogue pour le moment.", en: "I can't access the catalog right now.", es: 'No puedo acceder al catálogo ahora.', ar: 'لا أستطيع الوصول للكتالوج حاليا.', ary: 'مقدرتش نوصل للكاتالوغ دابا.' },
+  catalog_error:      { fr: "Une erreur s'est produite en consultant le catalogue.", en: 'An error occurred while browsing the catalog.', es: 'Error al consultar el catálogo.', ar: 'حدث خطأ أثناء تصفح الكتالوج.', ary: 'وقع مشكل فالكاتالوغ.' },
+  item_not_found:     { fr: "Je n'ai pas trouvé cet article.", en: "I couldn't find this item.", es: 'No encontré este artículo.', ar: 'لم أجد هذا المنتج.', ary: 'ملقيتش هاد المنتوج.' },
+  item_not_in_catalog:{ fr: "Je n'ai pas trouvé cet article dans notre catalogue.", en: "I couldn't find this item in our catalog.", es: 'No encontré este artículo en nuestro catálogo.', ar: 'لم أجد هذا المنتج في كتالوجنا.', ary: 'ملقيتش هاد المنتوج فالكاتالوغ ديالنا.' },
+  menu_unavail:       { fr: "Le menu n'est pas disponible pour le moment.", en: "The menu isn't available right now.", es: 'El menú no está disponible ahora.', ar: 'القائمة غير متاحة حاليا.', ary: 'المينو ماشي متوفر دابا.' },
+  menu_error:         { fr: "Une erreur s'est produite en consultant le menu.", en: 'An error occurred while viewing the menu.', es: 'Error al consultar el menú.', ar: 'حدث خطأ أثناء عرض القائمة.', ary: 'وقع مشكل فالمينو.' },
+  search_failed:      { fr: "Je n'ai pas pu effectuer la recherche.", en: "I couldn't complete the search.", es: 'No pude realizar la búsqueda.', ar: 'لم أتمكن من إتمام البحث.', ary: 'مقدرتش ندير البحث.' },
+  search_error:       { fr: "Une erreur s'est produite lors de la recherche.", en: 'An error occurred during the search.', es: 'Error durante la búsqueda.', ar: 'حدث خطأ أثناء البحث.', ary: 'وقع مشكل فالبحث.' },
+  services_unavail:   { fr: "Les services ne sont pas disponibles pour le moment.", en: "Services aren't available right now.", es: 'Los servicios no están disponibles ahora.', ar: 'الخدمات غير متاحة حاليا.', ary: 'الخدمات ماشي متوفرين دابا.' },
+  slots_unavail:      { fr: "Je ne peux pas consulter les créneaux disponibles.", en: "I can't check available time slots.", es: 'No puedo consultar los horarios disponibles.', ar: 'لا أستطيع التحقق من المواعيد المتاحة.', ary: 'مقدرتش نشوف الأوقات اللي فارغين.' },
+  plans_unavail:      { fr: "Les forfaits ne sont pas disponibles.", en: "Plans aren't available.", es: 'Los planes no están disponibles.', ar: 'الباقات غير متاحة.', ary: 'الفورفيات ماشي متوفرين.' },
+  vehicles_unavail:   { fr: "Les véhicules ne sont pas disponibles.", en: "Vehicles aren't available.", es: 'Los vehículos no están disponibles.', ar: 'المركبات غير متاحة.', ary: 'الطوموبيلات ماشي متوفرين.' },
+  no_vehicles_match:  { fr: "Aucun véhicule disponible avec ces critères. Voulez-vous élargir votre recherche?", en: 'No vehicles match these criteria. Would you like to broaden your search?', es: 'No hay vehículos con estos criterios. ¿Quiere ampliar su búsqueda?', ar: 'لا توجد مركبات بهذه المعايير. هل تريد توسيع البحث؟', ary: 'مكاينش طوموبيل بهاد الكريطيرات. بغيتي توسع البحث؟' },
+  trips_unavail:      { fr: "Les voyages ne sont pas disponibles.", en: "Trips aren't available.", es: 'Los viajes no están disponibles.', ar: 'الرحلات غير متاحة.', ary: 'الفوياجات ماشي متوفرين.' }
+};
+
+function getVoiceMsg(session, key) {
+  const lang = session?.metadata?.voice_language || 'fr';
+  const msgs = VOICE_MSGS[key];
+  return msgs ? (msgs[lang] || msgs.fr) : VOICE_MSGS.generic_error.fr;
+}
+
+/**
  * Browse catalog by category
  */
 async function handleBrowseCatalog(session, args) {
@@ -1968,7 +1995,7 @@ async function handleBrowseCatalog(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Je n'ai pas accès au catalogue pour le moment." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'catalog_unavail') };
     }
 
     return {
@@ -1978,7 +2005,7 @@ async function handleBrowseCatalog(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Browse error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite en consultant le catalogue." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'catalog_error') };
   }
 }
 
@@ -2005,13 +2032,13 @@ async function handleGetItemDetails(session, args) {
     }
 
     if (!actualItemId) {
-      return { success: false, error: 'item_not_found', voiceResponse: "Je n'ai pas trouvé cet article." };
+      return { success: false, error: 'item_not_found', voiceResponse: getVoiceMsg(session, 'item_not_found') };
     }
 
     const result = await store.getItemDetails(tenantId, actualItemId);
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Je n'ai pas trouvé cet article dans notre catalogue." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'item_not_in_catalog') };
     }
 
     return {
@@ -2021,7 +2048,7 @@ async function handleGetItemDetails(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Item details error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -2040,7 +2067,7 @@ async function handleGetMenu(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Le menu n'est pas disponible pour le moment." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'menu_unavail') };
     }
 
     return {
@@ -2050,7 +2077,7 @@ async function handleGetMenu(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Menu error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite en consultant le menu." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'menu_error') };
   }
 }
 
@@ -2077,7 +2104,7 @@ async function handleCheckItemAvailability(session, args) {
     }
 
     if (!actualItemId) {
-      return { success: false, error: 'item_not_found', voiceResponse: "Je n'ai pas trouvé cet article." };
+      return { success: false, error: 'item_not_found', voiceResponse: getVoiceMsg(session, 'item_not_found') };
     }
 
     const result = await store.checkAvailability(tenantId, actualItemId, {
@@ -2094,7 +2121,7 @@ async function handleCheckItemAvailability(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Availability error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -2116,7 +2143,7 @@ async function handleSearchCatalog(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Je n'ai pas pu effectuer la recherche." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'search_failed') };
     }
 
     return {
@@ -2127,7 +2154,7 @@ async function handleSearchCatalog(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Search error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite lors de la recherche." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'search_error') };
   }
 }
 
@@ -2150,7 +2177,7 @@ async function handleGetServices(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Les services ne sont pas disponibles pour le moment." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'services_unavail') };
     }
 
     return {
@@ -2161,7 +2188,7 @@ async function handleGetServices(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Services error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -2199,7 +2226,7 @@ async function handleGetAvailableSlots(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Je ne peux pas consulter les créneaux disponibles." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'slots_unavail') };
     }
 
     const availableSlots = result.slots || [];
@@ -2221,7 +2248,7 @@ async function handleGetAvailableSlots(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Slots error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -2240,7 +2267,7 @@ async function handleGetPackages(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Les forfaits ne sont pas disponibles." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'plans_unavail') };
     }
 
     // Filter by max price if provided
@@ -2269,7 +2296,7 @@ async function handleGetPackages(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Packages error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -2292,7 +2319,7 @@ async function handleGetVehicles(session, args) {
     });
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Les véhicules ne sont pas disponibles." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'vehicles_unavail') };
     }
 
     let vehicles = result.items || [];
@@ -2314,7 +2341,7 @@ async function handleGetVehicles(session, args) {
     // Generate voice response
     let voiceResponse;
     if (vehicles.length === 0) {
-      voiceResponse = "Aucun véhicule disponible avec ces critères. Voulez-vous élargir votre recherche?";
+      voiceResponse = getVoiceMsg(session, 'no_vehicles_match');
     } else {
       const sym = getTenantCurrencySymbol(tenantId);
       const vehList = vehicles.slice(0, 3).map(v =>
@@ -2331,7 +2358,7 @@ async function handleGetVehicles(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Vehicles error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -2357,7 +2384,7 @@ async function handleGetTrips(session, args) {
     }
 
     if (!result.success) {
-      return { success: false, error: result.error, voiceResponse: "Les voyages ne sont pas disponibles." };
+      return { success: false, error: result.error, voiceResponse: getVoiceMsg(session, 'trips_unavail') };
     }
 
     let trips = result.items || result.results || [];
@@ -2396,7 +2423,7 @@ async function handleGetTrips(session, args) {
     };
   } catch (error) {
     console.error(`[Catalog] Trips error:`, error);
-    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+    return { success: false, error: error.message, voiceResponse: getVoiceMsg(session, 'generic_error') };
   }
 }
 
@@ -3214,7 +3241,13 @@ async function handleComplaint(session, args) {
     return {
       status: 'pending_approval',
       hitlId: pendingAction.id,
-      message_to_customer: 'Je comprends votre situation et je note votre demande. Un responsable va examiner votre dossier et vous recontacter très rapidement pour vous confirmer la solution.',
+      message_to_customer: {
+        fr: 'Je comprends votre situation et je note votre demande. Un responsable va examiner votre dossier et vous recontacter très rapidement pour vous confirmer la solution.',
+        en: 'I understand your situation and I\'m noting your request. A manager will review your case and get back to you very quickly to confirm the resolution.',
+        es: 'Entiendo su situación y tomo nota de su solicitud. Un responsable revisará su caso y le contactará muy pronto para confirmarle la solución.',
+        ar: 'أفهم وضعك وسأسجل طلبك. سيقوم مسؤول بمراجعة ملفك والتواصل معك قريبا لتأكيد الحل.',
+        ary: 'فاهم الوضعية ديالك وكنسجل الطلب ديالك. شي مسؤول غادي يشوف الملف ديالك ويتواصل معاك بسرعة.'
+      }[session?.metadata?.voice_language || 'fr'] || 'Je comprends votre situation et je note votre demande. Un responsable va examiner votre dossier et vous recontacter très rapidement pour vous confirmer la solution.',
       internal_note: `HITL required for financial commitment. Use --approve=${pendingAction.id} to authorize.`
     };
   }
@@ -3407,7 +3440,15 @@ async function sendSMSBookingLink(session) {
     return { success: false, channel: 'none' };
   }
 
-  const body = `Bonjour ! Voici le lien pour réserver votre appel découverte avec VocalIA: ${bookingLink}\n\nÀ très vite !`;
+  const lang = session.metadata?.voice_language || 'fr';
+  const smsTexts = {
+    fr: `Bonjour ! Voici le lien pour réserver votre appel découverte avec VocalIA: ${bookingLink}\n\nÀ très vite !`,
+    en: `Hello! Here's the link to book your discovery call with VocalIA: ${bookingLink}\n\nSee you soon!`,
+    es: `¡Hola! Aquí tienes el enlace para reservar tu llamada de descubrimiento con VocalIA: ${bookingLink}\n\n¡Hasta pronto!`,
+    ar: `مرحبا! إليك رابط حجز مكالمتك الاستكشافية مع VocalIA: ${bookingLink}\n\nإلى اللقاء!`,
+    ary: `سلام! هاهو اللينك باش تحجز المكالمة مع VocalIA: ${bookingLink}\n\nنتلاقاو!`
+  };
+  const body = smsTexts[lang] || smsTexts.fr;
   return await sendMessage(phone, body);
 }
 
@@ -3427,13 +3468,22 @@ async function handleSendPaymentDetails(session, args) {
 
   console.log(`[Payment] Sending ${amount} ${currency} via ${method} for ${description}`);
 
+  const lang = session.metadata?.voice_language || 'fr';
+  const paymentMsgs = {
+    fr: { bank: `Voici les coordonnées pour le règlement de ${amount}${currency} (${description}):\n\n${details}\n\nMerci de nous envoyer une preuve de virement.`, link: `Voici votre lien de paiement de ${amount}${currency} (${description}): ${details}`, other: `Pour le règlement de ${amount}${currency} (${description}), les modalités sont: ${details}` },
+    en: { bank: `Here are the details for payment of ${amount}${currency} (${description}):\n\n${details}\n\nPlease send us proof of transfer.`, link: `Here's your payment link for ${amount}${currency} (${description}): ${details}`, other: `For payment of ${amount}${currency} (${description}), the details are: ${details}` },
+    es: { bank: `Aquí están los datos para el pago de ${amount}${currency} (${description}):\n\n${details}\n\nPor favor envíenos comprobante de transferencia.`, link: `Aquí está su enlace de pago de ${amount}${currency} (${description}): ${details}`, other: `Para el pago de ${amount}${currency} (${description}), los detalles son: ${details}` },
+    ar: { bank: `إليك تفاصيل الدفع ${amount}${currency} (${description}):\n\n${details}\n\nيرجى إرسال إثبات التحويل.`, link: `إليك رابط الدفع ${amount}${currency} (${description}): ${details}`, other: `لدفع ${amount}${currency} (${description})، التفاصيل: ${details}` },
+    ary: { bank: `هاهي التفاصيل ديال الخلاص ${amount}${currency} (${description}):\n\n${details}\n\nعافاك صيفطلنا إثبات الفيرمون.`, link: `هاهو اللينك ديال الخلاص ${amount}${currency} (${description}): ${details}`, other: `باش تخلص ${amount}${currency} (${description})، التفاصيل: ${details}` }
+  };
+  const pm = paymentMsgs[lang] || paymentMsgs.fr;
   let message = "";
   if (method === 'BANK_TRANSFER') {
-    message = `Voici les coordonnées pour le règlement de ${amount}${currency} (${description}):\n\n${details}\n\nMerci de nous envoyer une preuve de virement.`;
+    message = pm.bank;
   } else if (method === 'LINK') {
-    message = `Voici votre lien de paiement de ${amount}${currency} (${description}): ${details}`;
+    message = pm.link;
   } else {
-    message = `Pour le règlement de ${amount}${currency} (${description}), les modalités sont: ${details}`;
+    message = pm.other;
   }
 
   try {
@@ -3450,7 +3500,8 @@ async function handleSendPaymentDetails(session, args) {
         description,
         channel: result.channel
       });
-      return { success: true, message: `Les détails ont été envoyés via ${result.channel}.`, channel: result.channel };
+      const sentMsgs = { fr: `Les détails ont été envoyés via ${result.channel}.`, en: `Details sent via ${result.channel}.`, es: `Detalles enviados por ${result.channel}.`, ar: `تم إرسال التفاصيل عبر ${result.channel}.`, ary: `تصيفطو التفاصيل عبر ${result.channel}.` };
+      return { success: true, message: sentMsgs[lang] || sentMsgs.fr, channel: result.channel };
     } else {
       return { success: false, error: "messaging_failed" };
     }
@@ -3581,7 +3632,7 @@ async function queueCartRecoveryCallback(options) {
   <Pause length="1"/>
   <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">${msg.action}</Say>
   <Gather numDigits="1" action="https://api.vocalia.ma/twilio/cart-recovery-response?callbackId=${callbackId}" method="POST">
-    <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">Appuyez 1 pour oui, 2 pour non.</Say>
+    <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">${{ fr: 'Appuyez 1 pour oui, 2 pour non.', en: 'Press 1 for yes, 2 for no.', es: 'Presione 1 para sí, 2 para no.', ar: 'اضغط 1 للموافقة، 2 للرفض.', ary: 'عيّط على 1 إلا بغيتي، 2 إلا لا.' }[lang] || 'Appuyez 1 pour oui, 2 pour non.'}</Say>
   </Gather>
 </Response>`;
 

@@ -266,6 +266,71 @@ class StripeGlobalGateway {
     }
 
     /**
+     * Create a Checkout Session (payment page)
+     */
+    async createCheckoutSession({ customerId, priceId, successUrl, cancelUrl, mode = 'subscription', metadata = {} }) {
+        return this.request('/checkout/sessions', 'POST', {
+            customer: customerId,
+            'line_items[0][price]': priceId,
+            'line_items[0][quantity]': 1,
+            mode,
+            success_url: successUrl,
+            cancel_url: cancelUrl,
+            metadata
+        });
+    }
+
+    /**
+     * Create a Subscription directly (without checkout page)
+     */
+    async createSubscription({ customerId, priceId, metadata = {} }) {
+        const idempotencyKey = this.generateIdempotencyKey('subscription', customerId);
+        return this.request('/subscriptions', 'POST', {
+            customer: customerId,
+            'items[0][price]': priceId,
+            metadata
+        }, { idempotencyKey });
+    }
+
+    /**
+     * Get a Subscription by ID
+     */
+    async getSubscription(subscriptionId) {
+        return this.request(`/subscriptions/${subscriptionId}`, 'GET');
+    }
+
+    /**
+     * Cancel a Subscription
+     */
+    async cancelSubscription(subscriptionId, { atPeriodEnd = true } = {}) {
+        if (atPeriodEnd) {
+            return this.request(`/subscriptions/${subscriptionId}`, 'POST', {
+                cancel_at_period_end: true
+            });
+        }
+        return this.request(`/subscriptions/${subscriptionId}`, 'DELETE');
+    }
+
+    /**
+     * List Subscriptions for a customer
+     */
+    async listSubscriptions(customerId) {
+        return this.request('/subscriptions', 'GET', { customer: customerId, limit: 10 });
+    }
+
+    /**
+     * Create a Price for a product
+     */
+    async createPrice({ productId, unitAmount, currency = 'eur', interval = 'month' }) {
+        return this.request('/prices', 'POST', {
+            product: productId,
+            unit_amount: unitAmount,
+            currency,
+            'recurring[interval]': interval
+        });
+    }
+
+    /**
      * Health check
      */
     healthCheck() {

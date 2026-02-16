@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <title>Installer le Widget - VocalIA</title>
+
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon/favicon-16x16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
+</head>
+<body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
+  <!-- Sidebar Component -->
+  <div data-app-component="sidebar"></div>
+
+  <!-- Main Content -->
+  <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
+    <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2" aria-label="Menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <div>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="install_widget.title">Installer le Widget</h1>
+            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="install_widget.subtitle">Ajoutez l'assistant vocal VocalIA sur votre site en 2 minutes</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="px-6 py-6 max-w-4xl space-y-8">
+
+      <!-- Section 1: Snippet Embed -->
+      <section class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="code-2" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="install_widget.snippet_title">Votre code d'installation</h2>
+        </div>
+
+        <!-- Platform Tabs -->
+        <div class="flex flex-wrap gap-2 mb-4" role="tablist" aria-label="Plateforme">
+          <button role="tab" aria-selected="true" data-platform="html" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 transition-colors">HTML</button>
+          <button role="tab" aria-selected="false" data-platform="shopify" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Shopify</button>
+          <button role="tab" aria-selected="false" data-platform="wordpress" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">WordPress</button>
+          <button role="tab" aria-selected="false" data-platform="react" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">React / Next.js</button>
+          <button role="tab" aria-selected="false" data-platform="wix" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Wix</button>
+        </div>
+
+        <!-- Snippet Code Block -->
+        <div class="relative mb-3">
+          <pre id="snippet-code" class="bg-zinc-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto font-mono whitespace-pre-wrap" role="region" aria-label="Code snippet"></pre>
+          <button id="copy-snippet" class="absolute top-3 right-3 rtl:right-auto rtl:left-3 flex items-center gap-1.5 px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 text-white text-xs rounded-lg transition-colors" aria-label="Copier le code">
+            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+            <span data-i18n="install_widget.copy">Copier</span>
+          </button>
+        </div>
+
+        <!-- Instructions -->
+        <div class="flex items-start gap-2 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+          <i data-lucide="info" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 mt-0.5 flex-shrink-0"></i>
+          <p class="text-sm text-indigo-700 dark:text-indigo-300" id="instructions-text"></p>
+        </div>
+      </section>
+
+      <!-- Section 2: Allowed Domains -->
+      <section class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield-check" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+            <h2 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="install_widget.domains_title">Domaines autorisés</h2>
+          </div>
+          <button id="add-domain-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition-colors" aria-label="Ajouter un domaine">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span data-i18n="install_widget.add_domain">Ajouter</span>
+          </button>
+        </div>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4" data-i18n="install_widget.domains_desc">Ajoutez les domaines où le widget est autorisé à fonctionner. Maximum 10 domaines.</p>
+
+        <!-- Domain List -->
+        <div id="domains-list" class="space-y-2 mb-4">
+          <div class="flex items-center gap-2 py-3 text-sm text-zinc-400">
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+            <span data-i18n="common.loading">Chargement...</span>
+          </div>
+        </div>
+
+        <!-- Add Domain Form (hidden) -->
+        <div id="add-domain-form" class="hidden">
+          <div class="flex gap-2">
+            <label for="new-domain-input" class="sr-only">URL du domaine</label>
+            <input id="new-domain-input" type="url" placeholder="https://monsite.com" maxlength="200" class="flex-1 px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            <button id="save-domain-btn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors" data-i18n="install_widget.save">Enregistrer</button>
+            <button id="cancel-domain-btn" class="px-4 py-2 bg-zinc-200 dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200 text-sm rounded-lg hover:bg-zinc-300 dark:hover:bg-white/[0.1] transition-colors" data-i18n="common.cancel">Annuler</button>
+          </div>
+          <p id="domain-error" class="text-red-500 text-xs mt-1 hidden" role="alert"></p>
+        </div>
+      </section>
+
+      <!-- Section 3: Widget Customization + Preview -->
+      <section class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="palette" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+            <h2 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="install_widget.customize_title">Personnalisation</h2>
+          </div>
+          <button id="save-customization" class="hidden flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition-colors" aria-label="Sauvegarder la personnalisation">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span data-i18n="install_widget.save">Enregistrer</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Controls -->
+          <div class="space-y-4">
+            <div>
+              <label for="widget-color" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="install_widget.primary_color">Couleur principale</label>
+              <div class="flex items-center gap-3">
+                <input type="color" id="widget-color" value="#4FBAF1" class="w-10 h-10 rounded-lg border border-zinc-300 dark:border-white/[0.08] cursor-pointer">
+                <label for="widget-color-hex" class="sr-only">Code hexadécimal</label>
+                <input type="text" id="widget-color-hex" value="#4FBAF1" maxlength="7" pattern="#[0-9a-fA-F]{6}" class="w-28 px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+            </div>
+
+            <div>
+              <label for="widget-position" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="install_widget.position">Position</label>
+              <select id="widget-position" class="w-full px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="bottom-right" data-i18n="install_widget.pos_bottom_right">Bas droite</option>
+                <option value="bottom-left" data-i18n="install_widget.pos_bottom_left">Bas gauche</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <label for="widget-ecommerce" class="text-sm font-medium text-zinc-700 dark:text-zinc-300" data-i18n="install_widget.ecommerce_mode">Mode E-commerce</label>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="widget-ecommerce" class="sr-only peer">
+                <div class="w-11 h-6 bg-zinc-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-indigo-500 dark:bg-white/[0.08] rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] rtl:after:right-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Live Preview -->
+          <div>
+            <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="install_widget.preview">Aperçu en direct</p>
+            <div id="widget-preview-container" class="relative bg-white border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl overflow-hidden" style="height: 360px;">
+              <!-- Simulated browser bar -->
+              <div class="flex items-center gap-2 px-3 py-2 bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-white/[0.08]">
+                <div class="flex gap-1.5">
+                  <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                  <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                  <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                </div>
+                <div class="flex-1 mx-2 px-3 py-1 bg-white dark:bg-zinc-700 rounded text-xs text-zinc-500 dark:text-zinc-400 font-mono truncate">monsite.com</div>
+              </div>
+              <!-- Simulated page content -->
+              <div class="p-6 text-zinc-400 dark:text-zinc-600 space-y-3">
+                <div class="h-4 bg-zinc-100 dark:bg-zinc-800 rounded w-3/4"></div>
+                <div class="h-4 bg-zinc-100 dark:bg-zinc-800 rounded w-1/2"></div>
+                <div class="h-20 bg-zinc-100 dark:bg-zinc-800 rounded"></div>
+                <div class="h-4 bg-zinc-100 dark:bg-zinc-800 rounded w-2/3"></div>
+                <div class="h-4 bg-zinc-100 dark:bg-zinc-800 rounded w-5/6"></div>
+              </div>
+              <!-- Widget FAB Preview -->
+              <div id="preview-fab" class="absolute bottom-4 right-4 w-14 h-14 rounded-full shadow-lg flex items-center justify-center cursor-pointer transition-all hover:scale-110" style="background-color: #4FBAF1;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Verification Checklist -->
+      <section class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="install_widget.verify_title">Vérification</h2>
+        </div>
+
+        <div class="space-y-3">
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" id="check-copy" class="mt-1 w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <div>
+              <p class="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-indigo-600 transition-colors" data-i18n="install_widget.check_copy">J'ai copié le snippet ci-dessus</p>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" id="check-paste" class="mt-1 w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <div>
+              <p class="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-indigo-600 transition-colors" data-i18n="install_widget.check_paste">J'ai collé le code avant &lt;/body&gt; dans mon site</p>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" id="check-deploy" class="mt-1 w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <div>
+              <p class="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-indigo-600 transition-colors" data-i18n="install_widget.check_deploy">J'ai déployé/publié la modification</p>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer group">
+            <input type="checkbox" id="check-visible" class="mt-1 w-4 h-4 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <div>
+              <p class="text-sm font-medium text-zinc-900 dark:text-white group-hover:text-indigo-600 transition-colors" data-i18n="install_widget.check_visible">L'icône VocalIA apparaît en bas de mon site</p>
+            </div>
+          </label>
+        </div>
+
+        <div id="verify-success" class="hidden mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <div class="flex items-center gap-2 text-green-700 dark:text-green-300 text-sm font-medium">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            <span data-i18n="install_widget.verify_success">Installation terminée ! Votre assistant vocal est actif.</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- App Component Loader -->
+  <script src="/app/components/app-components.js" defer></script>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
+
+    // Initialize i18n
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
+
+    lucide.createIcons();
+
+    // Auth check
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
+    const tenantId = auth.getTenantId();
+    if (!tenantId) {
+      document.querySelector('.max-w-4xl').innerHTML = `<div class="p-8 text-center text-red-500">${VocaliaI18n.t('install_widget.no_tenant')}</div>`;
+      throw new Error('No tenant ID');
+    }
+
+    const API_BASE = 'https://api.vocalia.ma';
+    let currentPlatform = 'html';
+    let allowedOrigins = [];
+    let widgetConfig = { primary_color: '#4FBAF1', position: 'bottom-right', ecommerce: false };
+    let configDirty = false;
+
+    // ─── Load Tenant Config ──────────────────────────────────────
+
+    async function loadTenantConfig() {
+      try {
+        const resp = await api.get(`/tenants/${tenantId}/widget-config`);
+        const wc = resp?.widget_config || {};
+        widgetConfig.primary_color = wc.branding?.primary_color || '#4FBAF1';
+        widgetConfig.position = wc.position || 'bottom-right';
+        widgetConfig.ecommerce = wc.persona === 'UNIVERSAL_ECOMMERCE';
+
+        // Apply to UI
+        document.getElementById('widget-color').value = widgetConfig.primary_color;
+        document.getElementById('widget-color-hex').value = widgetConfig.primary_color;
+        document.getElementById('widget-position').value = widgetConfig.position;
+        document.getElementById('widget-ecommerce').checked = widgetConfig.ecommerce;
+        updatePreview();
+        updateSnippet(currentPlatform);
+      } catch (e) {
+        console.error('❌ Failed to load tenant config:', e);
+      }
+    }
+
+    async function saveWidgetConfig() {
+      try {
+        const btn = document.getElementById('save-customization');
+        btn.disabled = true;
+        btn.querySelector('span').textContent = '...';
+
+        await api.put(`/tenants/${tenantId}/widget-config`, {
+          widget_config: {
+            position: widgetConfig.position,
+            branding: {
+              primary_color: widgetConfig.primary_color
+            },
+            persona: widgetConfig.ecommerce ? 'UNIVERSAL_ECOMMERCE' : undefined
+          }
+        });
+
+        btn.querySelector('span').textContent = '✓';
+        configDirty = false;
+        setTimeout(() => {
+          btn.classList.add('hidden');
+          btn.disabled = false;
+        }, 1200);
+      } catch (e) {
+        console.error('❌ Failed to save widget config:', e);
+        const btn = document.getElementById('save-customization');
+        btn.disabled = false;
+        btn.querySelector('span').textContent = VocaliaI18n.t('common.error');
+        setTimeout(() => { btn.querySelector('span').textContent = VocaliaI18n.t('install_widget.save'); }, 2000);
+      }
+    }
+
+    function markDirty() {
+      configDirty = true;
+      document.getElementById('save-customization').classList.remove('hidden');
+    }
+
+    // ─── Snippet Generation ──────────────────────────────────────
+
+    function buildSnippetAttrs() {
+      // Only data-tenant-id needed — color/position are loaded dynamically from server config
+      return `data-tenant-id="${tenantId}"`;
+    }
+
+    function getSnippets() {
+      const attrs = buildSnippetAttrs();
+      return {
+        html: {
+          code: `<script src="${API_BASE}/voice-assistant/voice-widget-v3.js" ${attrs} defer><\/script>`,
+          instructions: 'Collez ce code juste avant </body> dans votre page HTML.'
+        },
+        shopify: {
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/voice-widget-v3.js" ${attrs} defer><\/script>`,
+          instructions: 'Dans Shopify Admin : Online Store > Themes > Edit Code > layout/theme.liquid > collez avant </body>.'
+        },
+        wordpress: {
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/voice-widget-v3.js" ${attrs} defer><\/script>`,
+          instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA WordPress.'
+        },
+        react: {
+          code: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${API_BASE}/voice-assistant/voice-widget-v3.js';\n    script.defer = true;\n    script.dataset.tenantId = '${tenantId}';\n${widgetConfig.primary_color !== '#4FBAF1' ? `    script.dataset.color = '${widgetConfig.primary_color}';\n` : ''}${widgetConfig.position !== 'bottom-right' ? `    script.dataset.position = '${widgetConfig.position}';\n` : ''}    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> in your layout`,
+          instructions: 'Ajoutez le composant VocalIAWidget dans votre layout (App.jsx ou layout.tsx).'
+        },
+        wix: {
+          code: `<script src="${API_BASE}/voice-assistant/voice-widget-v3.js" ${attrs} defer><\/script>`,
+          instructions: 'Dans Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
+        }
+      };
+    }
+
+    function updateSnippet(platform) {
+      currentPlatform = platform;
+      const snippets = getSnippets();
+      const data = snippets[platform];
+      document.getElementById('snippet-code').textContent = data.code;
+      document.getElementById('instructions-text').textContent = data.instructions;
+
+      document.querySelectorAll('.platform-tab').forEach(tab => {
+        const isActive = tab.dataset.platform === platform;
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        tab.className = `platform-tab px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+          isActive
+            ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+            : 'bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1]'
+        }`;
+      });
+    }
+
+    // Platform tab clicks
+    document.querySelectorAll('.platform-tab').forEach(tab => {
+      tab.addEventListener('click', () => updateSnippet(tab.dataset.platform));
+    });
+
+    // Copy snippet
+    document.getElementById('copy-snippet').addEventListener('click', () => {
+      const text = document.getElementById('snippet-code').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-snippet');
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i><span>OK</span>';
+        lucide.createIcons();
+        setTimeout(() => { btn.innerHTML = origHTML; lucide.createIcons(); }, 2000);
+      });
+    });
+
+    // Initialize snippet
+    updateSnippet('html');
+
+    // ─── Allowed Domains ──────────────────────────────────────────
+
+
+    async function loadOrigins() {
+      try {
+        const res = await api.get(`/tenants/${tenantId}/allowed-origins`);
+        allowedOrigins = res.origins || [];
+      } catch (e) {
+        console.error('❌ Failed to load origins:', e);
+        allowedOrigins = [];
+      }
+      renderOrigins();
+    }
+
+    function renderOrigins() {
+      const list = document.getElementById('domains-list');
+      if (allowedOrigins.length === 0) {
+        list.innerHTML = '<p class="text-sm text-zinc-400 dark:text-zinc-500 py-2" data-i18n="install_widget.no_domains">Aucun domaine configuré. Le widget fonctionnera sur tous les domaines.</p>';
+        if (window.VocaliaI18n) VocaliaI18n.translatePage();
+        return;
+      }
+      list.innerHTML = allowedOrigins.map((origin, i) => `
+        <div class="flex items-center justify-between px-4 py-2 bg-zinc-50 dark:bg-white/[0.03] rounded-lg">
+          <div class="flex items-center gap-2">
+            <i data-lucide="globe" class="w-4 h-4 text-zinc-400"></i>
+            <span class="text-sm text-zinc-900 dark:text-white font-mono">${escapeHtml(origin)}</span>
+          </div>
+          <button class="remove-domain p-1 text-zinc-400 hover:text-red-500 transition-colors" data-index="${i}" aria-label="Supprimer ${escapeHtml(origin)}">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `).join('');
+      lucide.createIcons();
+
+      list.querySelectorAll('.remove-domain').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const idx = parseInt(btn.dataset.index);
+          allowedOrigins.splice(idx, 1);
+          await saveOrigins();
+        });
+      });
+    }
+
+    async function saveOrigins() {
+      try {
+        await api.put(`/tenants/${tenantId}/allowed-origins`, { origins: allowedOrigins });
+        renderOrigins();
+      } catch (e) {
+        console.error('❌ Failed to save origins:', e);
+      }
+    }
+
+    // Add domain button
+    document.getElementById('add-domain-btn').addEventListener('click', () => {
+      document.getElementById('add-domain-form').classList.remove('hidden');
+      document.getElementById('new-domain-input').focus();
+    });
+
+    document.getElementById('cancel-domain-btn').addEventListener('click', () => {
+      document.getElementById('add-domain-form').classList.add('hidden');
+      document.getElementById('new-domain-input').value = '';
+      document.getElementById('domain-error').classList.add('hidden');
+    });
+
+    document.getElementById('save-domain-btn').addEventListener('click', async () => {
+      const input = document.getElementById('new-domain-input');
+      const errorEl = document.getElementById('domain-error');
+      let val = input.value.trim().replace(/\/+$/, '');
+
+      if (val.length > 200) {
+        errorEl.textContent = VocaliaI18n.t('install_widget.url_too_long');
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      const urlPattern = /^https?:\/\/[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+      if (!urlPattern.test(val)) {
+        errorEl.textContent = VocaliaI18n.t('install_widget.url_invalid');
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      if (allowedOrigins.includes(val)) {
+        errorEl.textContent = VocaliaI18n.t('install_widget.domain_duplicate');
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      if (allowedOrigins.length >= 10) {
+        errorEl.textContent = VocaliaI18n.t('install_widget.domain_max');
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      errorEl.classList.add('hidden');
+      allowedOrigins.push(val);
+      await saveOrigins();
+      input.value = '';
+      document.getElementById('add-domain-form').classList.add('hidden');
+    });
+
+    // Enter key on domain input
+    document.getElementById('new-domain-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('save-domain-btn').click();
+      }
+    });
+
+    loadOrigins();
+
+    // ─── Widget Preview + Customization ──────────────────────────
+
+    const colorPicker = document.getElementById('widget-color');
+    const colorHex = document.getElementById('widget-color-hex');
+    const positionSelect = document.getElementById('widget-position');
+    const ecommerceToggle = document.getElementById('widget-ecommerce');
+    const fab = document.getElementById('preview-fab');
+
+    function updatePreview() {
+      fab.style.backgroundColor = widgetConfig.primary_color;
+
+      fab.style.right = widgetConfig.position === 'bottom-right' ? '16px' : 'auto';
+      fab.style.left = widgetConfig.position === 'bottom-left' ? '16px' : 'auto';
+    }
+
+    colorPicker.addEventListener('input', () => {
+      widgetConfig.primary_color = colorPicker.value;
+      colorHex.value = colorPicker.value;
+      updatePreview();
+      updateSnippet(currentPlatform);
+      markDirty();
+    });
+
+    colorHex.addEventListener('change', () => {
+      const hex = colorHex.value.trim();
+      if (/^#[0-9a-f]{6}$/i.test(hex)) {
+        colorPicker.value = hex;
+        widgetConfig.primary_color = hex;
+        updatePreview();
+        updateSnippet(currentPlatform);
+        markDirty();
+      }
+    });
+
+    positionSelect.addEventListener('change', () => {
+      widgetConfig.position = positionSelect.value;
+      updatePreview();
+      updateSnippet(currentPlatform);
+      markDirty();
+    });
+
+    ecommerceToggle.addEventListener('change', () => {
+      widgetConfig.ecommerce = ecommerceToggle.checked;
+      markDirty();
+    });
+
+    document.getElementById('save-customization').addEventListener('click', saveWidgetConfig);
+
+    // ─── Verification Checklist ──────────────────────────────────
+
+    const checks = ['check-copy', 'check-paste', 'check-deploy', 'check-visible'];
+    checks.forEach(id => {
+      document.getElementById(id).addEventListener('change', () => {
+        const allChecked = checks.every(cId => document.getElementById(cId).checked);
+        document.getElementById('verify-success').classList.toggle('hidden', !allChecked);
+      });
+    });
+
+    // ─── Init ────────────────────────────────────────────────────
+
+    loadTenantConfig();
+  </script>
+</body>
+</html>

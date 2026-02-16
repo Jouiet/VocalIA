@@ -585,7 +585,8 @@ async function requestPasswordReset(email) {
   try {
     const emailService = require('./email-service.cjs');
     if (emailService && emailService.sendPasswordResetEmail) {
-      await emailService.sendPasswordResetEmail(user.email, resetToken, user.name);
+      const prefs = typeof user.preferences === 'object' ? user.preferences : {};
+      await emailService.sendPasswordResetEmail(user.email, resetToken, user.name, prefs.lang || 'fr');
     }
   } catch (e) {
     console.error('❌ [Auth] Failed to send reset email:', e.message);
@@ -746,7 +747,8 @@ async function resendVerificationEmail(email) {
   try {
     const emailService = require('./email-service.cjs');
     if (emailService && emailService.sendVerificationEmail) {
-      await emailService.sendVerificationEmail(user.email, verifyToken, user.name);
+      const prefs = typeof user.preferences === 'object' ? user.preferences : {};
+      await emailService.sendVerificationEmail(user.email, verifyToken, user.name, prefs.lang || 'fr');
     }
   } catch (e) {
     console.error('❌ [Auth] Failed to resend verification email:', e.message);

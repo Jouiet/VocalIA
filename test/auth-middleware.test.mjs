@@ -21,7 +21,9 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { extractToken, sendError, requireRole, requirePermission, requireTenant, requireAdmin, requireVerifiedEmail, rateLimit, corsMiddleware, cleanupRateLimits } from '../core/auth-middleware.cjs';
+import { extractToken, sendError, requireAuth, optionalAuth, requireRole, requirePermission, requireTenant, requireAdmin, requireVerifiedEmail, rateLimit, corsMiddleware, cleanupRateLimits } from '../core/auth-middleware.cjs';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 
 // Mock response object
@@ -414,5 +416,108 @@ describe('corsMiddleware', () => {
 
     middleware(req, res, () => {});
     assert.strictEqual(res.headers['Access-Control-Allow-Credentials'], 'true');
+  });
+});
+
+// ─── requireAuth ─────────────────────────────────────────────────────
+
+describe('requireAuth middleware', () => {
+  test('valid token → attaches user + calls next()', async () => {
+    const authService = require('../core/auth-service.cjs');
+    const origVerify = authService.verifyAccessToken;
+    authService.verifyAccessToken = async () => ({ id: 'u1', role: 'user', email: 'test@test.com' });
+
+    const req = { headers: { authorization: 'Bearer valid_token_123' } };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    try {
+      await requireAuth(req, res, () => { nextCalled = true; });
+      assert.strictEqual(nextCalled, true);
+      assert.strictEqual(req.user.id, 'u1');
+      assert.strictEqual(req.token, 'valid_token_123');
+    } finally {
+      authService.verifyAccessToken = origVerify;
+    }
+  });
+
+  test('no token → 401 MISSING_TOKEN', async () => {
+    const req = { headers: {} };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    await requireAuth(req, res, () => { nextCalled = true; });
+    assert.strictEqual(nextCalled, false);
+    assert.strictEqual(res.statusCode, 401);
+    const body = JSON.parse(res.body);
+    assert.strictEqual(body.code, 'MISSING_TOKEN');
+  });
+
+  test('invalid token → 401 INVALID_TOKEN', async () => {
+    const authService = require('../core/auth-service.cjs');
+    const origVerify = authService.verifyAccessToken;
+    authService.verifyAccessToken = async () => { throw new Error('jwt expired'); };
+
+    const req = { headers: { authorization: 'Bearer expired_token' } };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    try {
+      await requireAuth(req, res, () => { nextCalled = true; });
+      assert.strictEqual(nextCalled, false);
+      assert.strictEqual(res.statusCode, 401);
+    } finally {
+      authService.verifyAccessToken = origVerify;
+    }
+  });
+});
+
+// ─── optionalAuth ────────────────────────────────────────────────────
+
+describe('optionalAuth middleware', () => {
+  test('valid token → attaches user + calls next()', async () => {
+    const authService = require('../core/auth-service.cjs');
+    const origVerify = authService.verifyAccessToken;
+    authService.verifyAccessToken = async () => ({ id: 'u1', role: 'user' });
+
+    const req = { headers: { authorization: 'Bearer valid_token' } };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    try {
+      await optionalAuth(req, res, () => { nextCalled = true; });
+      assert.strictEqual(nextCalled, true);
+      assert.strictEqual(req.user.id, 'u1');
+    } finally {
+      authService.verifyAccessToken = origVerify;
+    }
+  });
+
+  test('no token → calls next() without user', async () => {
+    const req = { headers: {} };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    await optionalAuth(req, res, () => { nextCalled = true; });
+    assert.strictEqual(nextCalled, true);
+    assert.strictEqual(req.user, undefined);
+  });
+
+  test('invalid token → calls next() without user (no error)', async () => {
+    const authService = require('../core/auth-service.cjs');
+    const origVerify = authService.verifyAccessToken;
+    authService.verifyAccessToken = async () => { throw new Error('invalid'); };
+
+    const req = { headers: { authorization: 'Bearer bad_token' } };
+    const res = createMockRes();
+    let nextCalled = false;
+
+    try {
+      await optionalAuth(req, res, () => { nextCalled = true; });
+      assert.strictEqual(nextCalled, true);
+      assert.strictEqual(req.user, undefined);
+    } finally {
+      authService.verifyAccessToken = origVerify;
+    }
   });
 });

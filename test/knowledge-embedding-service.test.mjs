@@ -203,3 +203,37 @@ describe('KnowledgeEmbeddingService singleton', () => {
     assert.ok(Math.abs(result) < 0.0001, 'Orthogonal vectors should return ~0');
   });
 });
+
+// ─── batchEmbed (behavioral) ────────────────────────────────────────────
+
+describe('KnowledgeEmbeddingService batchEmbed', () => {
+  test('skips cached chunks, embeds uncached, returns cache', async () => {
+    const svc = new (embeddingService.constructor)();
+    svc.cache['chunk_cached'] = [0.1, 0.2];
+    svc.getEmbedding = async (id, text) => {
+      if (svc.cache[id]) return svc.cache[id];
+      svc.cache[id] = [0.3, 0.4];
+      return svc.cache[id];
+    };
+    svc._saveCache = () => {};
+
+    const result = await svc.batchEmbed([
+      { id: 'chunk_cached', text: 'Already cached' },
+      { id: 'chunk_new', text: 'Needs embedding' }
+    ]);
+
+    assert.ok(result['chunk_cached']);
+    assert.ok(result['chunk_new']);
+    assert.deepStrictEqual(result['chunk_cached'], [0.1, 0.2]);
+    assert.deepStrictEqual(result['chunk_new'], [0.3, 0.4]);
+  });
+
+  test('returns cache object (same reference)', async () => {
+    const svc = new (embeddingService.constructor)();
+    svc.getEmbedding = async () => null;
+    svc._saveCache = () => {};
+
+    const result = await svc.batchEmbed([]);
+    assert.strictEqual(result, svc.cache);
+  });
+});

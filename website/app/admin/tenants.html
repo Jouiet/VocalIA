@@ -15,17 +15,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
   <script src="/app/components/app-components.js" defer></script>
-  <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
-  </style>
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
 
@@ -53,7 +48,7 @@
 
       <div class="px-6 py-6">
         <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <p class="text-sm text-zinc-500">Total tenants</p>
             <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-total">--</p>
@@ -110,15 +105,6 @@
 
     lucide.createIcons();
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-    }
-
-    // Theme toggle
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
 
     if (!auth.requireRole('admin')) {
       throw new Error('Not authorized');
@@ -155,9 +141,9 @@
     // Initialize table
     const tenantsTable = new DataTable('#tenants-table', {
       columns: [
-        { key: 'name', label: 'Nom', sortable: true },
-        { key: 'email', label: 'Email', sortable: true },
-        { key: 'plan', label: 'Plan', type: 'badge',
+        { key: 'name', label: VocaliaI18n.t('admin.tenants.name'), sortable: true },
+        { key: 'email', label: VocaliaI18n.t('admin.tenants.email'), sortable: true },
+        { key: 'plan', label: VocaliaI18n.t('admin.tenants.plan'), type: 'badge',
           badgeColors: {
             'enterprise': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
             'business': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
@@ -165,7 +151,7 @@
             'trial': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
           }
         },
-        { key: 'status', label: 'Statut', type: 'badge',
+        { key: 'status', label: VocaliaI18n.t('admin.tenants.status'), type: 'badge',
           badgeColors: {
             'active': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
             'trial': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
@@ -173,8 +159,8 @@
             'cancelled': 'bg-zinc-100 text-zinc-800 dark:bg-white/[0.06] dark:text-zinc-300'
           }
         },
-        { key: 'calls_count', label: 'Appels', sortable: true },
-        { key: 'created_at', label: 'Inscrit', type: 'date', sortable: true },
+        { key: 'calls_count', label: VocaliaI18n.t('admin.tenants.calls'), sortable: true },
+        { key: 'created_at', label: VocaliaI18n.t('admin.tenants.registered'), type: 'date', sortable: true },
         { key: 'actions', label: '',
           render: (val, row) => `
             <div class="flex items-center gap-1">
@@ -194,8 +180,8 @@
         }
       ],
       pageSize: 25,
-      searchPlaceholder: 'Rechercher un tenant...',
-      emptyMessage: 'Aucun tenant trouvé',
+      searchPlaceholder: VocaliaI18n.t('admin.tenants.search'),
+      emptyMessage: VocaliaI18n.t('admin.tenants.empty'),
       onRowClick: (row) => showTenant(row.id)
     });
 
@@ -222,7 +208,7 @@
 
       } catch (error) {
         console.error('Failed to load tenants:', error);
-        toast.error('Erreur lors du chargement des tenants');
+        toast.error(VocaliaI18n.t('admin.tenants.load_error'));
       }
     }
 
@@ -283,20 +269,20 @@
               <h4 class="font-medium text-zinc-900 dark:text-white mb-3">Configuration Voix</h4>
               <div class="grid grid-cols-3 gap-4 bg-zinc-50 dark:bg-white/[0.02] rounded-lg p-4">
                 <div>
-                  <p class="text-xs text-zinc-500 mb-1">Langue</p>
+                  <p class="text-xs text-zinc-500 mb-1">${VocaliaI18n.t('admin.tenants.language')}</p>
                   <p class="font-medium text-zinc-900 dark:text-white">${voiceLang.toUpperCase()}</p>
                 </div>
                 <div>
-                  <p class="text-xs text-zinc-500 mb-1">Genre</p>
-                  <p class="font-medium text-zinc-900 dark:text-white capitalize">${voiceGender === 'male' ? 'Masculin' : 'Féminin'}</p>
+                  <p class="text-xs text-zinc-500 mb-1">${VocaliaI18n.t('admin.tenants.gender')}</p>
+                  <p class="font-medium text-zinc-900 dark:text-white capitalize">${voiceGender === 'male' ? VocaliaI18n.t('admin.tenants.male') : VocaliaI18n.t('admin.tenants.female')}</p>
                 </div>
                 <div>
-                  <p class="text-xs text-zinc-500 mb-1">Voix</p>
+                  <p class="text-xs text-zinc-500 mb-1">${VocaliaI18n.t('admin.tenants.voice')}</p>
                   <p class="font-medium text-indigo-600 dark:text-indigo-400">${voiceName}</p>
                 </div>
               </div>
               <button onclick="changeVoice('${id}')" class="mt-3 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
-                Modifier la voix →
+                ${VocaliaI18n.t('admin.tenants.change_voice')} →
               </button>
             </div>
 
@@ -320,7 +306,7 @@
           </div>
         `;
       } catch (error) {
-        content.innerHTML = '<p class="text-red-500">Erreur lors du chargement</p>';
+        content.innerHTML = `<p class="text-red-500">${VocaliaI18n.t('admin.load_error')}</p>`;
       }
 
       lucide.createIcons();
@@ -332,8 +318,8 @@
 
     window.impersonateTenant = async (id) => {
       const confirmed = await modal.confirm(
-        'Vous allez vous connecter en tant que ce tenant. Cette action est enregistrée.',
-        { title: 'Impersonate', confirmText: 'Continuer' }
+        VocaliaI18n.t('admin.tenants.impersonate_confirm'),
+        { title: 'Impersonate', confirmText: VocaliaI18n.t('common.continue') }
       );
 
       if (confirmed) {
@@ -349,57 +335,57 @@
           toast.success(`Impersonation de ${tenant.name || tenant.company}`);
           window.location.href = '/app/client/';
         } else {
-          toast.error('Tenant non trouvé');
+          toast.error(VocaliaI18n.t('admin.tenants.not_found'));
         }
       }
     };
 
     window.changePlan = async (id) => {
-      const plan = await modal.prompt('Nouveau plan (starter, business, enterprise)', {
-        title: 'Changer de plan',
+      const plan = await modal.prompt(VocaliaI18n.t('admin.tenants.new_plan_prompt'), {
+        title: VocaliaI18n.t('admin.tenants.change_plan'),
         defaultValue: 'business'
       });
 
       if (plan && ['starter', 'business', 'enterprise'].includes(plan)) {
         try {
           await api.tenants.update(id, { plan });
-          toast.success('Plan mis à jour');
+          toast.success(VocaliaI18n.t('admin.tenants.plan_updated'));
           loadTenants();
           closeTenantModal();
         } catch (error) {
-          toast.error('Erreur lors de la mise à jour');
+          toast.error(VocaliaI18n.t('admin.tenants.update_error'));
         }
       }
     };
 
     window.changeVoice = async (id) => {
-      const lang = await modal.prompt('Langue (fr, en, es, ar, ary)', {
-        title: 'Modifier la voix',
+      const lang = await modal.prompt(VocaliaI18n.t('admin.tenants.lang_prompt'), {
+        title: VocaliaI18n.t('admin.tenants.change_voice'),
         defaultValue: 'fr'
       });
 
       if (!lang || !['fr', 'en', 'es', 'ar', 'ary'].includes(lang)) {
-        if (lang) toast.error('Langue invalide');
+        if (lang) toast.error(VocaliaI18n.t('admin.tenants.invalid_lang'));
         return;
       }
 
-      const gender = await modal.prompt('Genre (male, female)', {
-        title: 'Modifier la voix',
+      const gender = await modal.prompt(VocaliaI18n.t('admin.tenants.gender_prompt'), {
+        title: VocaliaI18n.t('admin.tenants.change_voice'),
         defaultValue: 'female'
       });
 
       if (!gender || !['male', 'female'].includes(gender)) {
-        if (gender) toast.error('Genre invalide');
+        if (gender) toast.error(VocaliaI18n.t('admin.tenants.invalid_gender'));
         return;
       }
 
       try {
         await api.tenants.update(id, { voice_language: lang, voice_gender: gender });
-        toast.success('Configuration voix mise à jour');
+        toast.success(VocaliaI18n.t('admin.tenants.voice_updated'));
         showTenant(id); // Refresh modal
         loadTenants();
       } catch (error) {
-        toast.error('Erreur lors de la mise à jour');
+        toast.error(VocaliaI18n.t('admin.tenants.update_error'));
       }
     };
 
@@ -411,8 +397,8 @@
         'INSURER', 'RECRUITER', 'HEALER', 'COUNSELOR'
       ];
 
-      const persona = await modal.prompt('Persona (ex: AGENCY, DENTAL, DOCTOR...)', {
-        title: 'Changer de persona',
+      const persona = await modal.prompt(VocaliaI18n.t('admin.tenants.persona_prompt'), {
+        title: VocaliaI18n.t('admin.tenants.change_persona'),
         defaultValue: 'AGENCY'
       });
 
@@ -420,7 +406,7 @@
 
       const upperPersona = persona.toUpperCase();
       if (!personas.includes(upperPersona)) {
-        toast.error('Persona non reconnu. Voir liste: AGENCY, DENTAL, PROPERTY...');
+        toast.error(VocaliaI18n.t('admin.tenants.invalid_persona'));
         return;
       }
 
@@ -430,42 +416,42 @@
         showTenant(id);
         loadTenants();
       } catch (error) {
-        toast.error('Erreur lors de la mise à jour');
+        toast.error(VocaliaI18n.t('admin.tenants.update_error'));
       }
     };
 
     window.suspendTenant = async (id) => {
       const confirmed = await modal.confirm(
-        'Ce tenant perdra l\'accès à la plateforme immédiatement.',
-        { title: 'Suspendre le tenant', confirmText: 'Suspendre', danger: true }
+        VocaliaI18n.t('admin.tenants.suspend_confirm'),
+        { title: VocaliaI18n.t('admin.tenants.suspend_title'), confirmText: VocaliaI18n.t('admin.tenants.suspend_btn'), danger: true }
       );
 
       if (confirmed) {
         try {
           await api.tenants.update(id, { status: 'suspended' });
-          toast.success('Tenant suspendu');
+          toast.success(VocaliaI18n.t('admin.tenants.suspended'));
           loadTenants();
           closeTenantModal();
         } catch (error) {
-          toast.error('Erreur lors de la suspension');
+          toast.error(VocaliaI18n.t('admin.tenants.suspend_error'));
         }
       }
     };
 
     // New tenant button
     document.getElementById('new-tenant-btn').addEventListener('click', async () => {
-      const name = await modal.prompt('Nom du tenant', { title: 'Nouveau tenant' });
+      const name = await modal.prompt(VocaliaI18n.t('admin.tenants.name_prompt'), { title: VocaliaI18n.t('admin.tenants.new_tenant') });
       if (!name) return;
 
-      const email = await modal.prompt('Email de contact', { title: 'Nouveau tenant' });
+      const email = await modal.prompt(VocaliaI18n.t('admin.tenants.email_prompt'), { title: VocaliaI18n.t('admin.tenants.new_tenant') });
       if (!email) return;
 
       try {
         await api.tenants.create({ name, email, plan: 'trial', status: 'trial' });
-        toast.success('Tenant créé');
+        toast.success(VocaliaI18n.t('admin.tenants.created'));
         loadTenants();
       } catch (error) {
-        toast.error('Erreur lors de la création');
+        toast.error(VocaliaI18n.t('admin.tenants.create_error'));
       }
     });
   </script>

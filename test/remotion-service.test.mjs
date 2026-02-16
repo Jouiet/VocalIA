@@ -9,7 +9,8 @@
  * - healthCheck structure
  * - getHITL integration
  *
- * NOTE: Does NOT execute Remotion renders. Tests constants and metadata only.
+ * Tests REAL HITL integration chain (renderComposition → queueForApproval → HITL item).
+ * Also tests installDependencies (real npm install) and startStudio (spawn + kill).
  *
  * Run: node --test test/remotion-service.test.mjs
  */
@@ -273,8 +274,118 @@ describe('RemotionService COMPOSITIONS detail', () => {
   });
 });
 
-// NOTE: Export existence is proven by the behavioral tests (COMPOSITIONS, LANGUAGES,
-// healthCheck, getCompositionId, etc.) — no separate typeof theater needed.
+// ─── renderComposition (HITL path — real integration chain) ─────
+
+describe('RemotionService renderComposition', () => {
+  test('HITL enabled (default) → queues for approval, returns HITL item', async () => {
+    // HITL_ENABLED is true by default — renderComposition goes through queueForApproval
+    const result = await renderComposition('demo');
+    assert.ok(result, 'Should return HITL item');
+    assert.ok(result.id, 'HITL item should have id');
+    assert.strictEqual(result.composition, 'demo');
+    assert.strictEqual(result.language, 'fr'); // default language
+    assert.ok(result.state, 'Should have state');
+  });
+
+  test('unknown composition → throws Error', async () => {
+    await assert.rejects(
+      () => renderComposition('nonexistent_composition'),
+      (err) => err.message.includes('Unknown composition')
+    );
+  });
+
+  test('queues with custom language and props', async () => {
+    const result = await renderComposition('features', {
+      language: 'en',
+      props: { title: 'Custom Title' },
+      requestedBy: 'test-suite'
+    });
+    assert.ok(result.id);
+    assert.strictEqual(result.composition, 'features');
+    assert.strictEqual(result.language, 'en');
+  });
+});
+
+// ─── renderCompositionDirect ────────────────────────────────────
+
+describe('RemotionService renderCompositionDirect', () => {
+  test('unknown composition → throws Error', async () => {
+    await assert.rejects(
+      () => renderCompositionDirect('totally_invalid_key'),
+      (err) => err.message.includes('Unknown composition')
+    );
+  });
+});
+
+// ─── renderAll (HITL path) ──────────────────────────────────────
+
+describe('RemotionService renderAll', () => {
+  test('queues all 13 compositions via HITL', async () => {
+    const results = await renderAll();
+    assert.ok(Array.isArray(results));
+    assert.strictEqual(results.length, Object.keys(COMPOSITIONS).length);
+    // Each result should be a HITL item (not a render result)
+    for (const r of results) {
+      assert.ok(r.id || r.success !== undefined, 'Each result should be HITL item or result');
+    }
+  });
+});
+
+// ─── renderAllLanguages (HITL path) ─────────────────────────────
+
+describe('RemotionService renderAllLanguages', () => {
+  test('queues all compositions × all languages', async () => {
+    const results = await renderAllLanguages();
+    assert.ok(Array.isArray(results));
+    const expected = Object.keys(COMPOSITIONS).length * LANGUAGES.length;
+    assert.strictEqual(results.length, expected); // 13 × 5 = 65
+  });
+});
+
+// ─── generateVideo ──────────────────────────────────────────────
+
+describe('RemotionService generateVideo', () => {
+  test('demo type → builds default props, queues via renderComposition', async () => {
+    const result = await generateVideo('demo');
+    assert.ok(result.id, 'Should return HITL item with id');
+    assert.strictEqual(result.composition, 'demo');
+  });
+
+  test('features type with custom props', async () => {
+    const result = await generateVideo('features', { title: 'Custom' }, 'en');
+    assert.ok(result.id);
+    assert.strictEqual(result.composition, 'features');
+  });
+
+  test('unknown type → throws Error', async () => {
+    await assert.rejects(
+      () => generateVideo('nonexistent'),
+      (err) => err.message.includes('Unknown composition')
+    );
+  });
+});
+
+// ─── installDependencies ────────────────────────────────────────
+
+describe('RemotionService installDependencies', () => {
+  test('returns true when remotion dir exists and npm install succeeds', () => {
+    // Remotion IS installed locally — npm install is a fast no-op
+    const result = installDependencies();
+    assert.strictEqual(result, true);
+  });
+});
+
+// ─── startStudio ────────────────────────────────────────────────
+
+describe('RemotionService startStudio', () => {
+  test('spawns studio process (remotion installed) and can be killed', () => {
+    const child = startStudio();
+    assert.ok(child, 'Should return child process');
+    assert.ok(child.pid, 'Should have PID');
+    // Clean up: kill the spawned process immediately
+    child.kill('SIGTERM');
+  });
+});
 
 // ─── getCompositionId ────────────────────────────────────────────
 

@@ -66,6 +66,38 @@ class StripeService {
     }
 
     /**
+     * Create Checkout Session for tenant billing
+     */
+    async createCheckoutSession(tenantId, priceId, successUrl, cancelUrl) {
+        const customer = await this.getCustomerForTenant(tenantId);
+        return this.gateway.createCheckoutSession({
+            customerId: customer.id,
+            priceId,
+            successUrl,
+            cancelUrl,
+            metadata: { tenantId }
+        });
+    }
+
+    /**
+     * Get active subscription for a tenant
+     */
+    async getSubscriptionForTenant(tenantId) {
+        const customer = await this.getCustomerForTenant(tenantId);
+        const subs = await this.gateway.listSubscriptions(customer.id);
+        return subs.data?.[0] || null;
+    }
+
+    /**
+     * Cancel subscription for a tenant (at period end by default)
+     */
+    async cancelSubscriptionForTenant(tenantId) {
+        const sub = await this.getSubscriptionForTenant(tenantId);
+        if (!sub) throw new Error('No active subscription');
+        return this.gateway.cancelSubscription(sub.id);
+    }
+
+    /**
      * Get Billing Portal Link
      */
     async getPortalLink(tenantId, returnUrl) {

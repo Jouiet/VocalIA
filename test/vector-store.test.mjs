@@ -426,3 +426,68 @@ describe('VectorStore wrapper methods', () => {
     assert.strictEqual(store.has('__vst_c1__', 'p1'), false);
   });
 });
+
+// ─── addBatch ───────────────────────────────────────────────────────────
+
+describe('VectorStore addBatch', () => {
+  test('adds multiple items and returns count', () => {
+    const store = new VectorStore();
+    const DIM = 768;
+    const vec1 = new Array(DIM).fill(0); vec1[0] = 1;
+    const vec2 = new Array(DIM).fill(0); vec2[1] = 1;
+
+    const count = store.addBatch('__vst_batch__', [
+      { id: 'bp1', vector: vec1, metadata: { name: 'Product 1' } },
+      { id: 'bp2', vector: vec2, metadata: { name: 'Product 2' } }
+    ]);
+
+    assert.strictEqual(count, 2);
+    assert.strictEqual(store.has('__vst_batch__', 'bp1'), true);
+    assert.strictEqual(store.has('__vst_batch__', 'bp2'), true);
+  });
+
+  test('items are searchable after addBatch', () => {
+    const store = new VectorStore();
+    const DIM = 768;
+    const vec1 = new Array(DIM).fill(0); vec1[0] = 1;
+    const vec2 = new Array(DIM).fill(0); vec2[1] = 1;
+
+    store.addBatch('__vst_batch_s__', [
+      { id: 'bs1', vector: vec1, metadata: { cat: 'shoes' } },
+      { id: 'bs2', vector: vec2, metadata: { cat: 'bags' } }
+    ]);
+
+    const results = store.search('__vst_batch_s__', vec1, 2);
+    assert.strictEqual(results.length, 2);
+    assert.strictEqual(results[0].id, 'bs1');
+  });
+});
+
+// ─── saveAll ───────────────────────────────────────────────────────────
+
+describe('VectorStore saveAll', () => {
+  test('saves all tenant indices without error', () => {
+    const store = new VectorStore();
+    const DIM = 768;
+    const vec = new Array(DIM).fill(0); vec[0] = 1;
+
+    store.add('__vst_save1__', 'p1', vec);
+    store.add('__vst_save2__', 'p1', vec);
+
+    assert.doesNotThrow(() => store.saveAll());
+  });
+
+  test('saves data that persists across store instances', () => {
+    const store = new VectorStore();
+    const DIM = 768;
+    const vec = new Array(DIM).fill(0); vec[0] = 1;
+
+    store.add('__vst_persist_test__', 'p_saved', vec, { name: 'Persisted' });
+    store.saveAll();
+
+    // Load a fresh store and verify the data is there
+    const store2 = new VectorStore();
+    store2._loadIndex('__vst_persist_test__');
+    assert.strictEqual(store2.has('__vst_persist_test__', 'p_saved'), true);
+  });
+});

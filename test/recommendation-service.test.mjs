@@ -468,3 +468,55 @@ describe('RecommendationService learnFromOrders', () => {
     assert.ok('products' in result);
   });
 });
+
+// ─── RecommendationService getRecommendationAction ──────────────────
+
+describe('RecommendationService getRecommendationAction', () => {
+  test('with recommendations → calls getVoiceRecommendations', async () => {
+    const svc = new RecommendationService();
+    const origQuery = productEmbeddingService.getQueryEmbedding;
+    const origFind = vectorStore.findSimilar;
+    const origSearch = vectorStore.search;
+    const origFilter = vectorStore.queryByFilter;
+
+    productEmbeddingService.getQueryEmbedding = async () => [0.1, 0.2];
+    vectorStore.search = () => [{ id: 'rec1', score: 0.9, metadata: { category: 'shoes' } }];
+    vectorStore.findSimilar = () => [{ id: 'rec1', score: 0.9, metadata: { category: 'shoes' } }];
+    vectorStore.queryByFilter = () => [];
+
+    try {
+      const result = await svc.getRecommendationAction('t1', 'AGENCY', 'chaussures', 'fr');
+      assert.ok(result.text);
+      assert.ok(Array.isArray(result.recommendations));
+    } finally {
+      productEmbeddingService.getQueryEmbedding = origQuery;
+      vectorStore.findSimilar = origFind;
+      vectorStore.search = origSearch;
+      vectorStore.queryByFilter = origFilter;
+    }
+  });
+
+  test('no recommendations → returns _getNoRecommendationsResponse', async () => {
+    const svc = new RecommendationService();
+    const origQuery = productEmbeddingService.getQueryEmbedding;
+    const origFind = vectorStore.findSimilar;
+    const origSearch = vectorStore.search;
+    const origFilter = vectorStore.queryByFilter;
+
+    productEmbeddingService.getQueryEmbedding = async () => null;
+    vectorStore.search = () => [];
+    vectorStore.findSimilar = () => [];
+    vectorStore.queryByFilter = () => [];
+
+    try {
+      const result = await svc.getRecommendationAction('t1', 'AGENCY', 'nothing', 'fr');
+      assert.deepStrictEqual(result.recommendations, []);
+      assert.strictEqual(result.voiceWidget, null);
+    } finally {
+      productEmbeddingService.getQueryEmbedding = origQuery;
+      vectorStore.findSimilar = origFind;
+      vectorStore.search = origSearch;
+      vectorStore.queryByFilter = origFilter;
+    }
+  });
+});

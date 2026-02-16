@@ -236,8 +236,21 @@ describe('T5.3: innerHTML per-occurrence XSS', () => {
           // Skip if no dynamic interpolation
           if (!fullExpr.includes('${')) continue;
 
-          // Check if escapeHtml is used in the expression
+          // Check if escapeHtml is used or only trusted i18n interpolation
           if (fullExpr.includes('escapeHtml') || fullExpr.includes('escapeHTML')) continue;
+
+          // VocaliaI18n.t() returns static locale strings — trusted source, not user input
+          // Check if ALL ${} interpolations are safe (i18n, literal strings, numbers, ternaries with i18n)
+          const interpolations = fullExpr.match(/\$\{[^}]+\}/g) || [];
+          const allSafe = interpolations.every(interp => {
+            const inner = interp.slice(2, -1).trim();
+            // Safe patterns: VocaliaI18n.t(...), literal numbers, ternary with only i18n/literals
+            return /^VocaliaI18n\.t\(/.test(inner) ||
+                   /^['"`]/.test(inner) ||
+                   /^\d+$/.test(inner) ||
+                   (/VocaliaI18n\.t\(/.test(inner) && !/\b(?:item|row|user|data|val|log|tenant)\b/.test(inner));
+          });
+          if (allSafe) continue;
 
           violations.push(`  ${pagePath}:~${i + 1} — innerHTML with unescaped \${}`);
         }

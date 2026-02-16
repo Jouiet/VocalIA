@@ -310,3 +310,73 @@ describe('GrokClient API boundary', () => {
     assert.strictEqual(mod.interactiveChat, undefined);
   });
 });
+
+// ─── generateAuditAnalysis (behavioral) ──────────────────────────────
+
+describe('GrokClient generateAuditAnalysis', () => {
+  test('returns audit analysis text via chatCompletion', async () => {
+    const origFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+      ok: true,
+      json: async () => ({ choices: [{ message: { content: '## Audit\n- Point fort: X\n- Problème: Y' } }] })
+    });
+    try {
+      const result = await generateAuditAnalysis('{"revenue": 5000}');
+      assert.ok(result.includes('Audit') || result.includes('Point'));
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+
+  test('passes dataJson in prompt to chatCompletion', async () => {
+    const origFetch = globalThis.fetch;
+    let capturedBody;
+    globalThis.fetch = async (url, opts) => {
+      capturedBody = JSON.parse(opts.body);
+      return { ok: true, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
+    };
+    try {
+      await generateAuditAnalysis('{"test": true}');
+      const userMsg = capturedBody.messages.find(m => m.role === 'user');
+      assert.ok(userMsg.content.includes('{"test": true}'), 'Should include dataJson in prompt');
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+});
+
+// ─── generateEmailContent (behavioral) ──────────────────────────────
+
+describe('GrokClient generateEmailContent', () => {
+  test('returns email content via chatCompletion', async () => {
+    const origFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+      ok: true,
+      json: async () => ({ choices: [{ message: { content: 'Subject: Bienvenue\nBody: ...' } }] })
+    });
+    try {
+      const result = await generateEmailContent('welcome', 'Widget Pro', '99€');
+      assert.ok(result.includes('Subject') || result.includes('Bienvenue'));
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+
+  test('includes flowType, productName, price in prompt', async () => {
+    const origFetch = globalThis.fetch;
+    let capturedBody;
+    globalThis.fetch = async (url, opts) => {
+      capturedBody = JSON.parse(opts.body);
+      return { ok: true, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) };
+    };
+    try {
+      await generateEmailContent('onboarding', 'Voice Telephony', '199€');
+      const userMsg = capturedBody.messages.find(m => m.role === 'user');
+      assert.ok(userMsg.content.includes('onboarding'));
+      assert.ok(userMsg.content.includes('Voice Telephony'));
+      assert.ok(userMsg.content.includes('199€'));
+    } finally {
+      globalThis.fetch = origFetch;
+    }
+  });
+});

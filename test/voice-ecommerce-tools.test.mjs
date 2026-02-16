@@ -118,6 +118,35 @@ describe('getVoiceFriendlyStatus - edge cases', () => {
   });
 });
 
+// ─── getVoiceFriendlyStatus i18n (B28-B37 — Session 250.213c) ───
+
+describe('getVoiceFriendlyStatus - i18n multilang', () => {
+  test('EN: FULFILLED returns shipped', () => {
+    const msg = getVoiceFriendlyStatus('PAID', 'FULFILLED', 'shopify', 'en');
+    assert.ok(msg.includes('shipped'));
+  });
+
+  test('ES: CANCELLED returns cancelada', () => {
+    const msg = getVoiceFriendlyStatus('CANCELLED', null, 'shopify', 'es');
+    assert.ok(msg.includes('cancelada'));
+  });
+
+  test('AR: PENDING returns في انتظار الدفع', () => {
+    const msg = getVoiceFriendlyStatus('PENDING', null, 'shopify', 'ar');
+    assert.ok(msg.includes('انتظار'));
+  });
+
+  test('ARY: uses ar map (REFUNDED)', () => {
+    const msg = getVoiceFriendlyStatus('REFUNDED', null, 'shopify', 'ary');
+    assert.ok(msg.includes('مستردة'));
+  });
+
+  test('unknown lang falls back to FR', () => {
+    const msg = getVoiceFriendlyStatus('PAID', 'FULFILLED', 'shopify', 'xx');
+    assert.ok(msg.includes('expédiée'));
+  });
+});
+
 // ─── checkOrderStatus without credentials ────────────────────────
 
 describe('VoiceEcommerceTools checkOrderStatus (no creds)', () => {
@@ -129,6 +158,53 @@ describe('VoiceEcommerceTools checkOrderStatus (no creds)', () => {
   test('returns object with found property', async () => {
     const result = await ecomTools.checkOrderStatus('a@b.com', '123', 'no_tenant');
     assert.strictEqual(typeof result.found, 'boolean');
+  });
+});
+
+// ─── checkOrderStatus i18n BEHAVIORAL (B37 — Session 250.213c) ──
+// When no e-commerce credentials configured for a tenant,
+// checkOrderStatus returns { found: false, reason: 'no_credentials', message: m.no_creds }
+// where m.no_creds is the i18n message in the requested language.
+
+describe('checkOrderStatus i18n — behavioral', () => {
+  test('EN: no creds → message contains "tracking"', async () => {
+    const result = await ecomTools.checkOrderStatus('a@b.com', '123', 'no_tenant_xyz', 'en');
+    assert.strictEqual(result.found, false);
+    assert.strictEqual(result.reason, 'no_credentials');
+    assert.ok(result.message.includes('tracking'),
+      `EN message should contain "tracking", got: "${result.message}"`);
+  });
+
+  test('ES: no creds → message contains "seguimiento"', async () => {
+    const result = await ecomTools.checkOrderStatus('a@b.com', '123', 'no_tenant_xyz', 'es');
+    assert.strictEqual(result.found, false);
+    assert.strictEqual(result.reason, 'no_credentials');
+    assert.ok(result.message.includes('seguimiento'),
+      `ES message should contain "seguimiento", got: "${result.message}"`);
+  });
+
+  test('AR: no creds → message contains "تتبع"', async () => {
+    const result = await ecomTools.checkOrderStatus('a@b.com', '123', 'no_tenant_xyz', 'ar');
+    assert.strictEqual(result.found, false);
+    assert.strictEqual(result.reason, 'no_credentials');
+    assert.ok(result.message.includes('تتبع'),
+      `AR message should contain "تتبع", got: "${result.message}"`);
+  });
+
+  test('ARY: no creds → message contains "تتبع" (shares ar map)', async () => {
+    const result = await ecomTools.checkOrderStatus('a@b.com', '123', 'no_tenant_xyz', 'ary');
+    assert.strictEqual(result.found, false);
+    assert.strictEqual(result.reason, 'no_credentials');
+    assert.ok(result.message.includes('تتبع') || result.message.includes('الطلبيات'),
+      `ARY message should contain Darija/AR text, got: "${result.message}"`);
+  });
+
+  test('FR default: no creds → message contains "suivi"', async () => {
+    const result = await ecomTools.checkOrderStatus('a@b.com', '123', 'no_tenant_xyz');
+    assert.strictEqual(result.found, false);
+    assert.strictEqual(result.reason, 'no_credentials');
+    assert.ok(result.message.includes('suivi'),
+      `FR message should contain "suivi", got: "${result.message}"`);
   });
 });
 

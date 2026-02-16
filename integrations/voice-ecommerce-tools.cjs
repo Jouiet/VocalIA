@@ -26,7 +26,7 @@ class VoiceEcommerceTools {
   async getOrderStatus(email, config = {}) {
     // If tenantId provided, use the core implementation
     if (config.tenantId) {
-      const result = await coreTools.checkOrderStatus(email, null, config.tenantId);
+      const result = await coreTools.checkOrderStatus(email, null, config.tenantId, config.lang || 'fr');
       // Adapt response format
       if (result.found) {
         return {

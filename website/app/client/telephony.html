@@ -19,6 +19,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Dark Mode (before CSS to prevent FOUC) -->
+  <script src="/src/lib/dark-mode-init.js"></script>
+
   <!-- Tailwind CSS -->
   <link href="/public/css/style.css" rel="stylesheet">
 
@@ -30,13 +33,9 @@
 
   <!-- i18n -->
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
 
   <style>
-    .sidebar { width: 260px; }
-    @media (max-width: 1024px) {
-      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      .sidebar.open { transform: translateX(0); }
-    }
     /* Stat card accent borders */
     .stat-accent { position: relative; overflow: hidden; }
     .stat-accent::before {
@@ -338,11 +337,6 @@
       throw new Error('Not authenticated');
     }
 
-    // Theme
-    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    }
-
     // State
     let callVolumeChart = null;
     let langChart = null;
@@ -413,12 +407,6 @@
       tick();
     }
 
-    // XSS escape
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
 
     // Format uptime
     function formatUptime(seconds) {
