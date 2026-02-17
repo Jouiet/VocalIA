@@ -576,7 +576,7 @@ class OAuthGateway {
           try {
             const { provisionTenant, generateTenantIdFromCompany } = require('./db-api.cjs');
             const tenantId = generateTenantIdFromCompany(profile.name || profile.email.split('@')[0]);
-            provisionTenant(tenantId, { plan: 'starter', company: profile.name || '', email: profile.email });
+            await provisionTenant(tenantId, { plan: 'starter', company: profile.name || '', email: profile.email });
 
             // Update user with tenant_id
             const { getDB } = require('./GoogleSheetsDB.cjs');

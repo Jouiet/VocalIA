@@ -21,6 +21,7 @@
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
+const fsp = fs.promises;
 const path = require('path');
 const crypto = require('crypto');
 require('dotenv').config(); // Load environment variables
@@ -62,6 +63,14 @@ function checkAdminAuth(req, res) {
     res.end(JSON.stringify({ error: 'Invalid or expired token' }));
     return false;
   }
+}
+
+// Session 250.220: Async file helpers (P2 — sync I/O → async in handlers)
+async function fileExists(p) { try { await fsp.access(p); return true; } catch { return false; } }
+async function atomicWriteFile(filePath, data) {
+  const tmpPath = `${filePath}.tmp`;
+  await fsp.writeFile(tmpPath, data);
+  await fsp.rename(tmpPath, filePath);
 }
 
 // Session 250.210: Error alerting via ntfy.sh
@@ -248,14 +257,14 @@ function loadPersistedMetrics() {
   return null;
 }
 
-function persistMetrics() {
+async function persistMetrics() {
   try {
-    if (!fs.existsSync(METRICS_DIR)) {
-      fs.mkdirSync(METRICS_DIR, { recursive: true });
+    if (!(await fileExists(METRICS_DIR))) {
+      await fsp.mkdir(METRICS_DIR, { recursive: true });
     }
     const tempPath = `${METRICS_FILE}.tmp`;
-    fs.writeFileSync(tempPath, JSON.stringify(dashboardMetrics, null, 2));
-    fs.renameSync(tempPath, METRICS_FILE);
+    await fsp.writeFile(tempPath, JSON.stringify(dashboardMetrics, null, 2));
+    await fsp.rename(tempPath, METRICS_FILE);
   } catch (e) {
     // Silent — metrics persistence is best-effort
   }
@@ -492,46 +501,51 @@ function getAdminMetrics() {
 
 // Session 250.143: Plan pricing + feature gating
 const PLAN_PRICES = { starter: 49, pro: 99, ecommerce: 99, expert_clone: 149, telephony: 199 };
+
+// Session 250.220: Plan name normalization (signup sends "ecom", internal uses "ecommerce")
+const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', expert_clone: 'expert_clone', telephony: 'telephony' };
+
+// Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (identical to db-api.cjs)
 const PLAN_FEATURES = {
   starter: {
-    voice_widget: true, booking: false, bant_crm_push: false,
-    crm_sync: false, calendar_sync: false, voice_telephony: false,
+    voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false,
+    crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false,
+    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
-    ecom_recommendations: false, export: false, webhooks: false,
-    api_access: false, custom_branding: false,
-    voice_cloning: false, expert_dashboard: false, revenue_share: false
+    ecom_recommendations: false, export: false, custom_branding: false,
+    api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false
   },
   pro: {
-    voice_widget: true, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: true, voice_telephony: false,
+    voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
+    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
-    ecom_recommendations: false, export: true, webhooks: true,
-    api_access: true, custom_branding: true,
-    voice_cloning: false, expert_dashboard: false, revenue_share: false
+    ecom_recommendations: false, export: true, custom_branding: true,
+    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
   },
   ecommerce: {
-    voice_widget: true, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: false, voice_telephony: false,
+    voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false,
+    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
-    ecom_recommendations: true, export: true, webhooks: true,
-    api_access: true, custom_branding: true,
-    voice_cloning: false, expert_dashboard: false, revenue_share: false
+    ecom_recommendations: true, export: true, custom_branding: true,
+    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
   },
   expert_clone: {
-    voice_widget: true, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: true, voice_telephony: false,
+    voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
+    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
-    ecom_recommendations: false, export: true, webhooks: true,
-    api_access: true, custom_branding: true,
-    voice_cloning: true, expert_dashboard: true, revenue_share: true
+    ecom_recommendations: false, export: true, custom_branding: true,
+    api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true
   },
   telephony: {
-    voice_widget: true, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: true, voice_telephony: true,
+    voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true,
+    whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
-    ecom_recommendations: true, export: true, webhooks: true,
-    api_access: true, custom_branding: true,
-    voice_cloning: false, expert_dashboard: false, revenue_share: false
+    ecom_recommendations: true, export: true, custom_branding: true,
+    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
   }
 };
 
@@ -544,7 +558,8 @@ const PLAN_FEATURES = {
 function checkFeature(tenantId, feature) {
   const db = getDB();
   const config = db.getTenantConfig(tenantId);
-  const plan = config?.plan || 'starter';
+  const rawPlan = config?.plan || 'starter';
+  const plan = PLAN_NAME_MAP[rawPlan] || rawPlan;
 
   // Explicit feature override in tenant config takes priority
   if (config?.features?.[feature] !== undefined) {
@@ -1258,7 +1273,7 @@ async function callAtlasChat(userMessage, conversationHistory = [], customSystem
 async function getGeminiToken() {
   try {
     const keyFile = path.join(__dirname, '..', PROVIDERS.gemini.keyFile);
-    if (!fs.existsSync(keyFile)) return null;
+    if (!(await fileExists(keyFile))) return null;
 
     const auth = new GoogleAuth({
       keyFile,
@@ -1877,14 +1892,14 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     // Direct catalog fallback for service tenants (bypasses ML pipeline when no recommendations found)
     if (!recommendationAction && tenantId) {
       try {
-        const storeConfig = JSON.parse(fs.readFileSync(
+        const storeConfig = JSON.parse(await fsp.readFile(
           path.join(__dirname, '..', 'data', 'catalogs', 'store-config.json'), 'utf8'));
         const tenantCatalog = storeConfig.tenants?.[tenantId];
         if (tenantCatalog && tenantCatalog.catalogType === 'services' && tenantCatalog.dataPath) {
           const catalogPath = path.isAbsolute(tenantCatalog.dataPath)
             ? tenantCatalog.dataPath
             : path.join(__dirname, '..', 'data', 'catalogs', tenantCatalog.dataPath);
-          const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+          const catalog = JSON.parse(await fsp.readFile(catalogPath, 'utf8'));
           if (catalog.products?.length > 0) {
             recommendationAction = {
               type: 'show_carousel',
@@ -2054,7 +2069,7 @@ function startServer(port = 3004) {
 
       if (validScripts.includes(fileName)) {
         const filePath = path.join(__dirname, '../widget', fileName);
-        if (fs.existsSync(filePath)) {
+        if (await fileExists(filePath)) {
           res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
           fs.createReadStream(filePath).pipe(res);
           return;
@@ -2075,16 +2090,16 @@ function startServer(port = 3004) {
       if (langCode) {
         // Check if we have a specialized widget lang file, otherwise fallback to a stripped version of the main lang file
         const widgetLangPath = path.join(__dirname, '../lang', `widget-${langCode}.json`);
-        if (fs.existsSync(widgetLangPath)) {
+        if (await fileExists(widgetLangPath)) {
           res.writeHead(200, { 'Content-Type': 'application/json' });
           fs.createReadStream(widgetLangPath).pipe(res);
           return;
         } else {
           // SOTA Fallback: Extract UI/Meta from website locales (if exist)
           const mainLangPath = path.join(__dirname, '../website/src/locales', `${langCode}.json`);
-          if (fs.existsSync(mainLangPath)) {
+          if (await fileExists(mainLangPath)) {
             try {
-              const mainLang = JSON.parse(fs.readFileSync(mainLangPath, 'utf8'));
+              const mainLang = JSON.parse(await fsp.readFile(mainLangPath, 'utf8'));
               const widgetLang = {
                 meta: {
                   title: mainLang.meta?.title,
@@ -2129,7 +2144,7 @@ function startServer(port = 3004) {
       ];
 
       for (const logoPath of logoPaths) {
-        if (fs.existsSync(logoPath)) {
+        if (await fileExists(logoPath)) {
           const ext = path.extname(logoPath).toLowerCase();
           const contentType = ext === '.webp' ? 'image/webp' : (ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png');
           res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'public, max-age=86400' });
@@ -2141,7 +2156,7 @@ function startServer(port = 3004) {
 
     if (req.url === '/favicon.ico' && req.method === 'GET') {
       const faviconPath = path.join(__dirname, '../website/public/images/favicon/favicon.ico');
-      if (fs.existsSync(faviconPath)) {
+      if (await fileExists(faviconPath)) {
         res.writeHead(200, { 'Content-Type': 'image/x-icon' });
         fs.createReadStream(faviconPath).pipe(res);
         return;
@@ -2656,7 +2671,7 @@ function startServer(port = 3004) {
           rawBody = '';
         }
       });
-      req.on('end', () => {
+      req.on('end', async () => {
         if (bodyOverflow) {
           res.writeHead(413, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'Payload too large' }));
@@ -2676,13 +2691,13 @@ function startServer(port = 3004) {
           }
           const safeTenant = sanitizeTenantId(tenantId) || 'unknown';
           const feedbackDir = path.join(__dirname, '..', 'data', 'feedback');
-          if (!fs.existsSync(feedbackDir)) fs.mkdirSync(feedbackDir, { recursive: true });
+          if (!(await fileExists(feedbackDir))) await fsp.mkdir(feedbackDir, { recursive: true });
           const file = path.join(feedbackDir, `${safeTenant}.json`);
           let feedbacks = [];
-          try { feedbacks = JSON.parse(fs.readFileSync(file, 'utf8')); } catch {}
+          try { feedbacks = JSON.parse(await fsp.readFile(file, 'utf8')); } catch {}
           if (feedbacks.length >= 10000) feedbacks = feedbacks.slice(-5000);
           feedbacks.push({ sessionId, messageIndex, rating, created_at: new Date().toISOString() });
-          fs.writeFileSync(file, JSON.stringify(feedbacks, null, 2));
+          await atomicWriteFile(file, JSON.stringify(feedbacks, null, 2));
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ success: true }));
         } catch (e) {
@@ -2727,8 +2742,8 @@ function startServer(port = 3004) {
         let tenantConfig = {};
         try {
           const configPath = path.join(__dirname, '../clients', safeTId, 'config.json');
-          if (fs.existsSync(configPath)) {
-            tenantConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+          if (await fileExists(configPath)) {
+            tenantConfig = JSON.parse(await fsp.readFile(configPath, 'utf-8'));
           }
         } catch (e) {
           // Ignore - use defaults
@@ -3013,11 +3028,11 @@ function startServer(port = 3004) {
             try {
               const bookingData = bodyParsed.data.booking_data;
               const bookingsDir = path.join(__dirname, '..', 'data', 'bookings');
-              if (!fs.existsSync(bookingsDir)) fs.mkdirSync(bookingsDir, { recursive: true });
+              if (!(await fileExists(bookingsDir))) await fsp.mkdir(bookingsDir, { recursive: true });
               const safeTenantId = tenantId; // already sanitized at L2699
               const bookingsFile = path.join(bookingsDir, `${safeTenantId}.json`);
               let bookings = [];
-              try { bookings = JSON.parse(fs.readFileSync(bookingsFile, 'utf8')); } catch {}
+              try { bookings = JSON.parse(await fsp.readFile(bookingsFile, 'utf8')); } catch {}
               bookings.push({
                 id: `booking_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
                 name: bookingData.name,
@@ -3032,7 +3047,7 @@ function startServer(port = 3004) {
                 status: 'pending',
                 created_at: new Date().toISOString()
               });
-              fs.writeFileSync(bookingsFile, JSON.stringify(bookings, null, 2));
+              await atomicWriteFile(bookingsFile, JSON.stringify(bookings, null, 2));
               session.booking_completed = true;
               console.log(`✅ [Booking] Saved for tenant ${tenantId}: ${bookingData.name} <${bookingData.email}>`);
               eventBus.publish('booking.created', {

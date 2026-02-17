@@ -432,7 +432,7 @@
       "features": {
         "voice_widget": "Widget vocal",
         "booking": "Réservation en ligne",
-        "bant_crm_push": "Push CRM (BANT)",
+        "bant_crm_push": "Qualification CRM",
         "crm_sync": "Synchronisation CRM",
         "calendar_sync": "Sync calendrier",
         "voice_telephony": "Téléphonie IA",

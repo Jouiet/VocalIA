@@ -37,6 +37,7 @@ const https = require('https');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const fsp = fs.promises;
 const crypto = require('crypto');
 const { WebSocketServer } = require('ws');
 const { getDB } = require('./GoogleSheetsDB.cjs');
@@ -53,6 +54,14 @@ const auditStore = getAuditStore();
 const { getInstance: getConversationStore, TELEPHONY_RETENTION_DAYS } = require('./conversation-store.cjs');
 const conversationStore = getConversationStore();
 
+// Session 250.220: Async fs helpers
+async function fileExists(p) { try { await fsp.access(p); return true; } catch { return false; } }
+async function atomicWriteFile(filePath, data) {
+  const tmpPath = `${filePath}.tmp`;
+  await fsp.writeFile(tmpPath, data);
+  await fsp.rename(tmpPath, filePath);
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Session 250.198: Tenant Provisioning — Plan quotas + config.json generation
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,12 +77,13 @@ const PLAN_QUOTAS = {
   telephony:    { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
 };
 
+// Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (union of db-api + voice-api schemas)
 const PLAN_FEATURES = {
-  starter:      { voice_widget: true, voice_telephony: false, email_automation: false, sms_automation: false, whatsapp: false, crm_sync: false, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  pro:          { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  ecommerce:    { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  expert_clone: { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true },
-  telephony:    { voice_widget: true, voice_telephony: true, email_automation: true, sms_automation: true, whatsapp: true, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false }
+  starter:      { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  pro:          { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  ecommerce:    { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true },
+  telephony:    { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false }
 };
 
 /**
@@ -98,7 +108,7 @@ function generateTenantIdFromCompany(company) {
  * @param {Object} opts - { plan, company, email }
  * @returns {{ success: boolean, configPath: string }}
  */
-function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' } = {}) {
+async function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' } = {}) {
   const safeTId = sanitizeTenantId(tenantId);
   const normalizedPlan = PLAN_NAME_MAP[plan] || 'starter';
   const quotas = PLAN_QUOTAS[normalizedPlan] || PLAN_QUOTAS.starter;
@@ -174,8 +184,8 @@ function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' 
   const configPath = path.join(clientDir, 'config.json');
 
   try {
-    fs.mkdirSync(clientDir, { recursive: true });
-    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    await fsp.mkdir(clientDir, { recursive: true });
+    await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
     console.log(`✅ [Provision] Tenant ${safeTId} provisioned (plan: ${normalizedPlan})`);
     return { success: true, configPath };
   } catch (e) {
@@ -448,7 +458,7 @@ async function handleAuthRequest(req, res, path, method) {
 
       // Session 250.198: Provision tenant directory + config.json
       const normalizedPlan = PLAN_NAME_MAP[plan] || 'starter';
-      const provision = provisionTenant(safeTenantId, { plan: normalizedPlan, company: company || '', email });
+      const provision = await provisionTenant(safeTenantId, { plan: normalizedPlan, company: company || '', email });
 
       if (provision.success) {
         console.log(`✅ [Register] User ${email} + Tenant ${safeTenantId} (plan: ${normalizedPlan})`);
@@ -683,7 +693,7 @@ async function handleAuthRequest(req, res, path, method) {
       sendError(res, error.status, error.message);
     } else {
       errorScience.recordError({ component: 'AuthService', error, severity: 'high' });
-      sendError(res, 500, error.message);
+      sendError(res, 500, 'Internal server error');
     }
     return true;
   }
@@ -724,10 +734,10 @@ const HITL_VOICE_FILE = path.join(__dirname, '..', 'data', 'voice', 'hitl-pendin
 const HITL_HUBSPOT_FILE = path.join(__dirname, '..', 'data', 'hubspot', 'hitl-pending', 'pending-deals.json');
 const HITL_REMOTION_FILE = path.join(__dirname, '..', 'data', 'remotion-hitl', 'pending-queue.json');
 
-function loadFileHITL(filePath, source) {
+async function loadFileHITL(filePath, source) {
   try {
-    if (fs.existsSync(filePath)) {
-      const items = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (await fileExists(filePath)) {
+      const items = JSON.parse(await fsp.readFile(filePath, 'utf8'));
       return (Array.isArray(items) ? items : []).map(item => ({
         ...item,
         _source: source,
@@ -738,17 +748,17 @@ function loadFileHITL(filePath, source) {
   return [];
 }
 
-function saveFileHITL(filePath, items) {
+async function saveFileHITL(filePath, items) {
   const clean = items.map(({ _source, _filePath, ...rest }) => rest);
   const tmpPath = `${filePath}.tmp`;
-  fs.writeFileSync(tmpPath, JSON.stringify(clean, null, 2));
-  fs.renameSync(tmpPath, filePath);
+  await fsp.writeFile(tmpPath, JSON.stringify(clean, null, 2));
+  await fsp.rename(tmpPath, filePath);
 }
 
-function loadAllPendingHITL(db) {
-  const voice = loadFileHITL(HITL_VOICE_FILE, 'voice');
-  const hubspot = loadFileHITL(HITL_HUBSPOT_FILE, 'hubspot');
-  const remotion = loadFileHITL(HITL_REMOTION_FILE, 'remotion');
+async function loadAllPendingHITL(db) {
+  const voice = await loadFileHITL(HITL_VOICE_FILE, 'voice');
+  const hubspot = await loadFileHITL(HITL_HUBSPOT_FILE, 'hubspot');
+  const remotion = await loadFileHITL(HITL_REMOTION_FILE, 'remotion');
 
   // Normalize to common shape
   const normalize = (item, source) => ({
@@ -768,18 +778,18 @@ function loadAllPendingHITL(db) {
   ];
 }
 
-function findAndRemoveFromFileStore(id) {
+async function findAndRemoveFromFileStore(id) {
   const stores = [
     { path: HITL_VOICE_FILE, source: 'voice' },
     { path: HITL_HUBSPOT_FILE, source: 'hubspot' },
     { path: HITL_REMOTION_FILE, source: 'remotion' }
   ];
   for (const store of stores) {
-    const items = loadFileHITL(store.path, store.source);
+    const items = await loadFileHITL(store.path, store.source);
     const index = items.findIndex(i => i.id === id);
     if (index !== -1) {
       const [found] = items.splice(index, 1);
-      saveFileHITL(store.path, items);
+      await saveFileHITL(store.path, items);
       return { item: found, source: store.source };
     }
   }
@@ -797,7 +807,7 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
         dbPending = await db.findAll('hitl_pending');
       } catch (e) { /* sheet may not exist */ }
 
-      const filePending = loadAllPendingHITL(db);
+      const filePending = await loadAllPendingHITL(db);
       const all = [...dbPending, ...filePending];
       all.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
@@ -826,7 +836,7 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
         history = await db.findAll('hitl_history');
       } catch (e) { /* tables might not exist */ }
 
-      const filePending = loadAllPendingHITL(db);
+      const filePending = await loadAllPendingHITL(db);
       const totalPending = dbPending.length + filePending.length;
       const approved = history.filter(h => h.decision === 'approved').length;
       const rejected = history.filter(h => h.decision === 'rejected').length;
@@ -870,7 +880,7 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
         await db.delete('hitl_pending', id);
       } else {
         // Search file-based stores
-        const result = findAndRemoveFromFileStore(id);
+        const result = await findAndRemoveFromFileStore(id);
         if (!result) {
           sendError(res, 404, 'Pending item not found');
           return true;
@@ -928,7 +938,7 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
         });
         await db.delete('hitl_pending', id);
       } else {
-        const result = findAndRemoveFromFileStore(id);
+        const result = await findAndRemoveFromFileStore(id);
         if (!result) {
           sendError(res, 404, 'Pending item not found');
           return true;
@@ -965,7 +975,7 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
     return false;
   } catch (error) {
     console.error(`❌ [HITL] ${method} ${path}:`, error.message);
-    sendError(res, 500, error.message);
+    sendError(res, 500, 'Internal server error');
     return true;
   }
 }
@@ -1014,8 +1024,8 @@ async function handleTelephonyRequest(req, res, path, method, query) {
         failed: Math.round((statusCounts.failed / (statusCounts.total || 1)) * 100)
       };
 
-      // ROI Calculation (multi-market: EU baseline)
-      // Human cost: ~0.50€/min. AI cost: ~0.24€/min. Savings: 0.26€/min.
+      // ROI Calculation (multi-market baseline)
+      // Human cost: ~0.50/min. AI cost: ~0.24/min. Savings: 0.26/min.
       const savings = Math.round(totalDuration * (0.26 / 60));
 
       sendJson(res, 200, {
@@ -1065,7 +1075,7 @@ async function handleTelephonyRequest(req, res, path, method, query) {
     return false;
   } catch (error) {
     console.error(`❌ [Telephony API] Error:`, error.message);
-    sendError(res, 500, error.message);
+    sendError(res, 500, 'Internal server error');
     return true;
   }
 }
@@ -1290,7 +1300,7 @@ async function handleRequest(req, res) {
       sendJson(res, 200, { success: true, subscription: result });
     } catch (e) {
       console.error('[Billing API] Cancel Error:', e);
-      sendError(res, 500, e.message || 'Could not cancel subscription');
+      sendError(res, 500, 'Could not cancel subscription');
     }
     return;
   }
@@ -1314,14 +1324,14 @@ async function handleRequest(req, res) {
     try {
       const nodePath = require('path');
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
-      if (!fs.existsSync(configPath)) {
+      if (!await fileExists(configPath)) {
         sendJson(res, 200, { success: true, tenantId, widget_config: {} });
         return;
       }
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
       sendJson(res, 200, { success: true, tenantId, widget_config: config.widget_config || {} });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1343,11 +1353,11 @@ async function handleRequest(req, res) {
     try {
       const nodePath = require('path');
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
-      if (!fs.existsSync(configPath)) {
+      if (!await fileExists(configPath)) {
         sendJson(res, 200, { success: true, tenantId, actions: { overrides: {}, custom: [] } });
         return;
       }
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
       const actions = config.actions || { overrides: {}, custom: [] };
       // Mask sensitive headers (API keys) in response
       const masked = JSON.parse(JSON.stringify(actions));
@@ -1371,7 +1381,7 @@ async function handleRequest(req, res) {
       }
       sendJson(res, 200, { success: true, tenantId, actions: masked });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1450,12 +1460,12 @@ async function handleRequest(req, res) {
       // Merge with existing config — preserve headers that are masked
       const nodePath = require('path');
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
-      if (!fs.existsSync(configPath)) {
+      if (!await fileExists(configPath)) {
         sendError(res, 404, 'Tenant not found');
         return;
       }
 
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
       const existing = config.actions || { overrides: {}, custom: [] };
 
       // For overrides: if headers contain masked values (••••), keep existing
@@ -1483,7 +1493,7 @@ async function handleRequest(req, res) {
 
       config.actions = { overrides, custom };
       config.updated_at = new Date().toISOString();
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
       try {
         auditStore.log(tenantId, {
@@ -1497,7 +1507,7 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, { success: true, tenantId, actions: config.actions });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1517,14 +1527,14 @@ async function handleRequest(req, res) {
     try {
       const nodePath = require('path');
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
-      if (!fs.existsSync(configPath)) {
+      if (!await fileExists(configPath)) {
         sendJson(res, 200, { success: true, tenantId, origins: [] });
         return;
       }
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
       sendJson(res, 200, { success: true, tenantId, origins: config.allowed_origins || [] });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1568,15 +1578,15 @@ async function handleRequest(req, res) {
 
       const nodePath = require('path');
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
-      if (!fs.existsSync(configPath)) {
+      if (!await fileExists(configPath)) {
         sendError(res, 404, 'Tenant not found');
         return;
       }
 
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
       config.allowed_origins = origins;
       config.updated_at = new Date().toISOString();
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
       try {
         auditStore.log(tenantId, {
@@ -1590,7 +1600,7 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, { success: true, tenantId, origins });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1617,12 +1627,12 @@ async function handleRequest(req, res) {
 
       const nodePath = require('path');
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
-      if (!fs.existsSync(configPath)) {
+      if (!await fileExists(configPath)) {
         sendError(res, 404, 'Tenant not found');
         return;
       }
 
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
       if (!config.widget_config) config.widget_config = {};
 
       // Merge allowed fields only (whitelist approach)
@@ -1640,7 +1650,7 @@ async function handleRequest(req, res) {
       }
 
       config.updated_at = new Date().toISOString();
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
       try {
         auditStore.log(tenantId, {
@@ -1654,7 +1664,7 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, { success: true, tenantId, widget_config: config.widget_config });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1695,7 +1705,8 @@ async function handleRequest(req, res) {
         entries: entries.slice(0, parseInt(query.limit) || 100)
       });
     } catch (e) {
-      sendError(res, 500, `KB error: ${e.message}`);
+      console.error('❌ KB error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1730,21 +1741,20 @@ async function handleRequest(req, res) {
       }
 
       // Load current KB, add entry, save
-      const fs = require('fs');
-      const path = require('path');
-      const kbDir = path.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'knowledge_base');
-      const kbFile = path.join(kbDir, `kb_${language}.json`);
+      const nodePath_kb = require('path');
+      const kbDir = nodePath_kb.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'knowledge_base');
+      const kbFile = nodePath_kb.join(kbDir, `kb_${language}.json`);
 
       // Ensure directory exists
-      if (!fs.existsSync(kbDir)) {
-        fs.mkdirSync(kbDir, { recursive: true });
+      if (!await fileExists(kbDir)) {
+        await fsp.mkdir(kbDir, { recursive: true });
       }
 
       // Load or create KB
       let kb = {};
-      if (fs.existsSync(kbFile)) {
+      if (await fileExists(kbFile)) {
         try {
-          kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+          kb = JSON.parse(await fsp.readFile(kbFile, 'utf8'));
         } catch (e) {
           console.error(`❌ [KB] Corrupted KB file: ${kbFile}`, e.message);
           sendError(res, 500, 'Knowledge base file is corrupted');
@@ -1760,8 +1770,8 @@ async function handleRequest(req, res) {
         last_updated: new Date().toISOString()
       };
 
-      // Save
-      fs.writeFileSync(kbFile, JSON.stringify(kb, null, 2));
+      // Save (atomic)
+      await atomicWriteFile(kbFile, JSON.stringify(kb, null, 2));
 
       // Invalidate cache
       const { getInstance } = require('./tenant-kb-loader.cjs');
@@ -1769,7 +1779,8 @@ async function handleRequest(req, res) {
 
       sendJson(res, 201, { success: true, key, language, message: 'KB entry created/updated' });
     } catch (e) {
-      sendError(res, 500, `KB write error: ${e.message}`);
+      console.error('❌ KB write error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1788,7 +1799,6 @@ async function handleRequest(req, res) {
     const key = kbDeleteMatch[2];
 
     try {
-      const fs = require('fs');
       const pathModule = require('path');
       const language = query.lang || 'fr';
       // D3+D4 fix: sanitize tenantId + validate language
@@ -1799,14 +1809,14 @@ async function handleRequest(req, res) {
       }
       const kbFile = pathModule.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'knowledge_base', `kb_${language}.json`);
 
-      if (!fs.existsSync(kbFile)) {
+      if (!await fileExists(kbFile)) {
         sendError(res, 404, 'KB file not found');
         return;
       }
 
       let kb;
       try {
-        kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+        kb = JSON.parse(await fsp.readFile(kbFile, 'utf8'));
       } catch (e) {
         console.error(`❌ [KB] Corrupted KB file: ${kbFile}`, e.message);
         sendError(res, 500, 'Knowledge base file is corrupted');
@@ -1819,7 +1829,7 @@ async function handleRequest(req, res) {
 
       delete kb[key];
       kb.__meta = { ...kb.__meta, last_updated: new Date().toISOString() };
-      fs.writeFileSync(kbFile, JSON.stringify(kb, null, 2));
+      await atomicWriteFile(kbFile, JSON.stringify(kb, null, 2));
 
       // Invalidate cache
       const { getInstance } = require('./tenant-kb-loader.cjs');
@@ -1827,7 +1837,8 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, { success: true, key, message: 'KB entry deleted' });
     } catch (e) {
-      sendError(res, 500, `KB delete error: ${e.message}`);
+      console.error('❌ KB delete error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1864,7 +1875,8 @@ async function handleRequest(req, res) {
         results
       });
     } catch (e) {
-      sendError(res, 500, `KB search error: ${e.message}`);
+      console.error('❌ KB search error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1882,7 +1894,8 @@ async function handleRequest(req, res) {
       const loader = getInstance();
       sendJson(res, 200, loader.getStats());
     } catch (e) {
-      sendError(res, 500, `KB stats error: ${e.message}`);
+      console.error('❌ KB stats error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1904,7 +1917,8 @@ async function handleRequest(req, res) {
       const status = getInstance().getQuotaStatus(tenantId);
       sendJson(res, 200, status);
     } catch (e) {
-      sendError(res, 500, `KB quota error: ${e.message}`);
+      console.error('❌ KB quota error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1958,7 +1972,8 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, result);
     } catch (e) {
-      sendError(res, 500, `KB import error: ${e.message}`);
+      console.error('❌ KB import error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -1984,7 +1999,8 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, result);
     } catch (e) {
-      sendError(res, 500, `KB rebuild index error: ${e.message}`);
+      console.error('❌ KB rebuild error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2047,7 +2063,8 @@ async function handleRequest(req, res) {
         });
       }
     } catch (e) {
-      sendError(res, 500, `KB crawl error: ${e.message}`);
+      console.error('❌ KB crawl error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2084,20 +2101,22 @@ async function handleRequest(req, res) {
       return;
     }
 
-    const configDir = path.join(__dirname, '..', 'clients', tenantId);
-    const configPath = path.join(configDir, 'config.json');
+    const nodePath_vc = require('path');
+    const configDir = nodePath_vc.join(__dirname, '..', 'clients', tenantId);
+    const configPath = nodePath_vc.join(configDir, 'config.json');
 
     // GET — Get voice clone status
     if (method === 'GET') {
       try {
-        if (!fs.existsSync(configPath)) {
+        if (!await fileExists(configPath)) {
           sendJson(res, 200, { voice_clone: null });
           return;
         }
-        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
         sendJson(res, 200, { voice_clone: config.voice_clone || null });
       } catch (e) {
-        sendError(res, 500, `Voice clone status error: ${e.message}`);
+        console.error('❌ Voice clone status error:', e.message);
+        sendError(res, 500, 'Internal server error');
       }
       return;
     }
@@ -2156,10 +2175,10 @@ async function handleRequest(req, res) {
         );
 
         // Store voice clone info in tenant config
-        if (!fs.existsSync(configDir)) fs.mkdirSync(configDir, { recursive: true });
+        if (!await fileExists(configDir)) await fsp.mkdir(configDir, { recursive: true });
         let config = {};
-        if (fs.existsSync(configPath)) {
-          config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        if (await fileExists(configPath)) {
+          config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
         }
 
         config.voice_clone = {
@@ -2170,7 +2189,7 @@ async function handleRequest(req, res) {
           status: 'active'
         };
 
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+        await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
         // Audit trail
         getAuditStore().log({
@@ -2187,7 +2206,8 @@ async function handleRequest(req, res) {
         });
       } catch (e) {
         console.error(`[Voice Clone] Error creating clone for ${tenantId}:`, e.message);
-        sendError(res, 500, `Voice clone creation failed: ${e.message}`);
+        console.error('❌ Voice clone creation failed:', e.message);
+        sendError(res, 500, 'Internal server error');
       }
       return;
     }
@@ -2195,12 +2215,12 @@ async function handleRequest(req, res) {
     // DELETE — Remove voice clone
     if (method === 'DELETE') {
       try {
-        if (!fs.existsSync(configPath)) {
+        if (!await fileExists(configPath)) {
           sendJson(res, 200, { success: true, message: 'No voice clone to delete' });
           return;
         }
 
-        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
         const voiceClone = config.voice_clone;
 
         if (!voiceClone || !voiceClone.voice_id) {
@@ -2228,7 +2248,7 @@ async function handleRequest(req, res) {
         // Remove from config (set to null, consistent with provisionTenant)
         const deletedVoiceId = voiceClone.voice_id;
         config.voice_clone = null;
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+        await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
         // Audit trail
         getAuditStore().log({
@@ -2241,7 +2261,8 @@ async function handleRequest(req, res) {
 
         sendJson(res, 200, { success: true });
       } catch (e) {
-        sendError(res, 500, `Voice clone deletion failed: ${e.message}`);
+        console.error('❌ Voice clone deletion failed:', e.message);
+        sendError(res, 500, 'Internal server error');
       }
       return;
     }
@@ -2322,7 +2343,8 @@ async function handleRequest(req, res) {
         categories
       });
     } catch (e) {
-      sendError(res, 500, `Catalog error: ${e.message}`);
+      console.error('❌ Catalog error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2379,7 +2401,8 @@ async function handleRequest(req, res) {
       // Broadcast update
       broadcastToTenant(tenantId, 'catalog', 'imported', { imported, catalog_type: catalogType });
     } catch (e) {
-      sendError(res, 500, `Catalog import error: ${e.message}`);
+      console.error('❌ Catalog import error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2412,7 +2435,8 @@ async function handleRequest(req, res) {
       // Broadcast update
       broadcastToTenant(tenantId, 'catalog', 'synced', { catalog_type: catalogType });
     } catch (e) {
-      sendError(res, 500, `Catalog sync error: ${e.message}`);
+      console.error('❌ Catalog sync error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2441,7 +2465,8 @@ async function handleRequest(req, res) {
         market_coverage: '~64%+ (WooCommerce+Shopify+Magento+Square+Lightspeed)'
       });
     } catch (e) {
-      sendError(res, 500, `Error loading connectors: ${e.message}`);
+      console.error('❌ Error loading connectors:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2484,7 +2509,8 @@ async function handleRequest(req, res) {
         }
       });
     } catch (e) {
-      sendError(res, 500, `Error getting connector: ${e.message}`);
+      console.error('❌ Error getting connector:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2544,7 +2570,8 @@ async function handleRequest(req, res) {
       // Broadcast update
       broadcastToTenant(tenantId, 'catalog', 'connector_configured', { type: body.source });
     } catch (e) {
-      sendError(res, 500, `Error configuring connector: ${e.message}`);
+      console.error('❌ Error configuring connector:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2576,7 +2603,8 @@ async function handleRequest(req, res) {
         item
       });
     } catch (e) {
-      sendError(res, 500, `Catalog error: ${e.message}`);
+      console.error('❌ Catalog error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2642,7 +2670,8 @@ async function handleRequest(req, res) {
       // Broadcast update
       broadcastToTenant(tenantId, 'catalog', 'created', { item, catalog_type: catalogType });
     } catch (e) {
-      sendError(res, 500, `Catalog create error: ${e.message}`);
+      console.error('❌ Catalog create error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2687,7 +2716,8 @@ async function handleRequest(req, res) {
       // Broadcast update
       broadcastToTenant(tenantId, 'catalog', 'updated', { item: updatedItem, catalog_type: catalogType });
     } catch (e) {
-      sendError(res, 500, `Catalog update error: ${e.message}`);
+      console.error('❌ Catalog update error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2723,7 +2753,8 @@ async function handleRequest(req, res) {
       // Broadcast update
       broadcastToTenant(tenantId, 'catalog', 'deleted', { itemId, catalog_type: catalogType });
     } catch (e) {
-      sendError(res, 500, `Catalog delete error: ${e.message}`);
+      console.error('❌ Catalog delete error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2753,7 +2784,8 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, { success: true, item });
     } catch (e) {
-      sendError(res, 500, `Catalog detail error: ${e.message}`);
+      console.error('❌ Catalog detail error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2805,7 +2837,8 @@ async function handleRequest(req, res) {
           : 'Aucun produit trouvé.'
       });
     } catch (e) {
-      sendError(res, 500, `Catalog browse error: ${e.message}`);
+      console.error('❌ Catalog browse error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2870,7 +2903,8 @@ async function handleRequest(req, res) {
           : `Aucun résultat pour "${query}".`
       });
     } catch (e) {
-      sendError(res, 500, `Catalog search error: ${e.message}`);
+      console.error('❌ Catalog search error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -2978,8 +3012,8 @@ async function handleRequest(req, res) {
         recommendations: enrichedResults
       });
     } catch (e) {
-      console.error('[AI Recommendations] Error:', e.message);
-      sendError(res, 500, `Recommendations error: ${e.message}`);
+      console.error('❌ [AI Recommendations] Error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3053,7 +3087,8 @@ async function handleRequest(req, res) {
           : 'Je n\'ai pas de recommandations pour le moment.'
       });
     } catch (e) {
-      sendError(res, 500, `Recommendations error: ${e.message}`);
+      console.error('❌ Recommendations error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3124,7 +3159,8 @@ async function handleRequest(req, res) {
         message: 'Lead captured successfully'
       });
     } catch (e) {
-      sendError(res, 500, `Lead capture error: ${e.message}`);
+      console.error('❌ Lead capture error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3188,8 +3224,8 @@ async function handleRequest(req, res) {
         // Load existing from disk
         try {
           const recoveryPath = nodePath_cr.join(__dirname, '..', 'data', 'cart-recovery.json');
-          if (fs.existsSync(recoveryPath)) {
-            global.cartRecoveryQueue = JSON.parse(fs.readFileSync(recoveryPath, 'utf8'));
+          if (await fileExists(recoveryPath)) {
+            global.cartRecoveryQueue = JSON.parse(await fsp.readFile(recoveryPath, 'utf8'));
           }
         } catch {}
       }
@@ -3201,7 +3237,7 @@ async function handleRequest(req, res) {
       // Persist to disk
       try {
         const recoveryPath = nodePath_cr.join(__dirname, '..', 'data', 'cart-recovery.json');
-        fs.writeFileSync(recoveryPath, JSON.stringify(global.cartRecoveryQueue, null, 2));
+        await atomicWriteFile(recoveryPath, JSON.stringify(global.cartRecoveryQueue, null, 2));
       } catch (e) {
         console.warn('[Cart Recovery] File persist failed:', e.message);
       }
@@ -3311,7 +3347,8 @@ async function handleRequest(req, res) {
       });
     } catch (e) {
       console.error('[Cart Recovery] Error:', e.message);
-      sendError(res, 500, `Cart recovery error: ${e.message}`);
+      console.error('❌ Cart recovery error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3328,8 +3365,8 @@ async function handleRequest(req, res) {
       try {
         const nodePath_crg = require('path');
         const recoveryPath = nodePath_crg.join(__dirname, '..', 'data', 'cart-recovery.json');
-        if (fs.existsSync(recoveryPath)) {
-          global.cartRecoveryQueue = JSON.parse(fs.readFileSync(recoveryPath, 'utf8'));
+        if (await fileExists(recoveryPath)) {
+          global.cartRecoveryQueue = JSON.parse(await fsp.readFile(recoveryPath, 'utf8'));
         }
       } catch {}
     }
@@ -3359,18 +3396,18 @@ async function handleRequest(req, res) {
     global.promoCodes = new Map();
     try {
       const promoPath = nodePath_promo.join(__dirname, '..', 'data', 'promo-codes.json');
-      if (fs.existsSync(promoPath)) {
-        const entries = JSON.parse(fs.readFileSync(promoPath, 'utf8'));
+      if (await fileExists(promoPath)) {
+        const entries = JSON.parse(await fsp.readFile(promoPath, 'utf8'));
         for (const [k, v] of entries) { global.promoCodes.set(k, v); }
       }
     } catch {}
   }
 
-  function _persistPromoCodes() {
+  async function _persistPromoCodes() {
     try {
       const promoPath = nodePath_promo.join(__dirname, '..', 'data', 'promo-codes.json');
       const entries = [...global.promoCodes.entries()].slice(-1000);
-      fs.writeFileSync(promoPath, JSON.stringify(entries, null, 2));
+      await atomicWriteFile(promoPath, JSON.stringify(entries, null, 2));
     } catch (e) {
       console.warn('[Promo] File persist failed:', e.message);
     }
@@ -3418,7 +3455,7 @@ async function handleRequest(req, res) {
       };
 
       global.promoCodes.set(code, promoEntry);
-      _persistPromoCodes();
+      await _persistPromoCodes();
       console.log(`✅ [Promo] Generated ${code} for tenant ${tenant_id} (${discount}% off)`);
 
       sendJson(res, 200, {
@@ -3429,7 +3466,8 @@ async function handleRequest(req, res) {
       });
     } catch (e) {
       console.error('❌ [Promo] Generate error:', e.message);
-      sendError(res, 500, `Promo generation error: ${e.message}`);
+      console.error('❌ Promo generation error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3475,7 +3513,7 @@ async function handleRequest(req, res) {
       if (redeem) {
         entry.used = true;
         entry.used_at = new Date().toISOString();
-        _persistPromoCodes();
+        await _persistPromoCodes();
         console.log(`✅ [Promo] Redeemed ${code} for tenant ${tenant_id}`);
       }
 
@@ -3488,7 +3526,8 @@ async function handleRequest(req, res) {
       });
     } catch (e) {
       console.error('❌ [Promo] Validate error:', e.message);
-      sendError(res, 500, `Promo validation error: ${e.message}`);
+      console.error('❌ Promo validation error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3530,7 +3569,8 @@ async function handleRequest(req, res) {
         conversations
       });
     } catch (e) {
-      sendError(res, 500, `Conversation error: ${e.message}`);
+      console.error('❌ Conversation error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3601,7 +3641,8 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, result);
     } catch (e) {
-      sendError(res, 500, `Export error: ${e.message}`);
+      console.error('❌ Export error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3627,7 +3668,8 @@ async function handleRequest(req, res) {
       }
       sendJson(res, 200, conversation);
     } catch (e) {
-      sendError(res, 500, `Conversation error: ${e.message}`);
+      console.error('❌ Conversation error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3641,12 +3683,12 @@ async function handleRequest(req, res) {
     const filePath = require('path').join(__dirname, '../data/exports', filename);
 
     try {
-      if (!require('fs').existsSync(filePath)) {
+      if (!await fileExists(filePath)) {
         sendError(res, 404, 'Export file not found');
         return;
       }
 
-      const fileStream = require('fs').createReadStream(filePath);
+      const fileStream = fs.createReadStream(filePath);
       const ext = filename.split('.').pop().toLowerCase();
       const contentTypes = {
         csv: 'text/csv',
@@ -3661,7 +3703,8 @@ async function handleRequest(req, res) {
       });
       fileStream.pipe(res);
     } catch (e) {
-      sendError(res, 500, `Download error: ${e.message}`);
+      console.error('❌ Download error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3681,7 +3724,7 @@ async function handleRequest(req, res) {
       logs.sort((a, b) => new Date(b.timestamp || b.created_at) - new Date(a.timestamp || a.created_at));
       sendJson(res, 200, { count: logs.length, data: logs.slice(0, 100) });
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3726,7 +3769,7 @@ async function handleRequest(req, res) {
       // B73 fix: config.json is in clients/, not data/catalogs/
       const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
       let tenantConfig = {};
-      try { tenantConfig = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_) { /* no config yet */ }
+      try { tenantConfig = JSON.parse(await fsp.readFile(configPath, 'utf8')); } catch (_) { /* no config yet */ }
 
       const plan = tenantConfig.plan || 'starter';
       const quotas = PLAN_QUOTAS[plan] || PLAN_QUOTAS.starter;
@@ -3735,11 +3778,11 @@ async function handleRequest(req, res) {
       const kbDir = nodePath.join(__dirname, '..', 'clients', tenantId, 'knowledge_base');
       let kbCount = 0;
       try {
-        if (fs.existsSync(kbDir)) {
-          const kbFiles = fs.readdirSync(kbDir).filter(f => f.startsWith('kb_') && f.endsWith('.json'));
+        if (await fileExists(kbDir)) {
+          const kbFiles = (await fsp.readdir(kbDir)).filter(f => f.startsWith('kb_') && f.endsWith('.json'));
           for (const f of kbFiles) {
             try {
-              const entries = JSON.parse(fs.readFileSync(nodePath.join(kbDir, f), 'utf8'));
+              const entries = JSON.parse(await fsp.readFile(nodePath.join(kbDir, f), 'utf8'));
               kbCount += Array.isArray(entries) ? entries.length : Object.keys(entries).filter(k => k !== '__meta').length;
             } catch (_) { /* corrupt file */ }
           }
@@ -3878,7 +3921,7 @@ ${JSON.stringify(contextData)}`;
       const health = await db.health();
       sendJson(res, 200, health);
     } catch (e) {
-      sendError(res, 500, e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3896,7 +3939,8 @@ ${JSON.stringify(contextData)}`;
       const result = await db.syncAllTenantPlans();
       sendJson(res, 200, result);
     } catch (e) {
-      sendError(res, 500, `Quota sync error: ${e.message}`);
+      console.error('❌ Quota sync error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3962,7 +4006,8 @@ ${JSON.stringify(contextData)}`;
         rules
       });
     } catch (e) {
-      sendError(res, 500, `UCP sync error: ${e.message}`);
+      console.error('❌ UCP sync error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -3994,7 +4039,8 @@ ${JSON.stringify(contextData)}`;
 
       sendJson(res, 200, { success: true, interaction });
     } catch (e) {
-      sendError(res, 500, `UCP interaction error: ${e.message}`);
+      console.error('❌ UCP interaction error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -4029,7 +4075,8 @@ ${JSON.stringify(contextData)}`;
 
       sendJson(res, 200, { success: true, event: interaction });
     } catch (e) {
-      sendError(res, 500, `UCP event error: ${e.message}`);
+      console.error('❌ UCP event error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -4071,7 +4118,8 @@ ${JSON.stringify(contextData)}`;
 
       sendJson(res, 200, { data: interactions, count: interactions.length });
     } catch (e) {
-      sendError(res, 500, `Widget interactions error: ${e.message}`);
+      console.error('❌ Widget interactions error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -4105,7 +4153,8 @@ ${JSON.stringify(contextData)}`;
 
       sendJson(res, 200, { data: analyticsProfiles, count: analyticsProfiles.length });
     } catch (e) {
-      sendError(res, 500, `UCP profiles error: ${e.message}`);
+      console.error('❌ UCP profiles error:', e.message);
+      sendError(res, 500, 'Internal server error');
     }
     return;
   }
@@ -4325,7 +4374,7 @@ ${JSON.stringify(contextData)}`;
     }
   } catch (error) {
     console.error(`❌ [DB-API] ${method} ${path}:`, error.message);
-    sendError(res, 500, error.message);
+    sendError(res, 500, 'Internal server error');
   }
 }
 

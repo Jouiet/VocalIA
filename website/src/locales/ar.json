@@ -432,7 +432,7 @@
       "features": {
         "voice_widget": "ويدجت صوتي",
         "booking": "حجز عبر الإنترنت",
-        "bant_crm_push": "إرسال CRM (BANT)",
+        "bant_crm_push": "تأهيل CRM",
         "crm_sync": "مزامنة CRM",
         "calendar_sync": "مزامنة التقويم",
         "voice_telephony": "هاتفية ذكية",

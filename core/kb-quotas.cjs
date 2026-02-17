@@ -14,17 +14,9 @@ const fs = require('fs');
 const path = require('path');
 const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
-// Quota limits per plan (industry-aligned)
-// Optimal balance: enough for useful KB, not excessive to overload system
+// Session 250.220: Quota limits per plan — 5 plans (no free, no enterprise)
+// Matches business model: starter/pro/ecommerce/expert_clone/telephony
 const PLAN_QUOTAS = {
-  free: {
-    max_entries: 50,         // 50 KB entries - basic FAQ
-    max_storage_bytes: 102400,  // 100 KB
-    max_languages: 1,        // Single language
-    max_crawls_month: 5,
-    max_imports_month: 10,
-    max_file_size_bytes: 51200  // 50 KB per file
-  },
   starter: {
     max_entries: 500,
     max_storage_bytes: 1048576,  // 1 MB
@@ -41,6 +33,14 @@ const PLAN_QUOTAS = {
     max_imports_month: 1000,
     max_file_size_bytes: 5242880  // 5 MB per file
   },
+  ecommerce: {
+    max_entries: 5000,
+    max_storage_bytes: 10485760,  // 10 MB — same as pro
+    max_languages: 5,
+    max_crawls_month: 500,
+    max_imports_month: 1000,
+    max_file_size_bytes: 5242880  // 5 MB per file
+  },
   expert_clone: {
     max_entries: 20000,           // 4× pro — experts need deep factual KB
     max_storage_bytes: 20971520,  // 20 MB
@@ -49,30 +49,32 @@ const PLAN_QUOTAS = {
     max_imports_month: 1000,
     max_file_size_bytes: 10485760 // 10 MB per file — large expert documents
   },
-  enterprise: {
-    max_entries: 100000,
-    max_storage_bytes: 104857600,  // 100 MB
+  telephony: {
+    max_entries: 10000,
+    max_storage_bytes: 52428800,  // 50 MB — high volume call centers
     max_languages: 5,
     max_crawls_month: -1,  // Unlimited
     max_imports_month: -1,
-    max_file_size_bytes: 52428800  // 50 MB per file
+    max_file_size_bytes: 10485760  // 10 MB per file
   }
 };
 
 // Default plan
 const DEFAULT_PLAN = 'starter';
 
-// Plan aliases (map external plan names to internal)
+// Session 250.220: Plan aliases (map external plan names to internal)
 const PLAN_ALIASES = {
   growth: 'starter',
   scale: 'pro',
   startup: 'starter',
   business: 'pro',
-  ecommerce: 'pro',
+  ecom: 'ecommerce',
+  ecommerce: 'ecommerce',
   expert_clone: 'expert_clone',
-  telephony: 'enterprise',
-  unlimited: 'enterprise',
-  custom: 'enterprise'
+  telephony: 'telephony',
+  unlimited: 'telephony',
+  custom: 'telephony',
+  enterprise: 'telephony'
 };
 
 // Usage tracking file

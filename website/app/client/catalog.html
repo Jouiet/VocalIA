@@ -868,7 +868,7 @@
               <span class="text-sm text-zinc-600 dark:text-zinc-400">${escapeHtml(item.category || '-')}</span>
             </td>
             <td class="px-4 py-3">
-              <span class="font-medium text-zinc-900 dark:text-white">${item.price} ${item.currency || 'EUR'}</span>
+              <span class="font-medium text-zinc-900 dark:text-white">${item.price} ${item.currency || (VocaliaI18n.getCurrencyInfo ? VocaliaI18n.getCurrencyInfo().currency : 'EUR')}</span>
             </td>
             <td class="px-4 py-3">
               <span class="text-sm text-zinc-600 dark:text-zinc-400">${item.stock !== undefined ? item.stock : '-'}</span>

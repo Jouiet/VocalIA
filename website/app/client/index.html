@@ -800,14 +800,14 @@
       // Call Volume Chart - group by last 7 days
       const callCtx = document.getElementById('callVolumeChart')?.getContext('2d');
       if (callCtx) {
-        const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+        const locale = document.documentElement.lang || 'fr';
         const last7Days = [];
         const callsByDay = [];
 
         for (let i = 6; i >= 0; i--) {
           const d = new Date();
           d.setDate(d.getDate() - i);
-          last7Days.push(days[d.getDay()]);
+          last7Days.push(d.toLocaleDateString(locale, { weekday: 'short' }));
 
           const count = sessions.filter(s => {
             const sd = new Date(s.created_at || s.timestamp);
@@ -987,7 +987,7 @@
       const container = document.getElementById('activity-heatmap');
       if (!container) return;
 
-      const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      const locale = document.documentElement.lang || 'fr';
       const hours = Array.from({ length: 24 }, (_, i) => i);
 
       // Build 7-day grid from last 7 days of data
@@ -1039,7 +1039,7 @@
         dayLabel.className = 'w-10 text-xs text-zinc-500 text-right pr-2';
         const targetDate = new Date(now);
         targetDate.setDate(targetDate.getDate() - (6 - dayIdx));
-        dayLabel.textContent = days[targetDate.getDay() === 0 ? 6 : targetDate.getDay() - 1];
+        dayLabel.textContent = targetDate.toLocaleDateString(locale, { weekday: 'short' });
         row.appendChild(dayLabel);
 
         dayData.forEach((count, hourIdx) => {

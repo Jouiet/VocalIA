@@ -511,14 +511,14 @@
           document.getElementById('cdr-count').textContent = `${cdrsRes.data.length} appels`;
 
           // --- Call Volume Chart (from CDR timestamps) ---
-          const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+          const locale = document.documentElement.lang || 'fr';
           const labels = [];
           const counts = [];
 
           for (let i = 6; i >= 0; i--) {
             const d = new Date();
             d.setDate(d.getDate() - i);
-            labels.push(days[d.getDay()]);
+            labels.push(d.toLocaleDateString(locale, { weekday: 'short' }));
 
             const dayStr = d.toDateString();
             const count = cdrsRes.data.filter(c => {

@@ -240,7 +240,9 @@
         // Plan info
         const plan = tenant?.plan || 'starter';
         const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', expert_clone: 'Expert Clone', telephony: 'Telephony' };
-        const planPrices = { starter: '49€', pro: '99€', ecommerce: '99€', expert_clone: '149€', telephony: '199€' };
+        const currInfo = VocaliaI18n.getCurrencyInfo ? VocaliaI18n.getCurrencyInfo() : { symbol: '€' };
+        const sym = currInfo.symbol || '€';
+        const planPrices = { starter: `49${sym}`, pro: `99${sym}`, ecommerce: `99${sym}`, expert_clone: `149${sym}`, telephony: `199${sym}` };
 
         document.getElementById('plan-name').textContent = planNames[plan] || plan;
         document.getElementById('plan-price').textContent = planPrices[plan] || '--';
@@ -370,46 +372,64 @@
       telephony: 'price_PLACEHOLDER_TELEPHONY'
     };
 
-    // Plan features matrix (mirrors PLAN_FEATURES from voice-api-resilient.cjs)
+    // Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (identical to db-api + voice-api)
     const PLAN_FEATURES = {
       starter: {
-        voice_widget: true, booking: false, bant_crm_push: false,
-        crm_sync: false, calendar_sync: false, voice_telephony: false,
+        voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false,
+        crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false,
+        whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
-        ecom_recommendations: false, export: false, webhooks: false,
-        api_access: false, custom_branding: false
+        ecom_recommendations: false, export: false, custom_branding: false,
+        api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false
       },
       pro: {
-        voice_widget: true, booking: true, bant_crm_push: true,
-        crm_sync: true, calendar_sync: true, voice_telephony: false,
+        voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
+        whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
-        ecom_recommendations: false, export: true, webhooks: true,
-        api_access: true, custom_branding: true
+        ecom_recommendations: false, export: true, custom_branding: true,
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
       },
       ecommerce: {
-        voice_widget: true, booking: true, bant_crm_push: true,
-        crm_sync: true, calendar_sync: false, voice_telephony: false,
+        voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false,
+        whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
-        ecom_recommendations: true, export: true, webhooks: true,
-        api_access: true, custom_branding: true
+        ecom_recommendations: true, export: true, custom_branding: true,
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
+      },
+      expert_clone: {
+        voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
+        whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
+        ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
+        ecom_recommendations: false, export: true, custom_branding: true,
+        api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true
       },
       telephony: {
-        voice_widget: true, booking: true, bant_crm_push: true,
-        crm_sync: true, calendar_sync: true, voice_telephony: true,
+        voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true,
+        whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
-        ecom_recommendations: true, export: true, webhooks: true,
-        api_access: true, custom_branding: true
+        ecom_recommendations: true, export: true, custom_branding: true,
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
       }
     };
 
+    // Session 250.220: All 23 feature labels (D9: bant_crm_push renamed to Qualification CRM)
     const FEATURE_LABELS_FR = {
-      voice_widget: 'Widget vocal', booking: 'Réservation en ligne',
-      bant_crm_push: 'Push CRM (BANT)', crm_sync: 'Synchronisation CRM',
-      calendar_sync: 'Sync calendrier', voice_telephony: 'Téléphonie IA',
+      voice_widget: 'Widget vocal', voice_telephony: 'Téléphonie IA',
+      booking: 'Réservation en ligne', bant_crm_push: 'Qualification CRM',
+      crm_sync: 'Synchronisation CRM', calendar_sync: 'Sync calendrier',
+      email_automation: 'Automatisation email', sms_automation: 'Automatisation SMS',
+      whatsapp: 'WhatsApp', hitl_enabled: 'Validation humaine',
+      conversation_persistence: 'Historique conversations', analytics_dashboard: 'Tableau de bord analytics',
       ecom_cart_recovery: 'Récupération panier', ecom_quiz: 'Quiz produit',
       ecom_gamification: 'Gamification', ecom_recommendations: 'Recommandations IA',
-      export: 'Export données', webhooks: 'Notifications automatiques',
-      api_access: 'Connexions externes', custom_branding: 'Branding personnalisé'
+      export: 'Export données', custom_branding: 'Branding personnalisé',
+      api_access: 'Connexions externes', webhooks: 'Notifications automatiques',
+      voice_cloning: 'Clonage vocal', expert_dashboard: 'Tableau expert',
+      revenue_share: 'Partage de revenus'
     };
     const FEATURE_LABELS = new Proxy(FEATURE_LABELS_FR, {
       get(target, key) {
