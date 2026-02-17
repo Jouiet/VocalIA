@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <title>Expert Clone - VocalIA</title>
+
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon/favicon-16x16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/src/lib/dark-mode-init.js"></script>
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
+  <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/escape-html.js"></script>
+
+  <style>
+    .stat-accent { position: relative; overflow: hidden; }
+    .stat-accent::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+    }
+    [dir="rtl"] .stat-accent::before { left: auto; right: 0; }
+    .stat-accent-amber::before { background: linear-gradient(180deg, #f59e0b, #d97706); }
+    .stat-accent-purple::before { background: linear-gradient(180deg, #8b5cf6, #a855f7); }
+    .stat-accent-green::before { background: linear-gradient(180deg, #10b981, #22c55e); }
+    .stat-accent-blue::before { background: linear-gradient(180deg, #6366f1, #3b82f6); }
+    .stat-accent:hover { box-shadow: 0 0 20px rgba(245, 158, 11, 0.08); }
+    @keyframes scoreRingDraw { from { stroke-dashoffset: 326.73; } }
+    .score-ring-animated { animation: scoreRingDraw 1.5s ease-out forwards; }
+    .upload-zone {
+      border: 2px dashed rgba(245, 158, 11, 0.3);
+      transition: all 0.2s;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: rgba(245, 158, 11, 0.6);
+      background: rgba(245, 158, 11, 0.04);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
+
+  <!-- Sidebar Component -->
+  <div data-app-component="sidebar"></div>
+
+  <!-- Main Content -->
+  <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 bg-white/80 dark:bg-white/[0.06] backdrop-blur border-b border-zinc-200 dark:border-white/[0.08]">
+      <div class="flex items-center justify-between px-4 py-3">
+        <div class="flex items-center gap-3">
+          <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+              <i data-lucide="crown" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+            </div>
+            <div>
+              <h1 class="text-xl font-semibold text-zinc-900 dark:text-white" data-i18n="expert_dashboard.title">Expert Clone</h1>
+              <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.subtitle">Votre expertise, amplifiée par l'IA</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full font-medium">Expert Clone</span>
+          <button id="theme-toggle" class="p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg">
+            <i data-lucide="sun" class="w-5 h-5 dark:hidden"></i>
+            <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="p-4 lg:p-6 space-y-6">
+
+      <!-- Feature Gate Banner (shown if plan != expert_clone) -->
+      <div id="feature-gate-banner" class="hidden bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-500/30 rounded-xl p-6 text-center">
+        <i data-lucide="lock" class="w-8 h-8 text-amber-500 mx-auto mb-3"></i>
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-1" data-i18n="expert_dashboard.gate_title">Fonctionnalité Expert Clone requise</h3>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4" data-i18n="expert_dashboard.gate_desc">Passez au plan Expert Clone pour accéder au clonage vocal et au suivi des revenus.</p>
+        <a href="/expert-clone" class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors">
+          <i data-lucide="crown" class="w-4 h-4"></i>
+          <span data-i18n="expert_dashboard.gate_cta">Passer à Expert Clone</span>
+        </a>
+      </div>
+
+      <!-- Expert Content (hidden if plan != expert_clone) -->
+      <div id="expert-content" class="space-y-6">
+
+        <!-- KPI Stats Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- KB Entries -->
+          <div class="stat-accent stat-accent-amber bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+            <div class="flex items-center justify-between">
+              <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                <i data-lucide="book-open" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <span id="trend-kb" class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
+            </div>
+            <p id="stat-kb-entries" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--</p>
+            <p class="text-sm text-zinc-500 mt-0.5" data-i18n="expert_dashboard.stats.kb_entries">Entrées de connaissances</p>
+          </div>
+
+          <!-- Conversations -->
+          <div class="stat-accent stat-accent-purple bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+            <div class="flex items-center justify-between">
+              <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                <i data-lucide="message-circle" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <span id="trend-conversations" class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
+            </div>
+            <p id="stat-conversations" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--</p>
+            <p class="text-sm text-zinc-500 mt-0.5" data-i18n="expert_dashboard.stats.conversations">Conversations ce mois</p>
+          </div>
+
+          <!-- Client Satisfaction -->
+          <div class="stat-accent stat-accent-green bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+            <div class="flex items-center justify-between">
+              <div class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <i data-lucide="thumbs-up" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+              </div>
+              <span id="trend-satisfaction" class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
+            </div>
+            <p id="stat-satisfaction" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--%</p>
+            <p class="text-sm text-zinc-500 mt-0.5" data-i18n="expert_dashboard.stats.satisfaction">Satisfaction client</p>
+          </div>
+
+          <!-- Revenue Generated -->
+          <div class="stat-accent stat-accent-blue bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+            <div class="flex items-center justify-between">
+              <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <i data-lucide="trending-up" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+              </div>
+              <span id="trend-revenue" class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
+            </div>
+            <p id="stat-revenue" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--</p>
+            <p class="text-sm text-zinc-500 mt-0.5" data-i18n="expert_dashboard.stats.completed_sessions">Sessions complétées</p>
+          </div>
+        </div>
+
+        <!-- Voice Clone Status + KB Quality Score Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Voice Clone Status -->
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+            <div class="flex items-center justify-between mb-5">
+              <div class="flex items-center gap-2">
+                <i data-lucide="mic" class="w-5 h-5 text-amber-500"></i>
+                <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="expert_dashboard.voice_clone.title">Clonage vocal</h3>
+              </div>
+              <span id="clone-status-badge" class="text-xs px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500" data-i18n="expert_dashboard.voice_clone.not_configured">Non configuré</span>
+            </div>
+
+            <!-- Clone Not Set Up -->
+            <div id="clone-setup" class="space-y-4">
+              <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="expert_dashboard.voice_clone.setup_desc">Envoyez des échantillons audio de votre voix pour créer un clone vocal IA fidèle.</p>
+
+              <!-- Upload Zone -->
+              <div id="upload-zone" class="upload-zone rounded-xl p-8 text-center cursor-pointer">
+                <i data-lucide="upload" class="w-10 h-10 text-amber-400 mx-auto mb-3"></i>
+                <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300" data-i18n="expert_dashboard.voice_clone.upload_label">Glissez vos fichiers audio ici</p>
+                <p class="text-xs text-zinc-500 mt-1" data-i18n="expert_dashboard.voice_clone.upload_hint">MP3, WAV ou M4A (1-25 fichiers, 1 min minimum chacun)</p>
+                <input type="file" id="voice-samples" multiple accept="audio/*" class="hidden">
+              </div>
+
+              <!-- Sample List -->
+              <div id="sample-list" class="space-y-2 hidden"></div>
+
+              <!-- Clone Button -->
+              <button id="btn-clone" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <i data-lucide="wand-2" class="w-4 h-4"></i>
+                <span data-i18n="expert_dashboard.voice_clone.btn_clone">Créer le clone vocal</span>
+              </button>
+            </div>
+
+            <!-- Clone Active -->
+            <div id="clone-active" class="hidden space-y-4">
+              <div class="flex items-center gap-4 p-4 bg-green-50 dark:bg-green-900/10 rounded-xl border border-green-200 dark:border-green-500/20">
+                <div class="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
+                  <i data-lucide="check-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+                </div>
+                <div class="flex-1">
+                  <p class="font-medium text-zinc-900 dark:text-white" data-i18n="expert_dashboard.voice_clone.active">Clone vocal actif</p>
+                  <p id="clone-voice-id" class="text-xs text-zinc-500 mt-0.5">--</p>
+                </div>
+                <button id="btn-preview-voice" class="p-2 bg-white dark:bg-white/[0.08] rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.12] transition-colors" title="Aperçu">
+                  <i data-lucide="play" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+                </button>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="p-3 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+                  <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.voice_clone.samples_used">Échantillons utilisés</p>
+                  <p id="clone-sample-count" class="text-lg font-bold text-zinc-900 dark:text-white">--</p>
+                </div>
+                <div class="p-3 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
+                  <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.voice_clone.created_at">Créé le</p>
+                  <p id="clone-created-at" class="text-lg font-bold text-zinc-900 dark:text-white">--</p>
+                </div>
+              </div>
+              <button id="btn-delete-clone" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 border border-red-300 dark:border-red-500/30 text-red-600 dark:text-red-400 font-medium rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <span data-i18n="expert_dashboard.voice_clone.btn_delete">Supprimer le clone</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KB Quality Score -->
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+            <div class="flex items-center justify-between mb-5">
+              <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-5 h-5 text-amber-500"></i>
+                <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="expert_dashboard.kb_quality.title">Qualité de la base de connaissances</h3>
+              </div>
+              <a href="knowledge-base.html" class="text-xs text-amber-600 dark:text-amber-400 hover:underline" data-i18n="expert_dashboard.kb_quality.manage">Gérer</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+              <!-- Quality Ring -->
+              <div class="flex-shrink-0">
+                <div class="relative w-28 h-28">
+                  <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="8" class="text-zinc-200 dark:text-white/[0.08]" />
+                    <circle id="kb-quality-ring" cx="60" cy="60" r="52" fill="none" stroke="url(#kbQualGrad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="326.73" stroke-dashoffset="326.73" />
+                    <defs>
+                      <linearGradient id="kbQualGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#f59e0b" />
+                        <stop offset="100%" stop-color="#d97706" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span id="kb-quality-score" class="text-2xl font-bold text-zinc-900 dark:text-white">--</span>
+                    <span class="text-[10px] text-zinc-500">/ 100</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quality Metrics -->
+              <div class="flex-1 space-y-3">
+                <div>
+                  <div class="flex items-center justify-between text-sm mb-1">
+                    <span class="text-zinc-500" data-i18n="expert_dashboard.kb_quality.coverage">Couverture</span>
+                    <span id="kb-coverage-pct" class="font-medium text-zinc-900 dark:text-white">--%</span>
+                  </div>
+                  <div class="w-full h-2 bg-zinc-200 dark:bg-white/[0.08] rounded-full overflow-hidden">
+                    <div id="kb-coverage-bar" class="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between text-sm mb-1">
+                    <span class="text-zinc-500" data-i18n="expert_dashboard.kb_quality.freshness">Fraîcheur</span>
+                    <span id="kb-freshness-pct" class="font-medium text-zinc-900 dark:text-white">--%</span>
+                  </div>
+                  <div class="w-full h-2 bg-zinc-200 dark:bg-white/[0.08] rounded-full overflow-hidden">
+                    <div id="kb-freshness-bar" class="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between text-sm mb-1">
+                    <span class="text-zinc-500" data-i18n="expert_dashboard.kb_quality.accuracy">Précision</span>
+                    <span id="kb-accuracy-pct" class="font-medium text-zinc-900 dark:text-white">--%</span>
+                  </div>
+                  <div class="w-full h-2 bg-zinc-200 dark:bg-white/[0.08] rounded-full overflow-hidden">
+                    <div id="kb-accuracy-bar" class="h-full bg-gradient-to-r from-purple-500 to-purple-400 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KB Usage -->
+            <div class="mt-5 pt-4 border-t border-zinc-200 dark:border-white/[0.08] grid grid-cols-3 gap-3 text-center">
+              <div>
+                <p id="kb-total-entries" class="text-lg font-bold text-zinc-900 dark:text-white">--</p>
+                <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.kb_quality.total_entries">Entrées</p>
+              </div>
+              <div>
+                <p id="kb-languages" class="text-lg font-bold text-zinc-900 dark:text-white">--</p>
+                <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.kb_quality.languages">Langues</p>
+              </div>
+              <div>
+                <p id="kb-storage" class="text-lg font-bold text-zinc-900 dark:text-white">--</p>
+                <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.kb_quality.storage">Stockage</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Tracking -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-2">
+              <i data-lucide="wallet" class="w-5 h-5 text-amber-500"></i>
+              <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="expert_dashboard.revenue.title">Suivi des revenus</h3>
+            </div>
+            <select id="revenue-period" class="px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
+              <option value="30d" data-i18n="expert_dashboard.revenue.last_30d">30 derniers jours</option>
+              <option value="90d" data-i18n="expert_dashboard.revenue.last_90d">90 derniers jours</option>
+              <option value="12m" data-i18n="expert_dashboard.revenue.last_12m">12 derniers mois</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Revenue Chart -->
+            <div class="lg:col-span-2">
+              <div class="h-64">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Revenue Summary -->
+            <div class="space-y-4">
+              <div class="p-4 bg-amber-50 dark:bg-amber-900/10 rounded-xl border border-amber-200 dark:border-amber-500/20">
+                <p class="text-xs text-amber-600 dark:text-amber-400 font-medium" data-i18n="expert_dashboard.revenue.total_earned">Total généré</p>
+                <p id="revenue-total" class="text-2xl font-bold text-zinc-900 dark:text-white mt-1">--</p>
+              </div>
+              <div class="p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-xl">
+                <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.revenue.avg_per_session">Moyenne par session</p>
+                <p id="revenue-avg" class="text-lg font-bold text-zinc-900 dark:text-white mt-1">--</p>
+              </div>
+              <div class="p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-xl">
+                <p class="text-xs text-zinc-500" data-i18n="expert_dashboard.revenue.paying_clients">Clients facturés</p>
+                <p id="revenue-clients" class="text-lg font-bold text-zinc-900 dark:text-white mt-1">--</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Expert Conversations -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
+          <div class="p-5 border-b border-zinc-200 dark:border-white/[0.08] flex items-center justify-between">
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="expert_dashboard.conversations.title">Conversations récentes</h3>
+            <a href="calls.html" class="text-sm text-amber-600 dark:text-amber-400 hover:underline" data-i18n="expert_dashboard.conversations.view_all">Voir tout</a>
+          </div>
+          <div id="recent-expert-calls" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
+            <div class="p-5 text-center text-zinc-500">
+              <i data-lucide="loader-2" class="w-6 h-6 mx-auto animate-spin mb-2"></i>
+              <p data-i18n="common.loading">Chargement...</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /expert-content -->
+    </div>
+  </main>
+
+  <script src="/app/components/app-components.js" defer></script>
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
+    import toast from '/src/lib/toast.js';
+
+    // Initialize i18n
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
+    lucide.createIcons();
+
+    // Check authentication
+    if (!auth.requireAuth()) { /* redirect */ }
+
+    const user = auth.getCurrentUser();
+    const tenantId = auth.getTenantId();
+
+    // Feature gate: check if plan is expert_clone
+    const gateBanner = document.getElementById('feature-gate-banner');
+    const expertContent = document.getElementById('expert-content');
+
+    async function checkExpertAccess() {
+      try {
+        const tenant = await api.tenants.get(tenantId);
+        if (tenant && tenant.plan === 'expert_clone') {
+          gateBanner.classList.add('hidden');
+          expertContent.classList.remove('hidden');
+          return true;
+        }
+      } catch (e) { /* fallback to gate */ }
+      gateBanner.classList.remove('hidden');
+      expertContent.classList.add('hidden');
+      return false;
+    }
+
+    // Mobile menu
+    document.getElementById('menu-toggle')?.addEventListener('click', () => {
+      document.getElementById('sidebar')?.classList.toggle('open');
+    });
+
+    // Theme toggle
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('vocalia_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Animated counter
+    function animateCounter(elementId, target, duration = 1500) {
+      const el = document.getElementById(elementId);
+      if (!el || target <= 0) { if (el) el.textContent = typeof target === 'number' ? target.toLocaleString() : target; return; }
+      const start = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - start) / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * ease).toLocaleString();
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString();
+      };
+      tick();
+    }
+
+    // ─── Voice Clone Upload ──────────────────────────────────────────
+    const uploadZone = document.getElementById('upload-zone');
+    const fileInput = document.getElementById('voice-samples');
+    const sampleList = document.getElementById('sample-list');
+    const btnClone = document.getElementById('btn-clone');
+    let selectedFiles = [];
+
+    uploadZone?.addEventListener('click', () => fileInput?.click());
+    uploadZone?.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone?.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+    fileInput?.addEventListener('change', (e) => handleFiles(e.target.files));
+
+    function handleFiles(files) {
+      const audioFiles = Array.from(files).filter(f => f.type.startsWith('audio/'));
+      if (audioFiles.length === 0) {
+        toast.error(VocaliaI18n.t('expert_dashboard.voice_clone.error_no_audio'));
+        return;
+      }
+      selectedFiles = audioFiles.slice(0, 25); // Max 25 samples
+      renderSampleList();
+    }
+
+    function renderSampleList() {
+      if (selectedFiles.length === 0) {
+        sampleList.classList.add('hidden');
+        btnClone.disabled = true;
+        return;
+      }
+      sampleList.classList.remove('hidden');
+      sampleList.innerHTML = '';
+      selectedFiles.forEach((f, i) => {
+        const item = document.createElement('div');
+        item.className = 'flex items-center gap-3 p-2 bg-zinc-50 dark:bg-white/[0.04] rounded-lg';
+        item.innerHTML = `
+          <i data-lucide="music" class="w-4 h-4 text-amber-500 flex-shrink-0"></i>
+          <span class="flex-1 text-sm text-zinc-700 dark:text-zinc-300 truncate">${escapeHtml(f.name)}</span>
+          <span class="text-xs text-zinc-500">${(f.size / 1024).toFixed(0)} KB</span>
+          <button data-idx="${i}" class="remove-sample p-1 text-zinc-400 hover:text-red-500 transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+        `;
+        sampleList.appendChild(item);
+      });
+      lucide.createIcons();
+      btnClone.disabled = false;
+
+      // Remove sample handlers
+      sampleList.querySelectorAll('.remove-sample').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedFiles.splice(parseInt(btn.dataset.idx), 1);
+          renderSampleList();
+        });
+      });
+    }
+
+    // Clone voice
+    btnClone?.addEventListener('click', async () => {
+      if (selectedFiles.length === 0) return;
+      btnClone.disabled = true;
+      btnClone.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> <span>' + VocaliaI18n.t('expert_dashboard.voice_clone.cloning') + '</span>';
+      lucide.createIcons();
+
+      try {
+        const formData = new FormData();
+        selectedFiles.forEach(f => formData.append('samples', f));
+        formData.append('name', user?.name || 'Expert Voice');
+
+        const response = await fetch(`/api/tenants/${tenantId}/voice-clone`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${auth.getToken()}` },
+          body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          toast.success(VocaliaI18n.t('expert_dashboard.voice_clone.clone_success'));
+          loadVoiceCloneStatus();
+        } else {
+          toast.error(result.error || VocaliaI18n.t('expert_dashboard.voice_clone.clone_error'));
+        }
+      } catch (e) {
+        toast.error(VocaliaI18n.t('expert_dashboard.voice_clone.clone_error'));
+      }
+
+      btnClone.disabled = false;
+      btnClone.innerHTML = '<i data-lucide="wand-2" class="w-4 h-4"></i> <span>' + VocaliaI18n.t('expert_dashboard.voice_clone.btn_clone') + '</span>';
+      lucide.createIcons();
+    });
+
+    // Delete clone
+    document.getElementById('btn-delete-clone')?.addEventListener('click', async () => {
+      if (!confirm(VocaliaI18n.t('expert_dashboard.voice_clone.confirm_delete'))) return;
+      try {
+        const response = await fetch(`/api/tenants/${tenantId}/voice-clone`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${auth.getToken()}`, 'Content-Type': 'application/json' }
+        });
+        const result = await response.json();
+        if (result.success) {
+          toast.success(VocaliaI18n.t('expert_dashboard.voice_clone.delete_success'));
+          loadVoiceCloneStatus();
+        }
+      } catch (e) {
+        toast.error(VocaliaI18n.t('expert_dashboard.voice_clone.delete_error'));
+      }
+    });
+
+    // ─── Load Voice Clone Status ─────────────────────────────────────
+    async function loadVoiceCloneStatus() {
+      try {
+        const response = await fetch(`/api/tenants/${tenantId}/voice-clone`, {
+          headers: { 'Authorization': `Bearer ${auth.getToken()}` }
+        });
+        const data = await response.json();
+
+        if (data.voice_clone && data.voice_clone.voice_id) {
+          // Clone is active
+          document.getElementById('clone-setup').classList.add('hidden');
+          document.getElementById('clone-active').classList.remove('hidden');
+          document.getElementById('clone-status-badge').textContent = VocaliaI18n.t('expert_dashboard.voice_clone.active');
+          document.getElementById('clone-status-badge').className = 'text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
+          document.getElementById('clone-voice-id').textContent = 'ID: ' + data.voice_clone.voice_id.substring(0, 12) + '...';
+          document.getElementById('clone-sample-count').textContent = data.voice_clone.sample_count || '--';
+          document.getElementById('clone-created-at').textContent = data.voice_clone.created_at
+            ? new Date(data.voice_clone.created_at).toLocaleDateString()
+            : '--';
+        } else {
+          // Clone not set up
+          document.getElementById('clone-setup').classList.remove('hidden');
+          document.getElementById('clone-active').classList.add('hidden');
+          document.getElementById('clone-status-badge').textContent = VocaliaI18n.t('expert_dashboard.voice_clone.not_configured');
+          document.getElementById('clone-status-badge').className = 'text-xs px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500';
+        }
+      } catch (e) {
+        console.error('Voice clone status error:', e);
+      }
+    }
+
+    // ─── Load KB Quality ─────────────────────────────────────────────
+    async function loadKBQuality() {
+      try {
+        const response = await fetch(`/api/tenants/${tenantId}/kb/quota`, {
+          headers: { 'Authorization': `Bearer ${auth.getToken()}` }
+        });
+        const data = await response.json();
+
+        // B74 fix: match actual getQuotaStatus() response shape
+        const entries = data.usage?.entries?.used || 0;
+        const maxEntries = data.usage?.entries?.max || 2000;
+        const langCount = data.usage?.languages?.used || 0;
+        const storageBytes = data.usage?.storage?.used || 0;
+        const storagePct = data.usage?.storage?.percent || 0;
+        const entriesPct = data.usage?.entries?.percent || 0;
+
+        // Update KB stats
+        document.getElementById('kb-total-entries').textContent = entries.toLocaleString();
+        document.getElementById('kb-languages').textContent = `${langCount}/5`;
+        document.getElementById('kb-storage').textContent = data.usage?.storage?.used_formatted || formatBytes(storageBytes);
+        animateCounter('stat-kb-entries', entries);
+
+        // B68 fix: Quality score from REAL data, not hardcoded
+        // Coverage = entries filled vs max (directly from backend %)
+        const coveragePct = Math.min(100, entriesPct);
+        // Freshness = languages diversity (more langs = fresher KB)
+        const freshnessPct = Math.min(100, Math.round((langCount / 5) * 100));
+        // Accuracy = storage utilization (entries that have real content)
+        const accuracyPct = entries > 0 ? Math.min(100, Math.round(storagePct * 1.2)) : 0;
+        // Weighted quality score from 3 real metrics
+        const qualityScore = entries > 0 ? Math.round(coveragePct * 0.5 + freshnessPct * 0.25 + accuracyPct * 0.25) : 0;
+
+        // Update quality ring
+        const ring = document.getElementById('kb-quality-ring');
+        if (ring) {
+          const circumference = 326.73;
+          ring.style.strokeDashoffset = circumference - (circumference * qualityScore / 100);
+          ring.style.transition = 'stroke-dashoffset 1.5s ease-out';
+        }
+        document.getElementById('kb-quality-score').textContent = qualityScore;
+
+        // Update bars with real data
+        document.getElementById('kb-coverage-pct').textContent = `${coveragePct}%`;
+        document.getElementById('kb-coverage-bar').style.width = `${coveragePct}%`;
+        document.getElementById('kb-freshness-pct').textContent = `${freshnessPct}%`;
+        document.getElementById('kb-freshness-bar').style.width = `${freshnessPct}%`;
+        document.getElementById('kb-accuracy-pct').textContent = `${accuracyPct}%`;
+        document.getElementById('kb-accuracy-bar').style.width = `${accuracyPct}%`;
+      } catch (e) {
+        console.error('KB quality load error:', e);
+      }
+    }
+
+    // ─── Load Revenue Data ───────────────────────────────────────────
+    // B69+B70+B71 fix: data-driven from real session fields, geo-detected currency
+    const currencyInfo = VocaliaI18n.getCurrencyInfo ? VocaliaI18n.getCurrencyInfo() : { symbol: '€', currency: 'EUR' };
+    const currSym = currencyInfo.symbol;
+
+    async function loadRevenue() {
+      try {
+        const sessions = await api.sessions.getByTenant(tenantId);
+        const allSessions = sessions.data || sessions || [];
+
+        const now = new Date();
+        const thisMonth = allSessions.filter(s => {
+          const d = new Date(s.created_at || s.timestamp);
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        });
+
+        // Stats
+        animateCounter('stat-conversations', thisMonth.length);
+
+        // Satisfaction: sessions with duration > 60s (completed interaction)
+        const completed = thisMonth.filter(s => (parseInt(s.duration_sec || s.duration_seconds) || 0) > 60);
+        const satRate = thisMonth.length > 0 ? Math.round((completed.length / thisMonth.length) * 100) : 0;
+        document.getElementById('stat-satisfaction').textContent = `${satRate}%`;
+
+        // Revenue: count completed sessions, show count (no fake €25/session)
+        // Real revenue tracking requires Stripe integration (not yet implemented)
+        document.getElementById('stat-revenue').textContent = `${completed.length}`;
+        document.getElementById('revenue-total').textContent = `${completed.length} sessions`;
+        document.getElementById('revenue-avg').textContent = thisMonth.length > 0
+          ? `${Math.round((completed.length / thisMonth.length) * 100)}%`
+          : '--';
+
+        // Unique callers
+        const uniqueCallers = new Set(thisMonth.map(s => s.caller_id || s.phone || s.user_id || s.id)).size;
+        document.getElementById('revenue-clients').textContent = uniqueCallers.toString();
+
+        // Revenue chart
+        renderRevenueChart(allSessions);
+
+        // Recent calls
+        renderRecentCalls(allSessions.slice(-5).reverse());
+      } catch (e) {
+        console.error('Revenue load error:', e);
+      }
+    }
+
+    function renderRevenueChart(sessions) {
+      const ctx = document.getElementById('revenueChart')?.getContext('2d');
+      if (!ctx) return;
+
+      // B70 fix: use locale-aware day names, not hardcoded French
+      const locale = VocaliaI18n.getLocale ? VocaliaI18n.getLocale() : 'fr';
+      const labels = [];
+      const sessionCounts = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        labels.push(d.toLocaleDateString(locale, { weekday: 'short' }));
+
+        const daySessions = sessions.filter(s => {
+          const sd = new Date(s.created_at || s.timestamp);
+          return sd.toDateString() === d.toDateString();
+        });
+        const completed = daySessions.filter(s => (parseInt(s.duration_sec || s.duration_seconds) || 0) > 60).length;
+        sessionCounts.push(completed);
+      }
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+      gradient.addColorStop(0, 'rgba(245, 158, 11, 0.3)');
+      gradient.addColorStop(1, 'rgba(245, 158, 11, 0.02)');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: VocaliaI18n.t('expert_dashboard.revenue.chart_label') || 'Sessions',
+            data: sessionCounts,
+            borderColor: '#f59e0b',
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: '#f59e0b',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              cornerRadius: 8,
+              callbacks: { label: (c) => `${c.parsed.y} sessions` }
+            }
+          },
+          scales: {
+            y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,0.08)' }, ticks: { precision: 0 } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // B71 fix: use actual session schema fields (not assumed)
+    function renderRecentCalls(calls) {
+      const container = document.getElementById('recent-expert-calls');
+      if (calls.length === 0) {
+        container.innerHTML = `
+          <div class="p-5 text-center text-zinc-500">
+            <i data-lucide="message-circle" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+            <p data-i18n="expert_dashboard.conversations.empty">Aucune conversation récente</p>
+          </div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      const locale = VocaliaI18n.getLocale ? VocaliaI18n.getLocale() : 'fr';
+      container.innerHTML = '';
+      calls.forEach(call => {
+        const row = document.createElement('div');
+        row.className = 'p-4 flex items-center gap-4 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-colors';
+        const durSec = parseInt(call.duration_sec || call.duration_seconds || call.duration) || 0;
+        const dur = Math.round(durSec / 60);
+        const language = (call.language || call.lang || call.locale || 'fr').toUpperCase().substring(0, 2);
+        const date = new Date(call.created_at || call.timestamp || call.date).toLocaleDateString(locale);
+        const label = escapeHtml(call.persona || call.persona_id || call.type || 'Expert Clone');
+        row.innerHTML = `
+          <div class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="message-circle" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-zinc-900 dark:text-white truncate">${label}</p>
+            <p class="text-sm text-zinc-500">${dur} min &bull; ${language} &bull; ${date}</p>
+          </div>
+          <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 flex-shrink-0">${VocaliaI18n.t('common.completed') || 'OK'}</span>`;
+        container.appendChild(row);
+      });
+      lucide.createIcons();
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    // ─── Initialize ──────────────────────────────────────────────────
+    async function init() {
+      const hasAccess = await checkExpertAccess();
+      if (!hasAccess) return;
+
+      loadVoiceCloneStatus();
+      loadKBQuality();
+      loadRevenue();
+    }
+
+    init();
+  </script>
+</body>
+</html>

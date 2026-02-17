@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-02-16T21:30:59.335Z",
+  "updated": "2026-02-17T10:45:44.092Z",
   "tenants": {
     "restaurant_test": {
       "source": "custom",
@@ -3622,6 +3622,69 @@
     },
     "tenant_b633ccd4": {
       "name": "tenant_b633ccd4",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_355a1d2a": {
+      "name": "tenant_355a1d2a",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_b071a7de": {
+      "name": "tenant_b071a7de",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_5225d509": {
+      "name": "tenant_5225d509",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_66f57d69": {
+      "name": "tenant_66f57d69",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_c4a4c3af": {
+      "name": "tenant_c4a4c3af",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_4c915164": {
+      "name": "tenant_4c915164",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_101a5629": {
+      "name": "tenant_101a5629",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_7c4c0e7c": {
+      "name": "tenant_7c4c0e7c",
+      "connector": {
+        "type": "custom",
+        "catalogType": "products"
+      }
+    },
+    "tenant_d1d53cd6": {
+      "name": "tenant_d1d53cd6",
       "connector": {
         "type": "custom",
         "catalogType": "products"

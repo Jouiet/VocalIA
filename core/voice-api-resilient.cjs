@@ -491,35 +491,47 @@ function getAdminMetrics() {
 }
 
 // Session 250.143: Plan pricing + feature gating
-const PLAN_PRICES = { starter: 49, pro: 99, ecommerce: 99, telephony: 199 };
+const PLAN_PRICES = { starter: 49, pro: 99, ecommerce: 99, expert_clone: 149, telephony: 199 };
 const PLAN_FEATURES = {
   starter: {
     voice_widget: true, booking: false, bant_crm_push: false,
     crm_sync: false, calendar_sync: false, voice_telephony: false,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: false, webhooks: false,
-    api_access: false, custom_branding: false
+    api_access: false, custom_branding: false,
+    voice_cloning: false, expert_dashboard: false, revenue_share: false
   },
   pro: {
     voice_widget: true, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: true, voice_telephony: false,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: true, webhooks: true,
-    api_access: true, custom_branding: true
+    api_access: true, custom_branding: true,
+    voice_cloning: false, expert_dashboard: false, revenue_share: false
   },
   ecommerce: {
     voice_widget: true, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: false, voice_telephony: false,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
     ecom_recommendations: true, export: true, webhooks: true,
-    api_access: true, custom_branding: true
+    api_access: true, custom_branding: true,
+    voice_cloning: false, expert_dashboard: false, revenue_share: false
+  },
+  expert_clone: {
+    voice_widget: true, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: true, voice_telephony: false,
+    ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
+    ecom_recommendations: false, export: true, webhooks: true,
+    api_access: true, custom_branding: true,
+    voice_cloning: true, expert_dashboard: true, revenue_share: true
   },
   telephony: {
     voice_widget: true, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: true, voice_telephony: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
     ecom_recommendations: true, export: true, webhooks: true,
-    api_access: true, custom_branding: true
+    api_access: true, custom_branding: true,
+    voice_cloning: false, expert_dashboard: false, revenue_share: false
   }
 };
 
@@ -545,7 +557,7 @@ function checkFeature(tenantId, feature) {
 
   if (!allowed) {
     // Suggest cheapest plan that has this feature
-    const upgradeOrder = ['starter', 'pro', 'ecommerce', 'telephony'];
+    const upgradeOrder = ['starter', 'pro', 'ecommerce', 'expert_clone', 'telephony'];
     const upgrade_to = upgradeOrder.find(p => PLAN_FEATURES[p]?.[feature]) || 'pro';
     return { allowed: false, plan, upgrade_to };
   }
@@ -3448,23 +3460,35 @@ function startServer(port = 3004) {
             return;
           }
 
-          // Determine voice ID based on language and gender
+          // B65+B72 fix: Check if tenant has a cloned voice (non-blocking read)
           let voiceId;
-          if (language === 'ary' || language === 'ar-MA') {
-            // Darija - use Moroccan voices
-            voiceId = gender === 'male' ? VOICE_IDS.ary_male : VOICE_IDS.ary;
-          } else if (language === 'ar') {
-            // MSA Arabic
-            voiceId = gender === 'male' ? VOICE_IDS.ar_male : VOICE_IDS.ar;
-          } else if (language === 'fr') {
-            voiceId = gender === 'male' ? VOICE_IDS.fr_male : VOICE_IDS.fr;
-          } else if (language === 'en') {
-            voiceId = gender === 'male' ? VOICE_IDS.en_male : VOICE_IDS.en;
-          } else if (language === 'es') {
-            voiceId = gender === 'male' ? VOICE_IDS.es_male : VOICE_IDS.es;
-          } else {
-            // Default to French
-            voiceId = VOICE_IDS.fr;
+          if (tenantId) {
+            try {
+              const configPath = require('path').join(__dirname, '..', 'clients', tenantId.replace(/[^a-zA-Z0-9_-]/g, ''), 'config.json');
+              const cfgData = await require('fs').promises.readFile(configPath, 'utf8');
+              const cfg = JSON.parse(cfgData);
+              if (cfg.voice_clone && cfg.voice_clone.voice_id && cfg.voice_clone.status === 'active') {
+                voiceId = cfg.voice_clone.voice_id;
+                console.log(`[TTS] Using cloned voice ${voiceId} for tenant ${tenantId}`);
+              }
+            } catch (_) { /* no config or no clone — fall through to defaults */ }
+          }
+
+          // Default voice selection by language and gender
+          if (!voiceId) {
+            if (language === 'ary' || language === 'ar-MA') {
+              voiceId = gender === 'male' ? VOICE_IDS.ary_male : VOICE_IDS.ary;
+            } else if (language === 'ar') {
+              voiceId = gender === 'male' ? VOICE_IDS.ar_male : VOICE_IDS.ar;
+            } else if (language === 'fr') {
+              voiceId = gender === 'male' ? VOICE_IDS.fr_male : VOICE_IDS.fr;
+            } else if (language === 'en') {
+              voiceId = gender === 'male' ? VOICE_IDS.en_male : VOICE_IDS.en;
+            } else if (language === 'es') {
+              voiceId = gender === 'male' ? VOICE_IDS.es_male : VOICE_IDS.es;
+            } else {
+              voiceId = VOICE_IDS.fr;
+            }
           }
 
           console.log(`[TTS] Generating audio for ${language} (voice: ${voiceId}): "${text.substring(0, 50)}..."`);

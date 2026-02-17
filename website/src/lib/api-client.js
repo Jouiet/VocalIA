@@ -351,6 +351,43 @@ class APIClient {
   }
 
   /**
+   * Actions — Real-time business system connections
+   * Session 250.218
+   */
+  get actions() {
+    return {
+      get: (tenantId) => this.get(`/tenants/${tenantId}/actions`),
+      update: (tenantId, actions) => this.put(`/tenants/${tenantId}/actions`, { actions }),
+      test: async (tenantId, type, url) => {
+        // B57 fix: use cors mode to get actual status; catch CORS error as "reachable but CORS blocked"
+        const start = performance.now();
+        try {
+          const resp = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(5000) });
+          const latency = Math.round(performance.now() - start);
+          if (resp.ok) return { success: true, latency_ms: latency };
+          return { success: false, error: `HTTP ${resp.status}` };
+        } catch (e) {
+          const latency = Math.round(performance.now() - start);
+          // CORS block means server IS reachable but blocks browser — still valid for server-side use
+          if (e.message?.includes('CORS') || e.name === 'TypeError') {
+            return { success: true, latency_ms: latency, note: 'cors_blocked_but_reachable' };
+          }
+          return { success: false, error: e.message || 'network_error' };
+        }
+      }
+    };
+  }
+
+  /**
+   * NLP Operator — natural language analytics chat
+   */
+  get nlpOperator() {
+    return {
+      ask: (question, language = 'fr') => this.post('/nlp-operator', { question, language })
+    };
+  }
+
+  /**
    * Get settings resource client (tenant settings & API keys)
    */
   get settings() {

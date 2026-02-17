@@ -41,6 +41,14 @@ const PLAN_QUOTAS = {
     max_imports_month: 1000,
     max_file_size_bytes: 5242880  // 5 MB per file
   },
+  expert_clone: {
+    max_entries: 20000,           // 4× pro — experts need deep factual KB
+    max_storage_bytes: 20971520,  // 20 MB
+    max_languages: 5,
+    max_crawls_month: 500,
+    max_imports_month: 1000,
+    max_file_size_bytes: 10485760 // 10 MB per file — large expert documents
+  },
   enterprise: {
     max_entries: 100000,
     max_storage_bytes: 104857600,  // 100 MB
@@ -61,6 +69,7 @@ const PLAN_ALIASES = {
   startup: 'starter',
   business: 'pro',
   ecommerce: 'pro',
+  expert_clone: 'expert_clone',
   telephony: 'enterprise',
   unlimited: 'enterprise',
   custom: 'enterprise'

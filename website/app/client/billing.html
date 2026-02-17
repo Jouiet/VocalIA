@@ -239,8 +239,8 @@
 
         // Plan info
         const plan = tenant?.plan || 'starter';
-        const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', telephony: 'Telephony' };
-        const planPrices = { starter: '49€', pro: '99€', ecommerce: '99€', telephony: '199€' };
+        const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', expert_clone: 'Expert Clone', telephony: 'Telephony' };
+        const planPrices = { starter: '49€', pro: '99€', ecommerce: '99€', expert_clone: '149€', telephony: '199€' };
 
         document.getElementById('plan-name').textContent = planNames[plan] || plan;
         document.getElementById('plan-price').textContent = planPrices[plan] || '--';

@@ -1074,7 +1074,7 @@
     function renderROISummary(sessions) {
       const totalMinutes = sessions.reduce((s, x) => s + (parseInt(x.duration_sec) || 0), 0) / 60;
       const costPerMin = 0.24; // EUR per minute (telephony rate)
-      const planPrices = { starter: 49, pro: 99, ecommerce: 99, telephony: 199 };
+      const planPrices = { starter: 49, pro: 99, ecommerce: 99, expert_clone: 149, telephony: 199 };
       const tenantPlan = user?.plan || 'starter';
       const monthlyCost = (planPrices[tenantPlan] || 49) + (totalMinutes * costPerMin);
 
@@ -1096,7 +1096,7 @@
         const tenant = await api.tenants.get(tenantId);
         if (!tenant) return;
 
-        const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', telephony: 'Telephony' };
+        const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', expert_clone: 'Expert Clone', telephony: 'Telephony' };
         const planBadge = document.getElementById('quota-plan-badge');
         if (planBadge) planBadge.textContent = planNames[tenant.plan] || tenant.plan || 'Starter';
 

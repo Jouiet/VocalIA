@@ -153,7 +153,7 @@
           data-i18n="signup_page.select_plan">
           1. Choisissez votre plan
         </h2>
-        <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
           <!-- Starter Plan -->
           <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="starter"
             data-action="selectPlan" data-params="starter">
@@ -271,6 +271,44 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
                 <span data-i18n="signup_page.ecom_f3">Sync catalogue temps réel</span>
+              </li>
+            </ul>
+          </div>
+          <!-- Expert Clone Plan -->
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="expert_clone"
+            data-action="selectPlan" data-params="expert_clone">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-white">Expert Clone</h3>
+                <p class="text-2xl font-bold text-white"><span id="expert-price">149</span><span
+                    class="text-sm font-normal text-zinc-400" id="expert-currency">€/mois</span></p>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
+                <svg class="w-3 h-3 text-amber-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <ul class="text-sm text-zinc-400 space-y-1">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span data-i18n="signup_page.expert_f1">Clonage vocal</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span data-i18n="signup_page.expert_f2">2 000 entrées KB</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span data-i18n="signup_page.expert_f3">Partage de revenus</span>
               </li>
             </ul>
           </div>
@@ -462,18 +500,20 @@
     // Update prices based on geo
     function updatePrices(geo) {
       const prices = {
-        MAD: { starter: '490', pro: '990', ecom: '990', symbol: ' MAD' },
-        EUR: { starter: '49', pro: '99', ecom: '99', symbol: '€' },
-        USD: { starter: '53', pro: '109', ecom: '109', symbol: '$' }
+        MAD: { starter: '490', pro: '990', ecom: '990', expert_clone: '1490', symbol: ' MAD' },
+        EUR: { starter: '49', pro: '99', ecom: '99', expert_clone: '149', symbol: '€' },
+        USD: { starter: '53', pro: '109', ecom: '109', expert_clone: '163', symbol: '$' }
       };
       const p = prices[geo.currency] || prices.EUR;
 
       document.getElementById('starter-price').textContent = p.starter;
       document.getElementById('pro-price').textContent = p.pro;
       document.getElementById('ecom-price').textContent = p.ecom;
+      document.getElementById('expert-price').textContent = p.expert_clone;
       document.getElementById('starter-currency').textContent = p.symbol + '/mois';
       document.getElementById('pro-currency').textContent = p.symbol + '/mois';
       document.getElementById('ecom-currency').textContent = p.symbol + '/mois';
+      document.getElementById('expert-currency').textContent = p.symbol + '/mois';
     }
 
     // Initialize
@@ -485,7 +525,7 @@
 
       // Select plan from URL
       const planFromURL = getPlanFromURL();
-      if (['starter', 'pro', 'ecom'].includes(planFromURL)) {
+      if (['starter', 'pro', 'ecom', 'expert_clone'].includes(planFromURL)) {
         selectPlan(planFromURL);
       } else {
         selectPlan('starter');

@@ -16,6 +16,9 @@
  * - PUT    /api/auth/me             - Update profile
  * - PUT    /api/auth/password       - Change password
  *
+ * NLP Operator:
+ * - POST   /api/nlp-operator        - Natural language analytics chat
+ *
  * DB Endpoints:
  * - GET    /api/db/:sheet           - List all records
  * - GET    /api/db/:sheet/:id       - Get single record
@@ -30,6 +33,7 @@
  */
 
 const http = require('http');
+const https = require('https');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
@@ -54,20 +58,22 @@ const conversationStore = getConversationStore();
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Plan name normalization (signup sends "ecom", internal uses "ecommerce")
-const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', telephony: 'telephony' };
+const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', expert_clone: 'expert_clone', telephony: 'telephony' };
 
 const PLAN_QUOTAS = {
-  starter:    { calls_monthly: 500,  sessions_monthly: 1000,  kb_entries: 100,  conversation_history_days: 30,  users_max: 3 },
-  pro:        { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
-  ecommerce:  { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
-  telephony:  { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
+  starter:      { calls_monthly: 500,  sessions_monthly: 1000,  kb_entries: 100,  conversation_history_days: 30,  users_max: 3 },
+  pro:          { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
+  ecommerce:    { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
+  expert_clone: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 2000, conversation_history_days: 180, users_max: 50 },
+  telephony:    { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
 };
 
 const PLAN_FEATURES = {
-  starter:   { voice_widget: true, voice_telephony: false, email_automation: false, sms_automation: false, whatsapp: false, crm_sync: false, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: false, api_access: false, webhooks: false },
-  pro:       { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true },
-  ecommerce: { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true },
-  telephony: { voice_widget: true, voice_telephony: true, email_automation: true, sms_automation: true, whatsapp: true, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true }
+  starter:      { voice_widget: true, voice_telephony: false, email_automation: false, sms_automation: false, whatsapp: false, crm_sync: false, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  pro:          { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  ecommerce:    { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  expert_clone: { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true },
+  telephony:    { voice_widget: true, voice_telephony: true, email_automation: true, sms_automation: true, whatsapp: true, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false }
 };
 
 /**
@@ -133,6 +139,8 @@ function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' 
       }
     },
     integrations: {},
+    actions: { overrides: {}, custom: [] },
+    voice_clone: null,
     knowledge_base: {
       enabled: true,
       languages: ['fr'],
@@ -249,6 +257,8 @@ const dbLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minut
 const publicLimiter = rateLimit({ windowMs: 60 * 1000, max: 30 }); // 30 per minute per IP
 // P1 fix: Strict rate limiter for endpoints that trigger external actions (calls/SMS/email)
 const actionLimiter = rateLimit({ windowMs: 60 * 1000, max: 5 }); // 5 per minute per IP
+// Session 250.218: NLP Operator rate limiter (10 req/min/tenant — LLM cost control)
+const nlpLimiter = rateLimit({ windowMs: 60 * 1000, max: 10 });
 
 const stripeService = require('./StripeService.cjs');
 
@@ -328,6 +338,60 @@ async function parseBody(req) {
     });
     req.on('error', reject);
   });
+}
+
+/**
+ * Parse multipart/form-data body into parts
+ * @param {Buffer} body - Raw body buffer
+ * @param {string} boundary - Multipart boundary string
+ * @returns {Array<{name: string, filename?: string, contentType?: string, data: Buffer}>}
+ */
+function parseMultipart(body, boundary) {
+  const parts = [];
+  const delimiter = Buffer.from(`--${boundary}`);
+  const end = Buffer.from(`--${boundary}--`);
+
+  let start = body.indexOf(delimiter) + delimiter.length;
+  while (start < body.length) {
+    // Skip CRLF after delimiter
+    if (body[start] === 0x0d && body[start + 1] === 0x0a) start += 2;
+
+    // Find next delimiter
+    let nextDelim = body.indexOf(delimiter, start);
+    if (nextDelim === -1) break;
+
+    // Extract part (remove trailing CRLF before delimiter)
+    let partEnd = nextDelim - 2; // Skip CRLF before delimiter
+    if (partEnd <= start) break;
+
+    const partBuf = body.subarray(start, partEnd);
+
+    // Split headers from body (double CRLF)
+    const headerEnd = partBuf.indexOf('\r\n\r\n');
+    if (headerEnd === -1) { start = nextDelim + delimiter.length; continue; }
+
+    const headerStr = partBuf.subarray(0, headerEnd).toString('utf8');
+    const dataBuf = partBuf.subarray(headerEnd + 4);
+
+    // Parse Content-Disposition
+    const dispMatch = headerStr.match(/Content-Disposition:\s*form-data;\s*name="([^"]+)"(?:;\s*filename="([^"]*)")?/i);
+    const ctMatch = headerStr.match(/Content-Type:\s*(.+)/i);
+
+    if (dispMatch) {
+      parts.push({
+        name: dispMatch[1],
+        filename: dispMatch[2] || null,
+        contentType: ctMatch ? ctMatch[1].trim() : null,
+        data: dataBuf
+      });
+    }
+
+    start = nextDelim + delimiter.length;
+    // Check for end marker
+    if (body.indexOf(end, nextDelim) === nextDelim) break;
+  }
+
+  return parts;
 }
 
 /**
@@ -1018,6 +1082,38 @@ function getCatalogStore() {
 }
 
 /**
+ * Session 250.218: Simple HTTPS request for NLP Operator LLM calls
+ */
+function nlpHttpRequest(requestUrl, options, body) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(requestUrl);
+    const reqOptions = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || 443,
+      path: urlObj.pathname + urlObj.search,
+      method: options.method || 'POST',
+      headers: options.headers || {},
+      timeout: 30000
+    };
+    const req = https.request(reqOptions, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve({ status: res.statusCode, data });
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${data.substring(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
+/**
  * API Router
  */
 async function handleRequest(req, res) {
@@ -1224,6 +1320,182 @@ async function handleRequest(req, res) {
       }
       const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
       sendJson(res, 200, { success: true, tenantId, widget_config: config.widget_config || {} });
+    } catch (e) {
+      sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.218: ACTIONS API — Real-Time Business System Connections
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/tenants/:id/actions - Get tenant actions config
+  const actionsGetMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/actions$/i);
+  if (actionsGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(actionsGetMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!fs.existsSync(configPath)) {
+        sendJson(res, 200, { success: true, tenantId, actions: { overrides: {}, custom: [] } });
+        return;
+      }
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const actions = config.actions || { overrides: {}, custom: [] };
+      // Mask sensitive headers (API keys) in response
+      const masked = JSON.parse(JSON.stringify(actions));
+      for (const type of Object.values(masked.overrides || {})) {
+        if (type.headers) {
+          for (const [k, v] of Object.entries(type.headers)) {
+            if (typeof v === 'string' && v.length > 8) {
+              type.headers[k] = v.substring(0, 4) + '••••' + v.slice(-4);
+            }
+          }
+        }
+      }
+      for (const custom of (masked.custom || [])) {
+        if (custom.headers) {
+          for (const [k, v] of Object.entries(custom.headers)) {
+            if (typeof v === 'string' && v.length > 8) {
+              custom.headers[k] = v.substring(0, 4) + '••••' + v.slice(-4);
+            }
+          }
+        }
+      }
+      sendJson(res, 200, { success: true, tenantId, actions: masked });
+    } catch (e) {
+      sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // PUT /api/tenants/:id/actions - Update tenant actions config
+  const actionsPutMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/actions$/i);
+  if (actionsPutMatch && method === 'PUT') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(actionsPutMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+    try {
+      const body = await parseBody(req);
+      const actions = body.actions;
+      if (!actions || typeof actions !== 'object') {
+        sendError(res, 400, 'actions must be an object with overrides and custom');
+        return;
+      }
+
+      // Validate overrides URLs — HTTPS only, no private IPs
+      const privateIpPatterns = [/^localhost$/i, /^127\./, /^10\./, /^172\.(1[6-9]|2\d|3[01])\./, /^192\.168\./, /^0\./, /^\[::1\]/];
+      function isValidActionUrl(urlStr) {
+        try {
+          const u = new URL(urlStr);
+          if (u.protocol !== 'https:') return false;
+          if (privateIpPatterns.some(p => p.test(u.hostname))) return false;
+          return true;
+        } catch { return false; }
+      }
+
+      const allowedOverrideTypes = ['catalog', 'commerce', 'booking'];
+      const overrides = actions.overrides || {};
+      for (const [type, cfg] of Object.entries(overrides)) {
+        if (!allowedOverrideTypes.includes(type)) {
+          sendError(res, 400, `Invalid override type: ${type}. Allowed: ${allowedOverrideTypes.join(', ')}`);
+          return;
+        }
+        if (cfg.url && !isValidActionUrl(cfg.url)) {
+          sendError(res, 400, `Invalid URL for ${type}: must be HTTPS with a public hostname`);
+          return;
+        }
+        if (cfg.timeout && (typeof cfg.timeout !== 'number' || cfg.timeout < 1000 || cfg.timeout > 10000)) {
+          sendError(res, 400, `Timeout for ${type} must be between 1000 and 10000 ms`);
+          return;
+        }
+      }
+
+      // Validate custom actions
+      const custom = actions.custom || [];
+      if (!Array.isArray(custom)) {
+        sendError(res, 400, 'custom must be an array');
+        return;
+      }
+      if (custom.length > 5) {
+        sendError(res, 400, 'Maximum 5 custom actions allowed');
+        return;
+      }
+      for (const action of custom) {
+        if (!action.name || !/^[a-z][a-z0-9_]{1,30}$/.test(action.name)) {
+          sendError(res, 400, `Invalid action name: ${action.name}. Must be lowercase, 2-31 chars, start with letter.`);
+          return;
+        }
+        if (!action.description || action.description.length > 200) {
+          sendError(res, 400, 'Each custom action needs a description (max 200 chars)');
+          return;
+        }
+        if (action.url && !isValidActionUrl(action.url)) {
+          sendError(res, 400, `Invalid URL for custom action ${action.name}: must be HTTPS with a public hostname`);
+          return;
+        }
+      }
+
+      // Merge with existing config — preserve headers that are masked
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!fs.existsSync(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const existing = config.actions || { overrides: {}, custom: [] };
+
+      // For overrides: if headers contain masked values (••••), keep existing
+      for (const [type, cfg] of Object.entries(overrides)) {
+        if (cfg.headers && existing.overrides?.[type]?.headers) {
+          for (const [k, v] of Object.entries(cfg.headers)) {
+            if (typeof v === 'string' && v.includes('••••')) {
+              cfg.headers[k] = existing.overrides[type].headers[k] || v;
+            }
+          }
+        }
+      }
+      for (const action of custom) {
+        if (action.headers) {
+          const existingAction = (existing.custom || []).find(a => a.id === action.id);
+          if (existingAction?.headers) {
+            for (const [k, v] of Object.entries(action.headers)) {
+              if (typeof v === 'string' && v.includes('••••')) {
+                action.headers[k] = existingAction.headers[k] || v;
+              }
+            }
+          }
+        }
+      }
+
+      config.actions = { overrides, custom };
+      config.updated_at = new Date().toISOString();
+      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+      try {
+        auditStore.log(tenantId, {
+          action: 'tenant.actions_updated',
+          category: ACTION_CATEGORIES?.CONFIG || 'config',
+          actor: user.id || user.email,
+          target: tenantId,
+          details: { overrides_count: Object.keys(overrides).length, custom_count: custom.length }
+        });
+      } catch (_e) { /* non-critical */ }
+
+      sendJson(res, 200, { success: true, tenantId, actions: config.actions });
     } catch (e) {
       sendError(res, 500, e.message);
     }
@@ -1782,6 +2054,204 @@ async function handleRequest(req, res) {
 
   // ═══════════════════════════════════════════════════════════════
   // END KB ENDPOINTS
+  // ═══════════════════════════════════════════════════════════════
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.219: VOICE CLONE ENDPOINTS (Expert Clone feature)
+  // Feature-gated: requires voice_cloning === true (expert_clone plan)
+  // Endpoints:
+  // - GET    /api/tenants/:id/voice-clone  — Get clone status
+  // - POST   /api/tenants/:id/voice-clone  — Upload samples & create clone
+  // - DELETE /api/tenants/:id/voice-clone  — Delete cloned voice
+  // ═══════════════════════════════════════════════════════════════
+
+  const voiceCloneMatch = path.match(/^\/api\/tenants\/(\w+)\/voice-clone$/);
+  if (voiceCloneMatch) {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(voiceCloneMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    // Feature gate: check voice_cloning
+    const tenantPlan = getDB().getTenantConfig(tenantId)?.plan || 'starter';
+    const features = PLAN_FEATURES[tenantPlan] || PLAN_FEATURES.starter;
+    if (!features.voice_cloning) {
+      sendError(res, 403, 'Voice cloning requires Expert Clone plan');
+      return;
+    }
+
+    const configDir = path.join(__dirname, '..', 'clients', tenantId);
+    const configPath = path.join(configDir, 'config.json');
+
+    // GET — Get voice clone status
+    if (method === 'GET') {
+      try {
+        if (!fs.existsSync(configPath)) {
+          sendJson(res, 200, { voice_clone: null });
+          return;
+        }
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        sendJson(res, 200, { voice_clone: config.voice_clone || null });
+      } catch (e) {
+        sendError(res, 500, `Voice clone status error: ${e.message}`);
+      }
+      return;
+    }
+
+    // POST — Upload samples & create voice clone
+    if (method === 'POST') {
+      try {
+        // Parse multipart form data (audio samples)
+        const contentType = req.headers['content-type'] || '';
+        if (!contentType.includes('multipart/form-data')) {
+          sendError(res, 400, 'Content-Type must be multipart/form-data');
+          return;
+        }
+
+        const boundary = contentType.split('boundary=')[1];
+        if (!boundary) {
+          sendError(res, 400, 'Missing multipart boundary');
+          return;
+        }
+
+        // Collect request body
+        const chunks = [];
+        for await (const chunk of req) chunks.push(chunk);
+        const body = Buffer.concat(chunks);
+
+        // Parse multipart parts
+        const parts = parseMultipart(body, boundary);
+        const audioSamples = parts.filter(p => p.filename && p.data.length > 0);
+        const namePart = parts.find(p => p.name === 'name');
+        const voiceName = namePart ? namePart.data.toString('utf8') : `${tenantId}_expert_voice`;
+
+        if (audioSamples.length === 0) {
+          sendError(res, 400, 'At least one audio sample is required');
+          return;
+        }
+
+        if (audioSamples.length > 25) {
+          sendError(res, 400, 'Maximum 25 audio samples allowed');
+          return;
+        }
+
+        // Call ElevenLabs clone API
+        const { ElevenLabsClient } = require('./elevenlabs-client.cjs');
+        const elevenlabs = new ElevenLabsClient();
+
+        if (!elevenlabs.isConfigured()) {
+          sendError(res, 503, 'Voice cloning service not configured (ELEVENLABS_API_KEY missing)');
+          return;
+        }
+
+        const sampleBuffers = audioSamples.map(s => s.data);
+        const cloneResult = await elevenlabs.cloneVoice(
+          voiceName,
+          sampleBuffers,
+          `Expert Clone voice for tenant ${tenantId}`
+        );
+
+        // Store voice clone info in tenant config
+        if (!fs.existsSync(configDir)) fs.mkdirSync(configDir, { recursive: true });
+        let config = {};
+        if (fs.existsSync(configPath)) {
+          config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        }
+
+        config.voice_clone = {
+          voice_id: cloneResult.voice_id,
+          voice_name: voiceName,
+          sample_count: audioSamples.length,
+          created_at: new Date().toISOString(),
+          status: 'active'
+        };
+
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+        // Audit trail
+        getAuditStore().log({
+          action: 'voice_clone_created',
+          category: ACTION_CATEGORIES.CONFIG_CHANGE,
+          tenant_id: tenantId,
+          user_id: user.email || user.id,
+          details: { voice_id: cloneResult.voice_id, samples: audioSamples.length }
+        });
+
+        sendJson(res, 200, {
+          success: true,
+          voice_clone: config.voice_clone
+        });
+      } catch (e) {
+        console.error(`[Voice Clone] Error creating clone for ${tenantId}:`, e.message);
+        sendError(res, 500, `Voice clone creation failed: ${e.message}`);
+      }
+      return;
+    }
+
+    // DELETE — Remove voice clone
+    if (method === 'DELETE') {
+      try {
+        if (!fs.existsSync(configPath)) {
+          sendJson(res, 200, { success: true, message: 'No voice clone to delete' });
+          return;
+        }
+
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        const voiceClone = config.voice_clone;
+
+        if (!voiceClone || !voiceClone.voice_id) {
+          sendJson(res, 200, { success: true, message: 'No voice clone configured' });
+          return;
+        }
+
+        // Delete from ElevenLabs
+        try {
+          const { ElevenLabsClient } = require('./elevenlabs-client.cjs');
+          const elevenlabs = new ElevenLabsClient();
+          if (elevenlabs.isConfigured()) {
+            const deleteResp = await fetch(`${elevenlabs.baseUrl}/voices/${voiceClone.voice_id}`, {
+              method: 'DELETE',
+              headers: elevenlabs.getHeaders()
+            });
+            if (!deleteResp.ok) {
+              console.warn(`[Voice Clone] ElevenLabs delete returned ${deleteResp.status} — continuing local cleanup`);
+            }
+          }
+        } catch (apiErr) {
+          console.warn(`[Voice Clone] ElevenLabs API delete failed: ${apiErr.message} — continuing local cleanup`);
+        }
+
+        // Remove from config (set to null, consistent with provisionTenant)
+        const deletedVoiceId = voiceClone.voice_id;
+        config.voice_clone = null;
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+        // Audit trail
+        getAuditStore().log({
+          action: 'voice_clone_deleted',
+          category: ACTION_CATEGORIES.CONFIG_CHANGE,
+          tenant_id: tenantId,
+          user_id: user.email || user.id,
+          details: { voice_id: deletedVoiceId }
+        });
+
+        sendJson(res, 200, { success: true });
+      } catch (e) {
+        sendError(res, 500, `Voice clone deletion failed: ${e.message}`);
+      }
+      return;
+    }
+
+    sendError(res, 405, 'Method not allowed');
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // END VOICE CLONE ENDPOINTS
   // ═══════════════════════════════════════════════════════════════
 
   // ═══════════════════════════════════════════════════════════════
@@ -3212,6 +3682,191 @@ async function handleRequest(req, res) {
       sendJson(res, 200, { count: logs.length, data: logs.slice(0, 100) });
     } catch (e) {
       sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.218: NLP OPERATOR — Natural language analytics chat
+  // ═══════════════════════════════════════════════════════════════
+
+  if (path === '/api/nlp-operator' && method === 'POST') {
+    const rateLimited = await applyRateLimit(req, res, nlpLimiter);
+    if (rateLimited) return;
+
+    const user = await checkAuth(req, res);
+    if (!user) return;
+
+    const tenantId = sanitizeTenantId(user.tenant_id);
+    if (!tenantId) {
+      sendError(res, 400, 'No tenant associated with this account');
+      return;
+    }
+
+    try {
+      const body = await parseBody(req);
+      const question = String(body.question || '').replace(/<[^>]*>/g, '').trim().substring(0, 500);
+      const language = String(body.language || 'fr').substring(0, 5);
+
+      if (!question) {
+        sendError(res, 400, 'Question is required');
+        return;
+      }
+
+      // Collect tenant data from DB
+      const db = getDB();
+      const sessions = await db.findAll('sessions');
+      const tenantSessions = sessions.filter(s => s.tenant_id === tenantId);
+      const now = new Date();
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      const monthSessions = tenantSessions.filter(s => new Date(s.created_at) >= monthStart);
+
+      // Quota info from config.json
+      const nodePath = require('path');
+      // B73 fix: config.json is in clients/, not data/catalogs/
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      let tenantConfig = {};
+      try { tenantConfig = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_) { /* no config yet */ }
+
+      const plan = tenantConfig.plan || 'starter';
+      const quotas = PLAN_QUOTAS[plan] || PLAN_QUOTAS.starter;
+
+      // B73 fix: KB files are in clients/{id}/knowledge_base/kb_{lang}.json
+      const kbDir = nodePath.join(__dirname, '..', 'clients', tenantId, 'knowledge_base');
+      let kbCount = 0;
+      try {
+        if (fs.existsSync(kbDir)) {
+          const kbFiles = fs.readdirSync(kbDir).filter(f => f.startsWith('kb_') && f.endsWith('.json'));
+          for (const f of kbFiles) {
+            try {
+              const entries = JSON.parse(fs.readFileSync(nodePath.join(kbDir, f), 'utf8'));
+              kbCount += Array.isArray(entries) ? entries.length : Object.keys(entries).filter(k => k !== '__meta').length;
+            } catch (_) { /* corrupt file */ }
+          }
+        }
+      } catch (_) { /* no kb dir */ }
+
+      // Build context
+      const contextData = {
+        plan: plan,
+        sessions_this_month: monthSessions.length,
+        sessions_total: tenantSessions.length,
+        sessions_limit: quotas.sessions_monthly,
+        calls_limit: quotas.calls_monthly,
+        kb_entries: kbCount,
+        kb_limit: quotas.kb_entries,
+        company: tenantConfig.company || user.company || '',
+        created_at: tenantConfig.created_at || ''
+      };
+
+      // If zero data, return onboarding message without LLM call
+      if (tenantSessions.length === 0) {
+        const onboardingMessages = {
+          fr: 'Bienvenue ! Vous n\'avez pas encore de donnees. Configurez votre premier assistant vocal depuis l\'onglet "Agents IA" pour commencer a recevoir des statistiques ici.',
+          en: 'Welcome! You don\'t have any data yet. Set up your first voice assistant from the "AI Agents" tab to start seeing stats here.',
+          es: 'Bienvenido! Aun no tiene datos. Configure su primer asistente de voz desde la pestana "Agentes IA" para empezar a ver estadisticas aqui.',
+          ar: '\u0645\u0631\u062d\u0628\u0627! \u0644\u0627 \u062a\u0648\u062c\u062f \u0628\u064a\u0627\u0646\u0627\u062a \u0628\u0639\u062f. \u0642\u0645 \u0628\u0625\u0639\u062f\u0627\u062f \u0623\u0648\u0644 \u0645\u0633\u0627\u0639\u062f \u0635\u0648\u062a\u064a \u0645\u0646 \u062a\u0628\u0648\u064a\u0628 "\u0648\u0643\u0644\u0627\u0621 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a" \u0644\u0628\u062f\u0621 \u0631\u0624\u064a\u0629 \u0627\u0644\u0625\u062d\u0635\u0627\u0626\u064a\u0627\u062a.',
+          ary: '\u0645\u0631\u062d\u0628\u0627! \u0645\u0627 \u0639\u0646\u062f\u0643 \u062d\u062a\u0627 \u0634\u064a \u062f\u0627\u062a\u0627 \u0628\u0627\u0642\u064a. \u0633\u064a\u0641\u0637 \u0623\u0648\u0644 \u0645\u0633\u0627\u0639\u062f \u0635\u0648\u062a\u064a \u0645\u0646 \u062a\u0627\u0628 "\u0648\u0643\u0644\u0627\u0621 \u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a" \u0628\u0627\u0634 \u062a\u0628\u062f\u0627 \u062a\u0634\u0648\u0641 \u0627\u0644\u0625\u062d\u0635\u0627\u0626\u064a\u0627\u062a.'
+        };
+        sendJson(res, 200, {
+          response: onboardingMessages[language] || onboardingMessages.fr,
+          timestamp: now.toISOString(),
+          onboarding: true
+        });
+        return;
+      }
+
+      // Build system prompt
+      const clientName = contextData.company || 'Client';
+      const systemPrompt = `Tu es l'assistant VocalIA de ${clientName}.
+Tu analyses ses donnees et reponds en langage simple, commercial et actionnable.
+Langue : ${language}
+
+REGLES NON NEGOCIABLES :
+1. Reformule UNIQUEMENT les donnees ci-dessous. JAMAIS inventer un chiffre.
+2. Donnee absente → "Cette information n'est pas encore disponible. Elle apparaitra apres vos premiers appels."
+3. Termes INTERDITS : API, endpoint, JSON, script, sensor, webhook, token, provider, fallback, latency, tenant, CORS, JWT, KPI
+4. Equivalents : "temps de reponse" (latency), "connexion" (integration), "assistant vocal" (persona), "forfait" (plan), "tableau de bord" (dashboard)
+5. Maximum 3 phrases + 1 recommandation. Pas de bullet points > 5.
+6. Si question hors-sujet → "Je peux uniquement vous renseigner sur vos donnees VocalIA."
+
+DONNEES CLIENT (${now.toISOString().split('T')[0]}) :
+${JSON.stringify(contextData)}`;
+
+      // Call Grok (primary) via https
+      const xaiKey = process.env.XAI_API_KEY;
+      const geminiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+      let llmResponse = '';
+
+      if (xaiKey) {
+        // Grok
+        try {
+          const grokBody = JSON.stringify({
+            model: 'grok-4-1-fast-reasoning',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: question }
+            ],
+            max_tokens: 500,
+            temperature: 0.3
+          });
+          const grokResult = await nlpHttpRequest('https://api.x.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${xaiKey}`
+            }
+          }, grokBody);
+          const parsed = JSON.parse(grokResult.data);
+          llmResponse = parsed.choices?.[0]?.message?.content || '';
+        } catch (e) {
+          console.error('[NLP-Operator] Grok error:', e.message);
+        }
+      }
+
+      // Fallback: Gemini
+      if (!llmResponse && geminiKey) {
+        try {
+          const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`;
+          const geminiBody = JSON.stringify({
+            contents: [{ parts: [{ text: `${systemPrompt}\n\nQuestion: ${question}` }] }],
+            generationConfig: { maxOutputTokens: 500, temperature: 0.3 }
+          });
+          const geminiResult = await nlpHttpRequest(geminiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          }, geminiBody);
+          const parsed = JSON.parse(geminiResult.data);
+          llmResponse = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        } catch (e) {
+          console.error('[NLP-Operator] Gemini error:', e.message);
+        }
+      }
+
+      if (!llmResponse) {
+        const fallbackMessages = {
+          fr: 'Le service d\'analyse est temporairement indisponible. Veuillez reessayer dans quelques instants.',
+          en: 'The analysis service is temporarily unavailable. Please try again in a moment.',
+          es: 'El servicio de analisis no esta disponible temporalmente. Intente de nuevo en un momento.',
+          ar: '\u062e\u062f\u0645\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u063a\u064a\u0631 \u0645\u062a\u0627\u062d\u0629 \u0645\u0624\u0642\u062a\u0627. \u064a\u0631\u062c\u0649 \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649 \u0628\u0639\u062f \u0642\u0644\u064a\u0644.',
+          ary: '\u062e\u062f\u0645\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0645\u0627\u0634\u064a \u062e\u062f\u0627\u0645\u0629 \u062f\u0627\u0628\u0627. \u0639\u0627\u0648\u062f \u062c\u0631\u0628 \u0645\u0646 \u0628\u0639\u062f \u0634\u0648\u064a\u0629.'
+        };
+        sendJson(res, 200, {
+          response: fallbackMessages[language] || fallbackMessages.fr,
+          timestamp: now.toISOString(),
+          fallback: true
+        });
+        return;
+      }
+
+      sendJson(res, 200, {
+        response: llmResponse,
+        timestamp: now.toISOString()
+      });
+    } catch (e) {
+      console.error('[NLP-Operator] Error:', e.message);
+      sendError(res, 500, 'NLP operator error');
     }
     return;
   }

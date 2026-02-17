@@ -1,7 +1,7 @@
 {
   "platform": "VocalIA",
   "version": "1.0.0",
-  "last_updated": "2026-02-16T21:32:13.090Z",
+  "last_updated": "2026-02-17T10:45:44.115Z",
   "update_frequency": "5m",
   "sectors": {
     "voice": {
@@ -67,7 +67,7 @@
       "lead_velocity": {
         "pressure": 90,
         "trend": "UP",
-        "last_check": "2026-02-16T21:32:13.064Z",
+        "last_check": "2026-02-17T10:45:44.090Z",
         "sensor_data": {
           "leads_last_24h": 0
         }
@@ -78,11 +78,11 @@
         "label": "API Costs",
         "pressure": 25,
         "trend": "STABLE",
-        "last_check": "2026-02-16T21:32:13.082Z",
+        "last_check": "2026-02-17T10:45:44.107Z",
         "sensor_data": {
           "current_month_usd": 10,
-          "projected_month_usd": 17.5,
-          "daily_avg_usd": 0.63,
+          "projected_month_usd": 16.47,
+          "daily_avg_usd": 0.59,
           "budget_warning_usd": 100,
           "budget_critical_usd": 250,
           "budget_status": "OK",
@@ -101,7 +101,7 @@
         "label": "Voice Quality",
         "pressure": 0,
         "trend": "STABLE",
-        "last_check": "2026-02-16T21:32:13.089Z",
+        "last_check": "2026-02-17T10:45:44.115Z",
         "sensor_data": {
           "endpoints_healthy": 1,
           "endpoints_total": 1,
@@ -129,7 +129,7 @@
       "retention": {
         "pressure": 30,
         "trend": "DOWN",
-        "last_check": "2026-02-16T21:32:13.069Z",
+        "last_check": "2026-02-17T10:45:44.096Z",
         "sensor_data": {
           "order_count": 25,
           "high_risk_indicator": 30

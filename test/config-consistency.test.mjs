@@ -29,7 +29,7 @@ describe('T6: Plan name consistency', () => {
   const voiceApi = require('../core/voice-api-resilient.cjs');
   const kbQuotas = require('../core/kb-quotas.cjs');
 
-  const canonicalPlans = ['starter', 'pro', 'ecommerce', 'telephony'];
+  const canonicalPlans = ['starter', 'pro', 'ecommerce', 'expert_clone', 'telephony'];
 
   test('db-api PLAN_QUOTAS has all canonical plans', () => {
     for (const plan of canonicalPlans) {
@@ -65,11 +65,12 @@ describe('T6: Plan name consistency', () => {
     assert.strictEqual(map.ecommerce, 'ecommerce');
     assert.strictEqual(map.starter, 'starter');
     assert.strictEqual(map.pro, 'pro');
+    assert.strictEqual(map.expert_clone, 'expert_clone');
     assert.strictEqual(map.telephony, 'telephony');
   });
 
   test('db-api PLAN_QUOTAS has no extra unknown plans', () => {
-    const known = ['starter', 'pro', 'ecommerce', 'telephony'];
+    const known = ['starter', 'pro', 'ecommerce', 'expert_clone', 'telephony'];
     for (const plan of Object.keys(dbApi.PLAN_QUOTAS)) {
       assert.ok(known.includes(plan),
         `db-api PLAN_QUOTAS has unknown plan: ${plan}`);
@@ -77,7 +78,7 @@ describe('T6: Plan name consistency', () => {
   });
 
   test('voice-api PLAN_FEATURES has no extra unknown plans', () => {
-    const known = ['starter', 'pro', 'ecommerce', 'telephony'];
+    const known = ['starter', 'pro', 'ecommerce', 'expert_clone', 'telephony'];
     for (const plan of Object.keys(voiceApi.PLAN_FEATURES)) {
       assert.ok(known.includes(plan),
         `voice-api PLAN_FEATURES has unknown plan: ${plan}`);
@@ -102,6 +103,10 @@ describe('T6: Pricing values', () => {
     assert.strictEqual(voiceApi.PLAN_PRICES.ecommerce, 99);
   });
 
+  test('Expert Clone = 149€', () => {
+    assert.strictEqual(voiceApi.PLAN_PRICES.expert_clone, 149);
+  });
+
   test('Telephony = 199€', () => {
     assert.strictEqual(voiceApi.PLAN_PRICES.telephony, 199);
   });
@@ -121,7 +126,7 @@ describe('T6: PLAN_FEATURES cross-module consistency', () => {
   const sharedFlags = ['voice_widget', 'voice_telephony', 'crm_sync', 'calendar_sync',
     'custom_branding', 'api_access', 'webhooks'];
 
-  for (const plan of ['starter', 'pro', 'ecommerce', 'telephony']) {
+  for (const plan of ['starter', 'pro', 'ecommerce', 'expert_clone', 'telephony']) {
     for (const flag of sharedFlags) {
       if (dbFeatures[plan]?.[flag] !== undefined && voiceFeatures[plan]?.[flag] !== undefined) {
         test(`${plan}.${flag} matches between db-api and voice-api`, () => {
@@ -312,8 +317,8 @@ describe('T6: Telephony function tools', () => {
 describe('T6: KB quota plans', () => {
   const { PLAN_QUOTAS } = require('../core/kb-quotas.cjs');
 
-  test('KB quotas cover free/starter/pro/enterprise', () => {
-    const expected = ['free', 'starter', 'pro', 'enterprise'];
+  test('KB quotas cover free/starter/pro/expert_clone/enterprise', () => {
+    const expected = ['free', 'starter', 'pro', 'expert_clone', 'enterprise'];
     for (const plan of expected) {
       assert.ok(PLAN_QUOTAS[plan],
         `KB PLAN_QUOTAS missing plan: ${plan}`);
@@ -337,7 +342,8 @@ describe('T6: KB quota plans', () => {
   test('KB quotas increase with plan tier (max_entries)', () => {
     assert.ok(PLAN_QUOTAS.free.max_entries < PLAN_QUOTAS.starter.max_entries);
     assert.ok(PLAN_QUOTAS.starter.max_entries < PLAN_QUOTAS.pro.max_entries);
-    assert.ok(PLAN_QUOTAS.pro.max_entries < PLAN_QUOTAS.enterprise.max_entries);
+    assert.ok(PLAN_QUOTAS.pro.max_entries < PLAN_QUOTAS.expert_clone.max_entries);
+    assert.ok(PLAN_QUOTAS.expert_clone.max_entries < PLAN_QUOTAS.enterprise.max_entries);
   });
 });
 

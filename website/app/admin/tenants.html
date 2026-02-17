@@ -201,7 +201,7 @@
         document.getElementById('stat-trial').textContent = data.filter(t => t.status === 'trial').length;
 
         const mrr = data.reduce((sum, t) => {
-          const prices = { starter: 49, pro: 99, ecommerce: 99, telephony: 199, trial: 0 };
+          const prices = { starter: 49, pro: 99, ecommerce: 99, expert_clone: 149, telephony: 199, trial: 0 };
           return sum + (prices[t.plan] || 99);
         }, 0);
         document.getElementById('stat-mrr').textContent = mrr.toLocaleString() + '€';

@@ -277,12 +277,17 @@ describe('Tenant Provisioning — INTEGRATION (real modules)', () => {
       assert.equal(config.features.calendar_sync, false, 'Ecom: calendar_sync=false');
     });
 
-    it('telephony: ALL features enabled', () => {
+    it('telephony: ALL base features enabled (expert_clone exclusives are false)', () => {
       const result = provisionTenant('_test_int_telephony', { plan: 'telephony' });
       const config = JSON.parse(readFileSync(result.configPath, 'utf8'));
 
+      const expertOnlyFeatures = ['voice_cloning', 'expert_dashboard', 'revenue_share'];
       for (const [key, val] of Object.entries(config.features)) {
-        assert.equal(val, true, `Telephony: ${key} must be true`);
+        if (expertOnlyFeatures.includes(key)) {
+          assert.equal(val, false, `Telephony: ${key} must be false (expert_clone exclusive)`);
+        } else {
+          assert.equal(val, true, `Telephony: ${key} must be true`);
+        }
       }
     });
   });

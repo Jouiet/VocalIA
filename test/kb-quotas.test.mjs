@@ -25,14 +25,15 @@ const TEST_USAGE_DIR = path.join(import.meta.dirname, '../data/kb-usage');
 const TEST_TENANT = '__test_kb_quota__';
 
 describe('PLAN_QUOTAS Constants', () => {
-  test('has 4 plans', () => {
-    assert.strictEqual(Object.keys(PLAN_QUOTAS).length, 4);
+  test('has 5 plans', () => {
+    assert.strictEqual(Object.keys(PLAN_QUOTAS).length, 5);
   });
 
-  test('has free, starter, pro, enterprise plans', () => {
+  test('has free, starter, pro, expert_clone, enterprise plans', () => {
     assert.ok(PLAN_QUOTAS.free);
     assert.ok(PLAN_QUOTAS.starter);
     assert.ok(PLAN_QUOTAS.pro);
+    assert.ok(PLAN_QUOTAS.expert_clone);
     assert.ok(PLAN_QUOTAS.enterprise);
   });
 
@@ -273,9 +274,9 @@ describe('KBQuotaManager getAllPlans', () => {
     manager = new KBQuotaManager();
   });
 
-  test('returns all 4 plans', () => {
+  test('returns all 5 plans', () => {
     const plans = manager.getAllPlans();
-    assert.strictEqual(plans.length, 4);
+    assert.strictEqual(plans.length, 5);
   });
 
   test('each plan has formatted storage', () => {

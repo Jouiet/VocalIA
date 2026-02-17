@@ -311,6 +311,120 @@
             </div>
           </div>
         </section>
+
+        <!-- Session 250.218: Real-Time Actions -->
+        <section id="actions-section">
+          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-4" data-i18n="actions.title">Connexions temps réel</h2>
+          <p class="text-zinc-500 text-sm mb-6" data-i18n="actions.subtitle">Connectez vos systèmes métier pour que l'assistant accède aux données en direct pendant les appels</p>
+
+          <div class="space-y-4" id="actions-overrides">
+            <!-- Catalog Override -->
+            <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                  <i data-lucide="shopping-bag" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="actions.catalog">Catalogue produits</h3>
+                  <p class="text-xs text-zinc-500" data-i18n="actions.catalog_desc">Produits, menu, disponibilité, recherche</p>
+                </div>
+                <span class="ml-auto text-xs px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500" id="actions-catalog-status">--</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs text-zinc-500 mb-1 block" data-i18n="actions.url_label">URL de l'API</label>
+                  <input type="url" id="actions-catalog-url" placeholder="https://pos.restaurant.ma/api" class="w-full px-3 py-2 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-sm text-zinc-900 dark:text-white placeholder-zinc-400">
+                </div>
+                <div>
+                  <label class="text-xs text-zinc-500 mb-1 block" data-i18n="actions.key_label">Clé API</label>
+                  <input type="password" id="actions-catalog-key" placeholder="sk_xxx..." class="w-full px-3 py-2 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-sm text-zinc-900 dark:text-white placeholder-zinc-400">
+                </div>
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button onclick="testAction('catalog')" class="px-3 py-1.5 text-xs font-medium bg-zinc-100 dark:bg-white/[0.06] hover:bg-zinc-200 dark:hover:bg-white/[0.1] text-zinc-700 dark:text-zinc-200 rounded-lg transition-colors" data-i18n="actions.test_btn">Tester</button>
+                <button onclick="saveActions()" class="px-3 py-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors" data-i18n="actions.save_btn">Enregistrer</button>
+              </div>
+            </div>
+
+            <!-- Commerce Override -->
+            <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                  <i data-lucide="package" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="actions.commerce">Commerce</h3>
+                  <p class="text-xs text-zinc-500" data-i18n="actions.commerce_desc">Commandes, stock, clients</p>
+                </div>
+                <span class="ml-auto text-xs px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500" id="actions-commerce-status">--</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs text-zinc-500 mb-1 block" data-i18n="actions.url_label">URL de l'API</label>
+                  <input type="url" id="actions-commerce-url" placeholder="https://monshop.ma/api/v2" class="w-full px-3 py-2 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-sm text-zinc-900 dark:text-white placeholder-zinc-400">
+                </div>
+                <div>
+                  <label class="text-xs text-zinc-500 mb-1 block" data-i18n="actions.key_label">Clé API</label>
+                  <input type="password" id="actions-commerce-key" placeholder="Bearer xxx..." class="w-full px-3 py-2 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-sm text-zinc-900 dark:text-white placeholder-zinc-400">
+                </div>
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button onclick="testAction('commerce')" class="px-3 py-1.5 text-xs font-medium bg-zinc-100 dark:bg-white/[0.06] hover:bg-zinc-200 dark:hover:bg-white/[0.1] text-zinc-700 dark:text-zinc-200 rounded-lg transition-colors" data-i18n="actions.test_btn">Tester</button>
+                <button onclick="saveActions()" class="px-3 py-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors" data-i18n="actions.save_btn">Enregistrer</button>
+              </div>
+            </div>
+
+            <!-- Booking Override -->
+            <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                  <i data-lucide="calendar" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="actions.booking">Agenda / Réservations</h3>
+                  <p class="text-xs text-zinc-500" data-i18n="actions.booking_desc">Créneaux disponibles</p>
+                </div>
+                <span class="ml-auto text-xs px-2 py-1 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500" id="actions-booking-status">--</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-xs text-zinc-500 mb-1 block" data-i18n="actions.url_label">URL de l'API</label>
+                  <input type="url" id="actions-booking-url" placeholder="https://calendar.cabinet.ma/api" class="w-full px-3 py-2 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-sm text-zinc-900 dark:text-white placeholder-zinc-400">
+                </div>
+                <div>
+                  <label class="text-xs text-zinc-500 mb-1 block" data-i18n="actions.key_label">Clé API</label>
+                  <input type="password" id="actions-booking-key" placeholder="sk_xxx..." class="w-full px-3 py-2 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-sm text-zinc-900 dark:text-white placeholder-zinc-400">
+                </div>
+              </div>
+              <div class="flex gap-2 mt-3">
+                <button onclick="testAction('booking')" class="px-3 py-1.5 text-xs font-medium bg-zinc-100 dark:bg-white/[0.06] hover:bg-zinc-200 dark:hover:bg-white/[0.1] text-zinc-700 dark:text-zinc-200 rounded-lg transition-colors" data-i18n="actions.test_btn">Tester</button>
+                <button onclick="saveActions()" class="px-3 py-1.5 text-xs font-medium bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors" data-i18n="actions.save_btn">Enregistrer</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Actions -->
+          <div class="mt-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-medium text-zinc-500 uppercase tracking-wider" data-i18n="actions.custom">Actions personnalisées</h3>
+              <button onclick="addCustomAction()" class="px-3 py-1.5 text-xs font-medium bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors flex items-center gap-1">
+                <i data-lucide="plus" class="w-3 h-3"></i>
+                <span data-i18n="actions.custom_add">Ajouter</span>
+              </button>
+            </div>
+            <div id="custom-actions-list" class="space-y-4"></div>
+          </div>
+
+          <!-- Info notice -->
+          <div class="mt-4 flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800/30">
+            <i data-lucide="info" class="w-5 h-5 text-blue-500 mt-0.5 shrink-0"></i>
+            <div class="text-sm text-blue-700 dark:text-blue-300">
+              <p data-i18n="actions.fallback_info">Si votre système ne répond pas, l'assistant utilise automatiquement les données locales en secours.</p>
+              <p class="mt-1 text-xs text-blue-500 dark:text-blue-400" data-i18n="actions.security_note">Toutes les connexions sont chiffrées (HTTPS uniquement). Vos clés ne sont jamais exposées côté client.</p>
+            </div>
+          </div>
+        </section>
+
       </div>
     </main>
 
@@ -515,9 +629,173 @@
       window.history.replaceState({}, '', window.location.pathname);
     }
 
+    // ========================================
+    // Session 250.218: Actions — Real-time connections
+    // ========================================
+
+    let currentActions = { overrides: {}, custom: [] };
+
+    async function loadActions() {
+      try {
+        const tenantId = auth.getTenantId() || user?.tenant_id;
+        if (!tenantId) return;
+        const resp = await api.actions.get(tenantId);
+        if (resp?.actions) {
+          currentActions = resp.actions;
+          // Populate override fields
+          const activeClasses = ['bg-green-100', 'text-green-700', 'dark:bg-green-900/30', 'dark:text-green-300'];
+          const inactiveClasses = ['bg-zinc-100', 'dark:bg-white/[0.06]', 'text-zinc-500'];
+          for (const type of ['catalog', 'commerce', 'booking']) {
+            const cfg = currentActions.overrides?.[type];
+            const urlEl = document.getElementById(`actions-${type}-url`);
+            const keyEl = document.getElementById(`actions-${type}-key`);
+            const statusEl = document.getElementById(`actions-${type}-status`);
+            if (cfg?.url) {
+              if (urlEl) urlEl.value = cfg.url;
+              if (keyEl && cfg.headers) keyEl.value = Object.values(cfg.headers)[0] || '';
+              if (statusEl) {
+                statusEl.textContent = VocaliaI18n.t('actions.active_status');
+                statusEl.classList.remove(...inactiveClasses);
+                statusEl.classList.add(...activeClasses);
+              }
+            } else {
+              if (urlEl) urlEl.value = '';
+              if (keyEl) keyEl.value = '';
+              if (statusEl) {
+                statusEl.textContent = VocaliaI18n.t('actions.inactive_status');
+                statusEl.classList.remove(...activeClasses);
+                statusEl.classList.add(...inactiveClasses);
+              }
+            }
+          }
+          // Populate custom actions
+          renderCustomActions();
+        }
+      } catch (e) { /* graceful */ }
+    }
+
+    function renderCustomActions() {
+      const list = document.getElementById('custom-actions-list');
+      if (!list) return;
+      const customs = currentActions.custom || [];
+      if (customs.length === 0) {
+        list.innerHTML = `<p class="text-sm text-zinc-400 py-4 text-center" data-i18n="actions.no_custom">${VocaliaI18n.t('actions.no_custom')}</p>`;
+        return;
+      }
+      list.innerHTML = customs.map((a, i) => `
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-indigo-500"></i>
+              <span class="font-medium text-zinc-900 dark:text-white text-sm">${escapeHtml(a.name || '')}</span>
+            </div>
+            <button onclick="removeCustomAction(${i})" class="text-red-500 hover:text-red-700 text-xs" data-i18n="actions.remove">${VocaliaI18n.t('actions.remove')}</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div>
+              <label class="text-xs text-zinc-500 block mb-1" data-i18n="actions.description_label">${VocaliaI18n.t('actions.description_label')}</label>
+              <input type="text" value="${escapeHtml(a.description || '')}" onchange="updateCustomField(${i},'description',this.value)" class="w-full px-3 py-1.5 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-zinc-900 dark:text-white text-xs">
+            </div>
+            <div>
+              <label class="text-xs text-zinc-500 block mb-1" data-i18n="actions.url_label">${VocaliaI18n.t('actions.url_label')}</label>
+              <input type="url" value="${escapeHtml(a.url || '')}" onchange="updateCustomField(${i},'url',this.value)" class="w-full px-3 py-1.5 bg-zinc-50 dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] rounded-lg text-zinc-900 dark:text-white text-xs">
+            </div>
+          </div>
+          <div class="mt-2">
+            <label class="text-xs text-zinc-500 block mb-1" data-i18n="actions.params_label">${VocaliaI18n.t('actions.params_label')}</label>
+            <p class="text-xs text-zinc-400">${(a.parameters || []).map(p => escapeHtml(p.name)).join(', ') || '—'}</p>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    window.addCustomAction = () => {
+      currentActions.custom = currentActions.custom || [];
+      const idx = currentActions.custom.length + 1;
+      currentActions.custom.push({
+        id: `action_${Date.now()}`,
+        name: `custom_action_${idx}`,
+        description: '',
+        url: '',
+        method: 'GET',
+        headers: {},
+        timeout: 5000,
+        parameters: [],
+        response_path: 'data'
+      });
+      renderCustomActions();
+    };
+
+    window.removeCustomAction = (idx) => {
+      currentActions.custom.splice(idx, 1);
+      renderCustomActions();
+    };
+
+    window.updateCustomField = (idx, field, value) => {
+      if (currentActions.custom[idx]) currentActions.custom[idx][field] = value;
+    };
+
+    window.testAction = async (type) => {
+      const url = document.getElementById(`actions-${type}-url`)?.value;
+      if (!url) { toast.warning(VocaliaI18n.t('actions.test_no_url')); return; }
+      toast.info(VocaliaI18n.t('actions.testing'));
+      const result = await api.actions.test(null, type, url);
+      if (result.success) {
+        toast.success(VocaliaI18n.t('actions.test_success'));
+      } else {
+        toast.error(VocaliaI18n.t('actions.test_fail') + ': ' + (result.error || ''));
+      }
+    };
+
+    window.saveActions = async () => {
+      const tenantId = auth.getTenantId() || user?.tenant_id;
+      if (!tenantId) return;
+      // Build overrides from form — preserve existing header names + masked values
+      const overrides = {};
+      for (const type of ['catalog', 'commerce', 'booking']) {
+        const url = document.getElementById(`actions-${type}-url`)?.value?.trim();
+        const key = document.getElementById(`actions-${type}-key`)?.value?.trim();
+        if (url) {
+          // Preserve existing headers structure — only update if key changed (not masked)
+          const existingHeaders = currentActions.overrides?.[type]?.headers || {};
+          let headers = existingHeaders;
+          if (key && !key.includes('••••')) {
+            // User entered a new key — detect header name from existing or default to X-API-Key
+            const existingHeaderName = Object.keys(existingHeaders)[0] || 'X-API-Key';
+            headers = { [existingHeaderName]: key };
+          } else if (!key) {
+            headers = {};
+          }
+          // else: key contains ••••, keep existing (server-side will resolve)
+          overrides[type] = {
+            url,
+            headers,
+            timeout: currentActions.overrides?.[type]?.timeout || 5000,
+            endpoints: currentActions.overrides?.[type]?.endpoints || getDefaultEndpoints(type)
+          };
+        }
+      }
+      try {
+        await api.actions.update(tenantId, { overrides, custom: currentActions.custom || [] });
+        toast.success(VocaliaI18n.t('actions.saved'));
+        await loadActions();
+      } catch (e) {
+        toast.error(e.message || VocaliaI18n.t('actions.save_error'));
+      }
+    };
+
+    function getDefaultEndpoints(type) {
+      if (type === 'catalog') return { browse: '/products?category={{category}}', item_details: '/products/{{item_id}}', availability: '/stock/{{item_id}}', search: '/search?q={{query}}', menu: '/menu?category={{category}}' };
+      if (type === 'commerce') return { order_status: '/orders?email={{email}}', product_stock: '/inventory?q={{query}}', customer_tags: '/customers?email={{email}}' };
+      if (type === 'booking') return { available_slots: '/slots?date={{date}}&service={{service_id}}' };
+      return {};
+    }
+
     // Load integrations on page load
     loadIntegrations();
     loadWebhookHealth();
+    loadActions();
 
     // Integration card click handlers
     document.querySelectorAll('.integration-card button').forEach(btn => {

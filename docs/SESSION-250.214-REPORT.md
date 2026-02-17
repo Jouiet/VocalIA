@@ -534,4 +534,111 @@ Full suite:     0 intermittent failures (vs 7 avant B44 fix)
 
 ---
 
-*Sessions 250.214-217 — 4 features strategiques + Jargon Purge L1+L2 (~350 substitutions) + 14 bugs (B38-B52) + Expert Clone approuve + 4 UI/UX gaps implementes (250.217: pricing comparison, competitive matrix, marketing vocab, social proof + i18n × 5 langues)*
+---
+
+## 10. Session 250.218 — VocalIA Actions (Connexions Temps Reel)
+
+> **Date**: 2026-02-17 | **Tests**: ~6,233 pass, 0-1 fail intermittent (B52) | **Timeout**: 180s
+
+### 10.1 Feature Implementee: Actions — Real-Time Business System Connections
+
+**Probleme**: Les 13 tools catalog/commerce de VocalIA lisent des fichiers JSON statiques. Quand un client appelle "ma commande est ou ?", l'IA lit un snapshot mort, pas le systeme reel du client.
+
+**Solution**: 2 sous-features complementaires:
+
+| Sous-feature | Description | Couverture |
+|:-------------|:-----------|:-----------|
+| **Action Override** | 13 tools existants acceptent un URL externe optionnel par tenant. Si configure → appel HTTPS temps reel. Si absent → JSON local inchange. | 10 catalog + 3 commerce |
+| **Custom Action** | Tool generique (`query_external`) configurable par tenant. Description, parametres, URL — defini par le client. L'IA decide quand l'appeler. | Illimite (max 5 par tenant) |
+
+### 10.2 Fichiers Modifies (10 fichiers, ~380 lignes)
+
+| Fichier | Modification |
+|:--------|:------------|
+| `telephony/voice-telephony-bridge.cjs` | +`executeAction()` HTTPS fetcher securise, +`loadTenantActions()`, +`tryActionOverride()` intercepteur, +`handleCustomAction()`, +`ACTION_TOOL_MAP`, +injection custom tools dans tools[] LLM |
+| `core/db-api.cjs` | +`GET/PUT /api/tenants/:id/actions`, +`actions` dans `provisionTenant()` |
+| `website/app/client/integrations.html` | +Section "Connexions temps reel" (3 overrides + custom actions + info notice) |
+| `website/src/lib/api-client.js` | +`get actions()` resource client |
+| `website/src/locales/fr.json` | +32 cles `actions.*` |
+| `website/src/locales/en.json` | +32 cles `actions.*` |
+| `website/src/locales/es.json` | +32 cles `actions.*` |
+| `website/src/locales/ar.json` | +32 cles `actions.*` |
+| `website/src/locales/ary.json` | +32 cles `actions.*` |
+
+### 10.3 Securite
+
+| Risque | Mitigation |
+|:-------|:-----------|
+| SSRF | HTTPS uniquement + blocage localhost/127.0.0.1/10.*/172.16.*/192.168.*/[::1] |
+| Path traversal | `loadTenantActions()` sanitize tenantId (B55 fix) |
+| API lente | Timeout strict 5s |
+| API en panne | Fallback automatique vers handler local JSON |
+| Donnees malformees | JSON.parse en try/catch |
+| Secrets | Headers masques (••••) en GET, preservation des existants en PUT |
+| Injection prompt | Reponse externe → JSON.stringify avant envoi au LLM |
+
+### 10.4 Bugs Trouves et Corriges (7 bugs)
+
+| ID | Severite | Bug | Fix |
+|:---|:---------|:----|:----|
+| **B53** | CRITIQUE | `saveActions()` reconstruit headers avec `X-API-Key` hardcode → detruit le nom du header original + valeur masquee renvoyee sans demaskage | Preserve le header name existant, ne reconstruit que si le user entre une nouvelle valeur (sans ••••) |
+| **B54** | HIGH | `executeAction()` — POST/PUT envoient params en query string, jamais en body (`req.end()` sans body) | Detection `isBodyMethod`, `JSON.stringify(params)` en body avec Content-Type + Content-Length |
+| **B55** | HIGH | `loadTenantActions()` — tenantId non sanitise = path traversal (`../../etc/passwd`) | Regex `[^a-z0-9_-]` + reject si modifie |
+| **B56** | MEDIUM | Status badge green classes ajoutees mais jamais nettoyees → badge reste vert apres suppression config | `classList.remove()` des classes actives avant d'ajouter les inactives |
+| **B57** | MEDIUM | `api-client test()` avec `mode: 'no-cors'` → reponse opaque → `success: true` meme sur erreur 500 | Mode CORS normal + detection CORS-blocked comme "reachable" |
+| **B58** | LOW | URL concatenation double slash (`url/` + `/path` = `url//path`) | `url.replace(/\/+$/, '')` + detection prefix slash/? |
+| **B59** | MEDIUM | `handleCustomAction` met params dans query string ET `executeAction` les remet dans le body pour POST → double envoi | GET: params en query string. POST/PUT: params uniquement en body |
+
+### 10.5 Verification Empirique
+
+```
+node -c telephony/voice-telephony-bridge.cjs    → OK
+node -c core/db-api.cjs                         → OK
+JSON validation × 5 locales                     → OK
+Design tokens validator                          → 13/23 (10 STALE_NUMBER KB false positives — connu)
+db-api-routes test                               → 82/83 (1 = B52 IPC — connu)
+Caller/callee verification                       → 0 errors
+```
+
+### 10.6 Architecture: Flux d'un Appel avec Action Override
+
+```
+1. Client appelle → session creee avec metadata.tenant_id
+2. loadTenantActions(tenantId) → lit clients/{id}/config.json → session._actions
+3. L'IA invoque check_item_availability("couscous")
+4. handleFunctionCall() → action interceptor AVANT le switch
+5. tryActionOverride() regarde ACTION_TOOL_MAP + session._actions.overrides
+   ├── OUI → executeAction(override, "/stock/{{item_id}}", args)
+   │         ├── Succes → result envoyé au LLM via sendFunctionResult, return
+   │         └── Echec → log warning, fallback dans le switch
+   └── NON → switch classique (JSON local inchange)
+6. Resultat envoyé au LLM → l'IA repond au client
+```
+
+### 10.7 Taches Restantes — Plan Actionnable
+
+| # | Tache | Effort | Priorite | Dependance |
+|:-:|:------|:-------|:---------|:-----------|
+| 1 | **Expert Clone tier** (approved 250.216b, §6.2) | ~1 semaine | P1 | Aucune — design valide |
+| 2 | **Stripe setup** — STRIPE_SECRET_KEY + webhooks + checkout flow | 1-2 jours | P1 | Expert Clone tier (pricing) |
+| 3 | **Premier client payant** — demo, onboarding, config Actions | 1 jour | P1 | Stripe setup |
+| 4 | **Test Actions E2E** — configurer un mock HTTPS server, verifier override + fallback + custom action en conditions reelles | 2h | P2 | Aucune |
+| 5 | **Dashboard Actions analytics** — compteur d'appels externes reussis/echoues par type | 2h | P3 | Actions deploye en prod |
+| 6 | **Actions UI: endpoint editor** — UI pour configurer les `endpoints` templates au lieu de defaults | 3h | P3 | Actions deploye |
+| 7 | **Actions UI: custom action params editor** — ajouter/supprimer des params dans l'UI au lieu du JSON brut | 2h | P3 | Actions deploye |
+| 8 | **Actions POST body support from UI** — formulaire pour choisir GET/POST + body template | 1h | P3 | B54 fix deploye |
+
+### 10.8 Implementations Manquantes (Honnetete)
+
+| Element | Statut | Impact |
+|:--------|:-------|:-------|
+| **Endpoint templates non editables dans l'UI** | Les defaults sont injects (`/products?category={{category}}`) mais le dashboard ne permet pas de les modifier. Le tenant doit passer par l'API PUT directement. | Moyen — les defaults couvrent 80% des cas REST standards |
+| **Custom action params non editables dans l'UI** | Le `renderCustomActions` affiche les params existants mais ne permet pas d'ajouter/supprimer des params graphiquement | Moyen — le tenant peut configurer via API |
+| **Pas de test de connectivite cote serveur** | Le bouton "Tester" fait un fetch browser-side qui peut etre bloque par CORS. Un vrai test devrait passer par le backend. | Moyen — le test est un indicateur, pas une garantie |
+| **Pas de retry sur echec** | Si l'API externe echoue, on tombe direct en fallback local. Pas de retry avec backoff. | Faible — timeout 5s + fallback est suffisant pour les appels vocaux temps reel |
+| **Pas de cache** | Chaque appel check_item_availability fait un HTTPS request. Pas de cache TTL. | Moyen — pour des catalogs a haute frequence, un cache 30s serait utile |
+| **Pas de rate limiting par tenant** | Un tenant avec un override pourrait theoriquement generer des milliers de requetes vers son API | Faible — les appels vocaux sont naturellement limites par le debit humain |
+
+---
+
+*Sessions 250.214-218 — 4 features strategiques + Jargon Purge L1+L2 (~350 substitutions) + 21 bugs (B38-B59) + Expert Clone approuve + 4 UI/UX gaps + Actions temps reel (override 13 tools + custom actions + i18n × 5 langues)*

@@ -12,7 +12,8 @@
 
   var COMPONENTS = {
     'sidebar': '/app/components/sidebar.html',
-    'admin-sidebar': '/app/components/admin-sidebar.html'
+    'admin-sidebar': '/app/components/admin-sidebar.html',
+    'nlp-operator': '/app/components/nlp-operator.html'
   };
 
   var cache = {};
@@ -71,6 +72,26 @@
     });
 
     await Promise.all(promises);
+
+    // Session 250.218: Auto-inject NLP Operator (floating chat panel)
+    try {
+      var nlpHtml = await loadComponent('nlp-operator');
+      if (nlpHtml) {
+        var nlpContainer = document.createElement('div');
+        nlpContainer.id = 'nlp-operator-container';
+        nlpContainer.innerHTML = nlpHtml;
+        var nlpScripts = Array.from(nlpContainer.querySelectorAll('script'));
+        nlpScripts.forEach(function(s) { s.remove(); });
+        document.body.appendChild(nlpContainer);
+        nlpScripts.forEach(function(oldScript) {
+          var newScript = document.createElement('script');
+          newScript.textContent = oldScript.textContent;
+          document.body.appendChild(newScript);
+        });
+      }
+    } catch (e) {
+      console.warn('[AppComponents] NLP Operator load skipped:', e.message);
+    }
 
     // Re-init Lucide icons
     if (window.lucide) window.lucide.createIcons();

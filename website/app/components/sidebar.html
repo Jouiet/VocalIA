@@ -56,6 +56,10 @@
       <i data-lucide="phone-call" class="w-5 h-5"></i>
       <span data-i18n="dashboard.nav.telephony">Téléphonie</span>
     </a>
+    <a href="expert-dashboard.html" data-page="expert-dashboard" id="nav-expert-clone" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-colors hidden">
+      <i data-lucide="crown" class="w-5 h-5 text-amber-500"></i>
+      <span data-i18n="dashboard.nav.expert_clone">Expert Clone</span>
+    </a>
     <a href="billing.html" data-page="billing" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition-colors">
       <i data-lucide="credit-card" class="w-5 h-5"></i>
       <span data-i18n="dashboard.nav.billing">Facturation</span>
@@ -119,5 +123,17 @@
 
   // Lucide icons in sidebar
   if (window.lucide) window.lucide.createIcons();
+
+  // Show Expert Clone nav link for expert_clone plan tenants
+  try {
+    var stored = localStorage.getItem('vocalia_user');
+    if (stored) {
+      var u = JSON.parse(stored);
+      if (u && u.plan === 'expert_clone') {
+        var expertNav = document.getElementById('nav-expert-clone');
+        if (expertNav) expertNav.classList.remove('hidden');
+      }
+    }
+  } catch (e) { /* silent */ }
 })();
 </script>

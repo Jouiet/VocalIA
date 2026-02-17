@@ -1168,7 +1168,7 @@
           el.textContent = info.symbol;
         });
         // Update price values from pricing table
-        var prices = { MAD: { starter: 490, pro: 990, ecom: 990, telephony: 1990, overage: 2.40 }, EUR: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.24 }, USD: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.26 } };
+        var prices = { MAD: { starter: 490, pro: 990, ecom: 990, expert_clone: 1490, telephony: 1990, overage: 2.40 }, EUR: { starter: 49, pro: 99, ecom: 99, expert_clone: 149, telephony: 199, overage: 0.24 }, USD: { starter: 49, pro: 99, ecom: 99, expert_clone: 149, telephony: 199, overage: 0.26 } };
         var currencyPrices = prices[info.currency] || prices.EUR;
         document.querySelectorAll('[data-price-key]').forEach(el => {
           var key = el.getAttribute('data-price-key');

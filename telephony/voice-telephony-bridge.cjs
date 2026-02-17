@@ -1445,6 +1445,29 @@ async function createGrokSession(callInfo) {
       const tenantGrokVoice = getGrokVoiceFromPreferences(voicePrefs.voice_language, voicePrefs.voice_gender);
       console.log(`[Voice] Tenant ${tenantId} preferences: lang=${voicePrefs.voice_language}, gender=${voicePrefs.voice_gender} → Grok voice: ${tenantGrokVoice}`);
 
+      // Session 250.218: Load tenant actions configuration
+      const tenantActions = loadTenantActions(tenantId);
+
+      // Session 250.218: Inject custom action tools into session tools
+      if (tenantActions?.custom?.length > 0) {
+        for (const action of tenantActions.custom) {
+          if (!action.name || !action.description) continue;
+          const properties = {};
+          const required = [];
+          for (const p of (action.parameters || [])) {
+            properties[p.name] = { type: p.type || 'string', description: p.description || p.name };
+            if (p.required) required.push(p.name);
+          }
+          sessionConfig.session.tools.push({
+            type: 'function',
+            name: action.name,
+            description: action.description,
+            parameters: { type: 'object', properties, required }
+          });
+        }
+        console.log(`[Actions] Injected ${tenantActions.custom.length} custom tool(s) for tenant ${tenantId}`);
+      }
+
       // Determine Persona based on Call Context
       const persona = VoicePersonaInjector.getPersona(
         callInfo.from,    // Caller ID
@@ -1522,7 +1545,9 @@ async function createGrokSession(callInfo) {
         audioBuffer: [],
         // Session 250.57: Conversation log for multi-tenant persistence
         // ⛔ RULE: For CLIENT CONSULTATION ONLY - NEVER for KB/RAG
-        conversationLog: []
+        conversationLog: [],
+        // Session 250.218: Tenant actions (external endpoints + custom tools)
+        _actions: tenantActions
       };
 
       activeSessions.set(sessionId, session);
@@ -1752,6 +1777,213 @@ function getQualificationLabel(score) {
 }
 
 // ============================================
+// SESSION 250.218: ACTIONS — Real-Time Business System Connections
+// ============================================
+
+// Mapping: tool name → override type.endpoint
+const ACTION_TOOL_MAP = {
+  browse_catalog: 'catalog.browse',
+  get_item_details: 'catalog.item_details',
+  get_menu: 'catalog.menu',
+  check_item_availability: 'catalog.availability',
+  search_catalog: 'catalog.search',
+  get_services: 'catalog.browse',
+  get_packages: 'catalog.browse',
+  get_vehicles: 'catalog.browse',
+  get_trips: 'catalog.browse',
+  check_order_status: 'commerce.order_status',
+  check_product_stock: 'commerce.product_stock',
+  get_customer_tags: 'commerce.customer_tags',
+  get_available_slots: 'booking.available_slots'
+};
+
+// Private IP ranges to block (SSRF protection)
+const PRIVATE_IP_PATTERNS = [
+  /^localhost$/i,
+  /^127\./,
+  /^10\./,
+  /^172\.(1[6-9]|2\d|3[01])\./,
+  /^192\.168\./,
+  /^0\./,
+  /^\[::1\]/
+];
+
+/**
+ * Validate action URL: must be HTTPS, no private IPs
+ */
+function isValidActionUrl(urlStr) {
+  try {
+    const u = new URL(urlStr);
+    if (u.protocol !== 'https:') return false;
+    if (PRIVATE_IP_PATTERNS.some(p => p.test(u.hostname))) return false;
+    return true;
+  } catch { return false; }
+}
+
+/**
+ * Substitute {{param}} templates in a URL path
+ */
+function substituteTemplate(template, params) {
+  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+    return encodeURIComponent(params[key] || '');
+  });
+}
+
+/**
+ * Execute an external action via HTTPS
+ * @param {{ url: string, headers?: object, timeout?: number, method?: string }} actionConfig
+ * @param {string} endpointPath - e.g. "/products?category={{category}}"
+ * @param {object} params - template substitution values
+ * @returns {Promise<{ success: boolean, data?: any, error?: string }>}
+ */
+function executeAction(actionConfig, endpointPath, params) {
+  return new Promise((resolve) => {
+    // B58 fix: normalize double slashes from URL + endpointPath concatenation
+    const rawUrl = actionConfig.url.replace(/\/+$/, '') + (endpointPath.startsWith('/') || endpointPath.startsWith('?') ? '' : '/') + endpointPath;
+    const fullUrl = substituteTemplate(rawUrl, params);
+    if (!isValidActionUrl(fullUrl)) {
+      resolve({ success: false, error: 'invalid_url' });
+      return;
+    }
+
+    const urlObj = new URL(fullUrl);
+    const timeout = actionConfig.timeout || 5000;
+    const method = (actionConfig.method || 'GET').toUpperCase();
+    const isBodyMethod = method === 'POST' || method === 'PUT' || method === 'PATCH';
+
+    // B54 fix: POST/PUT/PATCH send params as JSON body
+    const bodyData = isBodyMethod && params && Object.keys(params).length > 0
+      ? JSON.stringify(params)
+      : null;
+
+    const reqOptions = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || 443,
+      path: urlObj.pathname + urlObj.search,
+      method,
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'VocalIA-Actions/1.0',
+        ...(actionConfig.headers || {}),
+        ...(bodyData ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(bodyData) } : {})
+      },
+      timeout
+    };
+
+    const req = https.request(reqOptions, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve({ success: true, data: parsed });
+          } else {
+            resolve({ success: false, error: `HTTP ${res.statusCode}` });
+          }
+        } catch {
+          resolve({ success: false, error: 'invalid_json_response' });
+        }
+      });
+    });
+    req.on('error', (e) => resolve({ success: false, error: e.message }));
+    req.on('timeout', () => { req.destroy(); resolve({ success: false, error: 'timeout' }); });
+    if (bodyData) req.write(bodyData);
+    req.end();
+  });
+}
+
+/**
+ * Load tenant actions config from config.json
+ * @param {string} tenantId
+ * @returns {{ overrides: object, custom: Array }|null}
+ */
+function loadTenantActions(tenantId) {
+  if (!tenantId || tenantId === 'default') return null;
+  // B55 fix: sanitize tenantId — block path traversal
+  const safeTenantId = tenantId.replace(/[^a-z0-9_-]/gi, '');
+  if (!safeTenantId || safeTenantId !== tenantId) {
+    console.warn(`[Actions] Rejected unsafe tenantId: ${tenantId}`);
+    return null;
+  }
+  try {
+    const configPath = path.join(__dirname, '..', 'clients', safeTenantId, 'config.json');
+    if (!fs.existsSync(configPath)) return null;
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    if (config.actions && (Object.keys(config.actions.overrides || {}).length > 0 || (config.actions.custom || []).length > 0)) {
+      return config.actions;
+    }
+    return null;
+  } catch (e) {
+    console.warn(`[Actions] Failed to load actions for ${tenantId}:`, e.message);
+    return null;
+  }
+}
+
+/**
+ * Try to execute an action override for a tool call
+ * @returns {{ handled: boolean, result?: object }}
+ */
+async function tryActionOverride(session, toolName, args) {
+  if (!session._actions) return { handled: false };
+
+  const mapping = ACTION_TOOL_MAP[toolName];
+  if (!mapping) return { handled: false };
+
+  const [type, endpoint] = mapping.split('.');
+  const override = session._actions.overrides?.[type];
+  if (!override || !override.url || !override.endpoints?.[endpoint]) {
+    return { handled: false };
+  }
+
+  console.log(`[Actions] Override found for ${toolName} → ${type}.${endpoint}`);
+  const actionResult = await executeAction(override, override.endpoints[endpoint], args);
+
+  if (actionResult.success) {
+    console.log(`[Actions] External call succeeded for ${toolName}`);
+    return { handled: true, result: { success: true, source: 'external', data: actionResult.data } };
+  }
+
+  console.warn(`[Actions] External call failed for ${toolName}: ${actionResult.error} — falling back to local`);
+  return { handled: false };
+}
+
+/**
+ * Handle a custom action (query_external or tenant-defined)
+ */
+async function handleCustomAction(session, actionDef, args) {
+  if (!actionDef || !actionDef.url) {
+    return { success: false, error: 'invalid_custom_action' };
+  }
+
+  // B59 fix: for GET → params in query string; for POST/PUT → params in body (handled by executeAction)
+  const method = (actionDef.method || 'GET').toUpperCase();
+  const isBodyMethod = method === 'POST' || method === 'PUT' || method === 'PATCH';
+
+  const filteredParams = {};
+  (actionDef.parameters || []).forEach(p => {
+    if (args[p.name] !== undefined) filteredParams[p.name] = args[p.name];
+  });
+
+  let endpointPath = '';
+  if (!isBodyMethod && Object.keys(filteredParams).length > 0) {
+    const queryString = Object.entries(filteredParams)
+      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+      .join('&');
+    endpointPath = `?${queryString}`;
+  }
+
+  const actionResult = await executeAction(actionDef, endpointPath, filteredParams);
+  if (actionResult.success) {
+    const data = actionDef.response_path
+      ? actionResult.data?.[actionDef.response_path] ?? actionResult.data
+      : actionResult.data;
+    return { success: true, source: 'external', data };
+  }
+  return { success: false, error: actionResult.error || 'external_call_failed' };
+}
+
+// ============================================
 // FUNCTION CALL HANDLERS (v2.0 - Sales Optimized)
 // ============================================
 
@@ -1763,6 +1995,24 @@ async function handleFunctionCall(session, item) {
   console.log(`[Cognitive-Tools] ${item.name} called (ID: ${callId}) with args:`, JSON.stringify(args));
 
   let result = { success: false, error: "unknown_function" };
+
+  // Session 250.218: Action override — try external endpoint before local handler
+  if (session._actions) {
+    // Custom action (query_external or tenant-defined)
+    const customDef = (session._actions.custom || []).find(a => a.name === item.name);
+    if (customDef) {
+      result = await handleCustomAction(session, customDef, args);
+      if (callId) await sendFunctionResult(session, callId, result);
+      return;
+    }
+    // Override for existing tools
+    const override = await tryActionOverride(session, item.name, args);
+    if (override.handled) {
+      result = override.result;
+      if (callId) await sendFunctionResult(session, callId, result);
+      return;
+    }
+  }
 
   try {
     switch (item.name) {

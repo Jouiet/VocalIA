@@ -702,14 +702,15 @@ describe('T1: Named constant exports', () => {
     assert.ok(m.WEBHOOK_PROVIDERS && typeof m.WEBHOOK_PROVIDERS === 'object');
   });
 
-  test('db-api exports PLAN_QUOTAS with all 4 plans', () => {
+  test('db-api exports PLAN_QUOTAS with all 5 plans', () => {
     const m = safeRequire('../core/db-api.cjs').module;
     if (!m) return;
     assert.ok(m.PLAN_QUOTAS && typeof m.PLAN_QUOTAS === 'object');
     const plans = Object.keys(m.PLAN_QUOTAS);
     assert.ok(plans.includes('starter'), 'Should have starter plan');
     assert.ok(plans.includes('pro'), 'Should have pro plan');
-    assert.ok(plans.length >= 4, 'Should have at least 4 plans');
+    assert.ok(plans.includes('expert_clone'), 'Should have expert_clone plan');
+    assert.ok(plans.length >= 5, 'Should have at least 5 plans');
   });
 
   test('db-api exports PLAN_FEATURES with feature flags', () => {
