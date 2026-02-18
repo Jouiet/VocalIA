@@ -265,6 +265,33 @@ class LLMGateway {
         if (name === 'Claude') return data.content[0].text;
         return data;
     }
+
+    /**
+     * SOTA Pattern Update: Multimodal STT (Session 250.219)
+     * Transcribes audio using Gemini 1.5 Flash (SOTA for transcription/Darija)
+     */
+    async transcribeAudio(buffer, mimeType = 'audio/ogg') {
+        if (!this.geminiKey) throw new Error("GEMINI_API_KEY missing for transcription");
+
+        try {
+            const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            const result = await model.generateContent([
+                {
+                    inlineData: {
+                        data: buffer.toString("base64"),
+                        mimeType: mimeType
+                    }
+                },
+                "Transcribe this audio. If it is in Darija (Moroccan Arabic), translate it to French. Return ONLY the transcription/translation text."
+            ]);
+
+            const response = await result.response;
+            return response.text().trim();
+        } catch (e) {
+            console.error(`[LLM] STT ERROR: ${e.message}`);
+            throw e;
+        }
+    }
 }
 
 module.exports = new LLMGateway();

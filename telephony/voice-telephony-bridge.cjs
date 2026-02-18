@@ -52,6 +52,9 @@ const { ServiceKnowledgeBase } = require('../core/knowledge-base-services.cjs');
 const VoiceEcommerceTools = require('../integrations/voice-ecommerce-tools.cjs');
 const ContextBox = require('../core/ContextBox.cjs');
 const BillingAgent = require('../core/BillingAgent.cjs');
+const AgencyEventBus = require('../core/AgencyEventBus.cjs');
+// Session 250.219: LLM Gateway for Multimodal STT
+const llmGateway = require('../core/gateways/llm-global-gateway.cjs');
 
 // Session 250.44ter: ElevenLabs TTS for Darija (Ghizlane, Jawad, Ali)
 // M11 fix: require inside try/catch to prevent process crash if module missing
@@ -801,6 +804,51 @@ function validateWhatsAppSignature(req, bodyRaw) {
 
   return true;
 }
+
+/**
+ * SOTA Pattern #2: WhatsApp Idempotency Cache (Session 250.219)
+ */
+const whatsappMessageCache = new Map();
+// Cleanup cache every 24h
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, expiry] of whatsappMessageCache.entries()) {
+    if (now > expiry) whatsappMessageCache.delete(id);
+  }
+}, 86400000);
+
+/**
+ * Download Media from Meta Cloud API (Session 250.219)
+ * Used for Voice Notes (SOTA "Voice First" approach)
+ */
+async function downloadMetaMedia(mediaId) {
+  if (!CONFIG.whatsapp.accessToken) throw new Error('WhatsApp Access Token missing');
+
+  // 1. Get Media URL
+  const metaUrl = `https://graph.facebook.com/v21.0/${mediaId}`;
+  const res = await fetch(metaUrl, {
+    headers: { 'Authorization': `Bearer ${CONFIG.whatsapp.accessToken}` }
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Meta Media API Error (${res.status}): ${err}`);
+  }
+
+  const mediaData = await res.json();
+  const downloadUrl = mediaData.url;
+
+  // 2. Download binary
+  const mediaRes = await fetch(downloadUrl, {
+    headers: { 'Authorization': `Bearer ${CONFIG.whatsapp.accessToken}` }
+  });
+
+  if (!mediaRes.ok) throw new Error(`Meta Media Download Error (${mediaRes.status})`);
+
+  const arrayBuffer = await mediaRes.arrayBuffer();
+  return Buffer.from(arrayBuffer);
+}
+
 
 // ============================================
 // SAFE JSON PARSING
@@ -5092,35 +5140,47 @@ async function handleInboundWhatsApp(body) {
   const senderPhone = message.from; // e.g. "212600000000"
   const senderName = contact?.profile?.name || 'Unknown';
 
-  // Deduplication / Idempotence check (Meta retries)
-  // Simple check via message ID cache could be added here
+  // 1. Idempotency Check (Session 250.219)
+  const messageId = message.id;
+  if (whatsappMessageCache.has(messageId)) {
+    console.log(`[WhatsApp] Skipping duplicate message: ${messageId}`);
+    return;
+  }
+  whatsappMessageCache.set(messageId, Date.now() + 3600000); // 1h cache
 
   console.log(`[WhatsApp] Inbound from ${senderName} (${senderPhone}): ${message.type}`);
 
-  // Only handle text messages for now (images/audio later)
-  if (message.type !== 'text') {
-    console.log('[WhatsApp] Ignoring non-text message');
-    // Optional: send "I can only read text" reply
+  const tenantId = 'demo_vocalia'; // Placeholder
+  let userText = '';
+
+  // 2. Handle Message Types (SOTA "Voice First" approach)
+  if (message.type === 'text') {
+    userText = message.text.body;
+  } else if (message.type === 'audio') {
+    console.log(`[WhatsApp] Audio message received (id: ${message.audio.id}). Transcribing...`);
+    try {
+      const audioBuffer = await downloadMetaMedia(message.audio.id);
+      userText = await llmGateway.transcribeAudio(audioBuffer, message.audio.mime_type || 'audio/ogg');
+      console.log(`[WhatsApp] Transcription: "${userText}"`);
+    } catch (e) {
+      console.error(`[WhatsApp] STT Failed: ${e.message}`);
+      await sendWhatsAppMessage(senderPhone, "Désolé, je n'ai pas pu écouter votre message vocal. Pouvez-vous répéter par écrit ?");
+      return;
+    }
+  } else {
+    console.log(`[WhatsApp] Unsupported message type: ${message.type}`);
     return;
   }
 
-  const userText = message.text.body;
-  const tenantId = 'default'; // Multi-tenant: could derive from receiver phone number (value.metadata.phone_number_id)
+  if (!userText) return;
 
   try {
-    // 1. Route to Voice API LLM (Voice-API-Resilient)
-    // We use the same /respond endpoint as the widget
-    // Protocol: HTTP Internal Call
+    // 3. Route to Voice API LLM
     const voiceApiUrl = process.env.VOCALIA_API_URL || 'http://localhost:3004';
-
-    // Config for LLM context
     const payload = {
       message: userText,
-      history: [], // We rely on Voice API's internal history or stateless for now. 
-      // Ideally, we fetch history from ConversationStore but VoiceAPI handles persistence via session ID.
-      // We use phone number as session ID for persistent WhatsApp thread
       sessionId: `wa_${senderPhone}`,
-      language: 'fr', // Auto-detect or default
+      language: 'fr',
       metadata: {
         tenant_id: tenantId,
         channel: 'whatsapp',
@@ -5129,7 +5189,6 @@ async function handleInboundWhatsApp(body) {
       }
     };
 
-    // Call Voice API
     const response = await fetch(`${voiceApiUrl}/respond`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -5137,20 +5196,28 @@ async function handleInboundWhatsApp(body) {
     });
 
     if (!response.ok) {
-      throw new Error(`Voice API returned ${response.status}`);
+      throw new Error(`Voice API error: ${response.status}`);
     }
 
     const data = await response.json();
-    const aiResponse = data.response; // Text response
+    const aiResponse = data.response;
 
-    // 2. Send Reply via WhatsApp
+    // 4. Send Reply
     if (aiResponse) {
       await sendWhatsAppMessage(senderPhone, aiResponse);
     }
 
+    // 5. Analytics (MarketingScience)
+    MarketingScience.trackV2('whatsapp_inbound', {
+      tenant_id: tenantId,
+      sender: senderPhone,
+      message_type: message.type,
+      length: userText.length,
+      status: 'responded'
+    });
+
   } catch (err) {
-    console.error(`[WhatsApp] Error handling message from ${senderPhone}:`, err.message);
-    // Fallback?
+    console.error(`[WhatsApp] Error in inbound flow: ${err.message}`);
   }
 }
 
@@ -5292,3 +5359,18 @@ if (typeof module !== 'undefined') {
     CONFIG
   };
 }
+
+// SOTA Pattern #1: Event-Driven Messaging (Session 250.219)
+// Enables Lead Follow-up skills to send messages without coupling to the bridge.
+AgencyEventBus.subscribe('messaging.send_whatsapp', async (payload) => {
+  console.log(`[EventBus] Received messaging.send_whatsapp for ${payload.phone}`);
+  if (!payload.phone || !payload.text) {
+    console.error('[EventBus] Invalid payload for messaging.send_whatsapp');
+    return;
+  }
+  try {
+    await sendWhatsAppMessage(payload.phone, payload.text);
+  } catch (e) {
+    console.error(`[EventBus] Failed to send WhatsApp from event: ${e.message}`);
+  }
+});
