@@ -148,15 +148,23 @@
   </div>
 </footer>
 <!-- Cookie Consent Banner (RGPD) -->
-<div id="cookie-consent" class="fixed bottom-0 inset-x-0 z-[9999] p-4 transition-transform duration-300 translate-y-full" role="dialog" aria-label="Consentement cookies">
-  <div class="max-w-4xl mx-auto bg-zinc-900 border border-white/[0.08] rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
+<div id="cookie-consent" class="fixed bottom-0 inset-x-0 z-[9999] p-4" role="dialog" aria-label="Consentement cookies"
+  style="transform: translateY(100%); transition: transform 0.3s ease; display: none;">
+  <div
+    class="max-w-4xl mx-auto bg-zinc-900 border border-white/[0.08] rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
     <div class="flex-1 text-sm text-zinc-300">
-      <p data-i18n="cookie.message">Nous utilisons des cookies analytiques (Plausible) pour améliorer votre expérience. Aucune donnée personnelle n'est collectée.</p>
-      <a href="/cookie-policy" class="text-vocalia-400 hover:underline text-xs mt-1 inline-block" data-i18n="cookie.learn_more">En savoir plus</a>
+      <p data-i18n="cookie.message">Nous utilisons des cookies analytiques (Plausible) pour améliorer votre expérience.
+        Aucune donnée personnelle n'est collectée.</p>
+      <a href="/cookie-policy" class="text-vocalia-400 hover:underline text-xs mt-1 inline-block"
+        data-i18n="cookie.learn_more">En savoir plus</a>
     </div>
     <div class="flex gap-2 shrink-0">
-      <button id="cookie-reject" class="px-4 py-2 text-sm text-zinc-400 hover:text-white border border-white/[0.08] rounded-lg transition" data-i18n="cookie.reject">Refuser</button>
-      <button id="cookie-accept" class="px-4 py-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium transition" data-i18n="cookie.accept">Accepter</button>
+      <button id="cookie-reject"
+        class="px-4 py-2 text-sm text-zinc-400 hover:text-white border border-white/[0.08] rounded-lg transition"
+        data-i18n="cookie.reject">Refuser</button>
+      <button id="cookie-accept"
+        class="px-4 py-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium transition"
+        data-i18n="cookie.accept">Accepter</button>
     </div>
   </div>
 </div>
@@ -167,10 +175,18 @@
   if (consent) return;
   var banner = document.getElementById('cookie-consent');
   if (!banner) return;
-  setTimeout(function() { banner.classList.remove('translate-y-full'); }, 1000);
+  // Show banner after 1s delay (slide up)
+  setTimeout(function() {
+    banner.style.display = '';
+    // Force reflow before animating
+    banner.offsetHeight;
+    banner.style.transform = 'translateY(0)';
+  }, 1000);
   function dismiss(value) {
     localStorage.setItem('vocalia_cookie_consent', value);
-    banner.classList.add('translate-y-full');
+    banner.style.transform = 'translateY(100%)';
+    // Remove from DOM after animation completes
+    setTimeout(function() { banner.style.display = 'none'; }, 350);
   }
   var acceptBtn = document.getElementById('cookie-accept');
   var rejectBtn = document.getElementById('cookie-reject');
