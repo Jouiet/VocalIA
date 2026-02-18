@@ -55,12 +55,8 @@ const { getInstance: getConversationStore, TELEPHONY_RETENTION_DAYS } = require(
 const conversationStore = getConversationStore();
 
 // Session 250.220: Async fs helpers
-async function fileExists(p) { try { await fsp.access(p); return true; } catch { return false; } }
-async function atomicWriteFile(filePath, data) {
-  const tmpPath = `${filePath}.tmp`;
-  await fsp.writeFile(tmpPath, data);
-  await fsp.rename(tmpPath, filePath);
-}
+// Session 250.222: Use shared fs-utils (DRY)
+const { fileExists, atomicWriteFile } = require('./fs-utils.cjs');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Session 250.198: Tenant Provisioning — Plan quotas + config.json generation
@@ -70,20 +66,20 @@ async function atomicWriteFile(filePath, data) {
 const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', expert_clone: 'expert_clone', telephony: 'telephony' };
 
 const PLAN_QUOTAS = {
-  starter:      { calls_monthly: 500,  sessions_monthly: 1000,  kb_entries: 100,  conversation_history_days: 30,  users_max: 3 },
-  pro:          { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
-  ecommerce:    { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
+  starter: { calls_monthly: 500, sessions_monthly: 1000, kb_entries: 100, conversation_history_days: 30, users_max: 3 },
+  pro: { calls_monthly: 2000, sessions_monthly: 5000, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
+  ecommerce: { calls_monthly: 2000, sessions_monthly: 5000, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
   expert_clone: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 2000, conversation_history_days: 180, users_max: 50 },
-  telephony:    { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
+  telephony: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
 };
 
 // Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (union of db-api + voice-api schemas)
 const PLAN_FEATURES = {
-  starter:      { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  pro:          { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  ecommerce:    { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
+  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
   expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true },
-  telephony:    { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false }
+  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false }
 };
 
 /**
@@ -108,7 +104,7 @@ function generateTenantIdFromCompany(company) {
  * @param {Object} opts - { plan, company, email }
  * @returns {{ success: boolean, configPath: string }}
  */
-async function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' } = {}) {
+function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' } = {}) {
   const safeTId = sanitizeTenantId(tenantId);
   const normalizedPlan = PLAN_NAME_MAP[plan] || 'starter';
   const quotas = PLAN_QUOTAS[normalizedPlan] || PLAN_QUOTAS.starter;
@@ -177,6 +173,11 @@ async function provisionTenant(tenantId, { plan = 'starter', company = '', email
       onboarding_completed: false,
       last_activity: null,
       notes: ''
+    },
+    market_rules: {
+      markets: { MA: { currency: 'MAD', lang: 'fr' }, FR: { currency: 'EUR', lang: 'fr' } },
+      geo_rules: {},
+      default: { currency: 'MAD', lang: 'fr', timezone: 'Africa/Casablanca' }
     }
   };
 
@@ -184,8 +185,11 @@ async function provisionTenant(tenantId, { plan = 'starter', company = '', email
   const configPath = path.join(clientDir, 'config.json');
 
   try {
-    await fsp.mkdir(clientDir, { recursive: true });
-    await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
+    fs.mkdirSync(clientDir, { recursive: true });
+    // Atomic write: write to tmp then rename (sync)
+    const tmpPath = `${configPath}.tmp`;
+    fs.writeFileSync(tmpPath, JSON.stringify(config, null, 2));
+    fs.renameSync(tmpPath, configPath);
     console.log(`✅ [Provision] Tenant ${safeTId} provisioned (plan: ${normalizedPlan})`);
     return { success: true, configPath };
   } catch (e) {
@@ -324,31 +328,8 @@ function filterUserRecords(records) {
 /**
  * Parse JSON body (with 1MB size limit to prevent DoS)
  */
-const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB
-
-async function parseBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = '';
-    let size = 0;
-    req.on('data', chunk => {
-      size += chunk.length;
-      if (size > MAX_BODY_SIZE) {
-        req.destroy();
-        reject(new Error('Request body too large (max 1MB)'));
-        return;
-      }
-      body += chunk;
-    });
-    req.on('end', () => {
-      try {
-        resolve(body ? JSON.parse(body) : {});
-      } catch (e) {
-        reject(new Error('Invalid JSON'));
-      }
-    });
-    req.on('error', reject);
-  });
-}
+// Session 250.222: Use shared http-utils (DRY)
+const { parseBody, sendJson, sendError } = require('./http-utils.cjs');
 
 /**
  * Parse multipart/form-data body into parts
@@ -404,27 +385,7 @@ function parseMultipart(body, boundary) {
   return parts;
 }
 
-/**
- * Send JSON response
- */
-function sendJson(res, statusCode, data) {
-  res.writeHead(statusCode, getCorsHeaders(res._corsReq));
-  res.end(JSON.stringify(data));
-}
-
-/**
- * Send error response
- */
-function sendError(res, statusCode, message) {
-  // P4 fix: Never expose internal error details in 500 responses
-  // Client-facing errors (4xx) are intentional and safe to return as-is
-  if (statusCode >= 500) {
-    console.error(`[DB-API] Internal error: ${message}`);
-    sendJson(res, statusCode, { error: 'Internal server error' });
-  } else {
-    sendJson(res, statusCode, { error: message });
-  }
-}
+// sendJson and sendError imported from http-utils.cjs
 
 /**
  * Handle Auth Endpoints
@@ -706,7 +667,7 @@ async function applyRateLimit(req, res, limiter) {
   return new Promise(resolve => {
     // Intercept writeHead to detect rate-limit response reliably (no setTimeout race)
     const origWriteHead = res.writeHead;
-    res.writeHead = function(statusCode, ...args) {
+    res.writeHead = function (statusCode, ...args) {
       origWriteHead.call(this, statusCode, ...args);
       if (statusCode === 429) resolve(true);
     };
@@ -3227,7 +3188,7 @@ async function handleRequest(req, res) {
           if (await fileExists(recoveryPath)) {
             global.cartRecoveryQueue = JSON.parse(await fsp.readFile(recoveryPath, 'utf8'));
           }
-        } catch {}
+        } catch { }
       }
       global.cartRecoveryQueue.push(recoveryRequest);
       // D11 fix: trim in-memory queue (not just on disk)
@@ -3368,7 +3329,7 @@ async function handleRequest(req, res) {
         if (await fileExists(recoveryPath)) {
           global.cartRecoveryQueue = JSON.parse(await fsp.readFile(recoveryPath, 'utf8'));
         }
-      } catch {}
+      } catch { }
     }
     const queue = global.cartRecoveryQueue;
     const tenantFilter = query.tenant_id;
@@ -3400,7 +3361,7 @@ async function handleRequest(req, res) {
         const entries = JSON.parse(await fsp.readFile(promoPath, 'utf8'));
         for (const [k, v] of entries) { global.promoCodes.set(k, v); }
       }
-    } catch {}
+    } catch { }
   }
 
   async function _persistPromoCodes() {

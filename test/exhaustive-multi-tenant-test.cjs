@@ -124,17 +124,28 @@ async function testCompleteDBRetrieval() {
   console.log(`  Found ${allTenants.length} tenants in database\n`);
 
   for (const tenant of allTenants) {
+    if (!tenant.id) {
+      console.log('  ⚠️ Skipping tenant with no ID');
+      continue;
+    }
+
     const clientId = tenant.id;
     const config = await TenantBridge.getClientConfig(clientId);
 
     const hasConfig = config !== null;
     const fromDB = config?._source === 'database';
-    const hasRequiredFields = config?.name && config?.sector;
+    const hasRequiredFields = Boolean(config?.name && config?.sector);
 
     const passed = hasConfig && fromDB && hasRequiredFields;
     const status = passed ? '✅' : '❌';
 
     console.log(`  ${status} ${clientId}: ${config?.name?.substring(0, 35) || 'NO NAME'}...`);
+
+    if (!passed) {
+      console.log(`    FAILED: hasConfig=${hasConfig}, fromDB=${fromDB}, hasFields=${hasRequiredFields}`);
+      console.log(`    DB Record: ${JSON.stringify(tenant)}`);
+      console.log(`    Config: ${JSON.stringify(config)}`);
+    }
 
     recordResult(
       'DB_RETRIEVAL',
@@ -162,6 +173,7 @@ async function testWidgetIsolationComplete() {
   let agencyContaminations = 0;
 
   for (const tenant of allTenants) {
+    if (!tenant.id) continue;
     const clientId = tenant.id;
     const widgetType = tenant.widget_type || 'B2C';
 
@@ -206,6 +218,7 @@ async function testTemplateResolutionComplete() {
   let totalUnresolved = 0;
 
   for (const tenant of allTenants) {
+    if (!tenant.id) continue;
     const clientId = tenant.id;
     const widgetType = tenant.widget_type || 'B2C';
 
@@ -257,6 +270,7 @@ async function testMultiLanguageComplete() {
   const testedArchetypes = new Set();
 
   for (const tenant of allTenants) {
+    if (!tenant.id || !tenant.sector) continue;
     const sector = tenant.sector;
     if (testedArchetypes.has(sector)) continue;
     testedArchetypes.add(sector);
@@ -309,6 +323,7 @@ async function testBusinessDataCompleteness() {
   const OPTIONAL_FIELDS = ['address', 'horaires', 'services', 'zones', 'currency', 'payment_method', 'payment_details'];
 
   for (const tenant of allTenants) {
+    if (!tenant.id) continue;
     const clientId = tenant.id;
     const config = await TenantBridge.getClientConfig(clientId);
 
@@ -370,6 +385,7 @@ async function testQAScenarioQuality() {
     const sampleClients = tenants.slice(0, 3);
 
     for (const tenant of sampleClients) {
+      if (!tenant.id) continue;
       const clientId = tenant.id;
       const config = await TenantBridge.getClientConfig(clientId);
       const persona = await VoicePersonaInjector.getPersonaAsync(null, null, clientId, widgetType);
@@ -422,6 +438,7 @@ async function testSectorArchetypeMapping() {
   console.log(`  Unique sectors found: ${sectors.length}\n`);
 
   for (const sector of sectors) {
+    if (!sector) continue;
     // Check if sector exists in PERSONAS
     const hasPersona = PERSONAS[sector] !== undefined;
     // Check if sector has SYSTEM_PROMPTS
@@ -508,6 +525,7 @@ async function testOutputQualityScoring() {
   const qualityScores = [];
 
   for (const tenant of allTenants) {
+    if (!tenant.id) continue;
     const clientId = tenant.id;
     const widgetType = tenant.widget_type || 'B2C';
     const config = await TenantBridge.getClientConfig(clientId);

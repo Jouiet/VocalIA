@@ -227,12 +227,12 @@ describe('T6: Locale sub-key parity', () => {
 describe('T6: Persona consistency', () => {
   const { PERSONAS, SYSTEM_PROMPTS, VOICE_CONFIG } = require('../personas/voice-persona-injector.cjs');
 
-  test('PERSONAS has 38 entries', () => {
-    assert.strictEqual(Object.keys(PERSONAS).length, 38);
+  test('PERSONAS has 40 entries', () => {
+    assert.strictEqual(Object.keys(PERSONAS).length, 40);
   });
 
-  test('SYSTEM_PROMPTS has 38 entries', () => {
-    assert.strictEqual(Object.keys(SYSTEM_PROMPTS).length, 38);
+  test('SYSTEM_PROMPTS has 40 entries', () => {
+    assert.strictEqual(Object.keys(SYSTEM_PROMPTS).length, 40);
   });
 
   test('PERSONAS and SYSTEM_PROMPTS have the same keys', () => {
@@ -317,8 +317,8 @@ describe('T6: Telephony function tools', () => {
 describe('T6: KB quota plans', () => {
   const { PLAN_QUOTAS } = require('../core/kb-quotas.cjs');
 
-  test('KB quotas cover free/starter/pro/expert_clone/enterprise', () => {
-    const expected = ['free', 'starter', 'pro', 'expert_clone', 'enterprise'];
+  test('KB quotas cover starter/pro/ecommerce/expert_clone/telephony', () => {
+    const expected = ['starter', 'pro', 'ecommerce', 'expert_clone', 'telephony'];
     for (const plan of expected) {
       assert.ok(PLAN_QUOTAS[plan],
         `KB PLAN_QUOTAS missing plan: ${plan}`);
@@ -340,10 +340,9 @@ describe('T6: KB quota plans', () => {
   });
 
   test('KB quotas increase with plan tier (max_entries)', () => {
-    assert.ok(PLAN_QUOTAS.free.max_entries < PLAN_QUOTAS.starter.max_entries);
     assert.ok(PLAN_QUOTAS.starter.max_entries < PLAN_QUOTAS.pro.max_entries);
     assert.ok(PLAN_QUOTAS.pro.max_entries < PLAN_QUOTAS.expert_clone.max_entries);
-    assert.ok(PLAN_QUOTAS.expert_clone.max_entries < PLAN_QUOTAS.enterprise.max_entries);
+    assert.ok(PLAN_QUOTAS.expert_clone.max_entries < PLAN_QUOTAS.telephony.max_entries);
   });
 });
 

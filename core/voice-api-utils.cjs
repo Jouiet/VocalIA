@@ -122,7 +122,8 @@ function sanitizeInput(text) {
     }
   }
 
-  sanitized = sanitized.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+  sanitized = sanitized.replace(/[\t\n\r\x0B\x0C]/g, ' ');
+  sanitized = sanitized.replace(/[\x00-\x08\x0E-\x1F\x7F-\x9F]/g, '');
   sanitized = sanitized.replace(/\s+/g, ' ').trim();
 
   return sanitized;
@@ -317,9 +318,9 @@ VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
 - تكامل مع: CRM، Shopify، Stripe، Calendar
 
 الأسعار:
-- Starter: 499 درهم/شهر
-- Pro: 999 درهم/شهر
-- Enterprise: على المقاس
+- Starter: 490 درهم/شهر
+- Pro / E-commerce: 990 درهم/شهر
+- Telephony: 1990 درهم/شهر + 1.00 درهم/دقيقة
 
 قواعد الجواب:
 1. جاوب بالدارجة المغربية الأصيلة

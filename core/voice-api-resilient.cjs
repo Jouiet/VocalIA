@@ -36,7 +36,25 @@ const {
   RateLimiter,
   setSecurityHeaders
 } = require('../lib/security-utils.cjs');
-const { sanitizeTenantId } = require('./voice-api-utils.cjs');
+const {
+  sanitizeTenantId,
+  calculateNPS,
+  estimateNPS,
+  safeJsonParse,
+  sanitizeInput,
+  extractBudget,
+  extractTimeline,
+  extractDecisionMaker,
+  extractIndustryFit,
+  extractEmail,
+  extractPhone,
+  extractName,
+  calculateLeadScore,
+  getLeadStatus,
+  SYSTEM_PROMPT,
+  getSystemPromptForLanguage,
+  generateSocialProofMessages
+} = require('./voice-api-utils.cjs');
 
 // Session 250.171: JWT for admin endpoint auth (C2-AUDIT)
 // Session 250.173: Use auth-service CONFIG.jwt.secret to avoid split-brain (NC1)
@@ -66,12 +84,8 @@ function checkAdminAuth(req, res) {
 }
 
 // Session 250.220: Async file helpers (P2 — sync I/O → async in handlers)
-async function fileExists(p) { try { await fsp.access(p); return true; } catch { return false; } }
-async function atomicWriteFile(filePath, data) {
-  const tmpPath = `${filePath}.tmp`;
-  await fsp.writeFile(tmpPath, data);
-  await fsp.rename(tmpPath, filePath);
-}
+// Session 250.222: Use shared fs-utils (DRY)
+const { fileExists, atomicWriteFile } = require('./fs-utils.cjs');
 
 // Session 250.210: Error alerting via ntfy.sh
 const errorScience = require('./ErrorScience.cjs');
@@ -172,55 +186,7 @@ const getProviderConfig = async (tenantId) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const QUALIFICATION = {
-  // Scoring weights (total = 100)
-  weights: {
-    budget: 30,         // Has budget in range
-    timeline: 25,       // Ready to start soon
-    decisionMaker: 20,  // Is or can access decision maker
-    fit: 15,            // E-commerce or B2B PME
-    engagement: 10      // Engaged in conversation
-  },
-
-  // Budget tiers
-  budgetTiers: {
-    high: { min: 1000, score: 30, label: 'Growth+' },      // €1000+ = Growth pack
-    medium: { min: 500, score: 20, label: 'Essentials' },  // €500-1000 = Essentials
-    low: { min: 300, score: 10, label: 'Quick Win' },      // €300-500 = Quick Win
-    minimal: { min: 0, score: 5, label: 'Nurture' }        // <€300 = Nurture sequence
-  },
-
-  // Timeline scoring
-  timelineTiers: {
-    immediate: { keywords: ['urgent', 'asap', 'maintenant', 'cette semaine', 'immédiat'], score: 25 },
-    short: { keywords: ['ce mois', 'bientôt', 'rapidement', '2 semaines', 'prochainement'], score: 20 },
-    medium: { keywords: ['prochain mois', 'trimestre', '1-3 mois', 'q1', 'q2'], score: 12 },
-    long: { keywords: ['plus tard', 'explorer', 'pas pressé', 'futur'], score: 5 }
-  },
-
-  // Decision maker patterns
-  decisionMakerPatterns: {
-    yes: ['je décide', 'c\'est moi', 'mon entreprise', 'je suis le', 'fondateur', 'ceo', 'directeur', 'owner', 'gérant', 'patron'],
-    partial: ['avec mon', 'équipe', 'nous décidons', 'je propose', 'valider avec'],
-    no: ['mon chef', 'supérieur', 'je transmets', 'je demande']
-  },
-
-  // Industry fit scoring
-  industryFit: {
-    perfect: { keywords: ['e-commerce', 'boutique en ligne', 'shopify', 'woocommerce', 'klaviyo', 'email marketing'], score: 15 },
-    good: { keywords: ['pme', 'b2b', 'saas', 'startup', 'agence', 'services'], score: 12 },
-    moderate: { keywords: ['entreprise', 'société', 'business', 'commerce'], score: 8 },
-    low: { keywords: ['particulier', 'personnel', 'hobby'], score: 3 }
-  },
-
-  // Lead status thresholds
-  thresholds: {
-    hot: 75,      // Score >= 75 = Hot lead (immediate follow-up)
-    warm: 50,     // Score 50-74 = Warm lead (schedule call)
-    cool: 25,     // Score 25-49 = Cool lead (nurture sequence)
-    cold: 0       // Score < 25 = Cold lead (long-term nurture)
-  },
-
-  // HubSpot integration
+  ...require('./voice-api-utils.cjs').QUALIFICATION,
   hubspot: {
     enabled: !!ENV.HUBSPOT_API_KEY,
     apiKey: ENV.HUBSPOT_API_KEY,
@@ -313,69 +279,7 @@ const adminMetrics = {
  * @param {string} lang - Language code (fr/en/es/ar/ary)
  * @returns {Array} - Messages array with text, icon SVG, time
  */
-function generateSocialProofMessages(lang) {
-  const messages = [];
-  const now = new Date();
-  const todayKey = now.toISOString().slice(0, 10);
-  const callsToday = dashboardMetrics.dailyCalls[todayKey] || 0;
-  const totalCalls = dashboardMetrics.totalCalls || 0;
-  const leadsQualified = dashboardMetrics.totalLeadsQualified || 0;
-  const hotLeads = dashboardMetrics.hotLeads || 0;
-  const checkIcon = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
-  const trendIcon = '<path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>';
-  const calendarIcon = '<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>';
-  const timeStr = now.toLocaleTimeString(lang === 'ar' || lang === 'ary' ? 'ar-MA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR', { hour: '2-digit', minute: '2-digit' });
-
-  const templates = {
-    fr: {
-      callsToday: (n) => `${n} consultation${n > 1 ? 's' : ''} aujourd'hui`,
-      leadsQualified: (n) => `${n} prospect${n > 1 ? 's' : ''} qualifié${n > 1 ? 's' : ''} ce mois`,
-      totalCalls: (n) => `Plus de ${n} entreprises nous font confiance`,
-      hotLeads: (n) => `${n} rendez-vous confirmé${n > 1 ? 's' : ''} ce mois`
-    },
-    en: {
-      callsToday: (n) => `${n} consultation${n > 1 ? 's' : ''} today`,
-      leadsQualified: (n) => `${n} qualified prospect${n > 1 ? 's' : ''} this month`,
-      totalCalls: (n) => `More than ${n} businesses trust us`,
-      hotLeads: (n) => `${n} confirmed appointment${n > 1 ? 's' : ''} this month`
-    },
-    es: {
-      callsToday: (n) => `${n} consulta${n > 1 ? 's' : ''} hoy`,
-      leadsQualified: (n) => `${n} prospecto${n > 1 ? 's' : ''} calificado${n > 1 ? 's' : ''} este mes`,
-      totalCalls: (n) => `Más de ${n} empresas confían en nosotros`,
-      hotLeads: (n) => `${n} cita${n > 1 ? 's' : ''} confirmada${n > 1 ? 's' : ''} este mes`
-    },
-    ar: {
-      callsToday: (n) => `${n} استشارة اليوم`,
-      leadsQualified: (n) => `${n} عميل محتمل مؤهل هذا الشهر`,
-      totalCalls: (n) => `أكثر من ${n} شركة تثق بنا`,
-      hotLeads: (n) => `${n} موعد مؤكد هذا الشهر`
-    },
-    ary: {
-      callsToday: (n) => `${n} استشارة اليوم`,
-      leadsQualified: (n) => `${n} كليان مؤهل هاد الشهر`,
-      totalCalls: (n) => `كثر من ${n} شركة كيتيقو فينا`,
-      hotLeads: (n) => `${n} موعد مأكد هاد الشهر`
-    }
-  };
-
-  const t = templates[lang] || templates.fr;
-
-  if (callsToday > 0) {
-    messages.push({ text: t.callsToday(callsToday), icon: checkIcon, time: timeStr });
-  }
-  if (leadsQualified > 0) {
-    messages.push({ text: t.leadsQualified(leadsQualified), icon: trendIcon, time: timeStr });
-  }
-  if (totalCalls > 10) {
-    messages.push({ text: t.totalCalls(totalCalls), icon: checkIcon, time: timeStr });
-  }
-  if (hotLeads > 0) {
-    messages.push({ text: t.hotLeads(hotLeads), icon: calendarIcon, time: timeStr });
-  }
-
-  return messages;
-}
+// generateSocialProofMessages imported from voice-api-utils.cjs
 
 // System logs buffer (keeps last 100 logs)
 const systemLogs = [];
@@ -856,46 +760,13 @@ function getDashboardMetrics() {
 /**
  * Calculate NPS from actual responses
  */
-function calculateNPS(responses) {
-  if (!responses.length) return 0;
-  const promoters = responses.filter(r => r >= 9).length;
-  const detractors = responses.filter(r => r <= 6).length;
-  return Math.round(((promoters - detractors) / responses.length) * 100);
-}
-
-/**
- * Estimate NPS from lead quality metrics
- */
-function estimateNPS(hotLeads, warmLeads, totalLeads) {
-  if (totalLeads === 0) return 0;
-  const promoterRatio = hotLeads / totalLeads;
-  const passiveRatio = warmLeads / totalLeads;
-  const detractorRatio = 1 - promoterRatio - passiveRatio;
-  return Math.round((promoterRatio - Math.max(0, detractorRatio)) * 100);
-}
+// NPS functions imported from voice-api-utils.cjs
 
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SYSTEM PROMPT - VocalIA Voice AI Platform
 // ─────────────────────────────────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are the VocalIA Voice AI Assistant.
-- Markets: Morocco (MAD), Europe (EUR), International (USD)
-
-WHAT VOCALIA OFFERS:
-1. Voice Widget: JavaScript embed for 24/7 website voice assistant
-2. Voice Telephony: PSTN AI Bridge via Twilio for real phone calls
-3. 38 Industry Personas: Pre-configured for dental, property, contractors, restaurants, etc.
-4. MCP Server: 203 integration tools (CRM, e-commerce, payments, calendar)
-
-RESPONSE PROTOCOL:
-- VOICE OPTIMIZED: Max 2-3 sentences. Speak naturally.
-- HONEST: Only claim features VocalIA actually has.
-- CONVERSION FOCUS: Guide towards demo or vocalia.ma/booking.
-
-GUIDELINES:
-- Language: Follow the user's language (FR/EN/ES/AR/Darija).
-- Internally assess if the prospect has budget, authority, need, and timeline. NEVER mention "BANT" or any qualification framework name to the user.
-- For integration questions, reference MCP Server capabilities.`;
+// SYSTEM_PROMPT (duplicate) removed
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DYNAMIC LANGUAGE DETECTION (Session 250.162 — Fix mid-conversation switching)
@@ -952,14 +823,7 @@ function detectArabicVariant(message) {
 // ─────────────────────────────────────────────────────────────────────────────
 // SAFE JSON PARSING (P2 FIX - Session 117)
 // ─────────────────────────────────────────────────────────────────────────────
-function safeJsonParse(str, context = 'unknown') {
-  try {
-    return { success: true, data: JSON.parse(str) };
-  } catch (err) {
-    console.error(`[JSON Parse Error] Context: ${context}, Error: ${err.message}`);
-    return { success: false, error: err.message, raw: str?.substring(0, 200) };
-  }
-}
+// safeJsonParse imported from voice-api-utils.cjs
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HTTP REQUEST HELPER
@@ -1073,39 +937,7 @@ function httpRequestStreaming(url, options, body, onChunk) {
  * Sanitize user input to prevent prompt injection and excessive tokens
  * Session 179-ULTRATHINK Hardening
  */
-function sanitizeInput(text) {
-  if (!text || typeof text !== 'string') return '';
-
-  // 1. Length limiting (Prevent Dos via extremely large prompts)
-  let sanitized = text.substring(0, 1000);
-
-  // 2. Prompt Injection Blacklist (Aggressive)
-  const injectionPatterns = [
-    /ignore previous instructions/gi,
-    /ignore all previous/gi,
-    /system prompt/gi,
-    /forget everything/gi,
-    /new instructions/gi,
-    /tu es maintenant/gi, // "You are now" in French
-    /votre nouveau rôle/gi, // "Your new role"
-    /act as/gi,
-    /speak as/gi
-  ];
-
-  for (const pattern of injectionPatterns) {
-    if (pattern.test(sanitized)) {
-      console.warn(`[Security] Potential prompt injection detected and neutralized: ${pattern}`);
-      sanitized = sanitized.replace(pattern, '[REDACTED_SECURITY_POLICY]');
-    }
-  }
-
-  // 3. Replace whitespace-class control chars with space, remove truly non-printable
-  sanitized = sanitized.replace(/[\t\n\r\x0B\x0C]/g, ' ');
-  sanitized = sanitized.replace(/[\x00-\x08\x0E-\x1F\x7F-\x9F]/g, '');
-  sanitized = sanitized.replace(/\s+/g, ' ').trim();
-
-  return sanitized;
-}
+// sanitizeInput imported from voice-api-utils.cjs
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PROVIDER API CALLS
@@ -1414,37 +1246,7 @@ loadLanguageAssets();
  * For Darija (ary): Uses full VocalIA context - FACTUALLY ACCURATE
  * Session 250.33: VocalIA is a Voice AI SaaS Platform (Widget + Telephony)
  */
-function getSystemPromptForLanguage(language = 'fr') {
-  // Non-Darija: use base English prompt (works well with all models)
-  if (language !== 'ary') {
-    return SYSTEM_PROMPT;
-  }
-
-  // Darija: FACTUALLY ACCURATE system prompt
-  // FACT: VocalIA = Voice AI Platform (Widget + Telephony)
-  return `أنت المساعد الصوتي ديال VocalIA.
-
-شكون حنا (الحقيقة):
-VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
-1. Voice Widget: تحطو فالموقع ديالك وكيجاوب على العملاء 24/7
-2. Voice Telephony: رقم تيليفون ذكي كيجاوب على المكالمات
-
-شنو كنقدمو:
-- 38 persona حسب الصناعة: طبيب، عقار، مطعم، متجر...
-- 5 لغات: فرنسية، إنجليزية، إسبانية، عربية، دارجة
-- تكامل مع: CRM، Shopify، Stripe، Calendar
-
-الأسعار:
-- Starter: 490 درهم/شهر
-- Pro / E-commerce: 990 درهم/شهر
-- Telephony: 1990 درهم/شهر + 1.00 درهم/دقيقة
-
-قواعد الجواب:
-1. جاوب بالدارجة المغربية الأصيلة
-2. جملتين-3 جمل فقط
-3. كون صريح - VocalIA = Voice AI فقط
-4. وجه نحو vocalia.ma/booking للديمو`;
-}
+// getSystemPromptForLanguage imported from voice-api-utils.cjs
 
 // [REMOVED] getLocalResponse - Dead code (Zero Regex Policy)
 
@@ -1452,142 +1254,7 @@ VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
 // LEAD QUALIFICATION & SCORING (Session 127bis Phase 2)
 // ─────────────────────────────────────────────────────────────────────────────
 
-function extractBudget(text) {
-  const lower = text.toLowerCase();
-
-  // Look for explicit amounts
-  const amountMatch = lower.match(/(\d+(?:[.,]\d+)?)\s*(?:€|euros?|eur)/i);
-  if (amountMatch) {
-    const amount = parseFloat(amountMatch[1].replace(',', '.'));
-    for (const [tier, config] of Object.entries(QUALIFICATION.budgetTiers)) {
-      if (amount >= config.min) {
-        return { amount, tier, score: config.score, label: config.label };
-      }
-    }
-  }
-
-  // Look for pack mentions
-  if (lower.includes('growth') || lower.includes('1399') || lower.includes('1400')) {
-    return { tier: 'high', score: 30, label: 'Growth+' };
-  }
-  if (lower.includes('essentials') || lower.includes('790') || lower.includes('800')) {
-    return { tier: 'medium', score: 20, label: 'Essentials' };
-  }
-  if (lower.includes('quick win') || lower.includes('390') || lower.includes('400')) {
-    return { tier: 'low', score: 10, label: 'Quick Win' };
-  }
-
-  return null;
-}
-
-function extractTimeline(text) {
-  const lower = text.toLowerCase();
-
-  for (const [tier, config] of Object.entries(QUALIFICATION.timelineTiers)) {
-    if (config.keywords.some(kw => lower.includes(kw))) {
-      return { tier, score: config.score };
-    }
-  }
-
-  return null;
-}
-
-function extractDecisionMaker(text) {
-  const lower = text.toLowerCase();
-
-  for (const pattern of QUALIFICATION.decisionMakerPatterns.yes) {
-    if (lower.includes(pattern)) {
-      return { isDecisionMaker: true, score: 20 };
-    }
-  }
-
-  for (const pattern of QUALIFICATION.decisionMakerPatterns.partial) {
-    if (lower.includes(pattern)) {
-      return { isDecisionMaker: 'partial', score: 12 };
-    }
-  }
-
-  for (const pattern of QUALIFICATION.decisionMakerPatterns.no) {
-    if (lower.includes(pattern)) {
-      return { isDecisionMaker: false, score: 5 };
-    }
-  }
-
-  return null;
-}
-
-function extractIndustryFit(text) {
-  const lower = text.toLowerCase();
-
-  for (const [tier, config] of Object.entries(QUALIFICATION.industryFit)) {
-    if (config.keywords.some(kw => lower.includes(kw))) {
-      return { tier, score: config.score };
-    }
-  }
-
-  return null;
-}
-
-function extractEmail(text) {
-  const emailMatch = text.match(/[\w.-]+@[\w.-]+\.\w+/i);
-  return emailMatch ? emailMatch[0].toLowerCase() : null;
-}
-
-function extractPhone(text) {
-  // French phone formats
-  const phoneMatch = text.match(/(?:\+33|0)[\s.-]?[1-9](?:[\s.-]?\d{2}){4}/);
-  return phoneMatch ? phoneMatch[0].replace(/[\s.-]/g, '') : null;
-}
-
-function extractName(text) {
-  // Look for "je suis X" or "je m'appelle X" patterns
-  const nameMatch = text.match(/(?:je suis|je m'appelle|my name is|i'm|i am)\s+([A-Z][a-zéèêëàâäùûü]+(?:\s+[A-Z][a-zéèêëàâäùûü]+)?)/i);
-  return nameMatch ? nameMatch[1].trim() : null;
-}
-
-function calculateLeadScore(session) {
-  let score = 0;
-  const breakdown = {};
-
-  // Budget score
-  if (session.extractedData.budget) {
-    score += session.extractedData.budget.score;
-    breakdown.budget = session.extractedData.budget.score;
-  }
-
-  // Timeline score
-  if (session.extractedData.timeline) {
-    score += session.extractedData.timeline.score;
-    breakdown.timeline = session.extractedData.timeline.score;
-  }
-
-  // Decision maker score
-  if (session.extractedData.decisionMaker) {
-    score += session.extractedData.decisionMaker.score;
-    breakdown.decisionMaker = session.extractedData.decisionMaker.score;
-  }
-
-  // Industry fit score
-  if (session.extractedData.industry) {
-    score += session.extractedData.industry.score;
-    breakdown.industry = session.extractedData.industry.score;
-  }
-
-  // Engagement score (based on message count)
-  const messageCount = session.messages.length;
-  const engagementScore = Math.min(10, messageCount * 2);
-  score += engagementScore;
-  breakdown.engagement = engagementScore;
-
-  return { score, breakdown };
-}
-
-function getLeadStatus(score) {
-  if (score >= QUALIFICATION.thresholds.hot) return 'hot';
-  if (score >= QUALIFICATION.thresholds.warm) return 'warm';
-  if (score >= QUALIFICATION.thresholds.cool) return 'cool';
-  return 'cold';
-}
+// Lead Extraction Functions imported from voice-api-utils.cjs
 
 function processQualificationData(session, message, language = 'fr') {
   const extracted = session.extractedData;
@@ -1822,7 +1489,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
   // Logic: Check if RAG mention an order, and verify with live sensors
   // Session 250.89: Only if ECOM_TOOLS.checkOrderStatus exists AND tenant has Shopify
   if ((ragContext.toLowerCase().includes('order') || lower.includes('order') || lower.includes('commande')) &&
-      typeof ECOM_TOOLS.checkOrderStatus === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
+    typeof ECOM_TOOLS.checkOrderStatus === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     if (session?.extractedData?.email) {
       try {
         const order = await ECOM_TOOLS.checkOrderStatus(session.extractedData.email, null, tenantId, language);
@@ -1854,7 +1521,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   // Session 250.89: Only check stock if ECOM_TOOLS.checkStock exists AND tenant has Shopify configured
   if ((ragContext.toLowerCase().includes('stock') || lower.includes('stock') || lower.includes('dispo')) &&
-      typeof ECOM_TOOLS.checkStock === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
+    typeof ECOM_TOOLS.checkStock === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     // Extract potential product name from message or RAG
     const productMatch = userMessage.match(/(?:stock|dispo|about)\s+(?:de\s+|du\s+|d')?([a-z0-9\s]+)/i);
     const query = productMatch ? productMatch[1].trim() : userMessage;
@@ -2694,7 +2361,7 @@ function startServer(port = 3004) {
           if (!(await fileExists(feedbackDir))) await fsp.mkdir(feedbackDir, { recursive: true });
           const file = path.join(feedbackDir, `${safeTenant}.json`);
           let feedbacks = [];
-          try { feedbacks = JSON.parse(await fsp.readFile(file, 'utf8')); } catch {}
+          try { feedbacks = JSON.parse(await fsp.readFile(file, 'utf8')); } catch { }
           if (feedbacks.length >= 10000) feedbacks = feedbacks.slice(-5000);
           feedbacks.push({ sessionId, messageIndex, rating, created_at: new Date().toISOString() });
           await atomicWriteFile(file, JSON.stringify(feedbacks, null, 2));
@@ -3032,7 +2699,7 @@ function startServer(port = 3004) {
               const safeTenantId = tenantId; // already sanitized at L2699
               const bookingsFile = path.join(bookingsDir, `${safeTenantId}.json`);
               let bookings = [];
-              try { bookings = JSON.parse(await fsp.readFile(bookingsFile, 'utf8')); } catch {}
+              try { bookings = JSON.parse(await fsp.readFile(bookingsFile, 'utf8')); } catch { }
               bookings.push({
                 id: `booking_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
                 name: bookingData.name,
