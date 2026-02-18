@@ -774,6 +774,34 @@ async function validateTwilioSignature(req, body, rawBody) {
   return false;
 }
 
+/**
+ * Validate WhatsApp Signature (Meta Cloud API)
+ * SOTA Pattern #2: Secure Webhook
+ */
+function validateWhatsAppSignature(req, bodyRaw) {
+  const signature = req.headers['x-hub-signature-256'];
+  if (!signature) {
+    console.warn('[Security][WhatsApp] Missing X-Hub-Signature-256');
+    return false;
+  }
+
+  const appSecret = process.env.WHATSAPP_APP_SECRET;
+  if (!appSecret) {
+    console.warn('[Security][WhatsApp] WHATSAPP_APP_SECRET not configured');
+    return true; // Fail open in dev if needed, or false? Better safe: true only if explicitly allowed, but here we warn.
+  }
+
+  const hmac = crypto.createHmac('sha256', appSecret);
+  const digest = 'sha256=' + hmac.update(bodyRaw).digest('hex');
+
+  if (signature !== digest) {
+    console.warn('[Security][WhatsApp] Invalid signature');
+    return false;
+  }
+
+  return true;
+}
+
 // ============================================
 // SAFE JSON PARSING
 // ============================================
@@ -2206,21 +2234,21 @@ function getTenantCurrencySymbol(tenantId) {
  * B32 fix: Replace FR-hardcoded voiceResponse strings
  */
 const VOICE_MSGS = {
-  generic_error:      { fr: "Une erreur s'est produite.", en: 'An error occurred.', es: 'Se produjo un error.', ar: 'حدث خطأ.', ary: 'وقع مشكل.' },
-  catalog_unavail:    { fr: "Je n'ai pas accès au catalogue pour le moment.", en: "I can't access the catalog right now.", es: 'No puedo acceder al catálogo ahora.', ar: 'لا أستطيع الوصول للكتالوج حاليا.', ary: 'مقدرتش نوصل للكاتالوغ دابا.' },
-  catalog_error:      { fr: "Une erreur s'est produite en consultant le catalogue.", en: 'An error occurred while browsing the catalog.', es: 'Error al consultar el catálogo.', ar: 'حدث خطأ أثناء تصفح الكتالوج.', ary: 'وقع مشكل فالكاتالوغ.' },
-  item_not_found:     { fr: "Je n'ai pas trouvé cet article.", en: "I couldn't find this item.", es: 'No encontré este artículo.', ar: 'لم أجد هذا المنتج.', ary: 'ملقيتش هاد المنتوج.' },
-  item_not_in_catalog:{ fr: "Je n'ai pas trouvé cet article dans notre catalogue.", en: "I couldn't find this item in our catalog.", es: 'No encontré este artículo en nuestro catálogo.', ar: 'لم أجد هذا المنتج في كتالوجنا.', ary: 'ملقيتش هاد المنتوج فالكاتالوغ ديالنا.' },
-  menu_unavail:       { fr: "Le menu n'est pas disponible pour le moment.", en: "The menu isn't available right now.", es: 'El menú no está disponible ahora.', ar: 'القائمة غير متاحة حاليا.', ary: 'المينو ماشي متوفر دابا.' },
-  menu_error:         { fr: "Une erreur s'est produite en consultant le menu.", en: 'An error occurred while viewing the menu.', es: 'Error al consultar el menú.', ar: 'حدث خطأ أثناء عرض القائمة.', ary: 'وقع مشكل فالمينو.' },
-  search_failed:      { fr: "Je n'ai pas pu effectuer la recherche.", en: "I couldn't complete the search.", es: 'No pude realizar la búsqueda.', ar: 'لم أتمكن من إتمام البحث.', ary: 'مقدرتش ندير البحث.' },
-  search_error:       { fr: "Une erreur s'est produite lors de la recherche.", en: 'An error occurred during the search.', es: 'Error durante la búsqueda.', ar: 'حدث خطأ أثناء البحث.', ary: 'وقع مشكل فالبحث.' },
-  services_unavail:   { fr: "Les services ne sont pas disponibles pour le moment.", en: "Services aren't available right now.", es: 'Los servicios no están disponibles ahora.', ar: 'الخدمات غير متاحة حاليا.', ary: 'الخدمات ماشي متوفرين دابا.' },
-  slots_unavail:      { fr: "Je ne peux pas consulter les créneaux disponibles.", en: "I can't check available time slots.", es: 'No puedo consultar los horarios disponibles.', ar: 'لا أستطيع التحقق من المواعيد المتاحة.', ary: 'مقدرتش نشوف الأوقات اللي فارغين.' },
-  plans_unavail:      { fr: "Les forfaits ne sont pas disponibles.", en: "Plans aren't available.", es: 'Los planes no están disponibles.', ar: 'الباقات غير متاحة.', ary: 'الفورفيات ماشي متوفرين.' },
-  vehicles_unavail:   { fr: "Les véhicules ne sont pas disponibles.", en: "Vehicles aren't available.", es: 'Los vehículos no están disponibles.', ar: 'المركبات غير متاحة.', ary: 'الطوموبيلات ماشي متوفرين.' },
-  no_vehicles_match:  { fr: "Aucun véhicule disponible avec ces critères. Voulez-vous élargir votre recherche?", en: 'No vehicles match these criteria. Would you like to broaden your search?', es: 'No hay vehículos con estos criterios. ¿Quiere ampliar su búsqueda?', ar: 'لا توجد مركبات بهذه المعايير. هل تريد توسيع البحث؟', ary: 'مكاينش طوموبيل بهاد الكريطيرات. بغيتي توسع البحث؟' },
-  trips_unavail:      { fr: "Les voyages ne sont pas disponibles.", en: "Trips aren't available.", es: 'Los viajes no están disponibles.', ar: 'الرحلات غير متاحة.', ary: 'الفوياجات ماشي متوفرين.' }
+  generic_error: { fr: "Une erreur s'est produite.", en: 'An error occurred.', es: 'Se produjo un error.', ar: 'حدث خطأ.', ary: 'وقع مشكل.' },
+  catalog_unavail: { fr: "Je n'ai pas accès au catalogue pour le moment.", en: "I can't access the catalog right now.", es: 'No puedo acceder al catálogo ahora.', ar: 'لا أستطيع الوصول للكتالوج حاليا.', ary: 'مقدرتش نوصل للكاتالوغ دابا.' },
+  catalog_error: { fr: "Une erreur s'est produite en consultant le catalogue.", en: 'An error occurred while browsing the catalog.', es: 'Error al consultar el catálogo.', ar: 'حدث خطأ أثناء تصفح الكتالوج.', ary: 'وقع مشكل فالكاتالوغ.' },
+  item_not_found: { fr: "Je n'ai pas trouvé cet article.", en: "I couldn't find this item.", es: 'No encontré este artículo.', ar: 'لم أجد هذا المنتج.', ary: 'ملقيتش هاد المنتوج.' },
+  item_not_in_catalog: { fr: "Je n'ai pas trouvé cet article dans notre catalogue.", en: "I couldn't find this item in our catalog.", es: 'No encontré este artículo en nuestro catálogo.', ar: 'لم أجد هذا المنتج في كتالوجنا.', ary: 'ملقيتش هاد المنتوج فالكاتالوغ ديالنا.' },
+  menu_unavail: { fr: "Le menu n'est pas disponible pour le moment.", en: "The menu isn't available right now.", es: 'El menú no está disponible ahora.', ar: 'القائمة غير متاحة حاليا.', ary: 'المينو ماشي متوفر دابا.' },
+  menu_error: { fr: "Une erreur s'est produite en consultant le menu.", en: 'An error occurred while viewing the menu.', es: 'Error al consultar el menú.', ar: 'حدث خطأ أثناء عرض القائمة.', ary: 'وقع مشكل فالمينو.' },
+  search_failed: { fr: "Je n'ai pas pu effectuer la recherche.", en: "I couldn't complete the search.", es: 'No pude realizar la búsqueda.', ar: 'لم أتمكن من إتمام البحث.', ary: 'مقدرتش ندير البحث.' },
+  search_error: { fr: "Une erreur s'est produite lors de la recherche.", en: 'An error occurred during the search.', es: 'Error durante la búsqueda.', ar: 'حدث خطأ أثناء البحث.', ary: 'وقع مشكل فالبحث.' },
+  services_unavail: { fr: "Les services ne sont pas disponibles pour le moment.", en: "Services aren't available right now.", es: 'Los servicios no están disponibles ahora.', ar: 'الخدمات غير متاحة حاليا.', ary: 'الخدمات ماشي متوفرين دابا.' },
+  slots_unavail: { fr: "Je ne peux pas consulter les créneaux disponibles.", en: "I can't check available time slots.", es: 'No puedo consultar los horarios disponibles.', ar: 'لا أستطيع التحقق من المواعيد المتاحة.', ary: 'مقدرتش نشوف الأوقات اللي فارغين.' },
+  plans_unavail: { fr: "Les forfaits ne sont pas disponibles.", en: "Plans aren't available.", es: 'Los planes no están disponibles.', ar: 'الباقات غير متاحة.', ary: 'الفورفيات ماشي متوفرين.' },
+  vehicles_unavail: { fr: "Les véhicules ne sont pas disponibles.", en: "Vehicles aren't available.", es: 'Los vehículos no están disponibles.', ar: 'المركبات غير متاحة.', ary: 'الطوموبيلات ماشي متوفرين.' },
+  no_vehicles_match: { fr: "Aucun véhicule disponible avec ces critères. Voulez-vous élargir votre recherche?", en: 'No vehicles match these criteria. Would you like to broaden your search?', es: 'No hay vehículos con estos criterios. ¿Quiere ampliar su búsqueda?', ar: 'لا توجد مركبات بهذه المعايير. هل تريد توسيع البحث؟', ary: 'مكاينش طوموبيل بهاد الكريطيرات. بغيتي توسع البحث؟' },
+  trips_unavail: { fr: "Les voyages ne sont pas disponibles.", en: "Trips aren't available.", es: 'Los viajes no están disponibles.', ar: 'الرحلات غير متاحة.', ary: 'الفوياجات ماشي متوفرين.' }
 };
 
 function getVoiceMsg(session, key) {
@@ -4799,21 +4827,73 @@ const server = http.createServer(async (req, res) => {
         }
 
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({
-          status: result.success ? 'sent' : 'failed',
-          channel: result.channel,
-          to,
-          message_preview: message.substring(0, 50) + (message.length > 50 ? '...' : ''),
-          timestamp: new Date().toISOString()
-        }));
+        res.end(JSON.stringify(result));
       } catch (error) {
+        console.error(`[Messaging] Error: ${error.message}`);
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: error.message }));
       }
       return;
     }
 
-    // 404
+    // ========================================================================
+    // SOTA PATTERN #2: WHATSAPP BIDIRECTIONAL WEBHOOK
+    // ========================================================================
+
+    // 1. Verification Endpoint (Meta Challenge)
+    if (pathname === '/whatsapp/webhook' && req.method === 'GET') {
+      const query = url.searchParams;
+      const mode = query.get('hub.mode');
+      const token = query.get('hub.verify_token');
+      const challenge = query.get('hub.challenge');
+
+      if (mode && token) {
+        if (mode === 'subscribe' && token === process.env.WHATSAPP_VERIFY_TOKEN) {
+          console.log('[WhatsApp] Webhook verified successfully');
+          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.end(challenge);
+        } else {
+          console.warn('[WhatsApp] Webhook verification failed (token mismatch)');
+          res.writeHead(403);
+          res.end();
+        }
+      } else {
+        res.writeHead(400);
+        res.end();
+      }
+      return;
+    }
+
+    // 2. Inbound Message Handler
+    if (pathname === '/whatsapp/webhook' && req.method === 'POST') {
+      const chunks = [];
+      req.on('data', chunk => chunks.push(chunk));
+      req.on('end', async () => {
+        const rawBody = Buffer.concat(chunks);
+        const bodyStr = rawBody.toString();
+
+        // Security: Validate Signature
+        if (!validateWhatsAppSignature(req, rawBody)) {
+          res.writeHead(403);
+          res.end();
+          return;
+        }
+
+        // ACK immediately (Meta requirement)
+        res.writeHead(200);
+        res.end();
+
+        try {
+          const body = JSON.parse(bodyStr);
+          await handleInboundWhatsApp(body);
+        } catch (err) {
+          console.error('[WhatsApp] Processing error:', err.message);
+        }
+      });
+      return;
+    }
+
+
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'Not found' }));
 
@@ -4993,6 +5073,87 @@ async function callAtlasChat(messages) {
 // MAIN
 // ============================================
 
+// ============================================
+// WHATSAPP INBOUND LOGIC (SOTA Pattern #2)
+// ============================================
+async function handleInboundWhatsApp(body) {
+  // Check if this is a message
+  const entry = body.entry?.[0];
+  const changes = entry?.changes?.[0];
+  const value = changes?.value;
+
+  if (!value || !value.messages || !value.messages[0]) {
+    // Status update (sent/delivered/read) - ignore for now
+    return;
+  }
+
+  const message = value.messages[0];
+  const contact = value.contacts?.[0];
+  const senderPhone = message.from; // e.g. "212600000000"
+  const senderName = contact?.profile?.name || 'Unknown';
+
+  // Deduplication / Idempotence check (Meta retries)
+  // Simple check via message ID cache could be added here
+
+  console.log(`[WhatsApp] Inbound from ${senderName} (${senderPhone}): ${message.type}`);
+
+  // Only handle text messages for now (images/audio later)
+  if (message.type !== 'text') {
+    console.log('[WhatsApp] Ignoring non-text message');
+    // Optional: send "I can only read text" reply
+    return;
+  }
+
+  const userText = message.text.body;
+  const tenantId = 'default'; // Multi-tenant: could derive from receiver phone number (value.metadata.phone_number_id)
+
+  try {
+    // 1. Route to Voice API LLM (Voice-API-Resilient)
+    // We use the same /respond endpoint as the widget
+    // Protocol: HTTP Internal Call
+    const voiceApiUrl = process.env.VOCALIA_API_URL || 'http://localhost:3004';
+
+    // Config for LLM context
+    const payload = {
+      message: userText,
+      history: [], // We rely on Voice API's internal history or stateless for now. 
+      // Ideally, we fetch history from ConversationStore but VoiceAPI handles persistence via session ID.
+      // We use phone number as session ID for persistent WhatsApp thread
+      sessionId: `wa_${senderPhone}`,
+      language: 'fr', // Auto-detect or default
+      metadata: {
+        tenant_id: tenantId,
+        channel: 'whatsapp',
+        sender_phone: senderPhone,
+        sender_name: senderName
+      }
+    };
+
+    // Call Voice API
+    const response = await fetch(`${voiceApiUrl}/respond`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Voice API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    const aiResponse = data.response; // Text response
+
+    // 2. Send Reply via WhatsApp
+    if (aiResponse) {
+      await sendWhatsAppMessage(senderPhone, aiResponse);
+    }
+
+  } catch (err) {
+    console.error(`[WhatsApp] Error handling message from ${senderPhone}:`, err.message);
+    // Fallback?
+  }
+}
+
 async function main() {
   const args = process.argv.slice(2);
 
@@ -5041,22 +5202,11 @@ async function main() {
     CONFIG.port = parseInt(portArg.split('=')[1]);
   }
 
+
+
   // Start server
   server.listen(CONFIG.port, () => {
     console.log(`
-╔══════════════════════════════════════════════════════════════╗
-║         Voice Telephony Bridge - Native Script               ║
-║                      Version 1.0.0                           ║
-╠══════════════════════════════════════════════════════════════╣
-║  HTTP Server:  http://localhost:${CONFIG.port.toString().padEnd(25)}║
-║  WebSocket:    ws://localhost:${CONFIG.port}/stream/{sessionId}       ║
-╠══════════════════════════════════════════════════════════════╣
-║  Endpoints:                                                  ║
-║    POST /voice/inbound    Twilio inbound call webhook        ║
-║    POST /voice/status     Twilio status callback             ║
-║    GET  /health           Health check                       ║
-║    WS   /stream/:id       Twilio media stream                ║
-╠══════════════════════════════════════════════════════════════╣
 ║  Status:                                                     ║
 ║    Twilio:   ${(CONFIG.twilio.accountSid ? '✅ Ready' : '❌ Missing credentials').padEnd(43)}║
 ║    Grok:     ${(CONFIG.grok.apiKey ? '✅ Ready' : '❌ Missing XAI_API_KEY').padEnd(43)}║

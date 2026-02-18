@@ -23,13 +23,15 @@
 
 const fs = require('fs');
 const path = require('path');
+const TenantMemory = require('./tenant-memory.cjs');
 
 // SOTA Configuration
 const CONTEXT_CONFIG = {
-    maxHistoryEvents: 50,      // Compact after this many events
+    maxHistoryEvents: 50,      // Max events to keep in detailed history
     maxTokenEstimate: 4000,    // Target token budget for LLM context
     staleSessionHours: 24,     // TTL for inactive sessions
-    tokensPerChar: 0.25        // Rough estimate: 1 token ≈ 4 chars
+    tokensPerChar: 0.25,       // Rough estimate: 1 token ≈ 4 chars
+    autoPromoteConfidence: 0.8 // Threshold for auto-promoting facts to long-term memory
 };
 
 class ContextBox {
@@ -37,9 +39,15 @@ class ContextBox {
         this.storageDir = options.storageDir || path.join(__dirname, '..', 'data', 'contexts');
         this.config = { ...CONTEXT_CONFIG, ...options.config };
 
+        // SOTA Pattern #2: TenantMemory (Persistent Long-Term Memory)
+        this.tenantMemory = new TenantMemory();
+
         if (!fs.existsSync(this.storageDir)) {
             fs.mkdirSync(this.storageDir, { recursive: true });
         }
+    }
+    async init() {
+        // Reserved for async init
     }
 
     /**
@@ -215,19 +223,54 @@ class ContextBox {
      * SOTA: Extract key facts from a message
      * Used for structured note-taking during conversations
      */
-    extractKeyFact(id, factType, factValue, source = 'conversation') {
+    extractKeyFact(id, factType, factValue, source = 'conversation', confidence = 1.0) {
         const fact = {
             type: factType,       // e.g., 'budget', 'timeline', 'pain_point', 'goal'
             value: factValue,
             source: source,
-            extractedAt: new Date().toISOString()
+            extractedAt: new Date().toISOString(),
+            confidence: confidence
         };
+
+        // SOTA: Auto-promote to persistent TenantMemory if confidence is high
+        // Note: ContextBox doesn't always know tenantId (it's session-scoped).
+        // We rely on the caller to provide tenantId context or retrieve it from session metadata.
+        // For now, we store in session. The caller (voice-api) triggers explicit promotion.
+        if (confidence >= this.config.autoPromoteConfidence) {
+            // This would ideally call promoteFact, but promoteFact requires tenantId.
+            // For now, we just log it in the session context.
+            // A higher-level service (e.g., VoiceAI) would explicitly call promoteFact with tenantId.
+            console.log(`[ContextBox] Fact "${factType}" for session ${id} has high confidence (${confidence}). Ready for promotion.`);
+        }
 
         return this.set(id, {
             pillars: {
                 keyFacts: [fact]
             }
         });
+    }
+
+    /**
+     * SOTA: Promote a fact to persistent TenantMemory
+     * Bridges the gap between Session Context (24h TTL) and Long-Term Memory
+     */
+    async promoteFact(sessionId, tenantId, fact) {
+        if (!tenantId) {
+            console.warn(`[ContextBox] Cannot promote fact without tenantId for session ${sessionId}`);
+            return false;
+        }
+
+        // Enrich with session ID
+        const enrichedFact = { ...fact, sessionId };
+
+        return this.tenantMemory.promoteFact(tenantId, enrichedFact);
+    }
+
+    /**
+     * Get long-term facts for a tenant
+     */
+    async getTenantFacts(tenantId, options = {}) {
+        return this.tenantMemory.getFacts(tenantId, options);
     }
 
     /**
@@ -339,7 +382,7 @@ class ContextBox {
             }, {
                 tenantId: data.tenantId || 'unknown',
                 source: 'ContextBox.v3'
-            }).catch(() => {}); // Non-blocking
+            }).catch(() => { }); // Non-blocking
         } catch (e) {
             // EventBus not available, skip
         }

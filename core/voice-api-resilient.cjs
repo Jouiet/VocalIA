@@ -1519,6 +1519,21 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     }
   }
 
+  // 2.3 SOTA: Persistent Tenant Memory Injection (Moat #1)
+  let tenantFactsContext = "";
+  if (tenantId && tenantId !== 'unknown') {
+    try {
+      // Fetch long-term facts (limit 10 most recent/relevant)
+      const facts = await ContextBox.getTenantFacts(tenantId, { limit: 10 });
+      if (facts.length > 0) {
+        tenantFactsContext = "\nKNOWN_CLIENT_FACTS:\n" +
+          facts.map(f => `- [${f.type}] ${f.value}`).join('\n');
+      }
+    } catch (memErr) {
+      console.warn('[Voice API] Tenant memory fetch failed:', memErr.message);
+    }
+  }
+
   // Session 250.89: Only check stock if ECOM_TOOLS.checkStock exists AND tenant has Shopify configured
   if ((ragContext.toLowerCase().includes('stock') || lower.includes('stock') || lower.includes('dispo')) &&
     typeof ECOM_TOOLS.checkStock === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
@@ -1591,7 +1606,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     // Fallback to static language prompt
     basePrompt = getSystemPromptForLanguage(language);
   }
-  const fullSystemPrompt = `${basePrompt}\n\nRELEVANT_SYSTEMS (RLS Isolated):\n${ragContext}${graphContext}${toolContext}${crmContext}\n\nTENANT_ID: ${tenantId}`;
+  const fullSystemPrompt = `${basePrompt}\n\nRELEVANT_SYSTEMS (RLS Isolated):\n${ragContext}${graphContext}${toolContext}${crmContext}${tenantFactsContext}\n\nTENANT_ID: ${tenantId}`;
 
   // Fallback order: Grok → [Atlas-Chat for Darija] → Gemini → Anthropic → Local
   // Session 170: Language-aware chain - Atlas-Chat-9B prioritized for Darija (ary)
@@ -2786,6 +2801,32 @@ function startServer(port = 3004) {
             // Session 250.143: Feature flags for client-side widget gating
             features: injectedMetadata.features
           }));
+
+          // SOTA Pattern #2: Promote extracted qualification data to Permanent Memory
+          // If session has high-confidence data (score > 0), verify and persist it
+          if (session.score > 20 && tenantId) {
+            // Only promote if reasonably engaged (score > 20)
+            const factsToPromote = [
+              { type: 'budget', value: session.extractedData.budget?.amount ? `${session.extractedData.budget.amount}€` : session.extractedData.budget?.label },
+              { type: 'timeline', value: session.extractedData.timeline?.label || session.extractedData.timeline?.tier },
+              { type: 'industry', value: session.extractedData.industry?.label },
+              { type: 'role', value: session.extractedData.decisionMaker?.isDecisionMaker ? 'Decision Maker' : 'Influencer' },
+              { type: 'email', value: session.extractedData.email },
+              { type: 'phone', value: session.extractedData.phone },
+              { type: 'name', value: session.extractedData.name }
+            ];
+
+            for (const fact of factsToPromote) {
+              if (fact.value) {
+                ContextBox.promoteFact(leadSessionId, tenantId, {
+                  type: fact.type,
+                  value: String(fact.value),
+                  source: 'conversation',
+                  confidence: 0.9
+                }).catch(e => console.warn('[Voice API] Fact promotion failed:', e.message));
+              }
+            }
+          }
 
           // Session 250.143: Persist lead session to ContextBox (survives restart)
           try {

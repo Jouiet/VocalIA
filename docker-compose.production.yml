@@ -260,7 +260,10 @@ services:
       - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
       - GA4_API_SECRET=${GA4_API_SECRET}
       - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
+      - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
       - VOCALIA_INTERNAL_KEY=${VOCALIA_INTERNAL_KEY:-}
+      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN}
+      - WHATSAPP_APP_SECRET=${WHATSAPP_APP_SECRET}
     command: >
       sh -c "
         apk add --no-cache git curl su-exec &&
@@ -289,7 +292,15 @@ services:
       - "traefik.http.routers.vocalia-telephony.tls.certresolver=mytlschallenge"
       - "traefik.http.routers.vocalia-telephony.priority=80"
       - "traefik.http.routers.vocalia-telephony.middlewares=strip-telephony"
+      - "traefik.http.routers.vocalia-telephony.middlewares=strip-telephony"
       - "traefik.http.middlewares.strip-telephony.stripprefix.prefixes=/telephony"
+      # WhatsApp Webhook Routing (Session 250.216: SOTA Pattern #2)
+      - "traefik.http.routers.vocalia-whatsapp.rule=Host(`api.vocalia.ma`) && PathPrefix(`/whatsapp`)"
+      - "traefik.http.routers.vocalia-whatsapp.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-whatsapp.tls=true"
+      - "traefik.http.routers.vocalia-whatsapp.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-whatsapp.priority=90"
+      - "traefik.http.services.vocalia-whatsapp.loadbalancer.server.port=3009"
       # Subdomain alias (works if tel.vocalia.ma DNS is configured)
       - "traefik.http.routers.vocalia-tel.rule=Host(`tel.vocalia.ma`)"
       - "traefik.http.routers.vocalia-tel.entrypoints=websecure"
