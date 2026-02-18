@@ -19,50 +19,50 @@ const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 const PLAN_QUOTAS = {
   starter: {
     max_entries: 500,
-    max_storage_bytes: 1048576,  // 1 MB
+    max_storage_bytes: 1048576,    // 1 MB
     max_languages: 3,
     max_crawls_month: 50,
     max_imports_month: 100,
-    max_file_size_bytes: 512000  // 500 KB per file
+    max_file_size_bytes: 512000    // 500 KB per file
   },
   pro: {
     max_entries: 5000,
-    max_storage_bytes: 10485760,  // 10 MB
+    max_storage_bytes: 10485760,   // 10 MB
     max_languages: 5,
     max_crawls_month: 500,
     max_imports_month: 1000,
-    max_file_size_bytes: 5242880  // 5 MB per file
+    max_file_size_bytes: 5242880   // 5 MB per file
   },
   ecommerce: {
     max_entries: 5000,
-    max_storage_bytes: 10485760,  // 10 MB — same as pro
+    max_storage_bytes: 10485760,   // 10 MB — same as pro
     max_languages: 5,
     max_crawls_month: 500,
     max_imports_month: 1000,
-    max_file_size_bytes: 5242880  // 5 MB per file
+    max_file_size_bytes: 5242880   // 5 MB per file
   },
   expert_clone: {
-    max_entries: 20000,           // 4× pro — experts need deep factual KB
-    max_storage_bytes: 20971520,  // 20 MB
+    max_entries: 20000,            // 4× pro — experts need deep factual KB
+    max_storage_bytes: 20971520,   // 20 MB
     max_languages: 5,
     max_crawls_month: 500,
     max_imports_month: 1000,
-    max_file_size_bytes: 10485760 // 10 MB per file — large expert documents
+    max_file_size_bytes: 10485760  // 10 MB per file — large expert documents
   },
   telephony: {
-    max_entries: 10000,
-    max_storage_bytes: 52428800,  // 50 MB — high volume call centers
+    max_entries: 100000,           // Massive KB for telephony tenants (was enterprise)
+    max_storage_bytes: 104857600,  // 100 MB
     max_languages: 5,
-    max_crawls_month: -1,  // Unlimited
-    max_imports_month: -1,
-    max_file_size_bytes: 10485760  // 10 MB per file
+    max_crawls_month: -1,          // Unlimited
+    max_imports_month: -1,         // Unlimited
+    max_file_size_bytes: 20971520  // 20 MB per file
   }
 };
 
 // Default plan
 const DEFAULT_PLAN = 'starter';
 
-// Session 250.220: Plan aliases (map external plan names to internal)
+// Session 250.220: Plan aliases (map billing plan names to KB quota tiers)
 const PLAN_ALIASES = {
   growth: 'starter',
   scale: 'pro',

@@ -56,6 +56,20 @@ data/exports/
 data/events/system/*.jsonl
 data/logs/maintenance-*.json
 data/contexts/
+# Runtime-generated data directories (tests, seeding, operations)
+data/audit/
+data/knowledge-base/
+data/catalogs/
+data/conversations/
+data/kb-usage/
+data/vector-store/
+data/ucp/
+data/voice/
+data/feedback/
+data/quotas/
+data/cart-recovery.json
+data/pressure-matrix.json
+data/promo-codes.json
 test-results/
 playwright-report/
 

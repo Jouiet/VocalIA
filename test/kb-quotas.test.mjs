@@ -29,31 +29,31 @@ describe('PLAN_QUOTAS Constants', () => {
     assert.strictEqual(Object.keys(PLAN_QUOTAS).length, 5);
   });
 
-  test('has free, starter, pro, expert_clone, enterprise plans', () => {
-    assert.ok(PLAN_QUOTAS.free);
+  test('has starter, pro, ecommerce, expert_clone, telephony plans', () => {
     assert.ok(PLAN_QUOTAS.starter);
     assert.ok(PLAN_QUOTAS.pro);
+    assert.ok(PLAN_QUOTAS.ecommerce);
     assert.ok(PLAN_QUOTAS.expert_clone);
-    assert.ok(PLAN_QUOTAS.enterprise);
+    assert.ok(PLAN_QUOTAS.telephony);
   });
 
-  test('free plan has lowest limits', () => {
-    assert.strictEqual(PLAN_QUOTAS.free.max_entries, 50);
-    assert.strictEqual(PLAN_QUOTAS.free.max_languages, 1);
-    assert.strictEqual(PLAN_QUOTAS.free.max_storage_bytes, 102400);
+  test('starter plan has lowest limits', () => {
+    assert.strictEqual(PLAN_QUOTAS.starter.max_entries, 500);
+    assert.strictEqual(PLAN_QUOTAS.starter.max_languages, 3);
+    assert.strictEqual(PLAN_QUOTAS.starter.max_storage_bytes, 1048576); // 1 MB
   });
 
-  test('enterprise plan has highest limits', () => {
-    assert.strictEqual(PLAN_QUOTAS.enterprise.max_entries, 100000);
-    assert.strictEqual(PLAN_QUOTAS.enterprise.max_languages, 5);
-    assert.strictEqual(PLAN_QUOTAS.enterprise.max_crawls_month, -1); // Unlimited
-    assert.strictEqual(PLAN_QUOTAS.enterprise.max_imports_month, -1); // Unlimited
+  test('telephony plan has highest limits', () => {
+    assert.strictEqual(PLAN_QUOTAS.telephony.max_entries, 100000);
+    assert.strictEqual(PLAN_QUOTAS.telephony.max_languages, 5);
+    assert.strictEqual(PLAN_QUOTAS.telephony.max_crawls_month, -1); // Unlimited
+    assert.strictEqual(PLAN_QUOTAS.telephony.max_imports_month, -1); // Unlimited
   });
 
   test('plans are in ascending order of limits', () => {
-    assert.ok(PLAN_QUOTAS.free.max_entries < PLAN_QUOTAS.starter.max_entries);
     assert.ok(PLAN_QUOTAS.starter.max_entries < PLAN_QUOTAS.pro.max_entries);
-    assert.ok(PLAN_QUOTAS.pro.max_entries < PLAN_QUOTAS.enterprise.max_entries);
+    assert.ok(PLAN_QUOTAS.pro.max_entries < PLAN_QUOTAS.expert_clone.max_entries);
+    assert.ok(PLAN_QUOTAS.expert_clone.max_entries < PLAN_QUOTAS.telephony.max_entries);
   });
 
   test('each plan has all required fields', () => {
