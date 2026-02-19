@@ -564,6 +564,64 @@ const tenantKBLoader = _getTenantKBLoader();
 
 
 /**
+ * SOTA Moat #1 (Session 250.222): Extract free-form facts from conversation
+ * Regex/pattern-based extraction (0 LLM cost). Multilingue FR/EN/ES.
+ */
+function extractConversationFacts(userMessage, aiResponse, language) {
+  const facts = [];
+  if (!userMessage || typeof userMessage !== 'string') return facts;
+
+  // Preferences
+  const prefPatterns = [
+    /(?:je pr[ée]f[eè]re|i prefer|prefiero)\s+(.{5,80})/i,
+    /(?:j'aime|j'adore|i like|i love|me gusta)\s+(.{5,60})/i,
+    /(?:je n'aime pas|i don't like|i hate|no me gusta)\s+(.{5,60})/i,
+  ];
+  for (const p of prefPatterns) {
+    const m = userMessage.match(p);
+    if (m) facts.push({ type: 'preference', value: m[0].trim(), confidence: 0.85 });
+  }
+
+  // Business constraints
+  const constraintPatterns = [
+    /(?:nous avons|we have|tenemos)\s+(\d+)\s+(magasin|store|boutique|tienda|employ|salari)/i,
+    /(?:notre budget|our budget|nuestro presupuesto)\s+(?:est|is|es)\s+(.{5,40})/i,
+    /(?:on utilise|we use|usamos)\s+(.{3,40})\s+(?:actuellement|currently|actualmente)/i,
+  ];
+  for (const p of constraintPatterns) {
+    const m = userMessage.match(p);
+    if (m) facts.push({ type: 'business_context', value: m[0].trim(), confidence: 0.9 });
+  }
+
+  // Objections/refusals
+  const objectionPatterns = [
+    /(?:c'est trop cher|too expensive|demasiado caro)/i,
+    /(?:pas int[ée]ress[ée] par|not interested in|no me interesa)\s+(.{3,40})/i,
+    /(?:on a d[ée]j[àa]|we already have|ya tenemos)\s+(.{3,40})/i,
+  ];
+  for (const p of objectionPatterns) {
+    const m = userMessage.match(p);
+    if (m) facts.push({ type: 'objection', value: m[0].trim(), confidence: 0.85 });
+  }
+
+  // Scheduling preferences (day/time mentions)
+  const timePatterns = [
+    /(?:lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i,
+    /(?:le matin|l'apr[eè]s-midi|le soir|morning|afternoon|evening)/i,
+  ];
+  for (const p of timePatterns) {
+    const m = userMessage.match(p);
+    if (m) {
+      const idx = userMessage.indexOf(m[0]);
+      const context = userMessage.substring(Math.max(0, idx - 20), idx + m[0].length + 20).trim();
+      facts.push({ type: 'scheduling_preference', value: context, confidence: 0.8 });
+    }
+  }
+
+  return facts;
+}
+
+/**
  * Session 178: SOTA - Get or create lead session with ContextBox persistence
  * Hot path: Check in-memory first, fallback to ContextBox
  */
@@ -2668,6 +2726,16 @@ function startServer(port = 3004) {
 
           // Add AI response to session
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });
+
+          // SOTA Moat #1 (250.222): Extract free-form facts from conversation
+          try {
+            const conversationFacts = extractConversationFacts(message, result.response, language);
+            for (const fact of conversationFacts) {
+              ContextBox.extractKeyFact(leadSessionId, fact.type, fact.value, 'conversation', fact.confidence);
+            }
+          } catch (factErr) {
+            // Non-blocking — extraction failure must never break conversation
+          }
 
           // Session 250.214: Accumulate latency for Speed Metrics dashboard
           if (result.latencyMs) {

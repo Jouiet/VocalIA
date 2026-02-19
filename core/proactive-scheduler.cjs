@@ -59,25 +59,30 @@ class ProactiveScheduler {
   }
 
   /**
-   * Schedule a cron-like recurring task
+   * Schedule a cron-like recurring task (SOTA fix 250.222: execute at correct time)
    */
   _scheduleCron(jobId, taskType, payload, cronExpr) {
-    // Prevent duplicate cron registrations
     if (this.cronIntervals.has(jobId)) {
       return { success: true, jobId, note: 'already_scheduled' };
     }
 
-    // Parse cron to interval (simple: daily = 24h, hourly = 1h)
-    const intervalMs = this._cronToInterval(cronExpr);
+    const { intervalMs, initialDelayMs } = this._parseCron(cronExpr);
 
-    const id = setInterval(async () => {
+    // First execution: wait until the RIGHT time, then repeat at fixed interval
+    const firstTimeout = setTimeout(async () => {
       await this._executeTask(jobId, taskType, payload);
-    }, intervalMs);
 
-    if (id.unref) id.unref(); // Don't keep process alive
-    this.cronIntervals.set(jobId, id);
+      const id = setInterval(async () => {
+        await this._executeTask(jobId, taskType, payload);
+      }, intervalMs);
+      if (id.unref) id.unref();
+      this.cronIntervals.set(jobId, id);
+    }, initialDelayMs);
 
-    console.log(`[ProactiveScheduler] Cron "${jobId}" scheduled (every ${intervalMs / 3600000}h)`);
+    if (firstTimeout.unref) firstTimeout.unref();
+    this.cronIntervals.set(jobId, firstTimeout);
+
+    console.log(`[ProactiveScheduler] Cron "${jobId}" first run in ${Math.round(initialDelayMs / 60000)}min, then every ${intervalMs / 3600000}h`);
     return { success: true, jobId };
   }
 
@@ -167,19 +172,34 @@ class ProactiveScheduler {
   }
 
   /**
-   * Parse cron expression to interval (simplified)
+   * Parse cron expression to interval + initial delay (SOTA fix 250.222)
    * Supports: daily (0 H * * *), hourly (0 * * * *), weekly
+   * Returns { intervalMs, initialDelayMs } where initialDelayMs = ms until next trigger
    */
-  _cronToInterval(cronExpr) {
+  _parseCron(cronExpr) {
     const parts = cronExpr.split(/\s+/);
-    // Default: daily (24h)
+    let intervalMs = 24 * 3600000; // default daily
+
     if (parts.length >= 5) {
-      const [, hour, dayOfMonth, , dayOfWeek] = parts;
-      if (dayOfWeek !== '*' && dayOfMonth === '*') return 7 * 24 * 3600000; // weekly
-      if (hour !== '*' && dayOfMonth === '*') return 24 * 3600000; // daily
-      if (hour === '*') return 3600000; // hourly
+      const [minute, hour, dayOfMonth, , dayOfWeek] = parts;
+      if (dayOfWeek !== '*' && dayOfMonth === '*') intervalMs = 7 * 24 * 3600000; // weekly
+      else if (hour !== '*' && dayOfMonth === '*') intervalMs = 24 * 3600000; // daily
+      else if (hour === '*') intervalMs = 3600000; // hourly
+
+      // Calculate ms until next trigger
+      const now = new Date();
+      const targetHour = hour !== '*' ? parseInt(hour) : now.getHours();
+      const targetMinute = minute !== '*' ? parseInt(minute) : 0;
+
+      const next = new Date(now);
+      next.setHours(targetHour, targetMinute, 0, 0);
+      if (next <= now) next.setDate(next.getDate() + 1); // Tomorrow if already past
+
+      const initialDelayMs = next.getTime() - now.getTime();
+      return { intervalMs, initialDelayMs };
     }
-    return 24 * 3600000; // fallback: daily
+
+    return { intervalMs, initialDelayMs: intervalMs }; // fallback
   }
 
   /**
@@ -188,7 +208,8 @@ class ProactiveScheduler {
   close() {
     if (this._checkTimer) clearInterval(this._checkTimer);
     for (const [, id] of this.cronIntervals) {
-      clearInterval(id);
+      clearTimeout(id);   // Works for setTimeout (first trigger)
+      clearInterval(id);  // Works for setInterval (recurring)
     }
     this.cronIntervals.clear();
     this.isReady = false;

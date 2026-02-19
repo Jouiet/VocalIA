@@ -42,4 +42,22 @@ describe('ProactiveScheduler', () => {
         publishSpy.mock.restore();
     });
 
+    test('_parseCron returns correct initialDelay for daily cron (M2)', () => {
+        const result = Scheduler._parseCron('0 4 * * *');
+        // initialDelayMs should be > 0 (sometime in the future) and < 24h
+        assert.ok(result.initialDelayMs > 0, 'initialDelay should be positive');
+        assert.ok(result.initialDelayMs <= 24 * 3600000, 'initialDelay should be <= 24h');
+        assert.strictEqual(result.intervalMs, 24 * 3600000, 'daily interval should be 24h');
+    });
+
+    test('_parseCron returns 1h interval for hourly cron (M2)', () => {
+        const result = Scheduler._parseCron('0 * * * *');
+        assert.strictEqual(result.intervalMs, 3600000, 'hourly interval should be 1h');
+    });
+
+    test('_parseCron returns 7d interval for weekly cron (M2)', () => {
+        const result = Scheduler._parseCron('0 9 * * 1');
+        assert.strictEqual(result.intervalMs, 7 * 24 * 3600000, 'weekly interval should be 7d');
+    });
+
 });

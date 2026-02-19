@@ -13,13 +13,13 @@
 const AgencyEventBus = require('../AgencyEventBus.cjs');
 const llmGateway = require('../gateways/llm-global-gateway.cjs');
 const tenantMemory = require('../tenant-memory.cjs');
-const { ServiceKnowledgeBase } = require('../knowledge-base-services.cjs');
+const { getInstance: getTenantKB } = require('../tenant-kb-loader.cjs');
 
 class KBEnrichmentSkill {
     constructor() {
         this.initialized = false;
         this.tenantMemory = tenantMemory;
-        this.kb = new ServiceKnowledgeBase();
+        this.kbLoader = getTenantKB();
     }
 
     /**
@@ -54,17 +54,29 @@ class KBEnrichmentSkill {
                 return;
             }
 
-            // 2. Fetch current KB context
-            // In a real SOTA setup, we'd use HybridRAG to find gaps. 
-            // Here we'll do a "Global Reflection" on the facts.
+            // 2. SOTA Moat #6 (250.222): Load current KB for real gap comparison
+            let kbSummary = '';
+            try {
+                const kbEntries = await this.kbLoader.getKB(tenantId, 'fr');
+                if (kbEntries && Object.keys(kbEntries).length > 0) {
+                    kbSummary = '\n\nBASE DE CONNAISSANCES ACTUELLE:\n' +
+                        Object.entries(kbEntries).slice(0, 30)
+                            .filter(([k]) => k !== '__meta')
+                            .map(([k, v]) => `- ${k}: ${typeof v === 'string' ? v.substring(0, 100) : JSON.stringify(v).substring(0, 100)}`)
+                            .join('\n');
+                }
+            } catch (e) { /* KB may not exist yet for this tenant */ }
+
             const factSummary = facts.slice(-50).map(f => `- ${f.type}: ${f.value}`).join('\n');
 
-            // 3. Ask LLM to identify gaps or updates
-            const prompt = `Voici les derniers faits extraits des conversations clients pour le tenant "${tenantId}":
-            ${factSummary}
-            
-            Analyse ces données et suggère 1 ou 2 nouvelles entrées pour la Knowledge Base (FAQ ou Information produit) qui aideraient l'IA à mieux répondre.
-            Format de réponse: JSON validatable [ { "question": "...", "answer": "...", "reason": "..." } ]`;
+            // 3. Ask LLM to identify gaps (with KB context for dedup)
+            const prompt = `Voici les faits extraits des conversations clients:
+${factSummary}
+${kbSummary}
+
+Identifie 1-2 LACUNES: questions fréquentes des clients auxquelles la KB ne répond PAS encore.
+NE PAS suggérer ce qui existe déjà dans la KB.
+Format: [ { "question": "...", "answer": "...", "reason": "..." } ]`;
 
             const suggestionRaw = await llmGateway.generate('gemini', prompt);
 

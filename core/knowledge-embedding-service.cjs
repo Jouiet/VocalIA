@@ -16,6 +16,7 @@ class KnowledgeEmbeddingService {
     constructor() {
         this.cache = this._loadCache();
         this.apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+        this._savePending = false; // SOTA Moat #5 (250.222): Debounce save
     }
 
     /**
@@ -40,6 +41,19 @@ class KnowledgeEmbeddingService {
         const dir = path.dirname(CACHE_FILE);
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(CACHE_FILE, JSON.stringify(this.cache, null, 2));
+    }
+
+    /**
+     * SOTA Moat #5 (250.222): Debounced save — persist at most every 30s
+     * Prevents cache loss for embeddings generated via getEmbedding() (not batchEmbed)
+     */
+    _debounceSave() {
+        if (this._savePending) return;
+        this._savePending = true;
+        setTimeout(() => {
+            this._saveCache();
+            this._savePending = false;
+        }, 30_000);
     }
 
     /**
@@ -96,6 +110,7 @@ class KnowledgeEmbeddingService {
                     for (const k of toRemove) delete this.cache[k];
                 }
                 this.cache[cacheKey] = embedding;
+                this._debounceSave(); // SOTA Moat #5 (250.222): persist to disk
             }
             return embedding;
         } catch (e) {

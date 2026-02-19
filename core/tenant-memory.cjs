@@ -24,11 +24,32 @@ class TenantMemory {
         this.baseDir = options.baseDir || path.join(__dirname, '..', 'data', 'memory');
         this.rag = options.rag || new HybridRAG();
         this.vectorStores = new Map(); // SOTA: Cache open KV stores
+        this._dedupSets = new Map(); // SOTA Moat #7 (250.222): O(1) dedup
 
         // Ensure base directory exists
         if (!fs.existsSync(this.baseDir)) {
             fs.mkdirSync(this.baseDir, { recursive: true });
         }
+    }
+
+    /**
+     * SOTA Moat #7 (250.222): O(1) dedup key
+     */
+    _getDedupKey(fact) {
+        return `${fact.type}:${(fact.value || '').toLowerCase().trim()}`;
+    }
+
+    /**
+     * SOTA Moat #7 (250.222): Lazy-load dedup set from JSONL
+     */
+    async _getDedupSet(tenantId) {
+        if (this._dedupSets.has(tenantId)) return this._dedupSets.get(tenantId);
+
+        const filePath = this._getStoragePath(tenantId);
+        const facts = await this._readFacts(filePath);
+        const set = new Set(facts.map(f => this._getDedupKey(f)));
+        this._dedupSets.set(tenantId, set);
+        return set;
     }
 
     /**
@@ -82,15 +103,10 @@ class TenantMemory {
             confidence: fact.confidence || 1.0
         };
 
-        // 3. Deduplication (Check existing facts)
-        // For MVP efficiency, we read the file. For scale, we'd use a bloom filter or index.
-        const existingFacts = await this._readFacts(filePath);
-        const isDuplicate = existingFacts.some(f =>
-            f.type === normalizedFact.type &&
-            f.value.toLowerCase() === normalizedFact.value.toLowerCase()
-        );
-
-        if (isDuplicate) {
+        // 3. Deduplication — SOTA Moat #7 (250.222): O(1) via in-memory Set
+        const dedupSet = await this._getDedupSet(safeTenantId);
+        const dedupKey = this._getDedupKey(normalizedFact);
+        if (dedupSet.has(dedupKey)) {
             return false; // Already known
         }
 
@@ -98,8 +114,10 @@ class TenantMemory {
         const line = JSON.stringify(normalizedFact) + '\n';
         await fsp.appendFile(filePath, line);
 
+        // Update dedup set
+        dedupSet.add(dedupKey);
+
         // 5. Indexing (SOTA: Direct SQLite Write)
-        // We write directly to the vector store to ensure immediate detailed retrieval
         try {
             let store = this.vectorStores.get(safeTenantId);
             if (!store) {
@@ -124,10 +142,12 @@ class TenantMemory {
                 type: normalizedFact.type,
                 timestamp: normalizedFact.timestamp,
                 sessionId: normalizedFact.sessionId
-            }, embeddingVector); // Pass vector!
+            }, embeddingVector);
 
-            // Also notify logic layer
             console.log(`[TenantMemory] Persisted fact ${normalizedFact.id} to SQLite (${safeTenantId})`);
+
+            // SOTA Moat #3 (250.222): Invalidate HybridRAG cache so BM25 includes new fact
+            try { this.rag.invalidate?.(safeTenantId); } catch (e) { /* HybridRAG may not support */ }
 
         } catch (err) {
             console.error(`[TenantMemory] SQLite persistence failed for ${safeTenantId}: ${err.message}`);
@@ -196,25 +216,54 @@ class TenantMemory {
     }
 
     /**
-     * Semantic search over facts using HybridRAG
-     * @param {string} tenantId 
-     * @param {string} query 
-     * @param {number} topK 
+     * SOTA Moat #4 (250.222): Hybrid search — direct SQLite vector + JSONL keyword fallback
+     * No longer routes through HybridRAG (which ignores filters param)
+     * @param {string} tenantId
+     * @param {string} query
+     * @param {number} topK
      * @returns {Promise<Array>}
      */
     async searchFacts(tenantId, query, topK = 5) {
         const safeId = sanitizeTenantId(tenantId);
 
-        // We expect HybridRAG to support a filter for source='tenant_memory'
-        // If not supported natively, we search global and filter results
-        const results = await this.rag.search(safeId, 'fr', query, {
-            topK: topK * 2, // Fetch more then filter
-            filters: { source: 'tenant_memory' }
-        });
+        // 1. Vector search (semantic) — direct SimpleVectorStore
+        let vectorResults = [];
+        try {
+            let store = this.vectorStores.get(safeId);
+            if (!store) {
+                store = new SimpleVectorStore(safeId);
+                this.vectorStores.set(safeId, store);
+            }
 
-        return results
-            .filter(r => r.metadata?.source === 'tenant_memory')
-            .slice(0, topK);
+            const queryVector = await EmbeddingService.getQueryEmbedding(query);
+            if (queryVector) {
+                vectorResults = store.search(queryVector, topK)
+                    .filter(r => r.metadata?.source === 'tenant_memory');
+            }
+        } catch (e) {
+            console.warn(`[TenantMemory] Vector search failed: ${e.message}`);
+        }
+
+        // 2. Text fallback (JSONL scan — keyword matching)
+        const facts = await this._readFacts(this._getStoragePath(safeId));
+        const queryLower = query.toLowerCase();
+        const textResults = facts
+            .filter(f => f.value && f.value.toLowerCase().includes(queryLower))
+            .slice(0, topK)
+            .map(f => ({ ...f, score: 0.5 }));
+
+        // 3. Merge & deduplicate (vector results first, then text)
+        const seen = new Set();
+        const merged = [];
+        for (const r of [...vectorResults, ...textResults]) {
+            const key = r.id || r.value;
+            if (!seen.has(key)) {
+                seen.add(key);
+                merged.push(r);
+            }
+        }
+
+        return merged.slice(0, topK);
     }
 
     /**
@@ -230,8 +279,10 @@ class TenantMemory {
             if (fs.existsSync(tenantDir)) {
                 await fsp.rm(tenantDir, { recursive: true, force: true });
 
-                // Also remove from RAG index via event or direct call
-                // (HybridRAG purge logic handles KB + memory if integrated via source)
+                // SOTA Moat #7 (250.222): Clear dedup set
+                this._dedupSets.delete(safeId);
+                // Clear vector store cache
+                this.vectorStores.delete(safeId);
 
                 AgencyEventBus.publish('memory.purged', { tenantId: safeId });
                 return true;
