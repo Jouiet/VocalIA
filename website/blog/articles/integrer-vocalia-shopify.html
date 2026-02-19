@@ -159,7 +159,7 @@
           Une fois connecte, votre agent vocal VocalIA pourra :
         </p>
 
-        <div class="grid md:grid-cols-2 gap-4 my-8">
+        <div class="grid md:grid-cols-2 gap-4 my-8" data-reveal="up">
           <div class="stat-card rounded-xl p-6">
             <div class="text-vocalia-400 font-semibold mb-2"><span data-i18n="blog_integrer_vocalia_sho.suivi_de_commandes_30">Suivi de commandes</span></div>
             <p class="text-sm text-zinc-400 mb-0"><span data-i18n="blog_integrer_vocalia_sho.statut_numro_de_29">Statut, numéro de tracking, date de livraison estimée</span></p>
@@ -321,7 +321,7 @@ Bonjour {customer_name}, votre commande {order_number} est actuellement {order_s
           Les marchands Shopify utilisant VocalIA constatent en moyenne :
         </p>
 
-        <div class="grid md:grid-cols-3 gap-4 my-8">
+        <div class="grid md:grid-cols-3 gap-4 my-8" data-reveal="up">
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-emerald-400 mb-2">-65%</div>
             <div class="text-sm text-zinc-400"><span data-i18n="blog_integrer_vocalia_sho.tickets_support_10">Tickets support</span></div>
@@ -466,6 +466,10 @@ Bonjour {customer_name}, votre commande {order_number} est actuellement {order_s
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

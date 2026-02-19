@@ -159,7 +159,7 @@
         </p>
 
         <!-- Key Stats -->
-        <div class="grid md:grid-cols-4 gap-4 my-8">
+        <div class="grid md:grid-cols-4 gap-4 my-8" data-reveal="up">
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-emerald-400 mb-1">-60%</div>
             <div class="text-xs text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.noshows_103">No-shows</span></div>
@@ -273,7 +273,7 @@
           Avant VocalIA, la clinique utilisait un système de SMS automatiques. Les résultats étaient décevants :
         </p>
 
-        <div class="grid md:grid-cols-3 gap-4 my-8">
+        <div class="grid md:grid-cols-3 gap-4 my-8" data-reveal="up">
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-rose-400 mb-2">25%</div>
             <div class="text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_noshow_89">Taux de no-show (avant)</span></div>
@@ -496,7 +496,7 @@
           une transformation radicale de ses indicateurs :
         </p>
 
-        <div class="grid md:grid-cols-2 gap-4 my-8">
+        <div class="grid md:grid-cols-2 gap-4 my-8" data-reveal="up">
           <div class="stat-card rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
               <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_noshow_49">Taux de no-show</span></span>
@@ -617,7 +617,7 @@
 
         <h3><span data-i18n="blog_clinique_amal_rappel.tmoignages_patients_30">Témoignages patients</span></h3>
 
-        <div class="grid md:grid-cols-2 gap-4 my-8">
+        <div class="grid md:grid-cols-2 gap-4 my-8" data-reveal="up">
           <div class="quote-card rounded-xl p-4">
             <p class="text-zinc-300 italic mb-2">
               "L'appel en Darija m'a vraiment fait plaisir. J'ai pu reporter mon rendez-vous directement, sans avoir à rappeler la clinique."
@@ -922,6 +922,10 @@
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

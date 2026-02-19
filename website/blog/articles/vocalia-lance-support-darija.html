@@ -183,7 +183,7 @@
           c'est comme demander à un Français de communiquer en latin — techniquement possible, mais profondément artificiel.
         </p>
 
-        <div class="grid md:grid-cols-3 gap-4 my-8">
+        <div class="grid md:grid-cols-3 gap-4 my-8" data-reveal="up">
           <div class="glass rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-vocalia-400 mb-2">37M</div>
             <div class="text-sm text-zinc-400"><span data-i18n="blog_vocalia_lance_suppor.population_marocaine_62">Population marocaine</span></div>
@@ -711,6 +711,10 @@
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>
