@@ -183,7 +183,12 @@
       "stt": "Reconnaissance vocale",
       "tts": "Synthèse vocale",
       "nlp": "Compréhension naturelle",
-      "multi_tenant": "Isolation par compte"
+      "multi_tenant": "Isolation par compte",
+      "memory": "Mémoire IA",
+      "facts_learned": "Faits appris",
+      "kb_entries": "Entrées KB",
+      "flywheel": "Flywheel",
+      "flywheel_active": "Actif"
     },
     "sauvegarder_0": "Sauvegarder",
     "annuler_1": "Annuler",
@@ -1030,6 +1035,48 @@
     "feature_unlimited_agents": "Agents Illimités",
     "feature_sla": "SLA 99.99%",
     "feature_onprem": "On-Premise / Hybrid Cloud"
+  },
+  "architecture": {
+    "badge": "Moteur IA Vocal",
+    "title": "L'Architecture Qui Fait la Différence",
+    "subtitle": "5 niveaux d'IA, mémoire persistante, 38 personas. Pas un chatbot — un système vocal complet.",
+    "pipeline": {
+      "input": "Entrée Vocale",
+      "stt": "Reconnaissance",
+      "ai": "Moteur IA",
+      "ai_detail": "5 niveaux • 38 personas",
+      "tts": "Synthèse Vocale",
+      "output": "Réponse",
+      "output_detail": "< 800ms E2E"
+    },
+    "redundancy": {
+      "title": "IA Multi-Niveaux",
+      "subtitle": "Jamais en panne",
+      "rule_based": "Règles"
+    },
+    "memory": {
+      "title": "Mémoire Persistante",
+      "subtitle": "Apprend de chaque appel",
+      "step1": "Conversation",
+      "step1_detail": "Extraction de faits en temps réel",
+      "step2": "Mémorisation",
+      "step2_detail": "Préférences, objections, contexte",
+      "step3": "Enrichissement KB",
+      "step3_detail": "Amélioration auto de la base",
+      "step4": "Réponses meilleures",
+      "step4_detail": "Chaque appel rend l'IA plus pertinente"
+    },
+    "metrics": {
+      "title": "Métriques en Temps Réel",
+      "subtitle": "Transparence totale",
+      "latency": "Latence moyenne",
+      "personas": "Personas métier",
+      "languages": "Langues natives",
+      "isolation": "Isolation tenant",
+      "complete": "Complète",
+      "uptime": "Redondance IA",
+      "levels": "5 niveaux"
+    }
   },
   "integrations": {
     "title": "Intégrations",

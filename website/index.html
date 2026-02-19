@@ -548,6 +548,263 @@
     </div>
   </section>
 
+  <!-- Architecture Section — SOTA Voice AI Engine Blueprint -->
+  <section id="architecture" class="py-24 relative overflow-hidden">
+    <!-- Subtle grid background -->
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(94,106,210,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(94,106,210,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-vocalia-950/30 to-transparent pointer-events-none"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="text-center mb-16" data-reveal="up">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-vocalia-500/30 bg-vocalia-500/10 mb-6">
+          <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vocalia-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-vocalia-500"></span></span>
+          <span class="text-xs font-mono uppercase tracking-wider text-vocalia-300" data-i18n="architecture.badge">Moteur IA Vocal</span>
+        </div>
+        <h2 class="text-4xl sm:text-5xl font-bold mb-4" data-i18n="architecture.title">L'Architecture Qui Fait la Diff&eacute;rence</h2>
+        <p class="text-xl text-zinc-400 max-w-3xl mx-auto" data-i18n="architecture.subtitle">5 niveaux d'IA, m&eacute;moire persistante, 38 personas. Pas un chatbot — un syst&egrave;me vocal complet.</p>
+      </div>
+
+      <!-- Voice Processing Pipeline -->
+      <div class="relative mb-16" data-reveal="up">
+        <div class="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent -translate-y-1/2 hidden lg:block"></div>
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-3">
+          <!-- Step 1: Input -->
+          <div class="relative group">
+            <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-5 text-center hover:border-vocalia-500/40 transition-all duration-300 hover:-translate-y-1">
+              <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-400/10 flex items-center justify-center">
+                <i data-lucide="mic" class="w-6 h-6 text-blue-400"></i>
+              </div>
+              <p class="text-sm font-semibold text-white mb-1" data-i18n="architecture.pipeline.input">Entr&eacute;e Vocale</p>
+              <p class="text-xs text-zinc-500 font-mono">WebRTC / PSTN</p>
+            </div>
+            <div class="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-vocalia-400/60">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <!-- Step 2: STT -->
+          <div class="relative group">
+            <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-5 text-center hover:border-emerald-500/40 transition-all duration-300 hover:-translate-y-1">
+              <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-400/10 flex items-center justify-center">
+                <i data-lucide="audio-waveform" class="w-6 h-6 text-emerald-400"></i>
+              </div>
+              <p class="text-sm font-semibold text-white mb-1" data-i18n="architecture.pipeline.stt">Reconnaissance</p>
+              <p class="text-xs text-zinc-500 font-mono">STT &lt; 200ms</p>
+            </div>
+            <div class="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-vocalia-400/60">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <!-- Step 3: AI Engine (center — highlighted) -->
+          <div class="relative group col-span-2 lg:col-span-1">
+            <div class="bg-gradient-to-b from-vocalia-500/10 to-transparent backdrop-blur border border-vocalia-500/30 rounded-2xl p-5 text-center hover:border-vocalia-500/60 transition-all duration-300 hover:-translate-y-1 shadow-[0_0_30px_rgba(94,106,210,0.1)]">
+              <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-vocalia-500/30 to-purple-500/20 flex items-center justify-center">
+                <i data-lucide="brain" class="w-6 h-6 text-vocalia-400"></i>
+              </div>
+              <p class="text-sm font-semibold text-white mb-1" data-i18n="architecture.pipeline.ai">Moteur IA</p>
+              <p class="text-xs text-vocalia-400 font-mono" data-i18n="architecture.pipeline.ai_detail">5 niveaux &bull; 38 personas</p>
+            </div>
+            <div class="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-vocalia-400/60">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <!-- Step 4: TTS -->
+          <div class="relative group">
+            <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-5 text-center hover:border-amber-500/40 transition-all duration-300 hover:-translate-y-1">
+              <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-400/10 flex items-center justify-center">
+                <i data-lucide="volume-2" class="w-6 h-6 text-amber-400"></i>
+              </div>
+              <p class="text-sm font-semibold text-white mb-1" data-i18n="architecture.pipeline.tts">Synth&egrave;se Vocale</p>
+              <p class="text-xs text-zinc-500 font-mono">ElevenLabs TTS</p>
+            </div>
+            <div class="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-vocalia-400/60">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <!-- Step 5: Output -->
+          <div class="relative group">
+            <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-5 text-center hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-1">
+              <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-indigo-500/20 to-indigo-400/10 flex items-center justify-center">
+                <i data-lucide="headphones" class="w-6 h-6 text-indigo-400"></i>
+              </div>
+              <p class="text-sm font-semibold text-white mb-1" data-i18n="architecture.pipeline.output">R&eacute;ponse</p>
+              <p class="text-xs text-zinc-500 font-mono" data-i18n="architecture.pipeline.output_detail">&lt; 800ms E2E</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Grid — 3 SOTA Pillars -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6" data-reveal="up">
+        <!-- Pillar 1: AI Redundancy (5 levels) -->
+        <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-6 hover:border-vocalia-500/30 transition-all duration-300 group">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-vocalia-500/20 to-purple-500/10 flex items-center justify-center">
+              <i data-lucide="shield-check" class="w-5 h-5 text-vocalia-400"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white" data-i18n="architecture.redundancy.title">IA Multi-Niveaux</h3>
+              <p class="text-xs text-zinc-500" data-i18n="architecture.redundancy.subtitle">Jamais en panne</p>
+            </div>
+          </div>
+          <!-- 5-level chain visualization -->
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+              <span class="w-6 h-6 rounded-md bg-emerald-500/20 flex items-center justify-center text-xs font-bold text-emerald-400">1</span>
+              <div class="flex-1 min-w-0">
+                <span class="text-sm font-medium text-white">Grok</span>
+                <span class="text-xs text-emerald-400 ml-2">Primary</span>
+              </div>
+              <span class="text-xs font-mono text-zinc-500">$0.05/min</span>
+            </div>
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/10">
+              <span class="w-6 h-6 rounded-md bg-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-400">2</span>
+              <div class="flex-1 min-w-0">
+                <span class="text-sm font-medium text-white">Gemini</span>
+                <span class="text-xs text-blue-400 ml-2">Fallback</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-purple-500/10 border border-purple-500/10">
+              <span class="w-6 h-6 rounded-md bg-purple-500/20 flex items-center justify-center text-xs font-bold text-purple-400">3</span>
+              <div class="flex-1 min-w-0">
+                <span class="text-sm font-medium text-white">Claude</span>
+                <span class="text-xs text-purple-400 ml-2">Fallback</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/10">
+              <span class="w-6 h-6 rounded-md bg-amber-500/20 flex items-center justify-center text-xs font-bold text-amber-400">4</span>
+              <div class="flex-1 min-w-0">
+                <span class="text-sm font-medium text-white">Atlas-Chat</span>
+                <span class="text-xs text-amber-400 ml-2">Darija</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-2.5 rounded-lg bg-zinc-500/10 border border-zinc-500/10">
+              <span class="w-6 h-6 rounded-md bg-zinc-500/20 flex items-center justify-center text-xs font-bold text-zinc-400">5</span>
+              <div class="flex-1 min-w-0">
+                <span class="text-sm font-medium text-white">Local</span>
+                <span class="text-xs text-zinc-400 ml-2" data-i18n="architecture.redundancy.rule_based">R&egrave;gles</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Memory Flywheel -->
+        <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-6 hover:border-vocalia-500/30 transition-all duration-300 group">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/20 to-teal-500/10 flex items-center justify-center">
+              <i data-lucide="brain-circuit" class="w-5 h-5 text-emerald-400"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white" data-i18n="architecture.memory.title">M&eacute;moire Persistante</h3>
+              <p class="text-xs text-zinc-500" data-i18n="architecture.memory.subtitle">Apprend de chaque appel</p>
+            </div>
+          </div>
+          <!-- Flywheel cycle visualization -->
+          <div class="relative">
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-vocalia-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i data-lucide="message-circle" class="w-4 h-4 text-vocalia-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-white" data-i18n="architecture.memory.step1">Conversation</p>
+                  <p class="text-xs text-zinc-500" data-i18n="architecture.memory.step1_detail">Extraction de faits en temps r&eacute;el</p>
+                </div>
+              </div>
+              <div class="ml-4 border-l border-dashed border-vocalia-500/20 h-2"></div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i data-lucide="database" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-white" data-i18n="architecture.memory.step2">M&eacute;morisation</p>
+                  <p class="text-xs text-zinc-500" data-i18n="architecture.memory.step2_detail">Pr&eacute;f&eacute;rences, objections, contexte</p>
+                </div>
+              </div>
+              <div class="ml-4 border-l border-dashed border-vocalia-500/20 h-2"></div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-white" data-i18n="architecture.memory.step3">Enrichissement KB</p>
+                  <p class="text-xs text-zinc-500" data-i18n="architecture.memory.step3_detail">Am&eacute;lioration auto de la base</p>
+                </div>
+              </div>
+              <div class="ml-4 border-l border-dashed border-vocalia-500/20 h-2"></div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i data-lucide="trending-up" class="w-4 h-4 text-amber-400"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-white" data-i18n="architecture.memory.step4">R&eacute;ponses meilleures</p>
+                  <p class="text-xs text-zinc-500" data-i18n="architecture.memory.step4_detail">Chaque appel rend l'IA plus pertinente</p>
+                </div>
+              </div>
+            </div>
+            <!-- Cycle arrow -->
+            <div class="absolute -right-1 top-1/2 -translate-y-1/2 hidden lg:block">
+              <div class="w-8 h-8 rounded-full border border-vocalia-500/20 flex items-center justify-center">
+                <i data-lucide="rotate-cw" class="w-4 h-4 text-vocalia-400 animate-spin" style="animation-duration: 8s"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 3: Real Metrics / Multi-Tenant -->
+        <div class="bg-white/[0.04] backdrop-blur border border-white/[0.08] rounded-2xl p-6 hover:border-vocalia-500/30 transition-all duration-300 group">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center">
+              <i data-lucide="gauge" class="w-5 h-5 text-amber-400"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white" data-i18n="architecture.metrics.title">M&eacute;triques en Temps R&eacute;el</h3>
+              <p class="text-xs text-zinc-500" data-i18n="architecture.metrics.subtitle">Transparence totale</p>
+            </div>
+          </div>
+          <!-- Metrics display -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+              <div class="flex items-center gap-2">
+                <i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i>
+                <span class="text-sm text-zinc-300" data-i18n="architecture.metrics.latency">Latence moyenne</span>
+              </div>
+              <span class="text-sm font-mono font-bold text-emerald-400">&lt; 200ms</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+              <div class="flex items-center gap-2">
+                <i data-lucide="users" class="w-4 h-4 text-vocalia-400"></i>
+                <span class="text-sm text-zinc-300" data-i18n="architecture.metrics.personas">Personas m&eacute;tier</span>
+              </div>
+              <span class="text-sm font-mono font-bold text-white">38 &times; 5</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+              <div class="flex items-center gap-2">
+                <i data-lucide="globe" class="w-4 h-4 text-blue-400"></i>
+                <span class="text-sm text-zinc-300" data-i18n="architecture.metrics.languages">Langues natives</span>
+              </div>
+              <span class="text-sm font-mono font-bold text-white">5</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+              <div class="flex items-center gap-2">
+                <i data-lucide="lock" class="w-4 h-4 text-purple-400"></i>
+                <span class="text-sm text-zinc-300" data-i18n="architecture.metrics.isolation">Isolation tenant</span>
+              </div>
+              <span class="text-sm font-mono font-bold text-emerald-400" data-i18n="architecture.metrics.complete">Compl&egrave;te</span>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+              <div class="flex items-center gap-2">
+                <i data-lucide="hard-drive" class="w-4 h-4 text-amber-400"></i>
+                <span class="text-sm text-zinc-300" data-i18n="architecture.metrics.uptime">Redondance IA</span>
+              </div>
+              <span class="text-sm font-mono font-bold text-white" data-i18n="architecture.metrics.levels">5 niveaux</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Integrations Section - Full Width with IMG Logos -->
   <section class="py-16 bg-gradient-to-b from-[#050505] to-[#050505] overflow-hidden">
     <div class="text-center mb-10">

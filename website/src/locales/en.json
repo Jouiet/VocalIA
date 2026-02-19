@@ -183,7 +183,12 @@
       "stt": "Speech Recognition",
       "tts": "Voice Synthesis",
       "nlp": "Natural Understanding",
-      "multi_tenant": "Account Isolation"
+      "multi_tenant": "Account Isolation",
+      "memory": "AI Memory",
+      "facts_learned": "Facts learned",
+      "kb_entries": "KB entries",
+      "flywheel": "Flywheel",
+      "flywheel_active": "Active"
     },
     "sauvegarder_0": "Save",
     "annuler_1": "Cancel",
@@ -1030,6 +1035,48 @@
     "feature_unlimited_agents": "Unlimited Agents",
     "feature_sla": "SLA 99.99%",
     "feature_onprem": "On-Premise / Hybrid Cloud"
+  },
+  "architecture": {
+    "badge": "Voice AI Engine",
+    "title": "The Architecture That Makes the Difference",
+    "subtitle": "5 AI levels, persistent memory, 38 personas. Not a chatbot — a complete voice system.",
+    "pipeline": {
+      "input": "Voice Input",
+      "stt": "Recognition",
+      "ai": "AI Engine",
+      "ai_detail": "5 levels • 38 personas",
+      "tts": "Voice Synthesis",
+      "output": "Response",
+      "output_detail": "< 800ms E2E"
+    },
+    "redundancy": {
+      "title": "Multi-Level AI",
+      "subtitle": "Never goes down",
+      "rule_based": "Rules"
+    },
+    "memory": {
+      "title": "Persistent Memory",
+      "subtitle": "Learns from every call",
+      "step1": "Conversation",
+      "step1_detail": "Real-time fact extraction",
+      "step2": "Memorization",
+      "step2_detail": "Preferences, objections, context",
+      "step3": "KB Enrichment",
+      "step3_detail": "Auto-improving knowledge base",
+      "step4": "Better Responses",
+      "step4_detail": "Every call makes the AI smarter"
+    },
+    "metrics": {
+      "title": "Real-Time Metrics",
+      "subtitle": "Total transparency",
+      "latency": "Average latency",
+      "personas": "Industry personas",
+      "languages": "Native languages",
+      "isolation": "Tenant isolation",
+      "complete": "Complete",
+      "uptime": "AI Redundancy",
+      "levels": "5 levels"
+    }
   },
   "integrations": {
     "title": "Integrations",

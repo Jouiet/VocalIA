@@ -1,8 +1,9 @@
 # VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.217 (16/02/2026)
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.223 (19/02/2026)
 > **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
-> **Tests**: ~6,233 pass, 0-1 fail intermittent (94 .mjs, B52 Node.js bug) | **Timeout**: 180s
+> **Tests**: ~6,250 pass, 0-1 fail intermittent (94 .mjs, B52 Node.js bug) | **Timeout**: 180s
+> **250.222-223**: SOTA Moat Surgery (7 bugs B86-B92) + Architecture Showcase (homepage blueprint, dashboard memory panel, telephony pricing fix, 5-lang i18n)
 
 ---
 

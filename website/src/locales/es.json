@@ -183,7 +183,12 @@
       "stt": "Reconocimiento de voz",
       "tts": "Síntesis de voz",
       "nlp": "Comprensión natural",
-      "multi_tenant": "Aislamiento por cuenta"
+      "multi_tenant": "Aislamiento por cuenta",
+      "memory": "Memoria IA",
+      "facts_learned": "Hechos aprendidos",
+      "kb_entries": "Entradas KB",
+      "flywheel": "Flywheel",
+      "flywheel_active": "Activo"
     },
     "sauvegarder_0": "Guardar",
     "annuler_1": "Cancelar",
@@ -1030,6 +1035,48 @@
     "feature_unlimited_agents": "Agentes Ilimitados",
     "feature_sla": "SLA 99.99%",
     "feature_onprem": "On-Premise / Hybrid Cloud"
+  },
+  "architecture": {
+    "badge": "Motor de IA Vocal",
+    "title": "La Arquitectura Que Marca la Diferencia",
+    "subtitle": "5 niveles de IA, memoria persistente, 38 personas. No es un chatbot — es un sistema vocal completo.",
+    "pipeline": {
+      "input": "Entrada de Voz",
+      "stt": "Reconocimiento",
+      "ai": "Motor IA",
+      "ai_detail": "5 niveles • 38 personas",
+      "tts": "Síntesis Vocal",
+      "output": "Respuesta",
+      "output_detail": "< 800ms E2E"
+    },
+    "redundancy": {
+      "title": "IA Multi-Nivel",
+      "subtitle": "Nunca se cae",
+      "rule_based": "Reglas"
+    },
+    "memory": {
+      "title": "Memoria Persistente",
+      "subtitle": "Aprende de cada llamada",
+      "step1": "Conversación",
+      "step1_detail": "Extracción de hechos en tiempo real",
+      "step2": "Memorización",
+      "step2_detail": "Preferencias, objeciones, contexto",
+      "step3": "Enriquecimiento KB",
+      "step3_detail": "Mejora automática de la base",
+      "step4": "Mejores Respuestas",
+      "step4_detail": "Cada llamada hace la IA más relevante"
+    },
+    "metrics": {
+      "title": "Métricas en Tiempo Real",
+      "subtitle": "Transparencia total",
+      "latency": "Latencia promedio",
+      "personas": "Personas por sector",
+      "languages": "Idiomas nativos",
+      "isolation": "Aislamiento de tenant",
+      "complete": "Completo",
+      "uptime": "Redundancia IA",
+      "levels": "5 niveles"
+    }
   },
   "integrations": {
     "title": "Integraciones",
