@@ -1607,8 +1607,8 @@
     "subtitle": "VocalIA منصة Voice AI تُتيح الوصول إلى الوكلاء الصوتيين الذكيين للجميع. مهمتنا: تمكين كل شركة من تقديم تجربة عملاء صوتية استثنائية، بجزء من تكلفة الحلول التقليدية.",
     "stat_personas": "شخصيات مهنية",
     "stat_languages": "لغات مدعومة",
-    "stat_cheaper": "أرخص",
-    "stat_uptime": "وقت التشغيل",
+    "stat_features": "ميزة",
+    "stat_services": "خدمات منشورة",
     "mission_badge": "مهمتنا",
     "mission_title": "نُديمقراطية",
     "mission_title_highlight": "الذكاء الصوتي",
@@ -4246,6 +4246,18 @@
     },
     "fallback": {
       "title": "وضع التراجع"
+    },
+    "engine": {
+      "title": "ذكاء SOTA",
+      "active": "نشط",
+      "memory_facts": "حقائق الذاكرة",
+      "cross_tenant": "عبر المستأجرين",
+      "kb_enrichments": "إثراء قاعدة المعرفة",
+      "auto_generated": "مولّدة تلقائياً",
+      "flywheel": "دولاب الموازنة",
+      "cycles": "دورات مكتملة",
+      "proactive": "مهام استباقية",
+      "scheduled": "مجدولة"
     },
     "latency_normal": "عادي",
     "latency_moderate": "متوسط",

@@ -396,6 +396,65 @@
         </div>
       </div>
 
+      <!-- SOTA Engine Intelligence -->
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2">
+            <i data-lucide="brain-circuit" class="w-5 h-5 text-violet-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="admin.engine.title">Intelligence SOTA</h3>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+            <span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium" data-i18n="admin.engine.active">Actif</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl border border-violet-200 dark:border-violet-500/20 bg-violet-50/50 dark:bg-violet-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-violet-100 dark:bg-violet-900/30 rounded-lg">
+                <i data-lucide="database" class="w-4 h-4 text-violet-600 dark:text-violet-400"></i>
+              </div>
+              <span class="text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-wider" data-i18n="admin.engine.memory_facts">Faits Mémoire</span>
+            </div>
+            <p id="engine-memory-facts" class="text-2xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-0.5" data-i18n="admin.engine.cross_tenant">Cross-tenant</p>
+          </div>
+          <div class="p-4 rounded-xl border border-cyan-200 dark:border-cyan-500/20 bg-cyan-50/50 dark:bg-cyan-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg">
+                <i data-lucide="sparkles" class="w-4 h-4 text-cyan-600 dark:text-cyan-400"></i>
+              </div>
+              <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider" data-i18n="admin.engine.kb_enrichments">Enrichissements KB</span>
+            </div>
+            <p id="engine-kb-enrichments" class="text-2xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-0.5" data-i18n="admin.engine.auto_generated">Auto-générés</p>
+          </div>
+          <div class="p-4 rounded-xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                <i data-lucide="refresh-cw" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+              </div>
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider" data-i18n="admin.engine.flywheel">Flywheel</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <p id="engine-flywheel-cycles" class="text-2xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+              <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+            </div>
+            <p class="text-xs text-zinc-500 mt-0.5" data-i18n="admin.engine.cycles">Cycles complétés</p>
+          </div>
+          <div class="p-4 rounded-xl border border-amber-200 dark:border-amber-500/20 bg-amber-50/50 dark:bg-amber-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                <i data-lucide="calendar-clock" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider" data-i18n="admin.engine.proactive">Tâches Proactives</span>
+            </div>
+            <p id="engine-proactive-tasks" class="text-2xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-0.5" data-i18n="admin.engine.scheduled">Planifiées</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Platform Metrics -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-5 text-white">
@@ -671,11 +730,32 @@
         // Heatmap
         renderActivityHeatmap(sessionsData);
 
+        // SOTA Engine Intelligence stats
+        loadEngineStats();
+
         // Recent activity
         updateRecentActivity(tenantsData, sessionsData, pending);
 
       } catch (error) {
         console.error('Failed to load stats:', error);
+      }
+    }
+
+    // SOTA Engine Intelligence — fetch from admin engine stats endpoint
+    async function loadEngineStats() {
+      try {
+        const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:3013'
+          : 'https://api.vocalia.ma';
+        const res = await fetch(`${baseUrl}/api/admin/engine-stats`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.memory_facts != null) animateStatCounter('engine-memory-facts', data.memory_facts);
+        if (data.kb_enrichments != null) animateStatCounter('engine-kb-enrichments', data.kb_enrichments);
+        if (data.flywheel_cycles != null) animateStatCounter('engine-flywheel-cycles', data.flywheel_cycles);
+        if (data.proactive_tasks != null) animateStatCounter('engine-proactive-tasks', data.proactive_tasks);
+      } catch {
+        // Endpoint not deployed yet — stats remain "--"
       }
     }
 

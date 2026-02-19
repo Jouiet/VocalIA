@@ -1607,8 +1607,8 @@
     "subtitle": "VocalIA est une plateforme Voice AI qui démocratise l'accès aux agents vocaux IA. Notre mission: permettre à chaque entreprise d'offrir une expérience client vocale exceptionnelle, à une fraction du coût des solutions traditionnelles.",
     "stat_personas": "Personas Métier",
     "stat_languages": "Langues Supportées",
-    "stat_cheaper": "Moins Cher",
-    "stat_uptime": "Disponibilité",
+    "stat_features": "Fonctionnalités",
+    "stat_services": "Services Déployés",
     "mission_badge": "Notre Mission",
     "mission_title": "Démocratiser",
     "mission_title_highlight": "l'IA Vocale",
@@ -4246,6 +4246,18 @@
     },
     "fallback": {
       "title": "Mode Dégradé"
+    },
+    "engine": {
+      "title": "Intelligence SOTA",
+      "active": "Actif",
+      "memory_facts": "Faits Mémoire",
+      "cross_tenant": "Cross-tenant",
+      "kb_enrichments": "Enrichissements KB",
+      "auto_generated": "Auto-générés",
+      "flywheel": "Flywheel",
+      "cycles": "Cycles complétés",
+      "proactive": "Tâches Proactives",
+      "scheduled": "Planifiées"
     },
     "latency_normal": "Normal",
     "latency_moderate": "Modéré",

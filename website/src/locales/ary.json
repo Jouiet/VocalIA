@@ -1607,8 +1607,8 @@
     "subtitle": "VocalIA منصة Voice AI كتديمقراطي الوصول لوكلاء الذكاء الاصطناعي الصوتي. المهمة ديالنا: نمكنو كل شركة تعطي تجربة صوتية استثنائية للعملاء، بجزء صغير من التكلفة التقليدية.",
     "stat_personas": "شخصيات مهنية",
     "stat_languages": "لغات مدعومة",
-    "stat_cheaper": "رخص",
-    "stat_uptime": "وقت التشغيل",
+    "stat_features": "ميزات",
+    "stat_services": "خدمات منشورين",
     "mission_badge": "المهمة ديالنا",
     "mission_title": "كنديمقراطيو",
     "mission_title_highlight": "الذكاء الصوتي",
@@ -4246,6 +4246,18 @@
     },
     "fallback": {
       "title": "الوضع الاحتياطي"
+    },
+    "engine": {
+      "title": "ذكاء SOTA",
+      "active": "خدّام",
+      "memory_facts": "حقائق الذاكرة",
+      "cross_tenant": "على جميع الحسابات",
+      "kb_enrichments": "إغناء قاعدة المعرفة",
+      "auto_generated": "تولّدو بوحدهم",
+      "flywheel": "دولاب التعلم",
+      "cycles": "دورات كملو",
+      "proactive": "مهام استباقية",
+      "scheduled": "مبرمجين"
     },
     "latency_normal": "عادي",
     "latency_moderate": "متوسط",
