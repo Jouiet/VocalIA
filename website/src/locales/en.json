@@ -712,6 +712,17 @@
     "vp_tireless": "Never tired, never on leave",
     "vp_cost": "Near-zero marginal cost per call"
   },
+  "how_it_works": {
+    "badge": "Getting Started",
+    "title": "Operational in 5 Minutes",
+    "subtitle": "No developer required. No complex configuration.",
+    "step1_title": "Choose your persona",
+    "step1_desc": "38 industry-ready assistants: real estate, healthcare, e-commerce, restaurants, legal...",
+    "step2_title": "Paste one line of code",
+    "step2_desc": "Embed the voice widget on your site. Or connect your phone line in one click.",
+    "step3_title": "AI learns and converts",
+    "step3_desc": "Persistent memory, auto knowledge base enrichment. The more it talks, the more relevant it becomes."
+  },
   "features": {
     "title": "One Infrastructure, Two Growth Engines",
     "subtitle": "Never miss a lead again, on the web or over the phone.",
@@ -1077,6 +1088,18 @@
       "uptime": "AI Redundancy",
       "levels": "5 levels"
     }
+  },
+  "security": {
+    "badge": "Security & Compliance",
+    "title": "Enterprise-Grade Security",
+    "subtitle": "Your data is encrypted, isolated and hosted in Europe. Zero compromise.",
+    "gdpr": "EU Compliant",
+    "encryption": "End-to-end encryption",
+    "isolation_label": "Isolation",
+    "isolation_desc": "Per-tenant data",
+    "containers_label": "Containers",
+    "containers_desc": "Non-root, PID 1",
+    "privacy_analytics": "Cookie-free analytics"
   },
   "integrations": {
     "title": "Integrations",

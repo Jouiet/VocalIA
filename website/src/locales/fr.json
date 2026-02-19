@@ -712,6 +712,17 @@
     "vp_tireless": "Jamais fatigué, jamais en congé",
     "vp_cost": "Coût marginal quasi nul par appel"
   },
+  "how_it_works": {
+    "badge": "Mise en Route",
+    "title": "Opérationnel en 5 Minutes",
+    "subtitle": "Pas de développeur requis. Pas de configuration complexe.",
+    "step1_title": "Choisissez votre persona",
+    "step1_desc": "38 assistants métier prêts à l'emploi : immobilier, santé, e-commerce, restauration, juridique...",
+    "step2_title": "Collez une ligne de code",
+    "step2_desc": "Intégrez le widget vocal sur votre site. Ou connectez votre ligne téléphonique en un clic.",
+    "step3_title": "L'IA apprend et convertit",
+    "step3_desc": "Mémoire persistante, enrichissement auto de la base de connaissances. Plus elle parle, plus elle est pertinente."
+  },
   "features": {
     "title": "Une Infrastructure, Deux Vecteurs de Croissance",
     "subtitle": "Ne perdez plus aucun lead, sur le web ou par téléphone.",
@@ -1077,6 +1088,18 @@
       "uptime": "Redondance IA",
       "levels": "5 niveaux"
     }
+  },
+  "security": {
+    "badge": "Sécurité & Conformité",
+    "title": "Sécurité de Niveau Entreprise",
+    "subtitle": "Vos données sont chiffrées, isolées et hébergées en Europe. Zéro compromis.",
+    "gdpr": "Conforme Europe",
+    "encryption": "Chiffrement bout en bout",
+    "isolation_label": "Isolation",
+    "isolation_desc": "Données par tenant",
+    "containers_label": "Containers",
+    "containers_desc": "Non-root, PID 1",
+    "privacy_analytics": "Analytics sans cookies"
   },
   "integrations": {
     "title": "Intégrations",

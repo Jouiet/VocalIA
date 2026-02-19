@@ -712,6 +712,17 @@
     "vp_tireless": "Nunca cansado, nunca de vacaciones",
     "vp_cost": "Coste marginal casi nulo por llamada"
   },
+  "how_it_works": {
+    "badge": "Primeros Pasos",
+    "title": "Operativo en 5 Minutos",
+    "subtitle": "Sin desarrollador. Sin configuración compleja.",
+    "step1_title": "Elija su persona",
+    "step1_desc": "38 asistentes sectoriales listos: inmobiliaria, salud, e-commerce, restauración, legal...",
+    "step2_title": "Pegue una línea de código",
+    "step2_desc": "Integre el widget vocal en su sitio. O conecte su línea telefónica en un clic.",
+    "step3_title": "La IA aprende y convierte",
+    "step3_desc": "Memoria persistente, enriquecimiento automático de la base de conocimientos. Cuanto más habla, más pertinente es."
+  },
   "features": {
     "title": "Una Infraestructura, Dos Motores de Crecimiento",
     "subtitle": "No pierda ningún lead, en la web o por teléfono.",
@@ -1077,6 +1088,18 @@
       "uptime": "Redundancia IA",
       "levels": "5 niveles"
     }
+  },
+  "security": {
+    "badge": "Seguridad y Cumplimiento",
+    "title": "Seguridad de Nivel Empresarial",
+    "subtitle": "Sus datos están cifrados, aislados y alojados en Europa. Cero compromisos.",
+    "gdpr": "Conforme UE",
+    "encryption": "Cifrado de extremo a extremo",
+    "isolation_label": "Aislamiento",
+    "isolation_desc": "Datos por tenant",
+    "containers_label": "Contenedores",
+    "containers_desc": "Non-root, PID 1",
+    "privacy_analytics": "Analítica sin cookies"
   },
   "integrations": {
     "title": "Integraciones",
