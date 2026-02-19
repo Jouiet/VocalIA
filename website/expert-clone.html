@@ -79,6 +79,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+    crossorigin="anonymous" defer></script>
+
   <!-- Security -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -123,7 +131,7 @@
     <section class="py-20 relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-transparent to-[#050505]/50"></div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div class="text-center max-w-4xl mx-auto">
+        <div class="text-center max-w-4xl mx-auto" data-reveal="up">
           <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 text-sm font-medium mb-6">
             <i data-lucide="crown" class="w-4 h-4 mr-2"></i>
             <span data-i18n="expert_clone_page.badge">Expert Clone</span>
@@ -156,7 +164,7 @@
           <h2 class="text-3xl font-bold mb-4" data-i18n="expert_clone_page.for_who_title">Con&ccedil;u pour les experts qui veulent se d&eacute;multiplier</h2>
           <p class="text-vocalia-400 max-w-xl mx-auto" data-i18n="expert_clone_page.for_who_subtitle">Votre clone vocal r&eacute;pond &agrave; vos clients pendant que vous vous concentrez sur les cas complexes.</p>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="use-case-card rounded-xl p-6 text-center">
             <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="stethoscope" class="w-6 h-6 text-blue-400"></i>
@@ -196,7 +204,7 @@
           <h2 class="text-3xl font-bold mb-4" data-i18n="expert_clone_page.how_title">Comment &ccedil;a fonctionne</h2>
           <p class="text-vocalia-400" data-i18n="expert_clone_page.how_subtitle">3 &eacute;tapes pour rendre votre expertise accessible en permanence</p>
         </div>
-        <div class="space-y-12">
+        <div class="space-y-12" data-reveal="up">
           <!-- Step 1 -->
           <div class="flex items-start gap-6">
             <div class="step-number w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0">
@@ -237,7 +245,7 @@
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold mb-4" data-i18n="expert_clone_page.features_title">Ce qui est inclus</h2>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="up">
           <div class="expert-card rounded-xl p-6">
             <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center mb-4">
               <i data-lucide="mic" class="w-5 h-5 text-amber-400"></i>
@@ -291,7 +299,7 @@
           <h2 class="text-3xl font-bold mb-4" data-i18n="expert_clone_page.compare_title">Pourquoi un expert clone ?</h2>
           <p class="text-vocalia-400" data-i18n="expert_clone_page.compare_subtitle">Comparez : r&eacute;pondre &agrave; tout vous-m&ecirc;me vs d&eacute;l&eacute;guer les questions r&eacute;currentes &agrave; votre clone</p>
         </div>
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid md:grid-cols-2 gap-8" data-reveal="up">
           <!-- Without -->
           <div class="rounded-2xl border border-white/[0.08] p-8 bg-white/[0.02]">
             <div class="text-center mb-6">
@@ -331,7 +339,7 @@
     <!-- Pricing CTA -->
     <section class="py-16 border-t border-white/[0.08]">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="rounded-2xl border border-amber-500/30 p-10 bg-gradient-to-br from-amber-500/[0.06] to-transparent amber-glow">
+        <div class="rounded-2xl border border-amber-500/30 p-10 bg-gradient-to-br from-amber-500/[0.06] to-transparent amber-glow" data-reveal="up">
           <h2 class="text-3xl font-bold mb-3" data-i18n="expert_clone_page.pricing_title">Pr&ecirc;t &agrave; cloner votre expertise ?</h2>
           <div class="mb-6">
             <span class="text-5xl font-bold text-amber-400" id="expert-price">149</span>
@@ -448,6 +456,7 @@
   })();
   </script>
 
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

@@ -212,7 +212,7 @@
         </ol>
       </nav>
 
-      <div class="text-center max-w-4xl mx-auto">
+      <div class="text-center max-w-4xl mx-auto" data-reveal="up">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
           <span data-i18n="pricing_page.title">Tarifs</span> <span class="gradient-text"
             data-i18n="pricing_page.title_highlight">Transparents</span>
@@ -232,7 +232,7 @@
   <!-- Pricing Cards -->
   <section class="pb-24 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6" data-reveal="up">
 
         <!-- Starter -->
         <div class="pricing-card p-6 relative glass">
@@ -497,7 +497,7 @@
         <p class="text-zinc-400" data-i18n="roi.subtitle">Estimez vos economies avec VocalIA en ajustant vos parametres</p>
       </div>
 
-      <div class="glass rounded-2xl p-8 border border-white/[0.08]">
+      <div class="glass rounded-2xl p-8 border border-white/[0.08]" data-reveal="up">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <!-- Slider: Agents -->
           <div>
@@ -578,7 +578,7 @@
         <p class="text-lg text-zinc-400 max-w-2xl mx-auto" data-i18n="pricing_page.vs_subtitle">Les chiffres parlent d'eux-mêmes. Comparez le coût réel d'un employé avec VocalIA.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto" data-reveal="up">
         <!-- Human Receptionist -->
         <div class="glass rounded-2xl p-8 border border-red-500/20 relative">
           <div class="absolute -top-3 left-6 px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full text-red-400 text-xs font-semibold uppercase tracking-wider" data-i18n="pricing_page.vs_human_badge">Méthode traditionnelle</div>
@@ -681,7 +681,7 @@
       <h2 class="text-3xl font-bold text-center mb-12" data-i18n="pricing_page.comparison_title">Comparaison Détaillée
       </h2>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto" data-reveal="up">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-white/[0.08]">
@@ -969,7 +969,7 @@
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold text-center mb-12" data-i18n="pricing_page.faq_title">Questions Fréquentes</h2>
 
-      <div class="space-y-4">
+      <div class="space-y-4" data-reveal="up">
         <!-- FAQ Item 1 -->
         <details class="group glass rounded-xl">
           <summary class="flex items-center justify-between p-6 cursor-pointer">
@@ -1060,7 +1060,7 @@
     <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent">
     </div>
 
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-reveal="up">
       <!-- Badge -->
       <div
         class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-6">
@@ -1404,6 +1404,10 @@
       window.addEventListener('load', initI18n);
     })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=250"></script>
   <script src="/src/lib/i18n.js?v=250"></script>

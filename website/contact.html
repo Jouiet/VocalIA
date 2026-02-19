@@ -121,7 +121,7 @@
     <section class="py-16 relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-vocalia-900/30 via-transparent to-[#050505]/50"></div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div class="text-center max-w-3xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto" data-reveal="up">
           <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-vocalia-500/20 text-vocalia-300 text-sm font-medium mb-6">
             <i data-lucide="mail" class="w-4 h-4 inline text-zinc-400"></i> <span data-i18n="contact_page.badge">Contact</span>
           </span>
@@ -139,7 +139,7 @@
     <!-- Contact Form + Info -->
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12">
+        <div class="grid lg:grid-cols-2 gap-12" data-reveal="up">
           <!-- Contact Form -->
           <div class="glass rounded-2xl p-8">
             <h2 class="text-2xl font-bold mb-6" data-i18n="contact_page.form_title">Envoyez-nous un Message</h2>
@@ -297,7 +297,7 @@
           <h2 class="text-3xl font-bold" data-i18n="contact_page.faq_title">Questions <span class="gradient-text" data-i18n="contact_page.faq_title_highlight">Fréquentes</span></h2>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-4" data-reveal="up">
           <details class="glass rounded-xl group">
             <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
               <span class="font-semibold" data-i18n="contact_page.faq1_q">Comment puis-je tester VocalIA ?</span>
@@ -344,7 +344,7 @@
   <!-- Newsletter CTA -->
   <section class="py-12" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]" data-reveal="up">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
             <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
@@ -458,6 +458,10 @@
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>
