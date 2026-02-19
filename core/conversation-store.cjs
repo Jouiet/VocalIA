@@ -269,7 +269,7 @@ class ConversationStore {
       id: crypto.randomUUID().split('-')[0],
       role, // 'user' | 'assistant' | 'system'
       content,
-      timestamp: now,
+      timestamp: now
     };
 
     conversation.messages.push(message);
@@ -945,7 +945,7 @@ if (require.main === module) {
 
   if (args.includes('--monthly-purge')) {
     const result = store.monthlyPurge();
-    console.log(`✅ Monthly purge complete:`);
+    console.log('✅ Monthly purge complete:');
     console.log(`   Telephony: ${result.telephony.totalDeleted} deleted`);
     console.log(`   Widget: ${result.widget.totalDeleted} deleted`);
     process.exit(0);
@@ -965,14 +965,14 @@ if (require.main === module) {
     (async () => {
       let result;
       switch (format.toLowerCase()) {
-        case 'xlsx':
-          result = await store.exportToXLSX(tenantId);
-          break;
-        case 'pdf':
-          result = await store.exportToPDF(tenantId);
-          break;
-        default:
-          result = store.exportToCSV(tenantId);
+      case 'xlsx':
+        result = await store.exportToXLSX(tenantId);
+        break;
+      case 'pdf':
+        result = await store.exportToPDF(tenantId);
+        break;
+      default:
+        result = store.exportToCSV(tenantId);
       }
 
       if (result.error) {

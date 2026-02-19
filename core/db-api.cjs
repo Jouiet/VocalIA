@@ -349,11 +349,11 @@ function parseMultipart(body, boundary) {
     if (body[start] === 0x0d && body[start + 1] === 0x0a) start += 2;
 
     // Find next delimiter
-    let nextDelim = body.indexOf(delimiter, start);
+    const nextDelim = body.indexOf(delimiter, start);
     if (nextDelim === -1) break;
 
     // Extract part (remove trailing CRLF before delimiter)
-    let partEnd = nextDelim - 2; // Skip CRLF before delimiter
+    const partEnd = nextDelim - 2; // Skip CRLF before delimiter
     if (partEnd <= start) break;
 
     const partBuf = body.subarray(start, partEnd);
@@ -1036,7 +1036,7 @@ async function handleTelephonyRequest(req, res, path, method, query) {
 
     return false;
   } catch (error) {
-    console.error(`❌ [Telephony API] Error:`, error.message);
+    console.error('❌ [Telephony API] Error:', error.message);
     sendError(res, 500, 'Internal server error');
     return true;
   }
@@ -1368,14 +1368,14 @@ async function handleRequest(req, res) {
 
       // Validate overrides URLs — HTTPS only, no private IPs
       const privateIpPatterns = [/^localhost$/i, /^127\./, /^10\./, /^172\.(1[6-9]|2\d|3[01])\./, /^192\.168\./, /^0\./, /^\[::1\]/];
-      function isValidActionUrl(urlStr) {
+      const isValidActionUrl = (urlStr) => {
         try {
           const u = new URL(urlStr);
           if (u.protocol !== 'https:') return false;
           if (privateIpPatterns.some(p => p.test(u.hostname))) return false;
           return true;
         } catch { return false; }
-      }
+      };
 
       const allowedOverrideTypes = ['catalog', 'commerce', 'booking'];
       const overrides = actions.overrides || {};
@@ -2058,7 +2058,7 @@ async function handleRequest(req, res) {
       const ingestor = new KnowledgeIngestion({ headless: true }); // Headless browser
 
       const language = body.language || 'fr';
-      let kbData = {};
+      const kbData = {};
 
       try {
         console.log(`[DB-API] SOTA Crawling ${body.url}...`);
@@ -2095,11 +2095,11 @@ async function handleRequest(req, res) {
         const importResult = await getInstance().importBulk(tenantId, language, kbData, { overwrite: true });
 
         // SOTA SYNC: Explicitly sync this new entry to Vector Store
-        // (Note: The bulk import patch above handles general imports, but since we are inside the same file 
-        //  and just called getInstance().importBulk locally, we might need to manually trigger sync 
-        //  if we want to be sure, OR rely on the fact that importBulk logic inside db-api is unrelated 
-        //  to the function call in tenant-kb-loader. Wait, I patched the ENDPOINT logic for /import, 
-        //  not the loader class itself. So calling loader.importBulk() here does NOT trigger sync. 
+        // (Note: The bulk import patch above handles general imports, but since we are inside the same file
+        //  and just called getInstance().importBulk locally, we might need to manually trigger sync
+        //  if we want to be sure, OR rely on the fact that importBulk logic inside db-api is unrelated
+        //  to the function call in tenant-kb-loader. Wait, I patched the ENDPOINT logic for /import,
+        //  not the loader class itself. So calling loader.importBulk() here does NOT trigger sync.
         //  I must trigger sync manually here.)
 
         const key = Object.keys(kbData)[0];
@@ -2996,62 +2996,62 @@ async function handleRequest(req, res) {
       let result;
 
       switch (type) {
-        case 'similar':
-          if (!body.product_id) {
-            return sendError(res, 400, 'product_id is required for similar recommendations');
-          }
-          result = await recommendationService.getSimilarProducts(
+      case 'similar':
+        if (!body.product_id) {
+          return sendError(res, 400, 'product_id is required for similar recommendations');
+        }
+        result = await recommendationService.getSimilarProducts(
+          tenantId,
+          body.product_id,
+          { topK: body.limit || 6 }
+        );
+        break;
+
+      case 'bought_together':
+        if (body.product_ids?.length > 0) {
+          result = recommendationService.associationEngine.getCartRecommendations(
+            tenantId,
+            body.product_ids,
+            body.limit || 5
+          );
+        } else if (body.product_id) {
+          result = await recommendationService.getFrequentlyBoughtTogether(
             tenantId,
             body.product_id,
-            { topK: body.limit || 6 }
+            body.limit || 4
           );
-          break;
-
-        case 'bought_together':
-          if (body.product_ids?.length > 0) {
-            result = recommendationService.associationEngine.getCartRecommendations(
-              tenantId,
-              body.product_ids,
-              body.limit || 5
-            );
-          } else if (body.product_id) {
-            result = await recommendationService.getFrequentlyBoughtTogether(
-              tenantId,
-              body.product_id,
-              body.limit || 4
-            );
-          } else {
-            return sendError(res, 400, 'product_id or product_ids required for bought_together');
-          }
-          break;
-
-        case 'personalized': {
-          // Session 250.188: Auto-fetch UCP profile from shared store if not provided
-          // Session 250.190: Fix F6 — lazy require in correct scope (was ReferenceError)
-          const userId = body.user_id || 'anonymous';
-          let ucpProfile = body.ucp_profile || null;
-          if (!ucpProfile) {
-            try {
-              const { getInstance: getUCPStore } = require('./ucp-store.cjs');
-              const ucpStore = getUCPStore();
-              ucpProfile = ucpStore.getProfile(tenantId, userId) || {};
-            } catch { ucpProfile = {}; }
-          }
-          result = await recommendationService.getPersonalizedRecommendations(
-            tenantId,
-            userId,
-            ucpProfile,
-            {
-              topK: body.limit || 10,
-              recentlyViewed: body.recently_viewed || [],
-              recentlyPurchased: body.recently_purchased || []
-            }
-          );
-          break;
+        } else {
+          return sendError(res, 400, 'product_id or product_ids required for bought_together');
         }
+        break;
 
-        default:
-          return sendError(res, 400, `Unknown recommendation_type: ${type}`);
+      case 'personalized': {
+        // Session 250.188: Auto-fetch UCP profile from shared store if not provided
+        // Session 250.190: Fix F6 — lazy require in correct scope (was ReferenceError)
+        const userId = body.user_id || 'anonymous';
+        let ucpProfile = body.ucp_profile || null;
+        if (!ucpProfile) {
+          try {
+            const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+            const ucpStore = getUCPStore();
+            ucpProfile = ucpStore.getProfile(tenantId, userId) || {};
+          } catch { ucpProfile = {}; }
+        }
+        result = await recommendationService.getPersonalizedRecommendations(
+          tenantId,
+          userId,
+          ucpProfile,
+          {
+            topK: body.limit || 10,
+            recentlyViewed: body.recently_viewed || [],
+            recentlyPurchased: body.recently_purchased || []
+          }
+        );
+        break;
+      }
+
+      default:
+        return sendError(res, 400, `Unknown recommendation_type: ${type}`);
       }
 
       // Enrich with product details from catalog
@@ -3289,7 +3289,7 @@ async function handleRequest(req, res) {
           if (await fileExists(recoveryPath)) {
             global.cartRecoveryQueue = JSON.parse(await fsp.readFile(recoveryPath, 'utf8'));
           }
-        } catch { }
+        } catch { /* disk load optional */ }
       }
       global.cartRecoveryQueue.push(recoveryRequest);
       // D11 fix: trim in-memory queue (not just on disk)
@@ -3308,79 +3308,79 @@ async function handleRequest(req, res) {
       let result = { success: false };
 
       switch (channel) {
-        case 'voice':
-          // Queue voice callback via telephony bridge
-          try {
-            const telephony = require('../telephony/voice-telephony-bridge.cjs');
-            if (telephony.queueCartRecoveryCallback) {
-              result = await telephony.queueCartRecoveryCallback({
-                phone: contact,
-                tenantId: tenant_id,
-                cart,
-                discount: discount_percent,
-                language,
-                recoveryUrl
-              });
-            } else {
-              // Fallback: store for manual processing
-              result = { success: true, queued: true, method: 'manual_callback_queue' };
-            }
-          } catch (e) {
-            console.error('[Cart Recovery] Voice callback error:', e.message);
-            result = { success: true, queued: true, method: 'fallback_queue' };
+      case 'voice':
+        // Queue voice callback via telephony bridge
+        try {
+          const telephony = require('../telephony/voice-telephony-bridge.cjs');
+          if (telephony.queueCartRecoveryCallback) {
+            result = await telephony.queueCartRecoveryCallback({
+              phone: contact,
+              tenantId: tenant_id,
+              cart,
+              discount: discount_percent,
+              language,
+              recoveryUrl
+            });
+          } else {
+            // Fallback: store for manual processing
+            result = { success: true, queued: true, method: 'manual_callback_queue' };
           }
-          break;
+        } catch (e) {
+          console.error('[Cart Recovery] Voice callback error:', e.message);
+          result = { success: true, queued: true, method: 'fallback_queue' };
+        }
+        break;
 
-        case 'sms':
-          // Send SMS via Twilio
-          try {
-            const telephony = require('../telephony/voice-telephony-bridge.cjs');
-            if (telephony.sendMessage) {
-              // BUG FIX 250.207b: Use defaulted values — raw body vars can be undefined/null
-              const safeDiscount = discount_percent || 10;
-              const urlSuffix = recoveryUrl ? `: ${recoveryUrl}` : '';
-              const messages = {
-                fr: `VocalIA: Votre panier vous attend! ${safeDiscount}% de reduction${urlSuffix}`,
-                en: `VocalIA: Your cart is waiting! ${safeDiscount}% off${urlSuffix}`,
-                es: `VocalIA: Tu carrito te espera! ${safeDiscount}% descuento${urlSuffix}`,
-                ar: `VocalIA: سلتك بانتظارك! خصم ${safeDiscount}%${urlSuffix}`,
-                ary: `VocalIA: الباني ديالك كيتسناك! ${safeDiscount}% تخفيض${urlSuffix}`
-              };
-              result = await telephony.sendMessage({
-                to: contact,
-                message: messages[language] || messages.fr,
-                channel: 'sms'
-              });
-            } else {
-              result = { success: true, queued: true, method: 'sms_fallback' };
-            }
-          } catch (e) {
-            console.error('[Cart Recovery] SMS error:', e.message);
+      case 'sms':
+        // Send SMS via Twilio
+        try {
+          const telephony = require('../telephony/voice-telephony-bridge.cjs');
+          if (telephony.sendMessage) {
+            // BUG FIX 250.207b: Use defaulted values — raw body vars can be undefined/null
+            const safeDiscount = discount_percent || 10;
+            const urlSuffix = recoveryUrl ? `: ${recoveryUrl}` : '';
+            const messages = {
+              fr: `VocalIA: Votre panier vous attend! ${safeDiscount}% de reduction${urlSuffix}`,
+              en: `VocalIA: Your cart is waiting! ${safeDiscount}% off${urlSuffix}`,
+              es: `VocalIA: Tu carrito te espera! ${safeDiscount}% descuento${urlSuffix}`,
+              ar: `VocalIA: سلتك بانتظارك! خصم ${safeDiscount}%${urlSuffix}`,
+              ary: `VocalIA: الباني ديالك كيتسناك! ${safeDiscount}% تخفيض${urlSuffix}`
+            };
+            result = await telephony.sendMessage({
+              to: contact,
+              message: messages[language] || messages.fr,
+              channel: 'sms'
+            });
+          } else {
             result = { success: true, queued: true, method: 'sms_fallback' };
           }
-          break;
+        } catch (e) {
+          console.error('[Cart Recovery] SMS error:', e.message);
+          result = { success: true, queued: true, method: 'sms_fallback' };
+        }
+        break;
 
-        case 'email':
-          // Send email via configured SMTP
-          try {
-            const emailService = require('./email-service.cjs');
-            if (emailService.sendCartRecoveryEmail) {
-              result = await emailService.sendCartRecoveryEmail({
-                to: contact,
-                tenantId: tenant_id,
-                cart,
-                discount: discount_percent,
-                language,
-                recoveryUrl
-              });
-            } else {
-              result = { success: true, queued: true, method: 'email_fallback' };
-            }
-          } catch (e) {
-            console.error('[Cart Recovery] Email error:', e.message);
+      case 'email':
+        // Send email via configured SMTP
+        try {
+          const emailService = require('./email-service.cjs');
+          if (emailService.sendCartRecoveryEmail) {
+            result = await emailService.sendCartRecoveryEmail({
+              to: contact,
+              tenantId: tenant_id,
+              cart,
+              discount: discount_percent,
+              language,
+              recoveryUrl
+            });
+          } else {
             result = { success: true, queued: true, method: 'email_fallback' };
           }
-          break;
+        } catch (e) {
+          console.error('[Cart Recovery] Email error:', e.message);
+          result = { success: true, queued: true, method: 'email_fallback' };
+        }
+        break;
       }
 
       // Update status
@@ -3430,7 +3430,7 @@ async function handleRequest(req, res) {
         if (await fileExists(recoveryPath)) {
           global.cartRecoveryQueue = JSON.parse(await fsp.readFile(recoveryPath, 'utf8'));
         }
-      } catch { }
+      } catch { /* disk load optional */ }
     }
     const queue = global.cartRecoveryQueue;
     const tenantFilter = query.tenant_id;
@@ -3462,7 +3462,7 @@ async function handleRequest(req, res) {
         const entries = JSON.parse(await fsp.readFile(promoPath, 'utf8'));
         for (const [k, v] of entries) { global.promoCodes.set(k, v); }
       }
-    } catch { }
+    } catch { /* disk load optional */ }
   }
 
   async function _persistPromoCodes() {
@@ -3677,14 +3677,14 @@ async function handleRequest(req, res) {
 
       let result;
       switch (format) {
-        case 'xlsx':
-          result = await conversationStore.exportToXLSX(tenantId, options);
-          break;
-        case 'pdf':
-          result = await conversationStore.exportToPDF(tenantId, options);
-          break;
-        default:
-          result = conversationStore.exportToCSV(tenantId, options);
+      case 'xlsx':
+        result = await conversationStore.exportToXLSX(tenantId, options);
+        break;
+      case 'pdf':
+        result = await conversationStore.exportToPDF(tenantId, options);
+        break;
+      default:
+        result = conversationStore.exportToCSV(tenantId, options);
       }
 
       if (result.error) {
@@ -4145,7 +4145,7 @@ ${JSON.stringify(contextData)}`;
 
   // Widget Interactions - GET /api/tenants/:id/widget/interactions
   // Returns all widget interactions for analytics dashboard (Session 250.74)
-  const widgetInteractionsMatch = path.match(/^\/api\/tenants\/([^\/]+)\/widget\/interactions$/);
+  const widgetInteractionsMatch = path.match(/^\/api\/tenants\/([^/]+)\/widget\/interactions$/);
   if (widgetInteractionsMatch && method === 'GET') {
     // D2 fix: require auth + tenant isolation
     const user = await checkAuth(req, res);
@@ -4188,7 +4188,7 @@ ${JSON.stringify(contextData)}`;
 
   // UCP Profiles - GET /api/tenants/:id/ucp/profiles
   // Returns all UCP profiles for LTV distribution analytics (Session 250.74)
-  const ucpProfilesMatch = path.match(/^\/api\/tenants\/([^\/]+)\/ucp\/profiles$/);
+  const ucpProfilesMatch = path.match(/^\/api\/tenants\/([^/]+)\/ucp\/profiles$/);
   if (ucpProfilesMatch && method === 'GET') {
     // D2 fix: require auth + tenant isolation
     const user = await checkAuth(req, res);
@@ -4301,138 +4301,141 @@ ${JSON.stringify(contextData)}`;
 
   try {
     switch (method) {
-      // GET /api/db/:sheet - List all or query
-      case 'GET':
-        if (id) {
-          // GET /api/db/:sheet/:id - Get by ID
-          let record = await db.findById(sheet, id);
-          if (!record) {
-            sendError(res, 404, 'Record not found');
-            return;
-          }
-          // Tenant isolation check
-          if (tenantId && record.tenant_id && record.tenant_id !== tenantId && user.role !== 'admin') {
-            sendError(res, 403, 'Access denied');
-            return;
-          }
-          // Filter sensitive fields from users
-          if (sheet === 'users') {
-            record = filterUserRecord(record);
-          }
-          sendJson(res, 200, record);
-        } else if (Object.keys(query).length > 0) {
-          // GET /api/db/:sheet?field=value - Query
-          let records = await db.find(sheet, query);
-          // Tenant isolation for non-admin
-          if (tenantId && user.role !== 'admin') {
-            records = records.filter(r => !r.tenant_id || r.tenant_id === tenantId);
-          }
-          // Filter sensitive fields from users
-          if (sheet === 'users') {
-            records = filterUserRecords(records);
-          }
-          sendJson(res, 200, { count: records.length, data: records });
-        } else {
-          // GET /api/db/:sheet - List all
-          let records = await db.findAll(sheet);
-          // Tenant isolation for non-admin
-          if (tenantId && user.role !== 'admin') {
-            records = records.filter(r => !r.tenant_id || r.tenant_id === tenantId);
-          }
-          // Filter sensitive fields from users
-          if (sheet === 'users') {
-            records = filterUserRecords(records);
-          }
-          sendJson(res, 200, { count: records.length, data: records });
+    // GET /api/db/:sheet - List all or query
+    case 'GET':
+      if (id) {
+        // GET /api/db/:sheet/:id - Get by ID
+        let record = await db.findById(sheet, id);
+        if (!record) {
+          sendError(res, 404, 'Record not found');
+          return;
         }
-        break;
+        // Tenant isolation check
+        if (tenantId && record.tenant_id && record.tenant_id !== tenantId && user.role !== 'admin') {
+          sendError(res, 403, 'Access denied');
+          return;
+        }
+        // Filter sensitive fields from users
+        if (sheet === 'users') {
+          record = filterUserRecord(record);
+        }
+        sendJson(res, 200, record);
+      } else if (Object.keys(query).length > 0) {
+        // GET /api/db/:sheet?field=value - Query
+        let records = await db.find(sheet, query);
+        // Tenant isolation for non-admin
+        if (tenantId && user.role !== 'admin') {
+          records = records.filter(r => !r.tenant_id || r.tenant_id === tenantId);
+        }
+        // Filter sensitive fields from users
+        if (sheet === 'users') {
+          records = filterUserRecords(records);
+        }
+        sendJson(res, 200, { count: records.length, data: records });
+      } else {
+        // GET /api/db/:sheet - List all
+        let records = await db.findAll(sheet);
+        // Tenant isolation for non-admin
+        if (tenantId && user.role !== 'admin') {
+          records = records.filter(r => !r.tenant_id || r.tenant_id === tenantId);
+        }
+        // Filter sensitive fields from users
+        if (sheet === 'users') {
+          records = filterUserRecords(records);
+        }
+        sendJson(res, 200, { count: records.length, data: records });
+      }
+      break;
 
       // POST /api/db/:sheet - Create
-      case 'POST':
-        const createData = await parseBody(req);
-        // Auto-set tenant_id for non-admin
-        if (tenantId && user.role !== 'admin' && !createData.tenant_id) {
-          createData.tenant_id = tenantId;
-        }
-        const created = await db.create(sheet, createData);
+    case 'POST': {
+      const createData = await parseBody(req);
+      // Auto-set tenant_id for non-admin
+      if (tenantId && user.role !== 'admin' && !createData.tenant_id) {
+        createData.tenant_id = tenantId;
+      }
+      const created = await db.create(sheet, createData);
 
-        // Session 250.97quinquies: Auto-provision KB on tenant creation
-        if (sheet === 'tenants' && created.id) {
-          try {
-            const { onTenantCreated } = require('./kb-provisioner.cjs');
-            await onTenantCreated(created);
-          } catch (kbErr) {
-            console.error(`[DB-API] KB provisioning failed for ${created.id}:`, kbErr.message);
-            // Don't fail tenant creation if KB provisioning fails
-          }
+      // Session 250.97quinquies: Auto-provision KB on tenant creation
+      if (sheet === 'tenants' && created.id) {
+        try {
+          const { onTenantCreated } = require('./kb-provisioner.cjs');
+          await onTenantCreated(created);
+        } catch (kbErr) {
+          console.error(`[DB-API] KB provisioning failed for ${created.id}:`, kbErr.message);
+          // Don't fail tenant creation if KB provisioning fails
         }
+      }
 
-        // Broadcast creation to appropriate channel
-        if (created.tenant_id) {
-          broadcastToTenant(created.tenant_id, sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);
-        } else {
-          broadcast(sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);
-        }
-        sendJson(res, 201, sheet === 'users' ? filterUserRecord(created) : created);
-        break;
+      // Broadcast creation to appropriate channel
+      if (created.tenant_id) {
+        broadcastToTenant(created.tenant_id, sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);
+      } else {
+        broadcast(sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);
+      }
+      sendJson(res, 201, sheet === 'users' ? filterUserRecord(created) : created);
+      break;
+    }
 
-      // PUT /api/db/:sheet/:id - Update
-      case 'PUT':
-        if (!id) {
-          sendError(res, 400, 'ID required for update');
-          return;
-        }
-        // Session 250.209b: B10 fix — check existence BEFORE update (was throwing 500)
-        const existingRecord = await db.findById(sheet, id);
-        if (!existingRecord) {
-          sendError(res, 404, 'Record not found');
-          return;
-        }
-        // Session 250.209b: B12 fix — add existingRecord.tenant_id guard (consistent with GET by ID)
-        if (tenantId && existingRecord.tenant_id && existingRecord.tenant_id !== tenantId && user.role !== 'admin') {
-          sendError(res, 403, 'Access denied');
-          return;
-        }
-        const updateData = await parseBody(req);
-        const updated = await db.update(sheet, id, updateData);
-        // Broadcast update to appropriate channel
-        if (updated.tenant_id) {
-          broadcastToTenant(updated.tenant_id, sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);
-        } else {
-          broadcast(sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);
-        }
-        sendJson(res, 200, sheet === 'users' ? filterUserRecord(updated) : updated);
-        break;
+    // PUT /api/db/:sheet/:id - Update
+    case 'PUT': {
+      if (!id) {
+        sendError(res, 400, 'ID required for update');
+        return;
+      }
+      // Session 250.209b: B10 fix — check existence BEFORE update (was throwing 500)
+      const existingRecord = await db.findById(sheet, id);
+      if (!existingRecord) {
+        sendError(res, 404, 'Record not found');
+        return;
+      }
+      // Session 250.209b: B12 fix — add existingRecord.tenant_id guard (consistent with GET by ID)
+      if (tenantId && existingRecord.tenant_id && existingRecord.tenant_id !== tenantId && user.role !== 'admin') {
+        sendError(res, 403, 'Access denied');
+        return;
+      }
+      const updateData = await parseBody(req);
+      const updated = await db.update(sheet, id, updateData);
+      // Broadcast update to appropriate channel
+      if (updated.tenant_id) {
+        broadcastToTenant(updated.tenant_id, sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);
+      } else {
+        broadcast(sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);
+      }
+      sendJson(res, 200, sheet === 'users' ? filterUserRecord(updated) : updated);
+      break;
+    }
 
-      // DELETE /api/db/:sheet/:id - Delete
-      case 'DELETE':
-        if (!id) {
-          sendError(res, 400, 'ID required for delete');
-          return;
-        }
-        // Session 250.209b: B11 fix — check existence BEFORE delete (was throwing 500)
-        const recordToDelete = await db.findById(sheet, id);
-        if (!recordToDelete) {
-          sendError(res, 404, 'Record not found');
-          return;
-        }
-        // Session 250.209b: B12 fix — add recordToDelete.tenant_id guard (consistent with GET by ID)
-        if (tenantId && recordToDelete.tenant_id && recordToDelete.tenant_id !== tenantId && user.role !== 'admin') {
-          sendError(res, 403, 'Access denied');
-          return;
-        }
-        await db.delete(sheet, id);
-        // Broadcast deletion to appropriate channel
-        if (recordToDelete?.tenant_id) {
-          broadcastToTenant(recordToDelete.tenant_id, sheet, 'deleted', { id });
-        } else {
-          broadcast(sheet, 'deleted', { id });
-        }
-        sendJson(res, 200, { deleted: true, id });
-        break;
+    // DELETE /api/db/:sheet/:id - Delete
+    case 'DELETE': {
+      if (!id) {
+        sendError(res, 400, 'ID required for delete');
+        return;
+      }
+      // Session 250.209b: B11 fix — check existence BEFORE delete (was throwing 500)
+      const recordToDelete = await db.findById(sheet, id);
+      if (!recordToDelete) {
+        sendError(res, 404, 'Record not found');
+        return;
+      }
+      // Session 250.209b: B12 fix — add recordToDelete.tenant_id guard (consistent with GET by ID)
+      if (tenantId && recordToDelete.tenant_id && recordToDelete.tenant_id !== tenantId && user.role !== 'admin') {
+        sendError(res, 403, 'Access denied');
+        return;
+      }
+      await db.delete(sheet, id);
+      // Broadcast deletion to appropriate channel
+      if (recordToDelete?.tenant_id) {
+        broadcastToTenant(recordToDelete.tenant_id, sheet, 'deleted', { id });
+      } else {
+        broadcast(sheet, 'deleted', { id });
+      }
+      sendJson(res, 200, { deleted: true, id });
+      break;
+    }
 
-      default:
-        sendError(res, 405, 'Method not allowed');
+    default:
+      sendError(res, 405, 'Method not allowed');
     }
   } catch (error) {
     console.error(`❌ [DB-API] ${method} ${path}:`, error.message);
@@ -4527,40 +4530,42 @@ function handleWebSocketConnection(ws, req) {
       }
 
       switch (msg.type) {
-        case 'subscribe':
-          // Subscribe to channel(s)
-          const channels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
-          channels.forEach(ch => {
-            // Admin-only channels
-            if (['hitl', 'users', 'auth_sessions'].includes(ch) && clientData.user?.role !== 'admin') {
-              ws.send(JSON.stringify({ type: 'error', message: `Channel ${ch} requires admin role` }));
-              return;
-            }
-            clientData.channels.add(ch);
-          });
-          ws.send(JSON.stringify({
-            type: 'subscribed',
-            channels: Array.from(clientData.channels)
-          }));
-          break;
+      case 'subscribe': {
+        // Subscribe to channel(s)
+        const channels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
+        channels.forEach(ch => {
+          // Admin-only channels
+          if (['hitl', 'users', 'auth_sessions'].includes(ch) && clientData.user?.role !== 'admin') {
+            ws.send(JSON.stringify({ type: 'error', message: `Channel ${ch} requires admin role` }));
+            return;
+          }
+          clientData.channels.add(ch);
+        });
+        ws.send(JSON.stringify({
+          type: 'subscribed',
+          channels: Array.from(clientData.channels)
+        }));
+        break;
+      }
 
-        case 'unsubscribe':
-          // Unsubscribe from channel(s)
-          const unsubChannels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
-          unsubChannels.forEach(ch => clientData.channels.delete(ch));
-          ws.send(JSON.stringify({
-            type: 'unsubscribed',
-            channels: Array.from(clientData.channels)
-          }));
-          break;
+      case 'unsubscribe': {
+        // Unsubscribe from channel(s)
+        const unsubChannels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
+        unsubChannels.forEach(ch => clientData.channels.delete(ch));
+        ws.send(JSON.stringify({
+          type: 'unsubscribed',
+          channels: Array.from(clientData.channels)
+        }));
+        break;
+      }
 
-        case 'ping':
-          // Heartbeat response
-          ws.send(JSON.stringify({ type: 'pong', timestamp: new Date().toISOString() }));
-          break;
+      case 'ping':
+        // Heartbeat response
+        ws.send(JSON.stringify({ type: 'pong', timestamp: new Date().toISOString() }));
+        break;
 
-        default:
-          ws.send(JSON.stringify({ type: 'error', message: `Unknown message type: ${msg.type}` }));
+      default:
+        ws.send(JSON.stringify({ type: 'error', message: `Unknown message type: ${msg.type}` }));
       }
     } catch (e) {
       ws.send(JSON.stringify({ type: 'error', message: 'Invalid JSON' }));
