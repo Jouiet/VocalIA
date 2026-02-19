@@ -93,6 +93,14 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'">
 
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+    crossorigin="anonymous" defer></script>
+
   <!-- Security -->
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
@@ -130,11 +138,11 @@
       <div class="absolute inset-0 bg-gradient-to-b from-vocalia-900/20 to-transparent"></div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
         <span
-          class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
+          class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6" data-reveal="up">
           <i data-lucide="sparkles" class="w-4 h-4 mr-2"></i>
           <span data-i18n="integrations_page.hero_badge">28 Intégrations</span>
         </span>
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-reveal="up">
           <span data-i18n="integrations_page.hero_title">Connectez VocalIA à</span><br><span class="gradient-text"
             data-i18n="integrations_page.hero_title_accent">votre stack existant</span>
         </h1>
@@ -169,7 +177,7 @@
           <h2 class="text-2xl font-bold">CRM & Sales</h2>
           <span class="category-badge bg-orange-500/20 text-orange-400">3 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/hubspot.svg?v=249.13" alt="HubSpot" class="w-8 h-8 object-contain"
@@ -211,7 +219,7 @@
           <h2 class="text-2xl font-bold">E-commerce</h2>
           <span class="category-badge bg-green-500/20 text-green-400">6 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/shopify.svg?v=249.13" alt="Shopify" class="w-8 h-8 object-contain"
@@ -280,7 +288,7 @@
           <h2 class="text-2xl font-bold">iPaaS & Automatisation</h2>
           <span class="category-badge bg-purple-500/20 text-purple-400">3 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/zapier.svg?v=249.13" alt="Zapier" class="w-8 h-8 object-contain"
@@ -319,7 +327,7 @@
           <h2 class="text-2xl font-bold"><span data-i18n="integrations.google_workspace_38">Google Workspace</span></h2>
           <span class="category-badge bg-cyan-500/20 text-cyan-400">4 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/googlesheets.svg?v=249.13" alt="Google Sheets"
@@ -373,7 +381,7 @@
           <h2 class="text-2xl font-bold">Scheduling & Calendar</h2>
           <span class="category-badge bg-indigo-500/20 text-indigo-400">2 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/calendly.svg?v=249.13" alt="Calendly" class="w-8 h-8 object-contain"
@@ -405,7 +413,7 @@
           <h2 class="text-2xl font-bold">Support & Helpdesk</h2>
           <span class="category-badge bg-teal-500/20 text-teal-400">2 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/freshdesk.svg?v=249.13" alt="Freshdesk" class="w-8 h-8 object-contain"
@@ -436,7 +444,7 @@
               Téléphonie</span></h2>
           <span class="category-badge bg-red-500/20 text-red-400">4 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/slack.svg?v=249.13" alt="Slack" class="w-8 h-8 object-contain"
@@ -485,7 +493,7 @@
           <h2 class="text-2xl font-bold"><span data-i18n="integrations.finance_payments">Finance & Paiements</span></h2>
           <span class="category-badge bg-emerald-500/20 text-emerald-400">1 intégration</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="w-8 h-8 object-contain"
@@ -506,7 +514,7 @@
           <h2 class="text-2xl font-bold">Website & CMS</h2>
           <span class="category-badge bg-blue-500/20 text-blue-400">3 intégrations</span>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
               <img src="/public/images/logos/wordpress.svg?v=249.13" alt="WordPress" class="w-8 h-8 object-contain"
@@ -540,7 +548,7 @@
     <!-- API Section -->
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="grid lg:grid-cols-2 gap-12 items-center" data-reveal="up">
           <div>
             <span
               class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
@@ -688,6 +696,7 @@
 
 
   <!-- Scripts -->
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <script src="/src/lib/geo-detect.js?v=239"></script>
   <script src="/src/lib/i18n.js?v=239"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
