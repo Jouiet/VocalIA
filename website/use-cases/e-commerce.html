@@ -121,7 +121,7 @@
           </ol>
         </nav>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="grid lg:grid-cols-2 gap-12 items-center" data-reveal="up">
           <div>
             <span
               class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
@@ -182,7 +182,7 @@
           <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="usecases_ecommerce_page.problems_subtitle">Les équipes
             support sont submergées par des questions répétitives</p>
         </div>
-        <div class="grid md:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-3 gap-6" data-reveal="up">
           <div class="problem-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
               <i data-lucide="x-circle" class="w-6 h-6 text-red-400"></i>
@@ -223,7 +223,7 @@
           <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="usecases_ecommerce_page.solution_subtitle">Un assistant
             vocal intelligent qui gère automatiquement les demandes courantes</p>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="up">
           <div class="solution-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
@@ -445,6 +445,10 @@
   <div data-component="footer"></div>
 
 
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- Scripts -->
   <script src="/src/lib/geo-detect.js?v=239"></script>
   <script src="/src/lib/i18n.js?v=239"></script>

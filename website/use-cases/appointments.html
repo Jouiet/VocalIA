@@ -111,7 +111,7 @@
           </ol>
         </nav>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="grid lg:grid-cols-2 gap-12 items-center" data-reveal="up">
           <div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
               <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
@@ -162,7 +162,7 @@
           <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_appointments_page.industries_title">Secteurs qui nous font confiance</h2>
           <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="usecases_appointments_page.industries_subtitle">VocalIA s'adapte aux spécificités de chaque industrie</p>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="industry-card rounded-xl p-6 text-center">
             <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="heart-pulse" class="w-8 h-8 text-red-400"></i>
@@ -202,7 +202,7 @@
           <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_appointments_page.features_title">Fonctionnalités clés</h2>
           <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="usecases_appointments_page.features_subtitle">Tout ce dont vous avez besoin pour automatiser votre agenda</p>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="up">
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="calendar" class="w-6 h-6 text-emerald-400"></i>
@@ -358,6 +358,10 @@
 <div data-component="footer"></div>
 
 
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- Scripts -->
   <script src="/src/lib/geo-detect.js?v=239"></script>
   <script src="/src/lib/i18n.js?v=239"></script>

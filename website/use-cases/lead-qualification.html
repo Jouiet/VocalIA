@@ -117,7 +117,7 @@
           </ol>
         </nav>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="grid lg:grid-cols-2 gap-12 items-center" data-reveal="up">
           <div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
               <i data-lucide="sparkles" class="w-4 h-4 mr-2"></i>
@@ -168,7 +168,7 @@
           <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_leads_page.bant_title">Framework BANT automatisé</h2>
           <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="usecases_leads_page.bant_subtitle">L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification</p>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <div class="bant-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-full bg-vocalia-500/20 flex items-center justify-center mb-4">
               <span class="text-2xl font-bold text-vocalia-400">B</span>
@@ -232,7 +232,7 @@
     <!-- Score Demo -->
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="grid lg:grid-cols-2 gap-12 items-center" data-reveal="up">
           <div>
             <h2 class="text-3xl font-bold mb-6" data-i18n="usecases_leads_page.score_title">Score de qualification en temps réel</h2>
             <p class="text-zinc-300 mb-6" data-i18n="usecases_leads_page.score_desc">
@@ -331,7 +331,7 @@
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_leads_page.features_title">Fonctionnalités de qualification</h2>
         </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="up">
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
@@ -445,6 +445,10 @@
 <div data-component="footer"></div>
 
 
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- Scripts -->
   <script src="/src/lib/geo-detect.js?v=239"></script>
   <script src="/src/lib/i18n.js?v=239"></script>

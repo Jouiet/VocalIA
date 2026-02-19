@@ -145,7 +145,7 @@
           </p>
 
           <!-- Stats -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10" data-reveal="up">
             <div class="stat-card rounded-xl p-4">
               <div class="text-3xl font-bold text-vocalia-400">24/7</div>
               <div class="text-sm text-zinc-400" data-i18n="industries_finance_page.stats_fraud_reduction">Disponibilité</div>
@@ -184,7 +184,7 @@
           <h2 class="text-3xl sm:text-4xl font-bold mt-3" data-i18n="industries_finance_page.challenges_subtitle">Problématiques résolues par VocalIA</h2>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal="up">
           <div class="challenge-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
               <i data-lucide="x-circle" class="w-6 h-6 text-red-400"></i>
@@ -244,7 +244,7 @@
           <h2 class="text-3xl sm:text-4xl font-bold mt-3" data-i18n="industries_finance_page.solutions_subtitle">Fonctionnalités spécifiques au secteur financier</h2>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid md:grid-cols-2 gap-8" data-reveal="up">
           <div class="solution-card rounded-2xl p-8">
             <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-6">
               <i data-lucide="shield-check" class="w-7 h-7 text-emerald-400"></i>
@@ -608,6 +608,10 @@
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

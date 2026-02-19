@@ -147,7 +147,7 @@
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold mb-8" data-i18n="usecases_index_page.featured_title">4 Cas d'Usage Principaux</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-reveal="up">
           <!-- Lead Qualification -->
           <a href="/use-cases/lead-qualification" class="featured-card rounded-2xl p-6 block group">
             <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
@@ -207,7 +207,7 @@
           <p class="text-zinc-400" data-i18n="usecases_index_page.workflow_subtitle">Un flux automatisé de bout en bout</p>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-4 gap-6" data-reveal="up">
           <!-- Step 1 -->
           <div class="workflow-step rounded-xl p-6 text-center">
             <div class="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center mx-auto mb-4">1</div>
@@ -420,6 +420,10 @@
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- Voice Widget -->
   <!-- VocalIA Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="agency_internal" defer></script>
