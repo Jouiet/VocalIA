@@ -149,26 +149,26 @@
 
             <!-- Voice Architecture Info (Session 250.65bis) -->
             <div class="mt-4 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
-              <h4 class="text-sm font-medium text-indigo-700 dark:text-indigo-300 mb-2" data-i18n="agents.voice_architecture">Architecture Multi-Provider</h4>
+              <h4 class="text-sm font-medium text-indigo-700 dark:text-indigo-300 mb-2" data-i18n="agents.voice_architecture">Architecture Vocale</h4>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
                 <div class="flex items-center gap-2">
                   <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                  <span class="text-zinc-600 dark:text-zinc-400">Telephony: <strong class="text-zinc-900 dark:text-white">Grok Voice</strong></span>
+                  <span class="text-zinc-600 dark:text-zinc-400" data-i18n="agents.voice_primary">Voix principale</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                  <span class="text-zinc-600 dark:text-zinc-400">Fallback: <strong class="text-zinc-900 dark:text-white">Gemini TTS</strong></span>
+                  <span class="text-zinc-600 dark:text-zinc-400" data-i18n="agents.voice_fallback">Voix de secours</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
-                  <span class="text-zinc-600 dark:text-zinc-400">Darija TTS: <strong class="text-zinc-900 dark:text-white">ElevenLabs</strong></span>
+                  <span class="text-zinc-600 dark:text-zinc-400" data-i18n="agents.voice_darija">Voix Darija (spécialisée)</span>
                 </div>
               </div>
             </div>
 
             <!-- Telephony Voice Table (Grok) -->
             <div class="mt-4">
-              <h4 class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="agents.telephony_voices">Voix Telephony (Grok Voice)</h4>
+              <h4 class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="agents.telephony_voices">Voix Téléphonie</h4>
               <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                   <thead>
@@ -201,13 +201,13 @@
                     </tr>
                     <tr>
                       <td class="py-2">🇲🇦 الدارجة</td>
-                      <td class="py-2"><span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-xs">Ghizlane (EL)</span></td>
-                      <td class="py-2"><span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-xs">Jawad (EL)</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-xs">Ghizlane</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-xs">Jawad</span></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400" data-i18n="agents.voice_note">Note: Darija utilise ElevenLabs TTS (EL) pour un support natif optimal.</p>
+              <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400" data-i18n="agents.voice_note">Note: La Darija utilise un moteur vocal spécialisé pour un support natif optimal.</p>
             </div>
 
             <div class="mt-4 flex justify-end">

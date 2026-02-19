@@ -59,12 +59,12 @@
           "availableLanguage": ["French", "English", "Spanish", "Arabic", "Darija"],
           "featureList": [
             "Chat texte avec IA contextuelle",
-            "Reconnaissance vocale (navigateur + ElevenLabs)",
+            "Reconnaissance vocale multi-moteur",
             "Synthèse vocale TTS naturelle",
-            "Redondance IA 5 niveaux (Grok → Gemini → Claude → Atlas → local)",
+            "Redondance IA 5 niveaux (basculement automatique < 2s)",
             "Base de connaissances intelligente vectorielle",
             "38 personas métier pré-configurés en 5 langues",
-            "Streaming temps réel WebSocket",
+            "Streaming temps réel bidirectionnel",
             "Contexte conversationnel persistant",
             "Détection d'intention automatique",
             "Escalade humaine intelligente",
@@ -189,7 +189,7 @@
           "name": "Comment fonctionne la reconnaissance vocale ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Le visiteur active son micro dans le widget. La voix est transcrite en temps réel via la reconnaissance vocale du navigateur (incluse) ou ElevenLabs (qualité premium). L'IA répond en texte et optionnellement à voix haute."
+            "text": "Le visiteur active son micro dans le widget. La voix est transcrite en temps réel via la reconnaissance vocale intégrée, avec option qualité premium. L'IA répond en texte et optionnellement à voix haute."
           }
         },
         {
@@ -221,7 +221,7 @@
           "name": "Quel modèle d'IA est utilisé ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "VocalIA utilise Grok comme modèle principal, avec un basculement automatique sur 4 niveaux : Grok → Gemini → Claude → Atlas → local. Si un provider tombe, le suivant prend le relais en moins de 2 secondes."
+            "text": "VocalIA utilise une architecture IA à 5 niveaux de redondance. Si un moteur est indisponible, le suivant prend le relais automatiquement en moins de 2 secondes. Zéro interruption pour vos clients."
           }
         },
         {
@@ -433,11 +433,11 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal="up">
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f1_t">Chat texte</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f1_d">Le visiteur tape sa question, l'IA répond en quelques secondes avec le contexte métier de votre entreprise.</p></div>
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f2_t">Reconnaissance vocale</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f2_d">Le visiteur parle via le micro du navigateur. Transcription en temps réel via la reconnaissance vocale du navigateur ou synthèse vocale premium.</p></div>
-        <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f3_t">Synthèse vocale (TTS)</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f3_d">L'IA répond à voix haute avec une voix naturelle ElevenLabs ou la synthèse native du navigateur.</p></div>
-        <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f4_t">Redondance IA (5 niveaux)</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f4_d">Grok → Gemini → Claude → Atlas → local. Si un provider tombe, le suivant prend le relais en moins de 2 secondes.</p></div>
+        <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f3_t">Synthèse vocale (TTS)</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f3_d">L'IA répond à voix haute avec une voix naturelle premium ou la synthèse native du navigateur.</p></div>
+        <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f4_t">Redondance IA (5 niveaux)</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f4_d">5 moteurs IA en cascade automatique. Si un moteur est indisponible, le suivant prend le relais en moins de 2 secondes.</p></div>
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f5_t">Base de connaissances intelligente</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f5_d">Réponses contextuelles depuis une base de connaissances vectorielle, personnalisée par secteur d'activité.</p></div>
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f6_t">38 personas métier</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f6_d">Dentiste, immobilier, e-commerce, RH, finance, assurance… Chaque persona dispose d'un prompt système dans 5 langues.</p></div>
-        <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f7_t">Streaming temps réel</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f7_d">Réponses en streaming via WebSocket pour une sensation de conversation naturelle, sans attente perceptible.</p></div>
+        <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f7_t">Streaming temps réel</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f7_d">Réponses en streaming bidirectionnel pour une sensation de conversation naturelle, sans attente perceptible.</p></div>
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f8_t">Contexte conversationnel</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f8_d">L'IA se souvient de l'échange en cours : questions précédentes, préférences exprimées, produits mentionnés.</p></div>
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f9_t">Détection d'intention</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f9_d">Classification automatique de chaque message : question, réclamation, achat, rendez-vous, escalade vers un humain.</p></div>
         <div class="liquid-glass p-5 hover:border-vocalia-500/30 transition"><h3 class="font-semibold mb-1" data-i18n="fp.f10_t">Escalade humaine</h3><p class="text-sm text-zinc-400 feat-desc" data-i18n="fp.f10_d">Transfert vers un agent humain quand l'IA détecte une demande complexe ou un sentiment négatif.</p></div>
@@ -878,7 +878,7 @@
         </details>
         <details class="group glass rounded-xl">
           <summary class="flex items-center justify-between p-5 cursor-pointer"><span class="font-semibold" data-i18n="fp.faq7_q">Quel modèle d'IA est utilisé ?</span><i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform"></i></summary>
-          <div class="px-5 pb-5 text-zinc-400 text-sm" data-i18n="fp.faq7_a">Grok principal + basculement Gemini → Claude → Atlas → local.</div>
+          <div class="px-5 pb-5 text-zinc-400 text-sm" data-i18n="fp.faq7_a">5 moteurs IA en cascade. Si un moteur tombe, le suivant prend le relais en < 2 secondes.</div>
         </details>
         <details class="group glass rounded-xl">
           <summary class="flex items-center justify-between p-5 cursor-pointer"><span class="font-semibold" data-i18n="fp.faq8_q">Quelles protections de sécurité sont intégrées ?</span><i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform"></i></summary>

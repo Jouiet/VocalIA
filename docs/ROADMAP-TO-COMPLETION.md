@@ -549,6 +549,7 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 48 HOMEPAGE SECTIONS (250.225)** | **"How It Works" 3-step onboarding + "Security & Trust" enterprise badges (RGPD, TLS, isolation, containers, HSTS, CSP, SRI) + 5-lang i18n** | **N/A** | **0** |
 | **Phase 49 GSAP SCROLL ANIMATIONS (250.226)** | **Activated gsap-animations.js on 39 pages (37 public + 2 dashboards): 10 main pages, 4 products, 5 industries, 5 use-cases, 13 blog. 138 data-reveal + 13 data-counter. Only 9 utility pages remain without GSAP (404/500/auth/legal).** | **N/A** | **0** |
 | **Phase 50 DASHBOARD UX COMMERCIAL (250.227)** | **De-jargon client dashboard (dev→commercial): AI Engine card="Haute Disponibilité", multi-tenant="Données 100% isolées", Flywheel="Amélioration continue". Sparkline mini-charts in all stat cards (client+admin). Auto-refresh with timestamp. +9 i18n keys × 5 locales.** | **N/A** | **0** |
+| **Phase 51 HOMEPAGE DE-JARGON (250.227)** | **Remove provider names from homepage: Schema.org featureList purged (ElevenLabs/Grok/Gemini/Claude/Atlas/BANT), Architecture pipeline (WebRTC→Web/Téléphone, ElevenLabs→Voix naturelle), AI Redundancy chain (5 providers→commercial aliases), internal cost removed, demo modal i18n. +8 keys × 5 locales.** | **N/A** | **0** |
 | **CUMULATIVE** | **433** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA tasks complete — only BUSINESS remain (Stripe key, first customer).** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
