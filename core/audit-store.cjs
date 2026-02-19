@@ -35,6 +35,53 @@ if (!fs.existsSync(AUDIT_DIR)) {
 }
 
 // Action categories for structured logging
+const { getDB } = require('./GoogleSheetsDB.cjs');
+
+// SOTA Session 250.219: Event-to-DB Grounding
+const AgencyEventBus = require('./AgencyEventBus.cjs');
+
+/**
+ * Initialize Centralized Audit Subscriptions
+ * Ensures that all critical system events (Qualification, HITL, Payments)
+ * are persisted to the Source of Truth (Google Sheets).
+ */
+function initAuditSubscriptions() {
+  const db = getDB();
+  const auditor = getInstance();
+
+  // 1. Persist HITL Actions for Admin Review
+  AgencyEventBus.subscribe('hitl.action_required', async (event) => {
+    const { tenantId, type, data, message } = event.payload;
+
+    // Log to JSONL (Local)
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.HITL_ESCALATE,
+      actor: 'system',
+      resource: `hitl:${type}`,
+      details: { ...data, message }
+    });
+
+    // Persist to Google Sheets (Authority)
+    db.create('hitl_actions', {
+      id: event.id,
+      tenant_id: tenantId,
+      action_type: type,
+      data: JSON.stringify(data),
+      message: message,
+      status: 'pending',
+      created_at: event.metadata?.timestamp || new Date().toISOString()
+    }).catch(e => console.error('[AuditStore] Failed to ground HITL action:', e.message));
+
+    console.log(`✅ [Auditor] HITL Action recorded for ${tenantId}: ${type}`);
+  }, { name: 'Auditor.onHITLAction' });
+
+  console.log('✅ [Auditor] SOTA Event-to-DB Integrity Worker ACTIVE');
+}
+
+// Start subscriptions
+process.nextTick(() => {
+  initAuditSubscriptions();
+});
 const ACTION_CATEGORIES = {
   // Authentication
   AUTH_LOGIN: 'auth.login',
@@ -411,8 +458,8 @@ class AuditStore {
     try {
       const tenants = fs.existsSync(this.baseDir)
         ? fs.readdirSync(this.baseDir).filter(f =>
-            fs.statSync(path.join(this.baseDir, f)).isDirectory()
-          )
+          fs.statSync(path.join(this.baseDir, f)).isDirectory()
+        )
         : [];
 
       return {

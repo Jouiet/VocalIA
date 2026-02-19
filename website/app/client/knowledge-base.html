@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <title>Base de Connaissances - VocalIA</title>
@@ -17,270 +19,323 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="/src/lib/dark-mode-init.js"></script>
   <link href="/public/css/style.css" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
   <script src="/src/lib/escape-html.js"></script>
 </head>
+
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <!-- Sidebar Component -->
   <div data-app-component="sidebar"></div>
 
   <!-- Main Content -->
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
-              <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-            <div>
-            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="kb.title">Base de Connaissances</h1>
-            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.subtitle">Personnalisez les réponses de votre agent IA</p>
-          </div>
-            </div>
-          <div class="flex items-center gap-3">
-            <button id="btn-import" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
-              <i data-lucide="upload" class="w-4 h-4"></i>
-              <span data-i18n="kb.import">Importer</span>
-            </button>
-            <button id="btn-add-entry" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center gap-2 transition-colors">
-              <i data-lucide="plus" class="w-4 h-4"></i>
-              <span data-i18n="kb.add_entry">Ajouter une entrée</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div class="px-6 py-6 space-y-6">
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                <i data-lucide="file-text" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
-              </div>
-              <div>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.entries">Entrées</p>
-                <p id="stat-entries" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                <i data-lucide="globe" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
-              </div>
-              <div>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.languages">Langues</p>
-                <p id="stat-languages" class="text-2xl font-bold text-zinc-900 dark:text-white">5</p>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                <i data-lucide="database" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
-              </div>
-              <div>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.index_size">Index de recherche</p>
-                <p id="stat-index" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
-              </div>
-              <div>
-                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.last_update">Dernière MAJ</p>
-                <p id="stat-updated" class="text-lg font-bold text-zinc-900 dark:text-white">-</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quota Usage -->
-        <div id="quota-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <i data-lucide="gauge" class="w-5 h-5 text-zinc-500"></i>
-              <h3 class="font-medium text-zinc-900 dark:text-white" data-i18n="kb.quota.title">Utilisation du Quota</h3>
-            </div>
-            <span id="quota-plan" class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">-</span>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Entries Quota -->
-            <div>
-              <div class="flex justify-between text-sm mb-1">
-                <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.entries">Entrées</span>
-                <span id="quota-entries-text" class="text-zinc-900 dark:text-white">-/-</span>
-              </div>
-              <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
-                <div id="quota-entries-bar" class="bg-indigo-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
-              </div>
-            </div>
-            <!-- Storage Quota -->
-            <div>
-              <div class="flex justify-between text-sm mb-1">
-                <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.storage">Stockage</span>
-                <span id="quota-storage-text" class="text-zinc-900 dark:text-white">-/-</span>
-              </div>
-              <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
-                <div id="quota-storage-bar" class="bg-emerald-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
-              </div>
-            </div>
-            <!-- Languages Quota -->
-            <div>
-              <div class="flex justify-between text-sm mb-1">
-                <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.languages">Langues</span>
-                <span id="quota-languages-text" class="text-zinc-900 dark:text-white">-/-</span>
-              </div>
-              <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
-                <div id="quota-languages-bar" class="bg-amber-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
-              </div>
-            </div>
-          </div>
-          <!-- Quota Alerts -->
-          <div id="quota-alerts" class="mt-3 space-y-2 hidden"></div>
-        </div>
-
-        <!-- KB Quality Score -->
-        <div id="kb-quality-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
-          <div class="flex items-center gap-2 mb-4">
-            <i data-lucide="award" class="w-5 h-5 text-indigo-500"></i>
-            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="kb.quality.title">Score de Qualite</h3>
-          </div>
-          <div class="flex flex-col lg:flex-row items-center gap-6">
-            <!-- SVG Circle -->
-            <div class="relative flex-shrink-0">
-              <svg id="kb-quality-ring" width="140" height="140" viewBox="0 0 140 140">
-                <circle cx="70" cy="70" r="60" fill="none" stroke="currentColor" class="text-zinc-200 dark:text-white/[0.08]" stroke-width="10"/>
-                <circle id="kb-quality-arc" cx="70" cy="70" r="60" fill="none" stroke="#6366f1" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" transform="rotate(-90 70 70)" class="transition-all duration-1000 ease-out"/>
-              </svg>
-              <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span id="kb-quality-value" class="text-3xl font-bold text-zinc-900 dark:text-white">--</span>
-                <span class="text-xs text-zinc-500">/100</span>
-              </div>
-            </div>
-            <!-- Badge + Breakdown -->
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-3">
-                <span id="kb-quality-badge" class="px-3 py-1 text-sm font-semibold rounded-full bg-zinc-200 text-zinc-600"></span>
-              </div>
-              <div class="grid grid-cols-2 gap-3">
-                <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
-                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.entries_count">Nombre d'entrees</span>
-                  <span id="kb-q-entries" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.lang_coverage">Couverture langues</span>
-                  <span id="kb-q-langs" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 rounded-full bg-amber-500"></div>
-                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.entry_depth">Profondeur des entrees</span>
-                  <span id="kb-q-depth" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 rounded-full bg-purple-500"></div>
-                  <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.category_coverage">Categories couvertes</span>
-                  <span id="kb-q-cats" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
-                </div>
-              </div>
-            </div>
-            <!-- Recommendations -->
-            <div id="kb-quality-recs" class="flex-1 min-w-0 space-y-2"></div>
-          </div>
-        </div>
-
-        <!-- Filters & Search -->
-        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
-          <div class="flex flex-wrap items-center gap-4">
-            <div class="flex-1 min-w-[200px]">
-              <div class="relative">
-                <i data-lucide="search" class="w-5 h-5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                <input type="text" id="search-input" placeholder="Rechercher dans la KB..." class="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              </div>
-            </div>
-            <select id="filter-language" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option value="fr">Français (FR)</option>
-              <option value="en">English (EN)</option>
-              <option value="es">Español (ES)</option>
-              <option value="ar">العربية (AR)</option>
-              <option value="ary">الدارجة (ARY)</option>
-            </select>
-            <button id="btn-crawl-url" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
-              <i data-lucide="globe" class="w-4 h-4"></i>
-              <span data-i18n="kb.crawl_url">Importer depuis un site</span>
-            </button>
-            <button id="btn-rebuild-index" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
-              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-              <span data-i18n="kb.rebuild_index">Mettre à jour l'index</span>
-            </button>
-            <button id="btn-test-chatbot" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-2">
-              <i data-lucide="message-circle" class="w-4 h-4"></i>
-              <span data-i18n="kb.test_chatbot">Tester le Chatbot</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- KB Entries Table -->
-        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-x-auto hover:shadow-lg transition-all duration-200">
+    <header
+      class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <button id="menu-toggle"
+            class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
           <div>
-            <table class="w-full">
-              <thead class="bg-zinc-50 dark:bg-[#050505]/50 border-b border-zinc-200 dark:border-white/[0.08]">
-                <tr>
-                  <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.key">Clé</th>
-                  <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.content">Contenu</th>
-                  <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.type">Type</th>
-                  <th class="text-right px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.actions">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="kb-entries-body" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
-                <tr>
-                  <td colspan="4" class="px-4 py-8 text-center text-zinc-500">
-                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2"></i>
-                    <p data-i18n="kb.loading">Chargement...</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="kb.title">Base de Connaissances</h1>
+            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.subtitle">Personnalisez les réponses de votre
+              agent IA</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="btn-import"
+            class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
+            <i data-lucide="upload" class="w-4 h-4"></i>
+            <span data-i18n="kb.import">Importer</span>
+          </button>
+          <button id="btn-add-entry"
+            class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center gap-2 transition-colors">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span data-i18n="kb.add_entry">Ajouter une entrée</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="px-6 py-6 space-y-6">
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+          class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+              <i data-lucide="file-text" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+            </div>
+            <div>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.entries">Entrées</p>
+              <p id="stat-entries" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+              <i data-lucide="globe" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+            </div>
+            <div>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.languages">Langues</p>
+              <p id="stat-languages" class="text-2xl font-bold text-zinc-900 dark:text-white">5</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+              <i data-lucide="database" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+            </div>
+            <div>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.index_size">Index de recherche</p>
+              <p id="stat-index" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+              <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+            </div>
+            <div>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.last_update">Dernière MAJ</p>
+              <p id="stat-updated" class="text-lg font-bold text-zinc-900 dark:text-white">-</p>
+            </div>
           </div>
         </div>
       </div>
-    </main>
+
+      <!-- Quota Usage -->
+      <div id="quota-section"
+        class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="gauge" class="w-5 h-5 text-zinc-500"></i>
+            <h3 class="font-medium text-zinc-900 dark:text-white" data-i18n="kb.quota.title">Utilisation du Quota</h3>
+          </div>
+          <span id="quota-plan"
+            class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">-</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Entries Quota -->
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.entries">Entrées</span>
+              <span id="quota-entries-text" class="text-zinc-900 dark:text-white">-/-</span>
+            </div>
+            <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
+              <div id="quota-entries-bar"
+                class="bg-indigo-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Storage Quota -->
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.storage">Stockage</span>
+              <span id="quota-storage-text" class="text-zinc-900 dark:text-white">-/-</span>
+            </div>
+            <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
+              <div id="quota-storage-bar"
+                class="bg-emerald-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%">
+              </div>
+            </div>
+          </div>
+          <!-- Languages Quota -->
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.languages">Langues</span>
+              <span id="quota-languages-text" class="text-zinc-900 dark:text-white">-/-</span>
+            </div>
+            <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
+              <div id="quota-languages-bar"
+                class="bg-amber-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Quota Alerts -->
+        <div id="quota-alerts" class="mt-3 space-y-2 hidden"></div>
+      </div>
+
+      <!-- KB Quality Score -->
+      <div id="kb-quality-section"
+        class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="award" class="w-5 h-5 text-indigo-500"></i>
+          <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="kb.quality.title">Score de Qualite</h3>
+        </div>
+        <div class="flex flex-col lg:flex-row items-center gap-6">
+          <!-- SVG Circle -->
+          <div class="relative flex-shrink-0">
+            <svg id="kb-quality-ring" width="140" height="140" viewBox="0 0 140 140">
+              <circle cx="70" cy="70" r="60" fill="none" stroke="currentColor"
+                class="text-zinc-200 dark:text-white/[0.08]" stroke-width="10" />
+              <circle id="kb-quality-arc" cx="70" cy="70" r="60" fill="none" stroke="#6366f1" stroke-width="10"
+                stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" transform="rotate(-90 70 70)"
+                class="transition-all duration-1000 ease-out" />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span id="kb-quality-value" class="text-3xl font-bold text-zinc-900 dark:text-white">--</span>
+              <span class="text-xs text-zinc-500">/100</span>
+            </div>
+          </div>
+          <!-- Badge + Breakdown -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-3">
+              <span id="kb-quality-badge"
+                class="px-3 py-1 text-sm font-semibold rounded-full bg-zinc-200 text-zinc-600"></span>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.entries_count">Nombre
+                  d'entrees</span>
+                <span id="kb-q-entries" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.lang_coverage">Couverture
+                  langues</span>
+                <span id="kb-q-langs" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.quality.entry_depth">Profondeur des
+                  entrees</span>
+                <span id="kb-q-depth" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-purple-500"></div>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400"
+                  data-i18n="kb.quality.category_coverage">Categories couvertes</span>
+                <span id="kb-q-cats" class="text-sm font-medium text-zinc-900 dark:text-white ml-auto">--/25</span>
+              </div>
+            </div>
+          </div>
+          <!-- Recommendations -->
+          <div id="kb-quality-recs" class="flex-1 min-w-0 space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div
+        class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="flex-1 min-w-[200px]">
+            <div class="relative">
+              <i data-lucide="search" class="w-5 h-5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+              <input type="text" id="search-input" placeholder="Rechercher dans la KB..."
+                class="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
+          <select id="filter-language"
+            class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="fr">Français (FR)</option>
+            <option value="en">English (EN)</option>
+            <option value="es">Español (ES)</option>
+            <option value="ar">العربية (AR)</option>
+            <option value="ary">الدارجة (ARY)</option>
+          </select>
+          <button id="btn-crawl-url"
+            class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            <span data-i18n="kb.crawl_url">Importer depuis un site</span>
+          </button>
+          <button id="btn-rebuild-index"
+            class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span data-i18n="kb.rebuild_index">Mettre à jour l'index</span>
+          </button>
+          <button id="btn-test-chatbot"
+            class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-2">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span data-i18n="kb.test_chatbot">Tester le Chatbot</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KB Entries Table -->
+      <div
+        class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-x-auto hover:shadow-lg transition-all duration-200">
+        <div>
+          <table class="w-full">
+            <thead class="bg-zinc-50 dark:bg-[#050505]/50 border-b border-zinc-200 dark:border-white/[0.08]">
+              <tr>
+                <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400"
+                  data-i18n="kb.table.key">Clé</th>
+                <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400"
+                  data-i18n="kb.table.content">Contenu</th>
+                <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400"
+                  data-i18n="kb.table.type">Type</th>
+                <th class="text-right px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400"
+                  data-i18n="kb.table.actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="kb-entries-body" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
+              <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-zinc-500">
+                  <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2"></i>
+                  <p data-i18n="kb.loading">Chargement...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- Add/Edit Entry Modal -->
   <div id="entry-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="entry-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
+    <div
+      class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <h3 id="entry-modal-title" class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.modal.add_title">Ajouter une entrée</h3>
+        <h3 id="entry-modal-title" class="text-lg font-semibold text-zinc-900 dark:text-white"
+          data-i18n="kb.modal.add_title">Ajouter une entrée</h3>
         <button id="entry-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <form id="entry-form" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.key">Sujet (identifiant unique)</label>
-          <input type="text" id="entry-key" required pattern="[a-z0-9_]+" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: horaires, livraison, promotions">
-          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.key_hint">Lettres minuscules, chiffres et underscores uniquement</p>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.key">Sujet
+            (identifiant unique)</label>
+          <input type="text" id="entry-key" required pattern="[a-z0-9_]+"
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="ex: horaires, livraison, promotions">
+          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.key_hint">Lettres minuscules, chiffres et
+            underscores uniquement</p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.response">Réponse de votre agent vocal</label>
-          <textarea id="entry-response" rows="3" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: Notre boutique est ouverte du lundi au samedi de 9h à 20h."></textarea>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            data-i18n="kb.modal.response">Réponse de votre agent vocal</label>
+          <textarea id="entry-response" rows="3" required
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="ex: Notre boutique est ouverte du lundi au samedi de 9h à 20h."></textarea>
         </div>
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.details">Informations complémentaires (optionnel)</label>
-          <textarea id="entry-details" rows="4" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder='{"lundi": "09:00-20:00", "mardi": "09:00-20:00"}'></textarea>
-          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.details_hint">Horaires, tarifs, détails produit ou toute information utile</p>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            data-i18n="kb.modal.details">Informations complémentaires (optionnel)</label>
+          <textarea id="entry-details" rows="4"
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder='{"lundi": "09:00-20:00", "mardi": "09:00-20:00"}'></textarea>
+          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.details_hint">Horaires, tarifs, détails produit ou
+            toute information utile</p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.language">Langue</label>
-          <select id="entry-language" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            data-i18n="kb.modal.language">Langue</label>
+          <select id="entry-language"
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="fr">Français (FR)</option>
             <option value="en">English (EN)</option>
             <option value="es">Español (ES)</option>
@@ -289,11 +344,14 @@
           </select>
         </div>
       </form>
-      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]/50">
-        <button type="button" id="entry-modal-cancel" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+      <div
+        class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]/50">
+        <button type="button" id="entry-modal-cancel"
+          class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <span data-i18n="common.cancel">Annuler</span>
         </button>
-        <button type="submit" form="entry-form" class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+        <button type="submit" form="entry-form"
+          class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
           <span data-i18n="common.save">Enregistrer</span>
         </button>
       </div>
@@ -303,17 +361,21 @@
   <!-- Import Modal -->
   <div id="import-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="import-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
+    <div
+      class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.import_modal.title">Importer vos informations</h3>
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.import_modal.title">Importer vos
+          informations</h3>
         <button id="import-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <div class="p-6 space-y-4">
-        <div class="border-2 border-dashed border-zinc-300 dark:border-white/[0.08] rounded-lg p-8 text-center" id="drop-zone">
+        <div class="border-2 border-dashed border-zinc-300 dark:border-white/[0.08] rounded-lg p-8 text-center"
+          id="drop-zone">
           <i data-lucide="upload-cloud" class="w-12 h-12 text-zinc-400 mx-auto mb-4"></i>
-          <p class="text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez votre fichier ici (tableur Excel, liste...)</p>
+          <p class="text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez votre fichier
+            ici (tableur Excel, liste...)</p>
           <p class="text-sm text-zinc-500 mb-4" data-i18n="kb.import_modal.or">ou</p>
           <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg cursor-pointer inline-block">
             <span data-i18n="kb.import_modal.browse">Parcourir</span>
@@ -322,7 +384,8 @@
         </div>
         <div id="import-preview" class="hidden">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300" data-i18n="kb.import_modal.preview">Aperçu</span>
+            <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              data-i18n="kb.import_modal.preview">Aperçu</span>
             <span id="import-file-name" class="text-sm text-zinc-500"></span>
           </div>
           <div class="bg-zinc-50 dark:bg-[#050505] rounded-lg p-3 max-h-48 overflow-auto">
@@ -331,13 +394,17 @@
         </div>
         <div>
           <label class="flex items-center gap-2">
-            <input type="checkbox" id="import-overwrite" checked class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
-            <span class="text-sm text-zinc-700 dark:text-zinc-300" data-i18n="kb.import_modal.overwrite">Écraser les entrées existantes</span>
+            <input type="checkbox" id="import-overwrite" checked
+              class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-sm text-zinc-700 dark:text-zinc-300" data-i18n="kb.import_modal.overwrite">Écraser les
+              entrées existantes</span>
           </label>
         </div>
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.import_modal.language">Langue cible</label>
-          <select id="import-language" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            data-i18n="kb.import_modal.language">Langue cible</label>
+          <select id="import-language"
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="fr">Français (FR)</option>
             <option value="en">English (EN)</option>
             <option value="es">Español (ES)</option>
@@ -346,11 +413,14 @@
           </select>
         </div>
       </div>
-      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]/50">
-        <button type="button" id="import-modal-cancel" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+      <div
+        class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]/50">
+        <button type="button" id="import-modal-cancel"
+          class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <span data-i18n="common.cancel">Annuler</span>
         </button>
-        <button type="button" id="import-submit" disabled class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg">
+        <button type="button" id="import-submit" disabled
+          class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg">
           <span data-i18n="kb.import_modal.import">Importer</span>
         </button>
       </div>
@@ -360,26 +430,34 @@
   <!-- Crawler URL Modal -->
   <div id="crawl-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="crawl-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
+    <div
+      class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
       <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.crawl_modal.title">Importer depuis un site web</h3>
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.crawl_modal.title">Importer depuis
+          un site web</h3>
         <button id="crawl-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <div class="p-6 space-y-4">
         <div>
-          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.crawl_modal.url">URL du site web</label>
-          <input type="url" id="crawl-url" required placeholder="https://www.example.com" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            data-i18n="kb.crawl_modal.url">URL du site web</label>
+          <input type="url" id="crawl-url" required placeholder="https://www.example.com"
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.crawl_modal.max_pages">Pages max</label>
-            <input type="number" id="crawl-max-pages" value="10" min="1" max="50" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+              data-i18n="kb.crawl_modal.max_pages">Pages max</label>
+            <input type="number" id="crawl-max-pages" value="10" min="1" max="50"
+              class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
-            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.crawl_modal.language">Langue</label>
-            <select id="crawl-language" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+              data-i18n="kb.crawl_modal.language">Langue</label>
+            <select id="crawl-language"
+              class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               <option value="fr">Français</option>
               <option value="en">English</option>
               <option value="es">Español</option>
@@ -390,14 +468,17 @@
         </div>
         <div>
           <label class="flex items-center gap-2">
-            <input type="checkbox" id="crawl-single" class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
-            <span class="text-sm text-zinc-700 dark:text-zinc-300" data-i18n="kb.crawl_modal.single_page">Page unique seulement</span>
+            <input type="checkbox" id="crawl-single"
+              class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-sm text-zinc-700 dark:text-zinc-300" data-i18n="kb.crawl_modal.single_page">Page unique
+              seulement</span>
           </label>
         </div>
         <div class="bg-zinc-50 dark:bg-[#050505]/50 rounded-lg p-3">
           <p class="text-xs text-zinc-500 dark:text-zinc-400">
             <i data-lucide="info" class="w-3 h-3 inline mr-1"></i>
-            <span data-i18n="kb.crawl_modal.info">Le crawler extraira automatiquement les FAQ, horaires, informations de contact et autres données pertinentes du site web.</span>
+            <span data-i18n="kb.crawl_modal.info">Le crawler extraira automatiquement les FAQ, horaires, informations de
+              contact et autres données pertinentes du site web.</span>
           </p>
         </div>
         <div id="crawl-progress" class="hidden">
@@ -407,11 +488,14 @@
           </div>
         </div>
       </div>
-      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]/50">
-        <button type="button" id="crawl-modal-cancel" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+      <div
+        class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]/50">
+        <button type="button" id="crawl-modal-cancel"
+          class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <span data-i18n="common.cancel">Annuler</span>
         </button>
-        <button type="button" id="crawl-submit" class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-2">
+        <button type="button" id="crawl-submit"
+          class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-2">
           <i data-lucide="globe" class="w-4 h-4"></i>
           <span data-i18n="kb.crawl_modal.start">Démarrer le crawl</span>
         </button>
@@ -422,7 +506,8 @@
   <!-- Test Chatbot Modal -->
   <div id="chatbot-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="chatbot-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
+    <div
+      class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
       <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
@@ -439,17 +524,20 @@
       </div>
       <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
         <div class="flex items-start gap-3">
-          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
+          <div
+            class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
             <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
           </div>
           <div class="bg-zinc-100 dark:bg-white/[0.06] rounded-lg px-4 py-2 max-w-[80%]">
-            <p class="text-zinc-700 dark:text-zinc-200" data-i18n="kb.chatbot.welcome">Bonjour ! Testez votre base de connaissances en posant une question.</p>
+            <p class="text-zinc-700 dark:text-zinc-200" data-i18n="kb.chatbot.welcome">Bonjour ! Testez votre base de
+              connaissances en posant une question.</p>
           </div>
         </div>
       </div>
       <div class="border-t border-zinc-200 dark:border-white/[0.08] p-4">
         <form id="chatbot-form" class="flex items-center gap-2">
-          <input type="text" id="chatbot-input" placeholder="Posez une question..." class="flex-1 px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <input type="text" id="chatbot-input" placeholder="Posez une question..."
+            class="flex-1 px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
           <button type="submit" class="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
             <i data-lucide="send" class="w-5 h-5"></i>
           </button>
@@ -644,73 +732,14 @@
         if (stats.cache) {
           document.getElementById('stat-index').textContent = `${stats.cache.size} cached`;
         }
-      }).catch(() => {});
+      }).catch(() => { });
     }
 
-    // KB Quality Score calculation
-    function computeKBQualityScore(entries, langCount) {
-      const keys = Object.keys(entries).filter(k => k !== '__meta');
-      const count = keys.length;
-
-      // Entries count (0-25)
-      let entriesScore = 0;
-      if (count >= 30) entriesScore = 25;
-      else if (count >= 16) entriesScore = 20;
-      else if (count >= 6) entriesScore = 15;
-      else if (count >= 1) entriesScore = 5;
-
-      // Languages coverage (0-25)
-      const langScoreMap = { 1: 5, 2: 10, 3: 15, 4: 20, 5: 25 };
-      const langsScore = langScoreMap[Math.min(langCount, 5)] || 0;
-
-      // Entry depth (0-25) — % with structured details (object with >1 key)
-      let deepCount = 0;
-      keys.forEach(k => {
-        const val = entries[k];
-        if (typeof val === 'object' && val !== null) {
-          const detailKeys = Object.keys(val).filter(dk => dk !== 'response');
-          if (detailKeys.length > 0) deepCount++;
-        }
-      });
-      const depthPct = count > 0 ? deepCount / count : 0;
-      const depthScore = Math.round(depthPct * 25);
-
-      // Category coverage (0-25) — key categories present
-      const categories = ['livraison', 'retour', 'paiement', 'horaire', 'faq', 'shipping', 'return', 'payment', 'hours', 'contact'];
-      const lowerKeys = keys.map(k => k.toLowerCase());
-      let catsFound = 0;
-      const catGroups = [
-        ['livraison', 'shipping', 'delivery', 'expedition'],
-        ['retour', 'return', 'refund', 'remboursement'],
-        ['paiement', 'payment', 'pay', 'prix', 'price'],
-        ['horaire', 'hours', 'schedule', 'opening', 'ouverture'],
-        ['faq', 'contact', 'aide', 'help', 'support']
-      ];
-      catGroups.forEach(group => {
-        if (lowerKeys.some(k => group.some(g => k.includes(g)))) catsFound++;
-      });
-      const catsScore = catsFound * 5;
-
-      const total = entriesScore + langsScore + depthScore + catsScore;
-      return { total, entriesScore, langsScore, depthScore, catsScore, count, langCount, deepCount, catsFound };
-    }
-
-    function renderKBQualityScore() {
-      // Fetch language count
-      const allLangs = ['fr', 'en', 'es', 'ar', 'ary'];
-      let langCount = 1; // current language has data
-      const langPromises = allLangs.filter(l => l !== currentLanguage).map(l =>
-        api.get(`/tenants/${currentTenantId}/kb`, { lang: l })
-          .then(data => {
-            const keys = Object.keys(data || {}).filter(k => k !== '__meta');
-            if (keys.length > 0) langCount++;
-          })
-          .catch(() => {})
-      );
-
-      Promise.all(langPromises).then(() => {
-        const score = computeKBQualityScore(kbEntries, langCount);
-        const total = score.total;
+    // KB Quality Score - Backend Grounded (Session 250.220)
+    async function renderKBQualityScore() {
+      try {
+        const score = await api.get(`/tenants/${currentTenantId}/kb/diagnostics`, { lang: currentLanguage });
+        const total = score.total_score;
 
         // Animate ring
         const arc = document.getElementById('kb-quality-arc');
@@ -743,17 +772,16 @@
         }
 
         // Breakdown
-        document.getElementById('kb-q-entries').textContent = `${score.entriesScore}/25`;
-        document.getElementById('kb-q-langs').textContent = `${score.langsScore}/25`;
-        document.getElementById('kb-q-depth').textContent = `${score.depthScore}/25`;
-        document.getElementById('kb-q-cats').textContent = `${score.catsScore}/25`;
+        document.getElementById('kb-q-entries').textContent = `${Math.round(score.metrics.coverage)}/25`;
+        document.getElementById('kb-q-langs').textContent = `${Math.round(score.metrics.density)}/25`;
+        document.getElementById('kb-q-depth').textContent = `${Math.round(score.metrics.depth)}/25`;
+        document.getElementById('kb-q-cats').textContent = `${Math.round(score.metrics.grounding)}/25`;
 
         // Recommendations
         const recs = [];
-        if (langCount < 2) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_langs'), icon: 'globe' });
-        if (score.depthScore < 13) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_details'), icon: 'file-plus' });
-        if (score.catsFound < 3) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_categories'), icon: 'layers' });
-        if (score.count < 6) recs.push({ text: VocaliaI18n.t('kb.quality.rec_more_entries'), icon: 'plus-circle' });
+        if (score.metrics.grounding < 15) recs.push({ text: "Améliorer la clarté des réponses pour le RAG", icon: 'award' });
+        if (score.metrics.depth < 15) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_details'), icon: 'file-plus' });
+        if (score.metrics.coverage < 15) recs.push({ text: VocaliaI18n.t('kb.quality.rec_more_entries'), icon: 'plus-circle' });
 
         const recsDiv = document.getElementById('kb-quality-recs');
         if (recs.length === 0) {
@@ -763,7 +791,9 @@
             recs.map(r => `<div class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400" onclick="document.getElementById('btn-add-entry').click()"><i data-lucide="${r.icon}" class="w-4 h-4 text-indigo-500"></i><span>${escapeHtml(r.text)}</span></div>`).join('');
         }
         lucide.createIcons();
-      });
+      } catch (e) {
+        console.error('KB Diagnostics error:', e);
+      }
     }
 
     // Setup event listeners
@@ -856,7 +886,7 @@
         dropZone.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
         if (e.dataTransfer.files.length) {
           document.getElementById('import-file').files = e.dataTransfer.files;
-          handleImportFile({ target: { files: e.dataTransfer.files }});
+          handleImportFile({ target: { files: e.dataTransfer.files } });
         }
       });
     }
@@ -1139,10 +1169,21 @@
 
   <style>
     @keyframes slide-in {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
-    .animate-slide-in { animation: slide-in 0.3s ease-out; }
+
+    .animate-slide-in {
+      animation: slide-in 0.3s ease-out;
+    }
+
     .line-clamp-2 {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -1151,4 +1192,5 @@
     }
   </style>
 </body>
+
 </html>

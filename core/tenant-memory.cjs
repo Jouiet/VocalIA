@@ -4,6 +4,8 @@ const fsp = require('fs').promises;
 const { sanitizeTenantId } = require('./voice-api-utils.cjs'); // Shared utility
 const AgencyEventBus = require('./AgencyEventBus.cjs');
 const { HybridRAG } = require('./hybrid-rag.cjs');
+const SimpleVectorStore = require('./memory/SimpleVectorStore.cjs'); // Direct SQLite Access
+const EmbeddingService = require('./knowledge-embedding-service.cjs'); // SOTA: Generate Vector
 
 /**
  * TenantMemory.cjs - Persistent Cross-Session Memory for Agents
@@ -21,6 +23,7 @@ class TenantMemory {
     constructor(options = {}) {
         this.baseDir = options.baseDir || path.join(__dirname, '..', 'data', 'memory');
         this.rag = options.rag || new HybridRAG();
+        this.vectorStores = new Map(); // SOTA: Cache open KV stores
 
         // Ensure base directory exists
         if (!fs.existsSync(this.baseDir)) {
@@ -95,33 +98,39 @@ class TenantMemory {
         const line = JSON.stringify(normalizedFact) + '\n';
         await fsp.appendFile(filePath, line);
 
-        // 5. Indexing (HybridRAG)
-        // We add this fact to the tenant's knowledge base corpus so it's searchable
-        // content = "Fact [type]: value"
-        // metadata = { source: 'memory', factId: id }
-        const indexContent = `[Souvenir Client] ${normalizedFact.type}: ${normalizedFact.value}`;
-
+        // 5. Indexing (SOTA: Direct SQLite Write)
+        // We write directly to the vector store to ensure immediate detailed retrieval
         try {
-            // SOTA: Use the newly exposed addToIndex method
-            if (this.rag.addToIndex) {
-                await this.rag.addToIndex(safeTenantId, [{
-                    content: indexContent,
-                    metadata: {
-                        source: 'tenant_memory',
-                        type: normalizedFact.type,
-                        factId: normalizedFact.id,
-                        timestamp: normalizedFact.timestamp
-                    }
-                }]);
-            } else {
-                // Fallback if RAG doesn't expose addToIndex directly (should fetch + append + reindex)
-                // For now we assume typical RAG implementations allow appending.
-                // If not, we might need a separate 'facts' collection in RAG.
-                console.warn(`[TenantMemory] HybridRAG.addToIndex missing, indexing skipped for ${safeTenantId}`);
+            let store = this.vectorStores.get(safeTenantId);
+            if (!store) {
+                store = new SimpleVectorStore(safeTenantId);
+                this.vectorStores.set(safeTenantId, store);
             }
+
+            // SOTA FIX: Generate Embedding BEFORE persistence (Phantom Memory Fix)
+            const embeddingVector = await EmbeddingService.getEmbedding(
+                normalizedFact.id,
+                normalizedFact.value,
+                null, // Use env API Key
+                safeTenantId
+            );
+
+            if (!embeddingVector) {
+                console.warn(`[TenantMemory] Embedding failed for ${normalizedFact.id}, saving without vector.`);
+            }
+
+            store.upsert(normalizedFact.id, normalizedFact.value, {
+                source: 'tenant_memory',
+                type: normalizedFact.type,
+                timestamp: normalizedFact.timestamp,
+                sessionId: normalizedFact.sessionId
+            }, embeddingVector); // Pass vector!
+
+            // Also notify logic layer
+            console.log(`[TenantMemory] Persisted fact ${normalizedFact.id} to SQLite (${safeTenantId})`);
+
         } catch (err) {
-            console.warn(`[TenantMemory] RAG indexing failed for ${safeTenantId}: ${err.message}`);
-            // Non-blocking, extracting is more important than indexing immediately
+            console.error(`[TenantMemory] SQLite persistence failed for ${safeTenantId}: ${err.message}`);
         }
 
         // 6. Audit Trail
@@ -253,6 +262,84 @@ class TenantMemory {
             types: types
         };
     }
+    /**
+     * SOTA: Sync a specific KB entry directly to Vector Store
+     * Called by db-api.cjs when Dashboard updates KB
+     */
+    async syncKBEntry(tenantId, key, value, language = 'fr') {
+        const safeId = sanitizeTenantId(tenantId);
+        const uniqueId = `kb_${language}_${key}`;
+
+        // Handle object values (e.g. valid/invalid responses)
+        const textContent = typeof value === 'object' ?
+            (value.response || value.text || JSON.stringify(value)) :
+            String(value);
+
+        try {
+            let store = this.vectorStores.get(safeId);
+            if (!store) {
+                store = new SimpleVectorStore(safeId);
+                this.vectorStores.set(safeId, store);
+            }
+
+            // Generate embedding
+            const embedding = await EmbeddingService.getEmbedding(
+                uniqueId,
+                textContent,
+                null,
+                safeId
+            );
+
+            if (!embedding) {
+                console.warn(`[TenantMemory] Failed to embed KB entry ${key}`);
+                return false;
+            }
+
+            await store.upsert(uniqueId, textContent, {
+                source: 'knowledge_base',
+                type: 'kb_entry',
+                language: language,
+                key: key,
+                timestamp: new Date().toISOString()
+            }, embedding);
+
+            console.log(`[TenantMemory] Synced KB entry ${key} to Vector Store (${safeId})`);
+            return true;
+        } catch (e) {
+            console.error(`[TenantMemory] KB Sync failed: ${e.message}`);
+            return false;
+        }
+    }
+
+    /**
+     * SOTA: Delete a KB entry from Vector Store
+     */
+    async deleteKBEntry(tenantId, key, language = 'fr') {
+        const safeId = sanitizeTenantId(tenantId);
+        const uniqueId = `kb_${language}_${key}`;
+
+        try {
+            let store = this.vectorStores.get(safeId);
+            if (!store) {
+                store = new SimpleVectorStore(safeId);
+                this.vectorStores.set(safeId, store);
+            }
+
+            await store.delete(uniqueId);
+            console.log(`[TenantMemory] Deleted KB entry ${key} from Vector Store (${safeId})`);
+            return true;
+        } catch (e) {
+            console.error(`[TenantMemory] KB Delete failed: ${e.message}`);
+            return false;
+        }
+    }
 }
+
+// Singleton Pattern
+let instance = null;
+TenantMemory.getInstance = function (options) {
+    if (!instance) instance = new TenantMemory(options);
+    return instance;
+};
 
 module.exports = TenantMemory;

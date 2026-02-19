@@ -45,6 +45,7 @@ const authService = require('./auth-service.cjs');
 const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-middleware.cjs');
 
 const { sanitizeTenantId } = require('./voice-api-utils.cjs');
+const TenantMemory = require('./tenant-memory.cjs'); // SOTA: For Vector Sync
 
 // Session 250.57: Audit trail for compliance
 const { getInstance: getAuditStore, ACTION_CATEGORIES } = require('./audit-store.cjs');
@@ -1735,8 +1736,16 @@ async function handleRequest(req, res) {
       await atomicWriteFile(kbFile, JSON.stringify(kb, null, 2));
 
       // Invalidate cache
+      // Invalidate cache
       const { getInstance } = require('./tenant-kb-loader.cjs');
       getInstance().invalidateCache(tenantId);
+
+      // SOTA SYNC: Update Vector Store immediately
+      try {
+        await TenantMemory.getInstance().syncKBEntry(tenantId, key, value, language);
+      } catch (err) {
+        console.error(`[DB-API] Failed to sync KB entry to Vector Store: ${err.message}`);
+      }
 
       sendJson(res, 201, { success: true, key, language, message: 'KB entry created/updated' });
     } catch (e) {
@@ -1793,8 +1802,16 @@ async function handleRequest(req, res) {
       await atomicWriteFile(kbFile, JSON.stringify(kb, null, 2));
 
       // Invalidate cache
+      // Invalidate cache
       const { getInstance } = require('./tenant-kb-loader.cjs');
       getInstance().invalidateCache(tenantId);
+
+      // SOTA SYNC: Remove from Vector Store
+      try {
+        await TenantMemory.getInstance().deleteKBEntry(tenantId, key, language);
+      } catch (err) {
+        console.error(`[DB-API] Failed to delete KB entry from Vector Store: ${err.message}`);
+      }
 
       sendJson(res, 200, { success: true, key, message: 'KB entry deleted' });
     } catch (e) {
@@ -1884,6 +1901,29 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // Session 250.220: KB Diagnostics - GET /api/tenants/:id/kb/diagnostics
+  const kbDiagMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/diagnostics$/);
+  if (kbDiagMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbDiagMatch[1];
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const language = query.lang || 'fr';
+      const { getInstance } = require('./rag-diagnostics.cjs');
+      const results = await getInstance().evaluateKB(tenantId, language);
+      sendJson(res, 200, results);
+    } catch (e) {
+      console.error('❌ KB diagnostics error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
   // KB Import Bulk - POST /api/tenants/:id/kb/import
   const kbImportMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/import$/);
   if (kbImportMatch && method === 'POST') {
@@ -1927,6 +1967,26 @@ async function handleRequest(req, res) {
 
       const { getInstance } = require('./tenant-kb-loader.cjs');
       const result = await getInstance().importBulk(tenantId, language, body.data, options);
+
+      // SOTA SYNC: Bulk update Vector Store
+      // We do this asynchronously to avoid blocking the HTTP response too long
+      (async () => {
+        try {
+          const entries = Array.isArray(body.data) ?
+            body.data :
+            Object.entries(body.data).map(([k, v]) => ({ ...v, key: k }));
+
+          console.log(`[DB-API] Starting SOTA sync for ${entries.length} imported items...`);
+          for (const entry of entries) {
+            const key = entry.key; // KnowledgeIngestion might utilize 'key' property
+            const val = entry.value || entry; // Normalized or raw
+            await TenantMemory.getInstance().syncKBEntry(tenantId, key, val, language);
+          }
+          console.log(`[DB-API] SOTA sync completed for ${entries.length} items.`);
+        } catch (err) {
+          console.error(`[DB-API] Bulk SOTA sync failed: ${err.message}`);
+        }
+      })();
 
       // Increment import counter
       quotaManager.incrementUsage(tenantId, 'import');
@@ -1993,20 +2053,61 @@ async function handleRequest(req, res) {
         return;
       }
 
-      const { KBCrawler } = require('./kb-crawler.cjs');
-      const crawler = new KBCrawler({
-        maxPages: body.maxPages || 10
-      });
+      // SOTA: Use KnowledgeIngestion (Playwright) instead of Legacy KBCrawler
+      const KnowledgeIngestion = require('./ingestion/KnowledgeIngestion.cjs');
+      const ingestor = new KnowledgeIngestion({ headless: true }); // Headless browser
 
       const language = body.language || 'fr';
-      const kbData = body.singlePage
-        ? await crawler.crawlURL(body.url)
-        : await crawler.crawlSite(body.url);
+      let kbData = {};
 
-      // Import crawled data to KB
-      if (kbData && Object.keys(kbData).filter(k => k !== '__meta').length > 0) {
+      try {
+        console.log(`[DB-API] SOTA Crawling ${body.url}...`);
+        const result = await ingestor.scrape(body.url);
+
+        // Map to KB Entry
+        const key = 'scraped_' + body.url.replace(/[^a-z0-9]/gi, '_').substring(0, 50);
+        const entry = {
+          page_title: result.title,
+          response: result.markdown, // Store full markdown as response
+          metadata: result.metadata,
+          source: 'crawler_sota'
+        };
+
+        kbData[key] = entry;
+
+        // Close browser resources
+        await ingestor.close();
+      } catch (err) {
+        console.error(`[DB-API] SOTA Crawl failed: ${err.message}`);
+        if (ingestor) await ingestor.close();
+
+        sendJson(res, 500, {
+          success: false,
+          message: 'SOTA Crawl failed: ' + err.message
+        });
+        return;
+      }
+
+      // Import crawled data to KB (Legacy JSON Store + SOTA Sync via import logic)
+      if (Object.keys(kbData).length > 0) {
         const { getInstance } = require('./tenant-kb-loader.cjs');
+        // We use importBulk to handle JSON file update
         const importResult = await getInstance().importBulk(tenantId, language, kbData, { overwrite: true });
+
+        // SOTA SYNC: Explicitly sync this new entry to Vector Store
+        // (Note: The bulk import patch above handles general imports, but since we are inside the same file 
+        //  and just called getInstance().importBulk locally, we might need to manually trigger sync 
+        //  if we want to be sure, OR rely on the fact that importBulk logic inside db-api is unrelated 
+        //  to the function call in tenant-kb-loader. Wait, I patched the ENDPOINT logic for /import, 
+        //  not the loader class itself. So calling loader.importBulk() here does NOT trigger sync. 
+        //  I must trigger sync manually here.)
+
+        const key = Object.keys(kbData)[0];
+        try {
+          await TenantMemory.getInstance().syncKBEntry(tenantId, key, kbData[key], language);
+        } catch (e) {
+          console.error('[DB-API] Failed to sync crawled data to vector store', e);
+        }
 
         // Increment crawl counter
         quotaManager.incrementUsage(tenantId, 'crawl');

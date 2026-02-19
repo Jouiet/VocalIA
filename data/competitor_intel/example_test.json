@@ -1,0 +1,10 @@
+{
+  "competitorName": "example_test",
+  "url": "https://example.com",
+  "timestamp": "2026-02-18T23:24:13.561Z",
+  "hash": "4e50552017672e121b01aa2e395555af",
+  "title": "Example Domain",
+  "markdown": "This domain is for use in documentation examples without needing permission. Avoid use in operations.\n\n[Learn more](https://iana.org/domains/example)",
+  "changed": true,
+  "diffDetails": null
+}

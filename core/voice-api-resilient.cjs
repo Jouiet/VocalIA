@@ -115,6 +115,9 @@ const SkillRegistry = require('./SkillRegistry.cjs');
 const FollowUpSkill = require('./skills/follow-up-skill.cjs');
 const KBEnrichmentSkill = require('./skills/kb-enrichment-skill.cjs');
 const Scheduler = require('./proactive-scheduler.cjs');
+// SOTA Phase 5: Sovereign Knowledge Ingestion
+const CompetitorScout = require('./ingestion/CompetitorScout.cjs');
+const competitorScout = new CompetitorScout(); // Starts listening immediately
 
 // Session 250.89: A2A Translation Supervisor (optional, null if not configured)
 let translationSupervisor = null;
@@ -2766,6 +2769,29 @@ function startServer(port = 3004) {
           // Session 250: Update dashboard metrics
           updateDashboardMetrics(language, result.latencyMs || 0, session);
 
+          // SOTA Phase 3: Grounded Analytics Persistence
+          // Persist every interaction turn to the Google Sheets DB as Ground Truth
+          // db already declared at top of scope via getDB()
+          if (db && tenantId) {
+            const sessionTelemetry = {
+              duration_sec: session.messages ? Math.floor(session.messages.length * 15) : 0, // Proxy for conversation depth
+              latency_ms: result.latencyMs || 0,
+              lead_score: session.score || 0,
+              booking_completed: !!session.booking_completed,
+              status: session.status || 'new',
+              persona: persona?.id || 'default',
+              lang: language
+            };
+
+            if (isNewSession) {
+              db.create('sessions', { id: leadSessionId, tenant_id: tenantId, ...sessionTelemetry })
+                .catch(e => console.warn('[Voice API] Session recording failed:', e.message));
+            } else {
+              db.update('sessions', leadSessionId, sessionTelemetry)
+                .catch(e => console.warn('[Voice API] Session update failed:', e.message));
+            }
+          }
+
           // Session 250.57: Increment session usage on first message of session
           // BL13 fix: Use isNewSession flag (was session.messages.length===1, always false after processQualificationData)
           if (isNewSession) {
@@ -2837,753 +2863,753 @@ function startServer(port = 3004) {
           // SOTA Pattern #1: Proactive Follow-up (Session 250.219)
           // If lead is HOT but didn't book → schedule follow-up via WhatsApp
           if (session.status === 'hot' && !session.booking_completed) {
-          const phone = session.extractedData.phone || bodyParsed.data.phone || bodyParsed.data.metadata?.sender_phone;
+            const phone = session.extractedData.phone || bodyParsed.data.phone || bodyParsed.data.metadata?.sender_phone;
 
-          if (phone) {
-            console.log(`[Automation] Scheduling 24h follow-up for HOT lead: ${phone}`);
-            Scheduler.scheduleTask('lead_follow_up', {
-              phone: phone,
-              tenantId: tenantId,
-              userName: session.extractedData.name,
-              industry: session.extractedData.industry?.label || (typeof persona !== 'undefined' ? persona.name : 'VocalIA')
-            }, {
-              delay: 86400000, // 24 hours
-              jobId: `followup_${tenantId}_${phone}` // Idempotent scheduling
-            }).catch(e => console.error('[Automation] Scheduler Error:', e.message));
-          }
-        }
-
-        // Session 250.143: Persist lead session to ContextBox (survives restart)
-        try {
-          ContextBox.set(`voice-${leadSessionId}`, {
-            pillars: {
-              qualification: {
-                voiceSession: true,
-                score: session.score,
-                complete: session.qualificationComplete,
-                status: session.status,
-                ...session.extractedData
-              },
-              history: session.messages.slice(-20).map(m => ({
-                agent: 'VoiceAI',
-                role: m.role,
-                content: m.content,
-                timestamp: m.timestamp
-              }))
+            if (phone) {
+              console.log(`[Automation] Scheduling 24h follow-up for HOT lead: ${phone}`);
+              Scheduler.scheduleTask('lead_follow_up', {
+                phone: phone,
+                tenantId: tenantId,
+                userName: session.extractedData.name,
+                industry: session.extractedData.industry?.label || (typeof persona !== 'undefined' ? persona.name : 'VocalIA')
+              }, {
+                delay: 86400000, // 24 hours
+                jobId: `followup_${tenantId}_${phone}` // Idempotent scheduling
+              }).catch(e => console.error('[Automation] Scheduler Error:', e.message));
             }
-          });
-        } catch (ctxErr) {
-          console.warn('[ContextBox] Lead persist warning:', ctxErr.message);
-        }
-      } catch (err) {
-        console.error('[Voice API] Error:', err.message);
-        errorScience.recordError({ component: 'VoiceAPI', error: err, severity: 'high', tenantId });
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        // BL14 fix: Generic error to client, full detail in server logs only
-        res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
-      }
-    });
-  return;
-}
+          }
 
-// Lead qualification endpoint - explicit qualification
-if (req.url === '/qualify' && req.method === 'POST') {
-  let body = '';
-  let bodySize = 0;
-  req.on('data', chunk => {
-    bodySize += chunk.length;
-    if (bodySize > MAX_BODY_SIZE) {
-      try { res.writeHead(413, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'Request body too large. Max 1MB.' })); } catch (_) { /* connection may be closed */ }
-      req.destroy();
+          // Session 250.143: Persist lead session to ContextBox (survives restart)
+          try {
+            ContextBox.set(`voice-${leadSessionId}`, {
+              pillars: {
+                qualification: {
+                  voiceSession: true,
+                  score: session.score,
+                  complete: session.qualificationComplete,
+                  status: session.status,
+                  ...session.extractedData
+                },
+                history: session.messages.slice(-20).map(m => ({
+                  agent: 'VoiceAI',
+                  role: m.role,
+                  content: m.content,
+                  timestamp: m.timestamp
+                }))
+              }
+            });
+          } catch (ctxErr) {
+            console.warn('[ContextBox] Lead persist warning:', ctxErr.message);
+          }
+        } catch (err) {
+          console.error('[Voice API] Error:', err.message);
+          errorScience.recordError({ component: 'VoiceAPI', error: err, severity: 'high', tenantId });
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL14 fix: Generic error to client, full detail in server logs only
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
+        }
+      });
       return;
     }
-    body += chunk;
-  });
-  req.on('end', async () => {
-    try {
-      const bodyParsed = safeJsonParse(body, '/qualify request body');
-      if (!bodyParsed.success) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+
+    // Lead qualification endpoint - explicit qualification
+    if (req.url === '/qualify' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          try { res.writeHead(413, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'Request body too large. Max 1MB.' })); } catch (_) { /* connection may be closed */ }
+          req.destroy();
+          return;
+        }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/qualify request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+          const { sessionId, email, phone, name, budget, timeline, industry, syncToHubspot = false } = bodyParsed.data;
+
+          if (!sessionId && !email) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'sessionId or email is required' }));
+            return;
+          }
+
+          const leadSessionId = sessionId || `qualify_${Date.now()}`;
+          const session = getOrCreateLeadSession(leadSessionId);
+
+          // Manual data injection
+          if (email) session.extractedData.email = email;
+          if (phone) session.extractedData.phone = phone;
+          if (name) session.extractedData.name = name;
+          if (budget) {
+            const budgetResult = extractBudget(`${budget}€`);
+            if (budgetResult) session.extractedData.budget = budgetResult;
+          }
+          if (timeline) {
+            const timelineResult = extractTimeline(timeline);
+            if (timelineResult) session.extractedData.timeline = timelineResult;
+          }
+          if (industry) {
+            const industryResult = extractIndustryFit(industry);
+            if (industryResult) session.extractedData.industry = industryResult;
+          }
+
+          // Calculate score
+          const { score, breakdown } = calculateLeadScore(session);
+          session.score = score;
+          session.scoreBreakdown = breakdown;
+          session.status = getLeadStatus(score);
+          session.qualificationComplete = true;
+
+          // Sync to HubSpot if requested
+          let hubspotSync = null;
+          if (syncToHubspot) {
+            hubspotSync = await syncLeadToHubSpot(session);
+          }
+
+          console.log(`[Lead Qual] Lead qualified: ${email || sessionId}, score: ${score}, status: ${session.status}`);
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            lead: {
+              sessionId: leadSessionId,
+              score: session.score,
+              status: session.status,
+              scoreBreakdown: session.scoreBreakdown,
+              extractedData: session.extractedData,
+              qualificationComplete: session.qualificationComplete,
+              hubspotSync: hubspotSync ? 'synced' : null
+            }
+          }));
+        } catch (err) {
+          console.error('[Lead Qual] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL14 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
+        }
+      });
+      return;
+    }
+
+    // Get lead session data
+    // BL35 fix: Add admin auth — exposes PII (email, phone, name) with guessable session IDs
+    if (req.url.startsWith('/lead/') && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
+      const sessionId = req.url.replace('/lead/', '');
+      const session = leadSessions.get(sessionId);
+
+      if (!session) {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Session not found' }));
         return;
       }
-      const { sessionId, email, phone, name, budget, timeline, industry, syncToHubspot = false } = bodyParsed.data;
-
-      if (!sessionId && !email) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'sessionId or email is required' }));
-        return;
-      }
-
-      const leadSessionId = sessionId || `qualify_${Date.now()}`;
-      const session = getOrCreateLeadSession(leadSessionId);
-
-      // Manual data injection
-      if (email) session.extractedData.email = email;
-      if (phone) session.extractedData.phone = phone;
-      if (name) session.extractedData.name = name;
-      if (budget) {
-        const budgetResult = extractBudget(`${budget}€`);
-        if (budgetResult) session.extractedData.budget = budgetResult;
-      }
-      if (timeline) {
-        const timelineResult = extractTimeline(timeline);
-        if (timelineResult) session.extractedData.timeline = timelineResult;
-      }
-      if (industry) {
-        const industryResult = extractIndustryFit(industry);
-        if (industryResult) session.extractedData.industry = industryResult;
-      }
-
-      // Calculate score
-      const { score, breakdown } = calculateLeadScore(session);
-      session.score = score;
-      session.scoreBreakdown = breakdown;
-      session.status = getLeadStatus(score);
-      session.qualificationComplete = true;
-
-      // Sync to HubSpot if requested
-      let hubspotSync = null;
-      if (syncToHubspot) {
-        hubspotSync = await syncLeadToHubSpot(session);
-      }
-
-      console.log(`[Lead Qual] Lead qualified: ${email || sessionId}, score: ${score}, status: ${session.status}`);
 
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({
         success: true,
         lead: {
-          sessionId: leadSessionId,
+          sessionId,
           score: session.score,
           status: session.status,
           scoreBreakdown: session.scoreBreakdown,
           extractedData: session.extractedData,
+          messagesCount: session.messages.length,
           qualificationComplete: session.qualificationComplete,
-          hubspotSync: hubspotSync ? 'synced' : null
+          createdAt: session.createdAt
         }
       }));
-    } catch (err) {
-      console.error('[Lead Qual] Error:', err.message);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      // BL14 fix: Generic error to client
-      res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
-    }
-  });
-  return;
-}
-
-// Get lead session data
-// BL35 fix: Add admin auth — exposes PII (email, phone, name) with guessable session IDs
-if (req.url.startsWith('/lead/') && req.method === 'GET') {
-  if (!checkAdminAuth(req, res)) return;
-  const sessionId = req.url.replace('/lead/', '');
-  const session = leadSessions.get(sessionId);
-
-  if (!session) {
-    res.writeHead(404, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: 'Session not found' }));
-    return;
-  }
-
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({
-    success: true,
-    lead: {
-      sessionId,
-      score: session.score,
-      status: session.status,
-      scoreBreakdown: session.scoreBreakdown,
-      extractedData: session.extractedData,
-      messagesCount: session.messages.length,
-      qualificationComplete: session.qualificationComplete,
-      createdAt: session.createdAt
-    }
-  }));
-  return;
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// Session 250.39: A2UI Endpoint - Dynamic UI Generation
-// Pipeline: Agent Context → Stitch/Templates → Widget DOM → AG-UI Events
-// ─────────────────────────────────────────────────────────────────────────
-if (req.url === '/a2ui/generate' && req.method === 'POST') {
-  let body = '';
-  let bodySize = 0;
-  req.on('data', chunk => {
-    bodySize += chunk.length;
-    if (bodySize > MAX_BODY_SIZE) {
-      req.destroy();
-      res.writeHead(413, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Request body too large' }));
       return;
     }
-    body += chunk;
-  });
-  req.on('end', async () => {
-    try {
-      const bodyParsed = safeJsonParse(body, '/a2ui/generate request body');
-      if (!bodyParsed.success) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
-        return;
-      }
 
-      const { type, context = {}, language = 'fr', useStitch = false } = bodyParsed.data;
-
-      if (!type) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'type is required (booking, lead_form, cart, confirmation)' }));
-        return;
-      }
-
-      // Initialize A2UI service if needed
-      await A2UIService.initialize();
-
-      // Generate UI component
-      const uiResult = await A2UIService.generateUI({ type, context, language, useStitch });
-
-      // Emit AG-UI event
-      eventBus.publish('a2ui_generated', {
-        type,
-        source: uiResult.source,
-        latency: uiResult.latency,
-        actions: uiResult.actions
-      });
-
-      console.log(`[A2UI] Generated ${type} (${uiResult.source}) in ${uiResult.latency}ms`);
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({
-        success: true,
-        ui: {
-          html: uiResult.html,
-          css: uiResult.css,
-          type: uiResult.type,
-          actions: uiResult.actions
-        },
-        meta: {
-          source: uiResult.source,
-          latency: uiResult.latency,
-          cached: uiResult.cached
+    // ─────────────────────────────────────────────────────────────────────────
+    // Session 250.39: A2UI Endpoint - Dynamic UI Generation
+    // Pipeline: Agent Context → Stitch/Templates → Widget DOM → AG-UI Events
+    // ─────────────────────────────────────────────────────────────────────────
+    if (req.url === '/a2ui/generate' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
         }
-      }));
-    } catch (err) {
-      console.error('[A2UI] Error:', err.message);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      // BL19 fix: Generic error to client (don't leak internal details)
-      res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
-    }
-  });
-  return;
-}
-
-// Session 250.130: A2UI Action endpoint — receives widget interactions
-if (req.url === '/a2ui/action' && req.method === 'POST') {
-  let body = '';
-  let bodySize = 0;
-  req.on('data', chunk => {
-    bodySize += chunk.length;
-    if (bodySize > MAX_BODY_SIZE) {
-      req.destroy();
-      res.writeHead(413, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Request body too large' }));
-      return;
-    }
-    body += chunk;
-  });
-  req.on('end', async () => {
-    try {
-      const bodyParsed = safeJsonParse(body, '/a2ui/action request body');
-      if (!bodyParsed.success) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
-        return;
-      }
-
-      const { action, data = {}, sessionId, tenant_id, widget_type } = bodyParsed.data;
-
-      if (!action) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'action is required' }));
-        return;
-      }
-
-      // Publish A2A event for the action
-      const tenantId = tenant_id || 'default';
-      eventBus.publish(`a2ui.${action}`, {
-        sessionId: sessionId || 'unknown',
-        tenantId,
-        widgetType: widget_type || 'unknown',
-        action,
-        data,
-        timestamp: new Date().toISOString()
+        body += chunk;
       });
-
-      console.log(`[A2UI] Action received: ${action} (tenant=${tenantId}, session=${sessionId})`);
-
-      // Process specific actions
-      let responsePayload = { success: true, action };
-
-      if (action === 'confirm_booking' && data.slot) {
-        responsePayload.message = 'Booking confirmed';
-        responsePayload.booking = { slot: data.slot, status: 'confirmed' };
-      } else if (action === 'submit_lead' && data) {
-        responsePayload.message = 'Lead captured';
-      } else if (action === 'checkout') {
-        responsePayload.message = 'Checkout initiated';
-      }
-
-      // BL32 fix: CORS headers already set via res.setHeader at top of handler
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(responsePayload));
-    } catch (err) {
-      console.error('[A2UI] Action error:', err.message);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      // BL19 fix: Generic error to client
-      res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
-    }
-  });
-  return;
-}
-
-// A2UI Health endpoint
-if (req.url === '/a2ui/health' && req.method === 'GET') {
-  await A2UIService.initialize();
-  const health = await A2UIService.health();
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(health, null, 2));
-  return;
-}
-
-// Session 250.44: TTS endpoint for Widget Darija support
-// Provides ElevenLabs TTS for languages not supported by Web Speech API
-if (req.url === '/tts' && req.method === 'POST') {
-  let body = '';
-  let bodySize = 0;
-  req.on('data', chunk => {
-    bodySize += chunk.length;
-    if (bodySize > MAX_BODY_SIZE) {
-      req.destroy();
-      res.writeHead(413, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Request body too large' }));
-      return;
-    }
-    body += chunk;
-  });
-  req.on('end', async () => {
-    try {
-      const bodyParsed = safeJsonParse(body, '/tts request body');
-      if (!bodyParsed.success) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
-        return;
-      }
-
-      const { text, language, gender, tenantId } = bodyParsed.data;
-
-      if (!text) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'text is required' }));
-        return;
-      }
-
-      // Session 250.xx: Multi-tenant ElevenLabs client
-      let ttsClient = elevenLabsClient; // Default to global
-
-      if (tenantId) {
-        const secrets = await SecretVault.getAllSecrets(tenantId);
-        if (secrets.ELEVENLABS_API_KEY) {
-          ttsClient = new ElevenLabsClient(secrets.ELEVENLABS_API_KEY);
-        }
-      }
-
-      // Check if ElevenLabs is available
-      if (!ttsClient || !ttsClient.isConfigured()) {
-        res.writeHead(503, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({
-          error: 'TTS service unavailable',
-          reason: 'ElevenLabs not configured for this tenant'
-        }));
-        return;
-      }
-
-      // B65+B72 fix: Check if tenant has a cloned voice (non-blocking read)
-      let voiceId;
-      if (tenantId) {
+      req.on('end', async () => {
         try {
-          const configPath = require('path').join(__dirname, '..', 'clients', tenantId.replace(/[^a-zA-Z0-9_-]/g, ''), 'config.json');
-          const cfgData = await require('fs').promises.readFile(configPath, 'utf8');
-          const cfg = JSON.parse(cfgData);
-          if (cfg.voice_clone && cfg.voice_clone.voice_id && cfg.voice_clone.status === 'active') {
-            voiceId = cfg.voice_clone.voice_id;
-            console.log(`[TTS] Using cloned voice ${voiceId} for tenant ${tenantId}`);
+          const bodyParsed = safeJsonParse(body, '/a2ui/generate request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
           }
-        } catch (_) { /* no config or no clone — fall through to defaults */ }
-      }
 
-      // Default voice selection by language and gender
-      if (!voiceId) {
-        if (language === 'ary' || language === 'ar-MA') {
-          voiceId = gender === 'male' ? VOICE_IDS.ary_male : VOICE_IDS.ary;
-        } else if (language === 'ar') {
-          voiceId = gender === 'male' ? VOICE_IDS.ar_male : VOICE_IDS.ar;
-        } else if (language === 'fr') {
-          voiceId = gender === 'male' ? VOICE_IDS.fr_male : VOICE_IDS.fr;
-        } else if (language === 'en') {
-          voiceId = gender === 'male' ? VOICE_IDS.en_male : VOICE_IDS.en;
-        } else if (language === 'es') {
-          voiceId = gender === 'male' ? VOICE_IDS.es_male : VOICE_IDS.es;
-        } else {
-          voiceId = VOICE_IDS.fr;
-        }
-      }
+          const { type, context = {}, language = 'fr', useStitch = false } = bodyParsed.data;
 
-      console.log(`[TTS] Generating audio for ${language} (voice: ${voiceId}): "${text.substring(0, 50)}..."`);
+          if (!type) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'type is required (booking, lead_form, cart, confirmation)' }));
+            return;
+          }
 
-      // Generate audio with ElevenLabs - Optimized for Latency (Session 250.82)
-      const audioBuffer = await ttsClient.generateSpeech(text, voiceId, {
-        model_id: 'eleven_multilingual_v2',
-        output_format: 'mp3_44100_64', // Slightly lower bitrate for faster streaming
-        optimize_streaming_latency: 3   // MAX LATENCY OPTIMIZATION
-      });
+          // Initialize A2UI service if needed
+          await A2UIService.initialize();
 
-      // Return audio as base64 for easy browser consumption
-      const audioBase64 = audioBuffer.toString('base64');
+          // Generate UI component
+          const uiResult = await A2UIService.generateUI({ type, context, language, useStitch });
 
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({
-        success: true,
-        audio: audioBase64,
-        format: 'mp3',
-        language,
-        voiceId
-      }));
+          // Emit AG-UI event
+          eventBus.publish('a2ui_generated', {
+            type,
+            source: uiResult.source,
+            latency: uiResult.latency,
+            actions: uiResult.actions
+          });
 
-    } catch (err) {
-      console.error('[TTS] Error:', err.message);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      // BL19 fix: Generic error to client
-      res.end(JSON.stringify({ error: 'TTS service error. Please try again.' }));
-    }
-  });
-  return;
-}
+          console.log(`[A2UI] Generated ${type} (${uiResult.source}) in ${uiResult.latency}ms`);
 
-// STT endpoint for browser fallback (Firefox/Safari)
-// Receives audio blob, transcribes via Grok Whisper-compatible API
-if (req.url === '/stt' && req.method === 'POST') {
-  const chunks = [];
-  let bodySize = 0;
-  req.on('data', chunk => {
-    bodySize += chunk.length;
-    if (bodySize > 5 * 1024 * 1024) { // 5MB max audio
-      req.destroy();
-      res.writeHead(413, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Audio too large (max 5MB)' }));
-      return;
-    }
-    chunks.push(chunk);
-  });
-  req.on('end', async () => {
-    try {
-      const audioBuffer = Buffer.concat(chunks);
-      if (audioBuffer.length < 100) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Audio data too small' }));
-        return;
-      }
-
-      const language = req.headers['x-language'] || 'fr';
-
-      // Try Grok Whisper-compatible endpoint first
-      const xaiKey = process.env.XAI_API_KEY;
-      const geminiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-
-      let transcript = null;
-
-      if (xaiKey) {
-        try {
-          const FormData = (await import('node:buffer')).Buffer;
-          const boundary = '----VocalIASTT' + Date.now();
-          const parts = [];
-
-          // Build multipart/form-data manually
-          parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="audio.webm"\r\nContent-Type: audio/webm\r\n\r\n`));
-          parts.push(audioBuffer);
-          parts.push(Buffer.from(`\r\n--${boundary}\r\nContent-Disposition: form-data; name="model"\r\n\r\nwhisper-large-v3\r\n`));
-          parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="language"\r\n\r\n${language === 'ary' ? 'ar' : language}\r\n`));
-          parts.push(Buffer.from(`--${boundary}--\r\n`));
-
-          const multipartBody = Buffer.concat(parts);
-
-          const sttResp = await fetch('https://api.x.ai/v1/audio/transcriptions', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${xaiKey}`,
-              'Content-Type': `multipart/form-data; boundary=${boundary}`
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            ui: {
+              html: uiResult.html,
+              css: uiResult.css,
+              type: uiResult.type,
+              actions: uiResult.actions
             },
-            body: multipartBody,
-            signal: AbortSignal.timeout(15000)
-          });
-
-          if (sttResp.ok) {
-            const sttResult = await sttResp.json();
-            transcript = sttResult.text;
-          }
-        } catch (e) {
-          console.warn('[STT] Grok Whisper failed:', e.message);
-        }
-      }
-
-      // Fallback to Gemini audio transcription
-      if (!transcript && geminiKey) {
-        try {
-          const audioBase64 = audioBuffer.toString('base64');
-          const geminiResp = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${geminiKey}`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{
-                  parts: [
-                    { inline_data: { mime_type: 'audio/webm', data: audioBase64 } },
-                    { text: `Transcribe this audio exactly. Language: ${language}. Return ONLY the transcription, nothing else.` }
-                  ]
-                }]
-              }),
-              signal: AbortSignal.timeout(15000)
+            meta: {
+              source: uiResult.source,
+              latency: uiResult.latency,
+              cached: uiResult.cached
             }
-          );
-
-          if (geminiResp.ok) {
-            const geminiResult = await geminiResp.json();
-            transcript = geminiResult.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-          }
-        } catch (e) {
-          console.warn('[STT] Gemini fallback failed:', e.message);
+          }));
+        } catch (err) {
+          console.error('[A2UI] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL19 fix: Generic error to client (don't leak internal details)
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
         }
-      }
-
-      if (transcript) {
-        console.log(`✅ [STT] Transcribed (${language}): "${transcript.substring(0, 50)}..."`);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ success: true, text: transcript, language }));
-      } else {
-        res.writeHead(503, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Transcription failed — no STT provider available' }));
-      }
-    } catch (err) {
-      console.error('[STT] Error:', err.message);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      // BL19 fix: Generic error to client
-      res.end(JSON.stringify({ error: 'STT service error. Please try again.' }));
-    }
-  });
-  return;
-}
-
-// Contact Form Endpoint (Real Implementation)
-if (req.url === '/api/contact' && req.method === 'POST') {
-  let body = '';
-  let bodySize = 0;
-  req.on('data', chunk => {
-    bodySize += chunk.length;
-    if (bodySize > MAX_BODY_SIZE) {
-      req.destroy();
-      res.writeHead(413, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Request body too large' }));
+      });
       return;
     }
-    body += chunk;
-  });
-  req.on('end', async () => {
-    try {
-      const bodyParsed = safeJsonParse(body, '/api/contact request body');
-      if (!bodyParsed.success) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
-        return;
-      }
 
-      const { name, email, subject, message } = bodyParsed.data;
-
-      if (!email || !message) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Email and message are required' }));
-        return;
-      }
-
-      // Persist to Google Sheets DB (Leads/Contacts)
-      const db = getDB();
-      if (db) {
-        try {
-          // Try to create in 'contacts' sheet, if not exists it might fail or create
-          // Attempt DB creation, fall back to safe logging on failure
-          // We'll log to system logs + attempt DB creation
-          await db.create('contacts', {
-            name,
-            email,
-            subject,
-            message,
-            status: 'new',
-            source: 'website_contact_form'
-          });
-        } catch (dbErr) {
-          console.warn('[Contact] DB save failed, falling back to log:', dbErr.message);
+    // Session 250.130: A2UI Action endpoint — receives widget interactions
+    if (req.url === '/a2ui/action' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
         }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/a2ui/action request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+
+          const { action, data = {}, sessionId, tenant_id, widget_type } = bodyParsed.data;
+
+          if (!action) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'action is required' }));
+            return;
+          }
+
+          // Publish A2A event for the action
+          const tenantId = tenant_id || 'default';
+          eventBus.publish(`a2ui.${action}`, {
+            sessionId: sessionId || 'unknown',
+            tenantId,
+            widgetType: widget_type || 'unknown',
+            action,
+            data,
+            timestamp: new Date().toISOString()
+          });
+
+          console.log(`[A2UI] Action received: ${action} (tenant=${tenantId}, session=${sessionId})`);
+
+          // Process specific actions
+          let responsePayload = { success: true, action };
+
+          if (action === 'confirm_booking' && data.slot) {
+            responsePayload.message = 'Booking confirmed';
+            responsePayload.booking = { slot: data.slot, status: 'confirmed' };
+          } else if (action === 'submit_lead' && data) {
+            responsePayload.message = 'Lead captured';
+          } else if (action === 'checkout') {
+            responsePayload.message = 'Checkout initiated';
+          }
+
+          // BL32 fix: CORS headers already set via res.setHeader at top of handler
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(responsePayload));
+        } catch (err) {
+          console.error('[A2UI] Action error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL19 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
+        }
+      });
+      return;
+    }
+
+    // A2UI Health endpoint
+    if (req.url === '/a2ui/health' && req.method === 'GET') {
+      await A2UIService.initialize();
+      const health = await A2UIService.health();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(health, null, 2));
+      return;
+    }
+
+    // Session 250.44: TTS endpoint for Widget Darija support
+    // Provides ElevenLabs TTS for languages not supported by Web Speech API
+    if (req.url === '/tts' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
+        }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/tts request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+
+          const { text, language, gender, tenantId } = bodyParsed.data;
+
+          if (!text) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'text is required' }));
+            return;
+          }
+
+          // Session 250.xx: Multi-tenant ElevenLabs client
+          let ttsClient = elevenLabsClient; // Default to global
+
+          if (tenantId) {
+            const secrets = await SecretVault.getAllSecrets(tenantId);
+            if (secrets.ELEVENLABS_API_KEY) {
+              ttsClient = new ElevenLabsClient(secrets.ELEVENLABS_API_KEY);
+            }
+          }
+
+          // Check if ElevenLabs is available
+          if (!ttsClient || !ttsClient.isConfigured()) {
+            res.writeHead(503, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              error: 'TTS service unavailable',
+              reason: 'ElevenLabs not configured for this tenant'
+            }));
+            return;
+          }
+
+          // B65+B72 fix: Check if tenant has a cloned voice (non-blocking read)
+          let voiceId;
+          if (tenantId) {
+            try {
+              const configPath = require('path').join(__dirname, '..', 'clients', tenantId.replace(/[^a-zA-Z0-9_-]/g, ''), 'config.json');
+              const cfgData = await require('fs').promises.readFile(configPath, 'utf8');
+              const cfg = JSON.parse(cfgData);
+              if (cfg.voice_clone && cfg.voice_clone.voice_id && cfg.voice_clone.status === 'active') {
+                voiceId = cfg.voice_clone.voice_id;
+                console.log(`[TTS] Using cloned voice ${voiceId} for tenant ${tenantId}`);
+              }
+            } catch (_) { /* no config or no clone — fall through to defaults */ }
+          }
+
+          // Default voice selection by language and gender
+          if (!voiceId) {
+            if (language === 'ary' || language === 'ar-MA') {
+              voiceId = gender === 'male' ? VOICE_IDS.ary_male : VOICE_IDS.ary;
+            } else if (language === 'ar') {
+              voiceId = gender === 'male' ? VOICE_IDS.ar_male : VOICE_IDS.ar;
+            } else if (language === 'fr') {
+              voiceId = gender === 'male' ? VOICE_IDS.fr_male : VOICE_IDS.fr;
+            } else if (language === 'en') {
+              voiceId = gender === 'male' ? VOICE_IDS.en_male : VOICE_IDS.en;
+            } else if (language === 'es') {
+              voiceId = gender === 'male' ? VOICE_IDS.es_male : VOICE_IDS.es;
+            } else {
+              voiceId = VOICE_IDS.fr;
+            }
+          }
+
+          console.log(`[TTS] Generating audio for ${language} (voice: ${voiceId}): "${text.substring(0, 50)}..."`);
+
+          // Generate audio with ElevenLabs - Optimized for Latency (Session 250.82)
+          const audioBuffer = await ttsClient.generateSpeech(text, voiceId, {
+            model_id: 'eleven_multilingual_v2',
+            output_format: 'mp3_44100_64', // Slightly lower bitrate for faster streaming
+            optimize_streaming_latency: 3   // MAX LATENCY OPTIMIZATION
+          });
+
+          // Return audio as base64 for easy browser consumption
+          const audioBase64 = audioBuffer.toString('base64');
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            audio: audioBase64,
+            format: 'mp3',
+            language,
+            voiceId
+          }));
+
+        } catch (err) {
+          console.error('[TTS] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL19 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'TTS service error. Please try again.' }));
+        }
+      });
+      return;
+    }
+
+    // STT endpoint for browser fallback (Firefox/Safari)
+    // Receives audio blob, transcribes via Grok Whisper-compatible API
+    if (req.url === '/stt' && req.method === 'POST') {
+      const chunks = [];
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > 5 * 1024 * 1024) { // 5MB max audio
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Audio too large (max 5MB)' }));
+          return;
+        }
+        chunks.push(chunk);
+      });
+      req.on('end', async () => {
+        try {
+          const audioBuffer = Buffer.concat(chunks);
+          if (audioBuffer.length < 100) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Audio data too small' }));
+            return;
+          }
+
+          const language = req.headers['x-language'] || 'fr';
+
+          // Try Grok Whisper-compatible endpoint first
+          const xaiKey = process.env.XAI_API_KEY;
+          const geminiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+
+          let transcript = null;
+
+          if (xaiKey) {
+            try {
+              const FormData = (await import('node:buffer')).Buffer;
+              const boundary = '----VocalIASTT' + Date.now();
+              const parts = [];
+
+              // Build multipart/form-data manually
+              parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="audio.webm"\r\nContent-Type: audio/webm\r\n\r\n`));
+              parts.push(audioBuffer);
+              parts.push(Buffer.from(`\r\n--${boundary}\r\nContent-Disposition: form-data; name="model"\r\n\r\nwhisper-large-v3\r\n`));
+              parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="language"\r\n\r\n${language === 'ary' ? 'ar' : language}\r\n`));
+              parts.push(Buffer.from(`--${boundary}--\r\n`));
+
+              const multipartBody = Buffer.concat(parts);
+
+              const sttResp = await fetch('https://api.x.ai/v1/audio/transcriptions', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${xaiKey}`,
+                  'Content-Type': `multipart/form-data; boundary=${boundary}`
+                },
+                body: multipartBody,
+                signal: AbortSignal.timeout(15000)
+              });
+
+              if (sttResp.ok) {
+                const sttResult = await sttResp.json();
+                transcript = sttResult.text;
+              }
+            } catch (e) {
+              console.warn('[STT] Grok Whisper failed:', e.message);
+            }
+          }
+
+          // Fallback to Gemini audio transcription
+          if (!transcript && geminiKey) {
+            try {
+              const audioBase64 = audioBuffer.toString('base64');
+              const geminiResp = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${geminiKey}`,
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    contents: [{
+                      parts: [
+                        { inline_data: { mime_type: 'audio/webm', data: audioBase64 } },
+                        { text: `Transcribe this audio exactly. Language: ${language}. Return ONLY the transcription, nothing else.` }
+                      ]
+                    }]
+                  }),
+                  signal: AbortSignal.timeout(15000)
+                }
+              );
+
+              if (geminiResp.ok) {
+                const geminiResult = await geminiResp.json();
+                transcript = geminiResult.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+              }
+            } catch (e) {
+              console.warn('[STT] Gemini fallback failed:', e.message);
+            }
+          }
+
+          if (transcript) {
+            console.log(`✅ [STT] Transcribed (${language}): "${transcript.substring(0, 50)}..."`);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, text: transcript, language }));
+          } else {
+            res.writeHead(503, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Transcription failed — no STT provider available' }));
+          }
+        } catch (err) {
+          console.error('[STT] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL19 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'STT service error. Please try again.' }));
+        }
+      });
+      return;
+    }
+
+    // Contact Form Endpoint (Real Implementation)
+    if (req.url === '/api/contact' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
+        }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/api/contact request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+
+          const { name, email, subject, message } = bodyParsed.data;
+
+          if (!email || !message) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Email and message are required' }));
+            return;
+          }
+
+          // Persist to Google Sheets DB (Leads/Contacts)
+          const db = getDB();
+          if (db) {
+            try {
+              // Try to create in 'contacts' sheet, if not exists it might fail or create
+              // Attempt DB creation, fall back to safe logging on failure
+              // We'll log to system logs + attempt DB creation
+              await db.create('contacts', {
+                name,
+                email,
+                subject,
+                message,
+                status: 'new',
+                source: 'website_contact_form'
+              });
+            } catch (dbErr) {
+              console.warn('[Contact] DB save failed, falling back to log:', dbErr.message);
+            }
+          }
+
+          // Audit Log
+          addSystemLog('INFO', `New Contact Form Submission from ${email}`);
+
+          // Qualification: Treat as a lead session too
+          const sessionId = `contact_${Date.now()}`;
+          const session = getOrCreateLeadSession(sessionId);
+          session.extractedData.email = email;
+          session.extractedData.name = name;
+          processQualificationData(session, message); // Attempt to qualify based on message content
+
+          console.log(`[Contact] Received from ${email}: "${subject}"`);
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, message: 'Message received' }));
+        } catch (err) {
+          console.error('[Contact] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Internal Server Error' }));
+        }
+      });
+      return;
+    }
+
+    res.writeHead(404);
+    res.end('Not found');
+  });
+
+  // Session 250.54: Startup health check before accepting connections
+  const startupHealthCheck = async () => {
+    const checks = [];
+
+    // 1. Check AI providers
+    const enabledProviders = Object.entries(PROVIDERS).filter(([k, p]) => p.enabled);
+    if (enabledProviders.length === 0) {
+      checks.push({ name: 'AI Providers', status: 'WARN', message: 'No AI providers configured - using local fallback only' });
+    } else {
+      checks.push({ name: 'AI Providers', status: 'OK', message: `${enabledProviders.length} provider(s) ready` });
+    }
+
+    // 2. Check Knowledge Base
+    try {
+      const kbStatus = KB.getStatus ? KB.getStatus() : { ready: true };
+      if (kbStatus.ready || kbStatus.initialized) {
+        checks.push({ name: 'Knowledge Base', status: 'OK', message: `${kbStatus.chunks || 193} chunks indexed` });
+      } else {
+        checks.push({ name: 'Knowledge Base', status: 'WARN', message: 'KB not fully initialized' });
+      }
+    } catch (e) {
+      checks.push({ name: 'Knowledge Base', status: 'WARN', message: e.message });
+    }
+
+    // 3. Check VoicePersonaInjector
+    try {
+      const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
+      const personaCount = Object.keys(PERSONAS).length;
+      const testPersona = VoicePersonaInjector.getPersona(null, null, 'agency_internal', 'B2B');
+      if (testPersona && personaCount >= 38) {
+        checks.push({ name: 'Persona Injector', status: 'OK', message: `${personaCount} personas loaded` });
+      } else {
+        checks.push({ name: 'Persona Injector', status: 'WARN', message: `Only ${personaCount} personas (expected ≥38)` });
+      }
+    } catch (e) {
+      checks.push({ name: 'Persona Injector', status: 'FAIL', message: e.message });
+    }
+
+    // Print health check results
+    console.log('\n[Startup Health Check]');
+    let hasFailure = false;
+    for (const check of checks) {
+      const icon = check.status === 'OK' ? '✅' : check.status === 'WARN' ? '⚠️' : '❌';
+      console.log(`  ${icon} ${check.name}: ${check.message}`);
+      if (check.status === 'FAIL') hasFailure = true;
+    }
+
+    if (hasFailure) {
+      console.error('\n❌ Startup health check FAILED. Server may not function correctly.');
+    } else {
+      console.log('\n✅ All startup checks passed.');
+    }
+
+    return !hasFailure;
+  };
+
+  startupHealthCheck().then(healthy => {
+    if (!healthy) {
+      console.warn('[Server] Starting despite health check warnings...');
+    }
+  });
+
+  server.listen(port, () => {
+    console.log(`\n[Server] Voice API + Lead Qualification running on http://localhost:${port}`);
+    console.log('\nEndpoints:');
+    console.log('  POST /respond       - Get AI response + auto lead qualification');
+    console.log('  POST /qualify       - Explicit lead qualification');
+    console.log('  GET  /lead/:id      - Get lead session data');
+    console.log('  GET  /health        - Provider + qualification status');
+    console.log('\nProviders (fallback order):');
+    for (const [key, provider] of Object.entries(PROVIDERS)) {
+      const status = provider.enabled ? '[OK]' : '[--]';
+      console.log(`  ${status} ${provider.name}`);
+    }
+    console.log('  [OK] Local fallback (always available)');
+    console.log('\nLead Qualification:');
+    console.log(`  [OK] Scoring system (budget/timeline/decision/fit/engagement)`);
+    console.log(`  ${QUALIFICATION.hubspot.enabled ? '[OK]' : '[--]'} HubSpot integration`);
+    console.log('  Thresholds: Hot ≥75, Warm 50-74, Cool 25-49, Cold <25');
+  });
+
+  // Session 250.54: Graceful shutdown
+  const gracefulShutdown = (signal) => {
+    console.log(`\n[Server] ${signal} received. Starting graceful shutdown...`);
+
+    // Stop accepting new connections
+    server.close(() => {
+      console.log('[Server] HTTP server closed.');
+
+      // Save any pending lead sessions (if persistence is enabled)
+      if (leadSessions.size > 0) {
+        console.log(`[Server] ${leadSessions.size} lead session(s) in memory (not persisted).`);
       }
 
-      // Audit Log
-      addSystemLog('INFO', `New Contact Form Submission from ${email}`);
+      // Close any database connections
+      if (sheetsDB) {
+        console.log('[Server] Google Sheets DB connection closed.');
+      }
 
-      // Qualification: Treat as a lead session too
-      const sessionId = `contact_${Date.now()}`;
-      const session = getOrCreateLeadSession(sessionId);
-      session.extractedData.email = email;
-      session.extractedData.name = name;
-      processQualificationData(session, message); // Attempt to qualify based on message content
+      console.log('[Server] Graceful shutdown complete.');
+      process.exit(0);
+    });
 
-      console.log(`[Contact] Received from ${email}: "${subject}"`);
+    // Force exit after 10 seconds if connections don't close
+    setTimeout(() => {
+      console.error('[Server] Forcing shutdown after 10s timeout.');
+      process.exit(1);
+    }, 10000);
+  };
 
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ success: true, message: 'Message received' }));
-    } catch (err) {
-      console.error('[Contact] Error:', err.message);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Internal Server Error' }));
-    }
-  });
-  return;
-}
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
-res.writeHead(404);
-res.end('Not found');
+  process.on('uncaughtException', (err) => {
+    console.error('❌ [Server] Uncaught exception:', err.message);
+    console.error(err.stack);
+    gracefulShutdown('uncaughtException');
   });
 
-// Session 250.54: Startup health check before accepting connections
-const startupHealthCheck = async () => {
-  const checks = [];
-
-  // 1. Check AI providers
-  const enabledProviders = Object.entries(PROVIDERS).filter(([k, p]) => p.enabled);
-  if (enabledProviders.length === 0) {
-    checks.push({ name: 'AI Providers', status: 'WARN', message: 'No AI providers configured - using local fallback only' });
-  } else {
-    checks.push({ name: 'AI Providers', status: 'OK', message: `${enabledProviders.length} provider(s) ready` });
-  }
-
-  // 2. Check Knowledge Base
-  try {
-    const kbStatus = KB.getStatus ? KB.getStatus() : { ready: true };
-    if (kbStatus.ready || kbStatus.initialized) {
-      checks.push({ name: 'Knowledge Base', status: 'OK', message: `${kbStatus.chunks || 193} chunks indexed` });
-    } else {
-      checks.push({ name: 'Knowledge Base', status: 'WARN', message: 'KB not fully initialized' });
-    }
-  } catch (e) {
-    checks.push({ name: 'Knowledge Base', status: 'WARN', message: e.message });
-  }
-
-  // 3. Check VoicePersonaInjector
-  try {
-    const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
-    const personaCount = Object.keys(PERSONAS).length;
-    const testPersona = VoicePersonaInjector.getPersona(null, null, 'agency_internal', 'B2B');
-    if (testPersona && personaCount >= 38) {
-      checks.push({ name: 'Persona Injector', status: 'OK', message: `${personaCount} personas loaded` });
-    } else {
-      checks.push({ name: 'Persona Injector', status: 'WARN', message: `Only ${personaCount} personas (expected ≥38)` });
-    }
-  } catch (e) {
-    checks.push({ name: 'Persona Injector', status: 'FAIL', message: e.message });
-  }
-
-  // Print health check results
-  console.log('\n[Startup Health Check]');
-  let hasFailure = false;
-  for (const check of checks) {
-    const icon = check.status === 'OK' ? '✅' : check.status === 'WARN' ? '⚠️' : '❌';
-    console.log(`  ${icon} ${check.name}: ${check.message}`);
-    if (check.status === 'FAIL') hasFailure = true;
-  }
-
-  if (hasFailure) {
-    console.error('\n❌ Startup health check FAILED. Server may not function correctly.');
-  } else {
-    console.log('\n✅ All startup checks passed.');
-  }
-
-  return !hasFailure;
-};
-
-startupHealthCheck().then(healthy => {
-  if (!healthy) {
-    console.warn('[Server] Starting despite health check warnings...');
-  }
-});
-
-server.listen(port, () => {
-  console.log(`\n[Server] Voice API + Lead Qualification running on http://localhost:${port}`);
-  console.log('\nEndpoints:');
-  console.log('  POST /respond       - Get AI response + auto lead qualification');
-  console.log('  POST /qualify       - Explicit lead qualification');
-  console.log('  GET  /lead/:id      - Get lead session data');
-  console.log('  GET  /health        - Provider + qualification status');
-  console.log('\nProviders (fallback order):');
-  for (const [key, provider] of Object.entries(PROVIDERS)) {
-    const status = provider.enabled ? '[OK]' : '[--]';
-    console.log(`  ${status} ${provider.name}`);
-  }
-  console.log('  [OK] Local fallback (always available)');
-  console.log('\nLead Qualification:');
-  console.log(`  [OK] Scoring system (budget/timeline/decision/fit/engagement)`);
-  console.log(`  ${QUALIFICATION.hubspot.enabled ? '[OK]' : '[--]'} HubSpot integration`);
-  console.log('  Thresholds: Hot ≥75, Warm 50-74, Cool 25-49, Cold <25');
-});
-
-// Session 250.54: Graceful shutdown
-const gracefulShutdown = (signal) => {
-  console.log(`\n[Server] ${signal} received. Starting graceful shutdown...`);
-
-  // Stop accepting new connections
-  server.close(() => {
-    console.log('[Server] HTTP server closed.');
-
-    // Save any pending lead sessions (if persistence is enabled)
-    if (leadSessions.size > 0) {
-      console.log(`[Server] ${leadSessions.size} lead session(s) in memory (not persisted).`);
-    }
-
-    // Close any database connections
-    if (sheetsDB) {
-      console.log('[Server] Google Sheets DB connection closed.');
-    }
-
-    console.log('[Server] Graceful shutdown complete.');
-    process.exit(0);
+  process.on('unhandledRejection', (reason) => {
+    console.error('❌ [Server] Unhandled rejection:', reason);
   });
-
-  // Force exit after 10 seconds if connections don't close
-  setTimeout(() => {
-    console.error('[Server] Forcing shutdown after 10s timeout.');
-    process.exit(1);
-  }, 10000);
-};
-
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-
-process.on('uncaughtException', (err) => {
-  console.error('❌ [Server] Uncaught exception:', err.message);
-  console.error(err.stack);
-  gracefulShutdown('uncaughtException');
-});
-
-process.on('unhandledRejection', (reason) => {
-  console.error('❌ [Server] Unhandled rejection:', reason);
-});
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

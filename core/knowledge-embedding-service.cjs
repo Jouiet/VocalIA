@@ -1,4 +1,3 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -6,33 +5,17 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const CACHE_FILE = path.join(__dirname, '../data/knowledge-base/embeddings_cache.json');
-
-// Lazy init — avoids process crash at require-time if API key missing
-let _genAI = null;
-let _model = null;
-
-function getModel() {
-  if (!_model) {
-    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    if (!apiKey) {
-      console.error('❌ GEMINI_API_KEY / GOOGLE_GENERATIVE_AI_API_KEY not set — embeddings unavailable');
-      return null;
-    }
-    _genAI = new GoogleGenerativeAI(apiKey);
-    _model = _genAI.getGenerativeModel({ model: 'text-embedding-004' });
-  }
-  return _model;
-}
+const MAX_CACHE_ENTRIES = 5000;
 
 /**
  * Knowledge Embedding Service
- * Architecture: Dense Vectors (Gemini) + Local Caching
+ * Architecture: Direct HTTPS Fetch to Gemini v1 API for maximum stability.
+ * Bypasses SDK-level versioning issues (v1beta 404).
  */
-const MAX_CACHE_ENTRIES = 5000;
-
 class KnowledgeEmbeddingService {
     constructor() {
         this.cache = this._loadCache();
+        this.apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
     }
 
     /**
@@ -60,6 +43,41 @@ class KnowledgeEmbeddingService {
     }
 
     /**
+     * Direct Fetch to Gemini v1 Embedding API
+     */
+    async _fetchEmbedding(text, apiKeyOverride = null) {
+        const key = apiKeyOverride || this.apiKey;
+        if (!key) {
+            console.error('❌ GEMINI_API_KEY missing');
+            return null;
+        }
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${key}`;
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: { parts: [{ text: text }] }
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                console.error(`[Embedding] API Error (${res.status}):`, err);
+                return null;
+            }
+
+            const data = await res.json();
+            return data.embedding?.values || null;
+        } catch (e) {
+            console.error('[Embedding] Fetch failed:', e.message);
+            return null;
+        }
+    }
+
+    /**
      * Generate embedding for a single text chunk
      */
     async getEmbedding(id, text, apiKey = null, tenantId = null) {
@@ -68,17 +86,17 @@ class KnowledgeEmbeddingService {
 
         try {
             console.log(`[Embedding] Generating for chunk: ${cacheKey}...`);
-            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : getModel();
-            const result = await targetModel.embedContent(text);
-            const embedding = result.embedding.values;
+            const embedding = await this._fetchEmbedding(text, apiKey);
 
-            // Evict oldest entries if cache is full
-            const keys = Object.keys(this.cache);
-            if (keys.length >= MAX_CACHE_ENTRIES) {
-                const toRemove = keys.slice(0, keys.length - MAX_CACHE_ENTRIES + 1);
-                for (const k of toRemove) delete this.cache[k];
+            if (embedding) {
+                // Evict oldest entries if cache is full
+                const keys = Object.keys(this.cache);
+                if (keys.length >= MAX_CACHE_ENTRIES) {
+                    const toRemove = keys.slice(0, keys.length - MAX_CACHE_ENTRIES + 1);
+                    for (const k of toRemove) delete this.cache[k];
+                }
+                this.cache[cacheKey] = embedding;
             }
-            this.cache[cacheKey] = embedding;
             return embedding;
         } catch (e) {
             console.error(`[Embedding] Failed for ${id}:`, e.message);
@@ -107,14 +125,7 @@ class KnowledgeEmbeddingService {
      * Generate embedding for a query (Real-time)
      */
     async getQueryEmbedding(query, apiKey = null) {
-        try {
-            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : getModel();
-            const result = await targetModel.embedContent(query);
-            return result.embedding.values;
-        } catch (e) {
-            console.error('[Embedding] Query embedding failed:', e.message);
-            return null;
-        }
+        return await this._fetchEmbedding(query, apiKey);
     }
 
     /**

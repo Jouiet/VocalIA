@@ -11,6 +11,8 @@
 
 const AgencyEventBus = require('../AgencyEventBus.cjs');
 const llmGateway = require('../gateways/llm-global-gateway.cjs');
+const TenantMemory = require('../tenant-memory.cjs');
+const memory = new TenantMemory();
 
 class FollowUpSkill {
     constructor() {
@@ -50,11 +52,16 @@ class FollowUpSkill {
         }
 
         try {
+            // SOTA: Query Long-Term Memory for previous facts (Budgets, Pain Points, Preferences)
+            const facts = await memory.getFacts(tenantId, { limit: 5 });
+            const contextSummary = facts.length > 0
+                ? `\n[MÉMOIRE CLIENT]:\n${facts.map(f => `- ${f.type}: ${f.value}`).join('\n')}`
+                : '';
+
             // SOTA: Generate personalized follow-up using LLM (Deep Context)
-            // Use Gemini-3-flash for cost/speed efficiency on follow-ups
             const prompt = `Génère un message de suivi WhatsApp court et ultra-professionnel (max 2 phrases) pour un klayan (client) potentiel nommé ${userName || ''}. 
-            Il a déjà parlé avec notre IA VocalIA pour son projet dans le secteur: ${industry || 'Général'}. 
-            L'objectif est de lui proposer un créneau de démo finale demain. 
+            Secteur: ${industry || 'Général'}.${contextSummary}
+            L'objectif est de lui proposer un créneau de démo finale demain en mentionnant un détail de sa conversation passée si disponible. 
             Ton: Premium, Direct, Orienté-résultat. Langue: Français.`;
 
             const aiMessage = await llmGateway.generate('gemini', prompt);

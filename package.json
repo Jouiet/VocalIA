@@ -34,7 +34,9 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@hubspot/api-client": "^13.4.0",
+    "@mozilla/readability": "^0.6.0",
     "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.6.2",
     "bullmq": "^5.69.3",
     "dotenv": "^16.3.1",
     "exceljs": "^4.4.0",
@@ -42,11 +44,16 @@
     "google-auth-library": "^10.5.0",
     "googleapis": "^144.0.0",
     "ioredis": "^5.9.3",
+    "jsdom": "^28.1.0",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.1",
     "papaparse": "^5.5.3",
     "pdfkit": "^0.17.2",
+    "playwright": "^1.58.2",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "resend": "^6.9.2",
+    "turndown": "^7.2.2",
     "twilio": "^4.19.0",
     "ws": "^8.14.2"
   },
@@ -67,7 +74,7 @@
     "arabic"
   ],
   "devDependencies": {
-    "@playwright/test": "^1.58.1",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/cli": "^4.1.18",
     "autoprefixer": "^10.4.23",
     "c8": "^10.1.3",

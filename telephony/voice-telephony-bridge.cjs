@@ -101,6 +101,7 @@ const { getInstance: getUCPStore } = require('../core/ucp-store.cjs');
 const { getDB } = require('../core/GoogleSheetsDB.cjs');
 let tenantDB = null;
 
+
 /**
  * Session 250.63: Fetch tenant voice preferences from DB
  * @param {string} tenantId - Tenant identifier
@@ -5150,7 +5151,9 @@ async function handleInboundWhatsApp(body) {
 
   console.log(`[WhatsApp] Inbound from ${senderName} (${senderPhone}): ${message.type}`);
 
-  const tenantId = 'demo_vocalia'; // Placeholder
+  // SOTA Session 250.221: Dynamic Tenant Mapping
+  // Logic: Map WhatsApp Number ID or first digits to Tenant Registry
+  const tenantId = await deriveTenantFromWhatsApp(value.metadata?.phone_number_id, senderPhone);
   let userText = '';
 
   // 2. Handle Message Types (SOTA "Voice First" approach)

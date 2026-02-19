@@ -42,8 +42,9 @@ const SCHEMAS = {
       'id', 'name', 'email', 'phone',
       // Subscription
       'plan', 'mrr', 'status',
-      // Analytics
+      // Analytics & Usage (Session 250.219 Grounding)
       'nps_score', 'conversion_rate', 'qualified_leads',
+      'calls_current', 'sessions_current', 'kb_entries_current',
       // Voice config
       'voice_language', 'voice_gender', 'active_persona',
       // === NEW: Multi-tenant persona fields (Session 250.97quater) ===
@@ -81,9 +82,9 @@ const SCHEMAS = {
     }
   },
   sessions: {
-    columns: ['id', 'tenant_id', 'calls', 'duration_sec', 'cost_usd', 'persona', 'lang', 'timestamp'],
+    columns: ['id', 'tenant_id', 'calls', 'duration_sec', 'latency_ms', 'lead_score', 'booking_completed', 'status', 'persona', 'lang', 'timestamp'],
     required: ['tenant_id'],
-    defaults: { calls: 1, duration_sec: 0, cost_usd: 0, lang: 'fr' }
+    defaults: { calls: 1, duration_sec: 0, latency_ms: 0, lead_score: 0, booking_completed: false, status: 'new', lang: 'fr' }
   },
   logs: {
     columns: ['timestamp', 'level', 'service', 'message', 'details'],
@@ -524,52 +525,52 @@ class GoogleSheetsDB {
     const release = await this.acquireLock(sheet);
     try {
 
-    // Find row index
-    const response = await this.withRetry(async () => {
-      return await this.sheets.spreadsheets.values.get({
-        spreadsheetId: this.config.spreadsheetId,
-        range: `${sheet}!A:A`
+      // Find row index
+      const response = await this.withRetry(async () => {
+        return await this.sheets.spreadsheets.values.get({
+          spreadsheetId: this.config.spreadsheetId,
+          range: `${sheet}!A:A`
+        });
       });
-    });
 
-    const ids = response.data.values || [];
-    const rowIndex = ids.findIndex(row => row[0] === id);
+      const ids = response.data.values || [];
+      const rowIndex = ids.findIndex(row => row[0] === id);
 
-    if (rowIndex === -1) {
-      throw new Error(`Record not found: ${sheet}:${id}`);
-    }
+      if (rowIndex === -1) {
+        throw new Error(`Record not found: ${sheet}:${id}`);
+      }
 
-    // Get sheet ID for delete request
-    const metadata = await this.sheets.spreadsheets.get({
-      spreadsheetId: this.config.spreadsheetId
-    });
+      // Get sheet ID for delete request
+      const metadata = await this.sheets.spreadsheets.get({
+        spreadsheetId: this.config.spreadsheetId
+      });
 
-    const sheetMeta = metadata.data.sheets.find(s => s.properties.title === sheet);
-    if (!sheetMeta) {
-      throw new Error(`Sheet not found: ${sheet}`);
-    }
+      const sheetMeta = metadata.data.sheets.find(s => s.properties.title === sheet);
+      if (!sheetMeta) {
+        throw new Error(`Sheet not found: ${sheet}`);
+      }
 
-    await this.withRetry(async () => {
-      await this.sheets.spreadsheets.batchUpdate({
-        spreadsheetId: this.config.spreadsheetId,
-        requestBody: {
-          requests: [{
-            deleteDimension: {
-              range: {
-                sheetId: sheetMeta.properties.sheetId,
-                dimension: 'ROWS',
-                startIndex: rowIndex,
-                endIndex: rowIndex + 1
+      await this.withRetry(async () => {
+        await this.sheets.spreadsheets.batchUpdate({
+          spreadsheetId: this.config.spreadsheetId,
+          requestBody: {
+            requests: [{
+              deleteDimension: {
+                range: {
+                  sheetId: sheetMeta.properties.sheetId,
+                  dimension: 'ROWS',
+                  startIndex: rowIndex,
+                  endIndex: rowIndex + 1
+                }
               }
-            }
-          }]
-        }
+            }]
+          }
+        });
       });
-    });
 
-    this.invalidateCache(sheet);
-    console.log(`✅ [GoogleSheetsDB] Deleted ${sheet}:${id}`);
-    return true;
+      this.invalidateCache(sheet);
+      console.log(`✅ [GoogleSheetsDB] Deleted ${sheet}:${id}`);
+      return true;
     } finally {
       release();
     }
@@ -906,14 +907,18 @@ class GoogleSheetsDB {
 
     // Increment usage
     const newValue = (config.usage?.[usageKey] || 0) + amount;
-    const updated = this.updateTenantUsage(tenantId, { [usageKey]: newValue });
+    this.updateTenantUsage(tenantId, { [usageKey]: newValue });
+
+    // SOTA: Grounding - PUSH usage to Authority (Google Sheets) for Dashboard
+    this.update('tenants', tenantId, { [usageKey]: newValue })
+      .catch(e => console.warn(`[GoogleSheetsDB] Local usage synced but Sheet push failed for ${tenantId}:`, e.message));
 
     // BL9 fix: Use correct quota key mapping (kb_entries ≠ kb_entries_monthly)
     const quotaKeys = { calls: 'calls_monthly', sessions: 'sessions_monthly', kb_entries: 'kb_entries' };
     const quotaLimit = config.quotas?.[quotaKeys[usageType]] || Infinity;
 
     return {
-      success: updated,
+      success: true,
       newValue,
       withinQuota: newValue <= quotaLimit
     };
