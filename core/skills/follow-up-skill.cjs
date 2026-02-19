@@ -11,8 +11,7 @@
 
 const AgencyEventBus = require('../AgencyEventBus.cjs');
 const llmGateway = require('../gateways/llm-global-gateway.cjs');
-const TenantMemory = require('../tenant-memory.cjs');
-const memory = new TenantMemory();
+const memory = require('../tenant-memory.cjs');
 
 class FollowUpSkill {
     constructor() {

@@ -342,4 +342,6 @@ TenantMemory.getInstance = function (options) {
     return instance;
 };
 
-module.exports = TenantMemory;
+// Export singleton instance (matches ContextBox pattern)
+module.exports = TenantMemory.getInstance();
+module.exports.TenantMemory = TenantMemory;

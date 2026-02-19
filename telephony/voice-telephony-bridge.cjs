@@ -5132,7 +5132,21 @@ async function handleInboundWhatsApp(body) {
   const value = changes?.value;
 
   if (!value || !value.messages || !value.messages[0]) {
-    // Status update (sent/delivered/read) - ignore for now
+    // WhatsApp Status Tracking (sent/delivered/read/failed)
+    if (value?.statuses?.[0]) {
+      const status = value.statuses[0];
+      const AgencyEventBus = require('../core/AgencyEventBus.cjs');
+      AgencyEventBus.publish('whatsapp.status_update', {
+        messageId: status.id,
+        recipientPhone: status.recipient_id,
+        status: status.status, // sent, delivered, read, failed
+        timestamp: status.timestamp ? new Date(parseInt(status.timestamp) * 1000).toISOString() : new Date().toISOString(),
+        errors: status.errors || null
+      });
+      if (status.status === 'failed') {
+        console.error(`[WhatsApp] Message ${status.id} FAILED to ${status.recipient_id}:`, status.errors?.[0]?.title);
+      }
+    }
     return;
   }
 

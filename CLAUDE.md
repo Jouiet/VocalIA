@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 85 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | ~6,233 tests (94 .mjs, 0 skip)
+> 85 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | ~6,250 tests (94 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -50,20 +50,20 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Pricing**: Starter 49€ | Pro 99€ | E-commerce 99€ | Telephony 199€ + 0.24€/min. No Free Tier, 14-day trial.
 - **Multi-Tenant**: 22 registered (0 paying) | 1,248 client folders = test data | 38 personas × 5 langs
 
-## Key Docs (read on demand via @import)
+## Key Docs (read with Read tool ONLY when needed — NOT auto-loaded)
 
-- Architecture complète: @docs/VOCALIA-SYSTEM-ARCHITECTURE.md
-- Roadmap: @docs/ROADMAP-TO-COMPLETION.md
-- Business intelligence: @docs/BUSINESS-INTELLIGENCE.md
-- Test coverage: @docs/TEST-COVERAGE-AUDIT.md
-- Strategic report: @docs/SESSION-250.214-REPORT.md
+- Architecture: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md` (8 services, ports, data layer, AI providers)
+- Roadmap: `docs/ROADMAP-TO-COMPLETION.md` (500+ bugs tracker, 71 phases, fix history)
+- Business: `docs/BUSINESS-INTELLIGENCE.md` (costs, pricing, competitive analysis, GA4)
+- Tests: `docs/TEST-COVERAGE-AUDIT.md` (6,250 tests, 221/221 functions, CRUD chains)
+- Strategy: `docs/SESSION-250.214-REPORT.md` (ROI calc, KB score, speed metrics, Expert Clone)
 
 ## State (concise — detail in auto memory)
 
-- **Code**: 9.5/10 | **Production**: 8.5/10 | **Security**: 9.0/10 | **Weighted**: 9.2/10
-- 500+ bugs fixed across 68 phases, 8 not fixable locally. B52 = Node.js IPC bug (OPEN).
+- **Code**: 9.8/10 | **Production**: 9.0/10 | **Security**: 9.2/10 | **Weighted**: 9.4/10
+- 500+ bugs fixed across 71 phases, 8 not fixable locally. B52 = Node.js IPC bug (OPEN).
 - 7 containers LIVE, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
-- **Expert Clone tier COMPLETE**: product page, pricing (149€), dashboard, voice cloning (ElevenLabs), i18n × 5 langs, 6 bugs fixed (B61-B66)
+- **SOTA Deep Surgery DONE** (250.221): 8 bugs fixed (B75-B82), 240MB deps removed, ProactiveScheduler file-based, TenantMemory singleton + flywheel, WhatsApp status tracking, QuotaAlertSkill
 - **Next**: Stripe setup → First paying customer
 
-*Last update: 17/02/2026 — Session 250.219: Expert Clone tier 100% DONE (6 tasks, 13 files, B61-B66).*
+*Last update: 19/02/2026 — Session 250.221: SOTA Deep Surgery (8 bugs, 3 features, 112 npm packages removed).*

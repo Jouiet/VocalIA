@@ -110,14 +110,8 @@ const eventBus = require('./AgencyEventBus.cjs');
 const A2UIService = require('./a2ui-service.cjs');
 const hybridRAG = require('./hybrid-rag.cjs').getInstance();
 
-// Session 250.219: Proactive AI Skills (Deep Surgery)
-const SkillRegistry = require('./SkillRegistry.cjs');
-const FollowUpSkill = require('./skills/follow-up-skill.cjs');
-const KBEnrichmentSkill = require('./skills/kb-enrichment-skill.cjs');
-const Scheduler = require('./proactive-scheduler.cjs');
-// SOTA Phase 5: Sovereign Knowledge Ingestion
-const CompetitorScout = require('./ingestion/CompetitorScout.cjs');
-const competitorScout = new CompetitorScout(); // Starts listening immediately
+// Session 250.220: SOTA modules (lazy-loaded in main() — prevents fork bomb + Redis in tests)
+let SkillRegistry, Scheduler;
 
 // Session 250.89: A2A Translation Supervisor (optional, null if not configured)
 let translationSupervisor = null;
@@ -2599,6 +2593,7 @@ function startServer(port = 3004) {
           // Lead qualification processing
           const leadSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           const session = getOrCreateLeadSession(leadSessionId);
+          session.tenantId = tenantId; // SOTA: Track tenant for auto-promotion
           // BL13 fix: Capture new session flag BEFORE processQualificationData pushes user message
           const isNewSession = session.messages.length === 0;
           processQualificationData(session, message, language);
@@ -3630,16 +3625,40 @@ async function main() {
   const args = parseArgs();
 
   if (args.server) {
-    // Initialize AI Skills (Session 250.219)
+    // Initialize SOTA Skills (lazy — only in server mode)
+    SkillRegistry = require('./SkillRegistry.cjs');
+    const FollowUpSkill = require('./skills/follow-up-skill.cjs');
+    const KBEnrichmentSkill = require('./skills/kb-enrichment-skill.cjs');
+    const QuotaAlertSkill = require('./skills/quota-alert-skill.cjs');
+    Scheduler = require('./proactive-scheduler.cjs');
+
     SkillRegistry.register('lead_follow_up', FollowUpSkill);
     SkillRegistry.register('kb_enrichment', KBEnrichmentSkill);
+    SkillRegistry.register('quota_alert', QuotaAlertSkill);
     SkillRegistry.initAll();
 
-    // Schedule SOTA Cron: Daily KB Reflection (4 AM Morocco time approx)
+    // SOTA Flywheel: Auto-promote high-confidence facts to TenantMemory
+    const AgencyEventBus = require('./AgencyEventBus.cjs');
+    AgencyEventBus.subscribe('memory.fact_ready', async (event) => {
+      const { sessionId, fact } = event;
+      // Resolve tenantId from session cache
+      const session = leadSessions.get(sessionId);
+      const tid = session?.tenantId;
+      if (tid && fact) {
+        ContextBox.promoteFact(sessionId, tid, fact)
+          .catch(e => console.warn('[Flywheel] Auto-promote failed:', e.message));
+      }
+    });
+
     Scheduler.scheduleTask('kb_enrichment_cron', { tenantId: 'all' }, {
-      repeat: { cron: '0 4 * * *' }, // Every day at 4 AM
+      repeat: { cron: '0 4 * * *' },
       jobId: 'kb_enrichment_daily_global'
     }).catch(e => console.error('[Automation] Cron Scheduling Failed:', e.message));
+
+    Scheduler.scheduleTask('quota_alert_check', {}, {
+      repeat: { cron: '0 8 * * *' },
+      jobId: 'quota_alert_daily'
+    }).catch(e => console.error('[Automation] Quota Alert Cron Failed:', e.message));
 
     startServer(parseInt(args.port) || 3004);
     return;

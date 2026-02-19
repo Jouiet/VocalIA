@@ -23,8 +23,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const TenantMemory = require('./tenant-memory.cjs');
-
 // SOTA Configuration
 const CONTEXT_CONFIG = {
   maxHistoryEvents: 50,  // Max events to keep in detailed history
@@ -40,7 +38,7 @@ class ContextBox {
     this.config = { ...CONTEXT_CONFIG, ...options.config };
 
     // SOTA Pattern #2: TenantMemory (Persistent Long-Term Memory)
-    this.tenantMemory = new TenantMemory();
+    this.tenantMemory = require('./tenant-memory.cjs');
 
     if (!fs.existsSync(this.storageDir)) {
       fs.mkdirSync(this.storageDir, { recursive: true });
@@ -237,10 +235,12 @@ class ContextBox {
     // We rely on the caller to provide tenantId context or retrieve it from session metadata.
     // For now, we store in session. The caller (voice-api) triggers explicit promotion.
     if (confidence >= this.config.autoPromoteConfidence) {
-    // This would ideally call promoteFact, but promoteFact requires tenantId.
-    // For now, we just log it in the session context.
-    // A higher-level service (e.g., VoiceAI) would explicitly call promoteFact with tenantId.
-      console.log(`[ContextBox] Fact "${factType}" for session ${id} has high confidence (${confidence}). Ready for promotion.`);
+      // Emit event for auto-promotion (voice-api knows tenantId and will call promoteFact)
+      const AgencyEventBus = require('./AgencyEventBus.cjs');
+      AgencyEventBus.publish('memory.fact_ready', {
+        sessionId: id,
+        fact: fact
+      });
     }
 
     return this.set(id, {

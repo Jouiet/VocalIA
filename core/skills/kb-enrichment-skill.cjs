@@ -12,13 +12,13 @@
 
 const AgencyEventBus = require('../AgencyEventBus.cjs');
 const llmGateway = require('../gateways/llm-global-gateway.cjs');
-const { getInstance: getTenantMemory } = require('../tenant-memory.cjs');
+const tenantMemory = require('../tenant-memory.cjs');
 const { ServiceKnowledgeBase } = require('../knowledge-base-services.cjs');
 
 class KBEnrichmentSkill {
     constructor() {
         this.initialized = false;
-        this.tenantMemory = getTenantMemory();
+        this.tenantMemory = tenantMemory;
         this.kb = new ServiceKnowledgeBase();
     }
 

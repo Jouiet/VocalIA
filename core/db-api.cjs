@@ -45,7 +45,7 @@ const authService = require('./auth-service.cjs');
 const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-middleware.cjs');
 
 const { sanitizeTenantId } = require('./voice-api-utils.cjs');
-const TenantMemory = require('./tenant-memory.cjs'); // SOTA: For Vector Sync
+const tenantMemory = require('./tenant-memory.cjs'); // SOTA: Singleton for Vector Sync
 
 // Session 250.57: Audit trail for compliance
 const { getInstance: getAuditStore, ACTION_CATEGORIES } = require('./audit-store.cjs');
@@ -1742,7 +1742,7 @@ async function handleRequest(req, res) {
 
       // SOTA SYNC: Update Vector Store immediately
       try {
-        await TenantMemory.getInstance().syncKBEntry(tenantId, key, value, language);
+        await tenantMemory.syncKBEntry(tenantId, key, value, language);
       } catch (err) {
         console.error(`[DB-API] Failed to sync KB entry to Vector Store: ${err.message}`);
       }
@@ -1808,7 +1808,7 @@ async function handleRequest(req, res) {
 
       // SOTA SYNC: Remove from Vector Store
       try {
-        await TenantMemory.getInstance().deleteKBEntry(tenantId, key, language);
+        await tenantMemory.deleteKBEntry(tenantId, key, language);
       } catch (err) {
         console.error(`[DB-API] Failed to delete KB entry from Vector Store: ${err.message}`);
       }
@@ -1980,7 +1980,7 @@ async function handleRequest(req, res) {
           for (const entry of entries) {
             const key = entry.key; // KnowledgeIngestion might utilize 'key' property
             const val = entry.value || entry; // Normalized or raw
-            await TenantMemory.getInstance().syncKBEntry(tenantId, key, val, language);
+            await tenantMemory.syncKBEntry(tenantId, key, val, language);
           }
           console.log(`[DB-API] SOTA sync completed for ${entries.length} items.`);
         } catch (err) {
@@ -2054,8 +2054,14 @@ async function handleRequest(req, res) {
       }
 
       // SOTA: Use KnowledgeIngestion (Playwright) instead of Legacy KBCrawler
-      const KnowledgeIngestion = require('./ingestion/KnowledgeIngestion.cjs');
-      const ingestor = new KnowledgeIngestion({ headless: true }); // Headless browser
+      let KnowledgeIngestion, ingestor;
+      try {
+        KnowledgeIngestion = require('./ingestion/KnowledgeIngestion.cjs');
+        ingestor = new KnowledgeIngestion({ headless: true });
+      } catch (loadErr) {
+        sendJson(res, 503, { success: false, message: 'Crawl engine unavailable (Playwright not installed)' });
+        return;
+      }
 
       const language = body.language || 'fr';
       const kbData = {};
@@ -2104,7 +2110,7 @@ async function handleRequest(req, res) {
 
         const key = Object.keys(kbData)[0];
         try {
-          await TenantMemory.getInstance().syncKBEntry(tenantId, key, kbData[key], language);
+          await tenantMemory.syncKBEntry(tenantId, key, kbData[key], language);
         } catch (e) {
           console.error('[DB-API] Failed to sync crawled data to vector store', e);
         }

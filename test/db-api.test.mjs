@@ -168,10 +168,9 @@ describe('DB API sendJson', () => {
     assert.strictEqual(res._body, '{"data":[1,2,3]}');
   });
 
-  test('includes CORS headers from req origin', () => {
-    const req = { headers: { origin: 'https://app.vocalia.ma' } };
-    const res = createMockRes(req);
-    sendJson(res, 200, {});
+  test('includes custom headers when passed', () => {
+    const res = createMockRes();
+    sendJson(res, 200, {}, { 'Access-Control-Allow-Origin': 'https://app.vocalia.ma' });
     assert.strictEqual(res._headers['Access-Control-Allow-Origin'], 'https://app.vocalia.ma');
   });
 
