@@ -547,7 +547,7 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 46 ARCHITECTURE SHOWCASE (250.223)** | **Homepage Architecture section + Dashboard Memory panel + telephony pricing fix + widget cache-bust + 5-lang i18n** | **N/A** | **0** |
 | **Phase 47 ADMIN ENGINE + ABOUT FIX (250.224)** | **Admin SOTA Engine Intelligence panel (4 metrics) + About page stat bugs (duplicate 38→86 features, Monitored→7 services) + 5-lang i18n** | **N/A** | **0** |
 | **Phase 48 HOMEPAGE SECTIONS (250.225)** | **"How It Works" 3-step onboarding + "Security & Trust" enterprise badges (RGPD, TLS, isolation, containers, HSTS, CSP, SRI) + 5-lang i18n** | **N/A** | **0** |
-| **Phase 49 GSAP SCROLL ANIMATIONS (250.226)** | **Activated gsap-animations.js on ALL 10 public pages + 2 dashboards = 12 pages total. 75 data-reveal scroll triggers + 13 data-counter animated stats across 10 public pages.** | **N/A** | **0** |
+| **Phase 49 GSAP SCROLL ANIMATIONS (250.226)** | **Activated gsap-animations.js on ALL 26 pages (24 public + 2 dashboards). 118 data-reveal scroll triggers + 13 data-counter animated stats. Products, industries, use-cases pages all enhanced.** | **N/A** | **0** |
 | **CUMULATIVE** | **433** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA tasks complete — only BUSINESS remain (Stripe key, first customer).** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
