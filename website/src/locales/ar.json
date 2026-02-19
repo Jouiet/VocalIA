@@ -183,12 +183,15 @@
       "stt": "التعرف على الكلام",
       "tts": "تركيب الصوت",
       "nlp": "الفهم الطبيعي",
-      "multi_tenant": "عزل بالحساب",
+      "multi_tenant": "بيانات معزولة 100%",
       "memory": "ذاكرة الذكاء",
       "facts_learned": "حقائق مُكتسبة",
       "kb_entries": "إدخالات القاعدة",
-      "flywheel": "دولاب التعلم",
-      "flywheel_active": "نشط"
+      "flywheel": "تحسين مستمر",
+      "flywheel_active": "نشط",
+      "high_availability": "توفر عالي",
+      "redundancy_levels": "5 مستويات احتياطية",
+      "status_operational": "يعمل بشكل طبيعي"
     },
     "sauvegarder_0": "حفظ",
     "annuler_1": "إلغاء",

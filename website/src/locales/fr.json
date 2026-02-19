@@ -183,12 +183,15 @@
       "stt": "Reconnaissance vocale",
       "tts": "Synthèse vocale",
       "nlp": "Compréhension naturelle",
-      "multi_tenant": "Isolation par compte",
+      "multi_tenant": "Données 100% isolées",
       "memory": "Mémoire IA",
       "facts_learned": "Faits appris",
       "kb_entries": "Entrées KB",
-      "flywheel": "Flywheel",
-      "flywheel_active": "Actif"
+      "flywheel": "Amélioration continue",
+      "flywheel_active": "Actif",
+      "high_availability": "Haute Disponibilité",
+      "redundancy_levels": "5 niveaux de redondance",
+      "status_operational": "Opérationnel"
     },
     "sauvegarder_0": "Sauvegarder",
     "annuler_1": "Annuler",
