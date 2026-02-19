@@ -713,7 +713,8 @@
     "trusted": "Déployé par les leaders",
     "vp_capacity": "100× plus d'appels, zéro recrutement",
     "vp_tireless": "Jamais fatigué, jamais en congé",
-    "vp_cost": "Coût marginal quasi nul par appel"
+    "vp_cost": "Coût marginal quasi nul par appel",
+    "demo_desc": "Découvrez la puissance de VocalIA. Synthèse vocale en temps réel, analyse des conversations et intégration instantanée."
   },
   "how_it_works": {
     "badge": "Mise en Route",
@@ -1060,13 +1061,19 @@
       "ai": "Moteur IA",
       "ai_detail": "5 niveaux • 38 personas",
       "tts": "Synthèse Vocale",
+      "tts_detail": "Voix naturelle",
       "output": "Réponse",
-      "output_detail": "< 800ms E2E"
+      "output_detail": "< 800ms total"
     },
     "redundancy": {
       "title": "IA Multi-Niveaux",
       "subtitle": "Jamais en panne",
-      "rule_based": "Règles"
+      "rule_based": "Règles",
+      "level1": "IA Principale",
+      "level2": "IA Secours",
+      "level3": "IA Enterprise",
+      "level4": "IA Arabe",
+      "level5": "Filet de Sécurité"
     },
     "memory": {
       "title": "Mémoire Persistante",

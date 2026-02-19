@@ -713,7 +713,8 @@
     "trusted": "Desplegado por líderes",
     "vp_capacity": "100× más llamadas, cero contratación",
     "vp_tireless": "Nunca cansado, nunca de vacaciones",
-    "vp_cost": "Coste marginal casi nulo por llamada"
+    "vp_cost": "Coste marginal casi nulo por llamada",
+    "demo_desc": "Descubra el poder de VocalIA con una demostración en vivo. Nuestro agente vocal IA responderá a sus preguntas en tiempo real."
   },
   "how_it_works": {
     "badge": "Primeros Pasos",
@@ -1060,13 +1061,19 @@
       "ai": "Motor IA",
       "ai_detail": "5 niveles • 38 personas",
       "tts": "Síntesis Vocal",
+      "tts_detail": "Voz natural",
       "output": "Respuesta",
-      "output_detail": "< 800ms E2E"
+      "output_detail": "< 800ms total"
     },
     "redundancy": {
       "title": "IA Multi-Nivel",
       "subtitle": "Nunca se cae",
-      "rule_based": "Reglas"
+      "rule_based": "Reglas",
+      "level1": "IA Principal",
+      "level2": "IA de Respaldo",
+      "level3": "IA Enterprise",
+      "level4": "IA Árabe",
+      "level5": "Red de Seguridad"
     },
     "memory": {
       "title": "Memoria Persistente",

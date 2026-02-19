@@ -713,7 +713,8 @@
     "trusted": "Deployed by leaders",
     "vp_capacity": "100× more calls, zero hiring",
     "vp_tireless": "Never tired, never on leave",
-    "vp_cost": "Near-zero marginal cost per call"
+    "vp_cost": "Near-zero marginal cost per call",
+    "demo_desc": "Discover the power of VocalIA. Real-time voice synthesis, conversation analysis, and instant integration."
   },
   "how_it_works": {
     "badge": "Getting Started",
@@ -1060,13 +1061,19 @@
       "ai": "AI Engine",
       "ai_detail": "5 levels • 38 personas",
       "tts": "Voice Synthesis",
+      "tts_detail": "Natural voice",
       "output": "Response",
-      "output_detail": "< 800ms E2E"
+      "output_detail": "< 800ms total"
     },
     "redundancy": {
       "title": "Multi-Level AI",
       "subtitle": "Never goes down",
-      "rule_based": "Rules"
+      "rule_based": "Rules",
+      "level1": "Primary AI",
+      "level2": "Backup AI",
+      "level3": "Enterprise AI",
+      "level4": "Arabic AI",
+      "level5": "Safety Net"
     },
     "memory": {
       "title": "Persistent Memory",
