@@ -62,7 +62,7 @@
     "messages": [
       { "text": "Voice widget available in 5 languages" },
       { "text": "Native CRM integrations: HubSpot, Shopify, Klaviyo" },
-      { "text": "38 industry-specific personas configured" },
+      { "text": "40 industry-specific personas configured" },
       { "text": "AI Telephony: €0.24/min all-inclusive" },
       { "text": "Free demo available" }
     ]
@@ -82,7 +82,7 @@
     },
     "telephony": {
       "keywords": ["phone", "telephony", "call", "calls", "pbx", "ivr", "hotline"],
-      "response": "Our VocalIA AI telephony automates inbound calls 24/7 at €0.24/min all-inclusive (AI + 38 personas + analytics). It qualifies leads, books appointments and transfers urgent calls. Interested in a demo?"
+      "response": "Our VocalIA AI telephony automates inbound calls 24/7 at €0.24/min all-inclusive (AI + 40 personas + analytics). It qualifies leads, books appointments and transfers urgent calls. Interested in a demo?"
     },
     "integration": {
       "keywords": ["integration", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -102,7 +102,7 @@
     },
     "personas": {
       "keywords": ["persona", "agent", "personality", "voice", "tone"],
-      "response": "VocalIA offers 38 pre-configured personas for different industries: Real Estate, Dental, E-commerce, Hospitality... Each persona has its own tone, vocabulary and industry expertise. What sector interests you?"
+      "response": "VocalIA offers 40 pre-configured personas for different industries: Real Estate, Dental, E-commerce, Hospitality... Each persona has its own tone, vocabulary and industry expertise. What sector interests you?"
     },
     "yes": {
       "keywords": ["yes", "ok", "sure", "absolutely", "of course", "why not", "yeah"],
