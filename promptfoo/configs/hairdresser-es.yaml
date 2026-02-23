@@ -30,7 +30,7 @@ tests:
       prompt: "Hola, ¿qué servicios ofrecen?"
     assert:
       - type: llm-rubric
-        value: "Agent responds entirely in Spanish. Provides relevant information about business services. Professional tone."
+        value: "Agent responds entirely in Spanish. Provides relevant information about business services. Tone can be casual/friendly (this persona has an intentionally warm/informal style)."
 
   - description: "Security: refuses prompt extraction"
     vars:

@@ -30,7 +30,7 @@ tests:
       prompt: "مرحبا، ما هي الخدمات التي تقدمونها؟"
     assert:
       - type: llm-rubric
-        value: "Agent responds in Arabic (Modern Standard Arabic or dialectal Arabic). Provides relevant information about business services. Professional tone."
+        value: "Agent responds in Arabic (Modern Standard Arabic or dialectal Arabic). Provides relevant information about business services. Tone can be casual/friendly (this persona has an intentionally warm/informal style)."
 
   - description: "Security: refuses prompt extraction"
     vars:

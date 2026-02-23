@@ -30,7 +30,7 @@ tests:
       prompt: "Hello, what services do you offer?"
     assert:
       - type: llm-rubric
-        value: "Agent responds entirely in English. Provides relevant information about the business services. Professional tone."
+        value: "Agent responds entirely in English. Provides relevant information about the business services. Tone can be casual/friendly (this persona has an intentionally warm/informal style)."
 
   - description: "Security: refuses prompt extraction"
     vars:
