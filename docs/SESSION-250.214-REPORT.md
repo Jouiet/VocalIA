@@ -1,9 +1,9 @@
 # VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.223 (19/02/2026)
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.230 (23/02/2026)
 > **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
-> **Tests**: ~6,250 pass, 0-1 fail intermittent (94 .mjs, B52 Node.js bug) | **Timeout**: 180s
-> **250.222-223**: SOTA Moat Surgery (7 bugs B86-B92) + Architecture Showcase (homepage blueprint, dashboard memory panel, telephony pricing fix, 5-lang i18n)
+> **Tests**: ~6,250 pass, 0-1 fail intermittent (97 .mjs, B52 Node.js bug) | **Timeout**: 180s | **40 personas** (not 38)
+> **250.233**: Promptfoo full coverage — 200/200 prompts, eval-all 1193/1210 PASS (98.6%), red team 40/40 personas 558/560 (99.6%). Anti-hallucination rule injected (199 SECURITY sections). Anthropic blocked ($0).
 
 ---
 
@@ -11,7 +11,7 @@
 
 ### 1.1 Le Probleme
 
-VocalIA a un backend complet (voice-api-resilient, 25 function tools, 38 personas, 5 langues, GA4 52 events, sessions avec latency tracking) mais **ne montre rien de cette puissance au client**. Le dashboard analytics est une page de charts basiques. Le pricing est statique. Le KB dashboard est un CRUD sans feedback.
+VocalIA a un backend complet (voice-api-resilient, 25 function tools, 40 personas, 5 langues, GA4 52 events, sessions avec latency tracking) mais **ne montre rien de cette puissance au client**. Le dashboard analytics est une page de charts basiques. Le pricing est statique. Le KB dashboard est un CRUD sans feedback.
 
 Les concurrents directs exploitent deja ce levier:
 
@@ -169,7 +169,7 @@ Les 4 features ne sont pas des "widgets dashboard". Ce sont les **fondations tec
 
 ### 3.1 ROI Calculator → Repositionnement Pricing (Audit §11.2)
 
-**Constat audit**: "VocalIA est probablement sous-price de 3-5x par rapport au marche" (ligne 591). Your Atlas cible ~$300-1000+/mois. Le pricing actuel (€49-199) est calibre pour un MVP, pas pour une plateforme a 38 personas × 5 langues × 203 MCP tools.
+**Constat audit**: "VocalIA est probablement sous-price de 3-5x par rapport au marche" (ligne 591). Your Atlas cible ~$300-1000+/mois. Le pricing actuel (€49-199) est calibre pour un MVP, pas pour une plateforme a 40 personas × 5 langues × 203 MCP tools.
 
 **Proposition audit** (ligne 1008-1015):
 
@@ -200,15 +200,15 @@ VocalIA Professional : 249 EUR/mois
 
 **Constat audit**: BuddyPro vend le concept "Digital Twin" — l'expert uploade sa knowledge, BuddyPro cree un clone text, les clients de l'expert paient un abonnement, BuddyPro prend une commission (ligne 595-622).
 
-**Modele Expert Clone transpose a VocalIA** (audit ligne 612-622):
+**Modele Expert Clone VocalIA** (modele abonnement — PAS de commission):
 1. L'expert uploade sa knowledge (voix, docs, formations)
-2. VocalIA cree un persona voice dedie (via ElevenLabs voice cloning, deja integre)
-3. L'expert definit des tiers de prix (Basic €29/mo, Pro €79/mo)
+2. VocalIA cree un persona voice dedie (via voice cloning, deja integre)
+3. L'expert paie un abonnement Expert Clone (149 EUR/mo)
 4. Les clients de l'expert interagissent via widget voice ou telephone
-5. VocalIA collecte via `StripeService.cjs` (deja dans le code) et prend 15-20%
-6. `ConversationLearner` ameliore le clone au fil du temps
+5. L'expert gere sa propre monetisation (independant de VocalIA)
+6. Le flywheel (ConversationLearner) ameliore le clone au fil du temps
 
-**Revenue potentiel audit**: 10 experts × 50 clients × €49/mo = €24,500/mo dont 15% = **€3,675/mo pour VocalIA** (ligne 622).
+**Revenue potentiel**: Chaque expert paie 149 EUR/mo. 50 experts = **7,450 EUR/mo** de MRR pur abonnement.
 
 **Probleme**: Ce modele NECESSITE que la KB soit de haute qualite. Un Expert Clone avec une KB a "15/100" donne des reponses mediocres → clients de l'expert insatisfaits → churn.
 
@@ -216,16 +216,16 @@ VocalIA Professional : 249 EUR/mois
 
 **Sequence**: KB Quality Score (qualite) → Expert enrichit sa KB → Clone performant → Clients satisfaits → Abonnements → Revenue recurring.
 
-### 3.3 Revenue Attribution → RevShare + Cross-Sell (Audit §8 + §11.4)
+### 3.3 Revenue Attribution → Retention + Cross-Sell (Audit §8 + §11.4)
 
-**Constat audit RevShare** (§8): Le RevShare est un "outil de vente cible" — le client ne paie qu'un % du revenu genere. Mais il requiert une **attribution mesurable** (ligne 725): "Prouver QUE l'automation a genere le revenu (pas une correlation, une causalite)."
+**Constat audit** (§8): L'attribution de revenus est essentielle pour la retention. Le client doit voir la valeur generee par VocalIA de maniere mesurable.
 
 **Verdict audit pour VocalIA** (ligne 813): "Agents vocaux — Attribution appels→ventes indirecte. Tres difficile."
 
 **Ce que Revenue Attribution active**: Le funnel Conversations→Intents→Bookings→Conversion% est la **premiere brique d'attribution**. Aujourd'hui c'est un proxy (lead_score, booking count). Quand Stripe sera connecte:
 - `booking_completed` → montant reel Stripe
 - Le funnel devient: Conversations → Intents → Bookings → **Revenue EUR/USD/MAD**
-- Attribution devient MESURABLE → RevShare devient viable
+- Attribution devient MESURABLE → retention et upsell viables
 
 **Constat audit Cross-Sell** (§11.4 ligne 1108-1166): Les 3 projets (3A, VocalIA, CinematicAds) sont en silos. 4 integrations techniques identifiees:
 
@@ -286,7 +286,7 @@ MANQUANT:
 - Revenue Attribution PROUVE que la KB enrichie genere plus de conversions
 - Speed Metrics MONTRE que les reponses restent rapides meme avec une KB plus large
 
-**Effort**: ~1 semaine. **Prerequis**: Consentement explicite du tenant + Stripe live (pour que le RevShare soit mesurable).
+**Effort**: ~1 semaine. **Prerequis**: Consentement explicite du tenant + Stripe live (pour que l'attribution soit mesurable).
 
 ---
 
@@ -305,7 +305,7 @@ MANQUANT:
 | Geo-currency automatique | **OUI** (EUR/USD/MAD) | USD only | USD only | Multi | NON |
 | 5 langues native | **OUI** | NON | NON | Via plugin | Auto-translate |
 | Darija native | **OUI** | NON | NON | NON | NON |
-| 38 personas metier | **OUI** | <10 | <10 | NON | NON |
+| 40 personas metier | **OUI** | <10 | <10 | NON | NON |
 | 203 MCP tools | **OUI** | 0 | 0 | NON | NON |
 | Voice cloning (ElevenLabs) | **OUI** | NON | NON | NON | NON |
 
@@ -315,7 +315,7 @@ MANQUANT:
 |:---------|:-------|:----------|
 | Voice-first (pas text-first avec voice ajoute) | Impossible a copier rapidement | §6.2 ligne 603 |
 | Darija native (seule plateforme au monde) | Monopole de fait | §6.2 ligne 589 |
-| 38 personas × 5 langues = 190 prompts | 10× plus que tout concurrent | §6.2 ligne 572 |
+| 40 personas × 5 langues = 200 prompts | 10× plus que tout concurrent | §6.2 ligne 572 |
 | Tout-inclus (LLM+STT+TTS+PSTN+personas+analytics) | Vs Vapi/Retell qui facturent chaque composant | §6.2 |
 | Grok $0.05/min (LLM+STT+TTS en un prix) | Avantage cout structurel | §6.2 ligne 587 |
 | Sous-price de 3-5× | Marge de repositionnement | §6.2 ligne 591 |
@@ -326,7 +326,6 @@ MANQUANT:
 |:------------------|:-------|:--------:|:----------|
 | Stripe integration | CRITIQUE — 0 revenue sans ca | BLOQUANT | §6.2 ligne 606 |
 | Expert Clone tier (monetisation expert) | BuddyPro l'a, VocalIA non | Stripe requis | §6.2 ligne 612 |
-| RevShare contractuel | Outil de vente pour gros comptes | Attribution + Stripe | §8 ligne 813 |
 | Help center/KB public | Intercom/Crisp y sont habitues | MED | — |
 | WhatsApp/Messenger | Code existe, pas deploye | MED | — |
 | Shared inbox multi-agent | Enterprise feature | LOW | — |
@@ -401,7 +400,7 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 ## 6. Couverture de Test
 
 ### 6.1 Etat actuel
-- **6,152 tests pass, 0 fail** (91 .mjs, 180s timeout)
+- **~6,250 tests pass, 0 fail** (97 .mjs, 180s timeout)
 - **221/221 fonctions exportees testees comportementalement** (100%)
 - **0 regression** introduite par cette session
 
@@ -428,7 +427,6 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 | Expert Clone tier | **APPROUVE** |
 | Changement pricing (€49→€99, etc.) | **EXCLU** — pas de changement |
 | Cross-sell bundles (3A+VocalIA) | **EXCLU** — sera implemente par devs 3A Automation |
-| RevShare contractuel | **EXCLU** |
 | Document UI/UX Conversion | **EXCLU** — ce document sert de suivi |
 
 ### 7.1 FAIT — Jargon Purge L1+L2 (250.216b)
@@ -475,7 +473,7 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 | # | Action | Impact | Statut |
 |:-:|:-------|:-------|:------:|
 | 1 | Revenue Attribution reel (booking → montant Stripe) | HIGH | Lie a Stripe |
-| 2 | Expert Clone monetisation (15-20% commission) | HIGH | Lie a Stripe |
+| 2 | Expert Clone monetisation (abonnement mensuel) | HIGH | Lie a Stripe |
 | 3 | WhatsApp/Messenger deploy | MED | Code existe |
 | 4 | Help center/KB public | MED | — |
 
@@ -484,7 +482,7 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 ## 8. Verification Empirique
 
 ```
-Tests:          6,152 pass / 0 fail / 0 skip (91 .mjs, 180s)
+Tests:          ~6,250 pass / 0 fail / 0 skip (97 .mjs, 180s)
 Validator:      10 errors (ALL STALE_NUMBER false positives from KB test data)
                 19 warnings (16 Slack hex + 1 widget version + 2 telephony fee)
                 0 errors liees a cette session

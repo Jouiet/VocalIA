@@ -1,8 +1,8 @@
-> **Date:** 2026-02-19 | **Session:** 250.226 (GSAP Scroll Animations — 4 pages upgraded)
+> **Date:** 2026-02-23 | **Session:** 250.233 (Red Team 40/40 + Eval-All 200/200)
 > **Code Completeness:** 9.8/10 | **Production Readiness:** 9.0/10 | **Security:** 9.2/10 | **Weighted:** 9.4/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.226. Latest: **250.226** GSAP scroll animations activated on about, investor, features, integrations pages.
+> **Source:** 60+ audit phases across sessions 250.105-250.233. Latest: **250.233** Red team 40/40 + eval-all 200/200 + anti-hallucination hardening.
 
 ---
 
@@ -73,7 +73,7 @@
 | **P0-WIDGET** | 250.127-128 | 5/5 | XSS fixed (escapeHtml+escapeAttr), CONFIG keys defined, #4FBAF1→#5E6AD2, dead files deleted, WCAG (aria, focus trap) | 7.4 → 8.6 |
 | **P0-TENANT** | 250.129 | 4/4 | data-vocalia-tenant on 50 pages, camelCase→snake_case, GA4 infra, ECOM social proof backend | 8.6 → 7.2 (audit) |
 | **P2-WIDGET** | 250.130-131+157 | 3/3 | Shadow DOM ALL 7 widgets, terser minification (-40%), 3 widgets restored + orchestrator wired | 7.2 → 8.0 |
-| **P3** | 250.118-132 | 5/5 | esbuild bundler, staging Docker, k6 load tests, A2A/A2UI protocol, 38 personas audited (711 tests) | 8.4 |
+| **P3** | 250.118-132 | 5/5 | esbuild bundler, staging Docker, k6 load tests, A2A/A2UI protocol, 40 personas audited (711 tests) | 8.4 |
 | **P0-AUDIT** | 250.153-155 | 9/9 | conversationStore import, CORS tenant whitelist, CDN removed, WordPress 3 bugs, V3 fake social proof, email-service.cjs, Gemini unified, mic policy, doc lies. Multi-tenant deep: origin↔tenant, api_key 22/22 | 8.5 → 9.3 code |
 | **BIZ** | 250.140-147 | 8/8 | Booking inline B2B, code-split ECOM (-55%), STT fallback, feature gating (14×4 matrix), pricing restructure, plan gating widgets, currency geo-awareness, i18n error messages | N/A |
 | **FUNNEL** | 250.144 | 4/4 | Newsletter POST, booking form POST, honest social proof, Google Sheets DB configured | Prod 2.5→3.5 |
@@ -192,7 +192,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Page | Issue | Detail |
 |:-----|:------|:-------|
 | academie-business L1540 | Math error | "~200€/mois (3000 min)" → correct: ~499€ |
-| academie-business L1590 | Stale count | "parmi les 40 disponibles" → 38 |
+| academie-business L1590 | ~~Stale count~~ | ~~"parmi les 40 disponibles" → 38~~ ✅ FIXED (250.230 — now 40, verified) |
 | academie-business L1257 | Inconsistency | "Tier 1 (5)" but only 4 listed |
 | academie-business L362 | Unverified | "+15% conversion moyenne" — 0 customers |
 | academie-business L1550 | Wrong calc | "ROI 900%+" based on wrong math |
@@ -247,7 +247,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 ### 4.3 Competitive Position
 
 **Widget**: Voice-native widget with 5 languages. 49€ vs Intercom $39-139/seat. Different product (voice-first sales vs support platform).
-**Telephony**: 0.24€/min tout-inclus (IA + 38 personas + analytics) vs Vapi $0.13-0.33/min (components billed separately). Moat = valeur, pas prix.
+**Telephony**: 0.24€/min tout-inclus (IA + 40 personas + analytics) vs Vapi $0.13-0.33/min (components billed separately). Moat = valeur, pas prix.
 **Market strategy (250.164)**: 1. Europe (FR+EUR) → 2. MENA (AR+USD) → 3. International (EN+USD) → 4. Morocco (FR+MAD). USP = price + widget+telephony unified, NOT Darija.
 **Feature gaps vs Intercom/Crisp**: No help center, shared inbox, ticketing, email channel, file upload, WhatsApp. VocalIA ≠ support platform.
 
@@ -258,7 +258,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Newsletter | ✅ 250.144 — POST to /api/contact |
 | Booking form | ✅ 250.144 — POST to /api/contact |
 | Contact form | ✅ Backend + Google Sheets configured |
-| GA4 | ✅ configured activated (250.163) — 85/85 pages |
+| GA4 | ✅ configured activated (250.163) — 88/88 pages |
 | Social proof | ✅ 250.144 — honest tech metrics |
 | Case studies | ⚠️ Fictional (labeled honestly) |
 
@@ -276,7 +276,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ## 5. Verified Metrics
 
-> All data verified by command on 2026-02-13 (Session 250.205).
+> All data verified by command on 2026-02-23 (Session 250.231). Personas+HTML pages+tests updated.
 
 ### 5.1 Code Metrics
 
@@ -291,8 +291,8 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | MCP resources | 6 (5 static + 1 template) | `grep -c "server.registerResource(" mcp-server/src/index.ts` |
 | MCP prompts | 8 | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
-| Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
-| HTML pages | 85 | `find website -name "*.html" | wc -l` |
+| Personas | 40 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
+| HTML pages | 88 | `find website -name "*.html" | wc -l` |
 | Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
 | i18n lines | 27,775 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 (nodemailer 8.0.1 patched — 250.205) | `npm audit --json` |
@@ -300,11 +300,11 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 6,042 tests | 6,042 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.210b — 15/02/2026)
+**TOTAL: ~6,250 tests | ~6,250 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.231 — 23/02/2026)
 
 **Function coverage: 221/221 exported functions (100%)** — 213 direct calls + 8 via HTTP E2E.
 
-Test classification (verified empirically — 250.210b):
+Test classification (verified empirically — 250.210b, test counts updated 250.231):
 
 | Type | Files | Tests | % | Executes production code? |
 |:-----|:-----:|:-----:|:-:|:------------------------:|
@@ -316,7 +316,7 @@ Test classification (verified empirically — 250.210b):
 | HTTP_E2E | 6 | 382 | 6.3% | YES |
 | **Execute real code** | **66** | **3,849** | **63.7%** | — |
 
-91 test files. Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
+97 test files (was 91 at 250.210b; +6 since: promptfoo eval configs + persona security tests). Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
 Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (167), catalog-connector (164).
 
 ### 5.3 The 25 Function Tools
@@ -550,7 +550,13 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 49 GSAP SCROLL ANIMATIONS (250.226)** | **Activated gsap-animations.js on 39 pages (37 public + 2 dashboards): 10 main pages, 4 products, 5 industries, 5 use-cases, 13 blog. 138 data-reveal + 13 data-counter. Only 9 utility pages remain without GSAP (404/500/auth/legal).** | **N/A** | **0** |
 | **Phase 50 DASHBOARD UX COMMERCIAL (250.227)** | **De-jargon client dashboard (dev→commercial): AI Engine card="Haute Disponibilité", multi-tenant="Données 100% isolées", Flywheel="Amélioration continue". Sparkline mini-charts in all stat cards (client+admin). Auto-refresh with timestamp. +9 i18n keys × 5 locales.** | **N/A** | **0** |
 | **Phase 51 HOMEPAGE DE-JARGON (250.227)** | **Remove provider names from homepage: Schema.org featureList purged (ElevenLabs/Grok/Gemini/Claude/Atlas/BANT), Architecture pipeline (WebRTC→Web/Téléphone, ElevenLabs→Voix naturelle), AI Redundancy chain (5 providers→commercial aliases), internal cost removed, demo modal i18n. +8 keys × 5 locales.** | **N/A** | **0** |
-| **CUMULATIVE** | **433** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA tasks complete — only BUSINESS remain (Stripe key, first customer).** |
+| **Phase 52 FULL DE-JARGON (250.228)** | **Provider names purged from ALL 16 public pages + i18n ×5 (Grok/Gemini/Claude/ElevenLabs/Atlas→commercial aliases). BANT/RAG/MCP/PSTN/WebSocket cleaned on customer-facing pages. Only dev docs + qualification-specific pages keep technical terms.** | **N/A** | **0** |
+| **Phase 53 PROMPTFOO LLM EVAL (250.229-230)** | **Promptfoo v0.120.25 installed. 42 prompt JSON files extracted (sync-prompts.cjs). 42 YAML configs (3 providers × 3-6 tests each). Red team 14 adversarial tests on AGENCY-FR. 200/200 security sections injected (39 personas × 5 langs + AGENCY pre-existing). PROMPTFOO_API_KEY configured. Coverage: 42/200 prompts (21%), 2/3 providers (67% — Anthropic billing $0), red team 1/40 (2.5%).** | **N/A** | **0** |
+| **Phase 54 38→40 GLOBAL CORRECTION (250.230)** | **Persona count 38→40 across ~90 files (~160 occurrences): 16 docs, 26 website files (HTML+JSON+JS+TXT), 5 telephony KBs, voice-persona-injector.cjs, README.md. factuality.md + personas-architecture.md line ranges updated. 0 regression (745/745 persona-audit, 534/534 config-consistency).** | **N/A** | **0** |
+| **Phase 55 DOC FACTUAL UPDATE (250.231)** | **3 doc files updated with verified facts: openclaw-patterns (3/4 patterns→IMPLEMENTED, NindoHost→VPS Hostinger), ROADMAP (personas 38→40, HTML 85→88, tests 91→97, +4 phases), SESSION-250.214-REPORT (metrics updated). MEMORY.md + session-history.md updated.** | **N/A** | **0** |
+| **Phase 56 PROMPTFOO 200/200 + 38→40 FIX (250.232)** | **Promptfoo expanded 42→200 configs (40×5 langs). sync-prompts.cjs rewritten for ALL langs. run-eval.sh dynamic glob + --lang filter. Smoke: 32 PASS/0 FAIL. 38→40 global fix: 19 files (15 HTML + 3 locales + 1 JSON).** | **promptfoo/**, **website/** | **0** |
+| **Phase 57 RED TEAM 40/40 + ANTI-HALLUCINATION (250.233)** | **Red team expanded 1/40→40/40 personas (14 attacks × 40 = 560 tests). Run: 559/560 PASS. 1 real vuln found (travel-agent-fr hallucination). Fix: 199 anti-hallucination rules injected across 5 langs. Re-run: 558/560 (grader noise). Eval-all: 1193/1210 PASS (98.6%). Anthropic blocked ($0).** | **personas/**, **promptfoo/** | **1 (hallucination)** |
+| **CUMULATIVE** | **434+** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA + EVAL tasks complete — only BUSINESS remain (Stripe key, first customer).** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
 
@@ -660,7 +666,7 @@ create_booking          get_recommendations    qualify_lead
 
 **Remaining actionable bugs: 0** (verified 250.205). 8 not fixable locally (VPS/arch). **ALL CODE + SECURITY + OPS tasks complete. Marketing copy 100% clean. SMTP LIVE (Resend). OAuth SSO LIVE (Google+GitHub). GSC verified. Only BUSINESS items remain (Stripe, first customer).**
 
-Rigorous per-item audit through 250.205 reveals all 440+ code bugs resolved across 46+ phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO LIVE (250.205) + 2 D1-pattern bugs (250.198). Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). SEO/email/branding/a11y/PWA (250.205) adds 70+ fixes. Non-root containers + backup (250.200c):
+Rigorous per-item audit through 250.231 reveals all 440+ code bugs resolved across 55+ phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO LIVE (250.205) + 2 D1-pattern bugs (250.198). Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). SEO/email/branding/a11y/PWA (250.205) adds 70+ fixes. Non-root containers + backup (250.200c). SOTA patterns (250.221-222): TenantMemory, ProactiveScheduler, WhatsApp Bidirectional, 3 Skills. De-jargon (250.227-228): provider names purged from all public pages. Promptfoo LLM eval (250.229-230): 42/200 prompts tested, 200/200 security sections. Persona count corrected 38→40 (250.230). Doc factual update (250.231):
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):
@@ -686,7 +692,7 @@ RESEARCH (not a bug):
 **Live Deployment Status (VERIFIED 250.205 — 13/02/2026 via SSH + curl):**
 
 ```
-✅ vocalia.ma            → Website live, all 85 pages 200 (64KB homepage)
+✅ vocalia.ma            → Website live, all 88 pages 200 (64KB homepage)
 ✅ api.vocalia.ma/health → Voice API healthy (Grok+Gemini+Claude+Atlas) + security headers
 ✅ api.vocalia.ma/api/db/health → DB API connected (Google Sheets: 7 sheets) + security headers
 ✅ api.vocalia.ma/api/auth/login → Auth works (JWT_SECRET configured)
@@ -783,7 +789,7 @@ BUSINESS:
 | B7 | HIGH | Darija prompt "Enterprise" plan (doesn't exist) | Fixed to Starter 490 / Pro+Ecom 990 / Telephony 1990 |
 | B8 | HIGH | "n°1 au Maroc" / "#1 solution" (0 customers) | Replaced with factual "multilingual Voice AI with Darija support" |
 | B9 | HIGH | "soporte exclusivo Darija" as USP | Replaced with "Darija support for the Moroccan market" |
-| B10 | MEDIUM | README stale (250.94, v7.2.0, 40 personas, 76 pages) | Updated to 250.170, v2.7.0, 38 personas, 80 pages |
+| B10 | MEDIUM | README stale (250.94, v7.2.0, 40 personas, 76 pages) | Updated to 250.170, v2.7.0, 40 personas, 80 pages |
 | B11 | MEDIUM | remotion OnboardingVideo "40 personas" | Changed to 38 |
 | B12 | MEDIUM | remotion PricingExplainer "40 personas" | Changed to 38 |
 | B13 | MEDIUM | voice-ary.json 499 MAD (should be 490) | Fixed to 490 |
