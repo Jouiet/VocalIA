@@ -106,3 +106,7 @@ data/memory/
 data/scheduler/
 
 CLAUDE.local.md
+
+# Promptfoo output (eval results, caches)
+promptfoo/output/
+promptfoo/.promptfoo/
