@@ -482,6 +482,7 @@ describe('T5.12: Unbounded Map/Set — memory leak risk', () => {
     'knowledge-base-services.cjs:vocabulary',
     'knowledge-base-services.cjs:idf',
     'tenant-cors.cjs:_tenantOrigins',
+    'SkillRegistry.cjs:skills', // Fixed set of skills registered at startup, never grows per-request
   ]);
 
   test('Persistent Map/Set collections have eviction logic', () => {

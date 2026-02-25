@@ -62,7 +62,7 @@
     "messages": [
       { "text": "Widget vocal disponible en 5 idiomas" },
       { "text": "Integraciones CRM nativas: HubSpot, Shopify, Klaviyo" },
-      { "text": "38 personas sectoriales configurados" },
+      { "text": "40 personas sectoriales configurados" },
       { "text": "Telefonía IA: 0,24€/min todo incluido" },
       { "text": "Demostración gratuita disponible" }
     ]
@@ -82,7 +82,7 @@
     },
     "telephony": {
       "keywords": ["telefono", "telefonia", "llamada", "llamadas", "pbx", "ivr", "centralita"],
-      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a 0,24EUR/minuto todo incluido (IA + 38 personas + analytics). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
+      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a 0,24EUR/minuto todo incluido (IA + 40 personas + analytics). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
     },
     "integration": {
       "keywords": ["integracion", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -102,7 +102,7 @@
     },
     "personas": {
       "keywords": ["persona", "agente", "personalidad", "voz", "tono"],
-      "response": "VocalIA ofrece 38 personas preconfiguradas para diferentes industrias: Inmobiliaria, Dental, E-commerce, Hosteleria... Cada persona tiene su propio tono, vocabulario y experiencia del sector. Que industria te interesa?"
+      "response": "VocalIA ofrece 40 personas preconfiguradas para diferentes industrias: Inmobiliaria, Dental, E-commerce, Hosteleria... Cada persona tiene su propio tono, vocabulario y experiencia del sector. Que industria te interesa?"
     },
     "yes": {
       "keywords": ["si", "ok", "claro", "por supuesto", "vale", "de acuerdo"],

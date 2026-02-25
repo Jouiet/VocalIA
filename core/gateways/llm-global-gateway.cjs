@@ -1,4 +1,5 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// Session 250.222: Removed deprecated @google/generative-ai SDK (archived Dec 2025)
+// All Gemini calls now use direct REST API (same pattern as voice-api-resilient.cjs)
 const complianceGuardian = require('../compliance-guardian.cjs');
 
 // Load .env once at module level (not per-instance)
@@ -15,18 +16,15 @@ for (const envPath of envPaths) {
     }
 }
 
+const GEMINI_MODEL = 'gemini-3-flash-preview';
+const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+
 class LLMGateway {
     constructor() {
         this.geminiKey = process.env.GEMINI_API_KEY;
         this.anthropicKey = process.env.ANTHROPIC_API_KEY;
         this.xaiKey = process.env.XAI_API_KEY; // Grok
         this.openaiKey = process.env.OPENAI_API_KEY; // gpt-5.2
-
-        if (this.geminiKey) {
-            this.genAI = new GoogleGenerativeAI(this.geminiKey);
-            // Session 250.171: H3-AUDIT — harmonize to gemini-3-flash (matches REST API)
-            this.geminiModel = this.genAI.getGenerativeModel({ model: "gemini-3-flash" });
-        }
     }
 
     async generate(provider, prompt) {
@@ -74,8 +72,8 @@ class LLMGateway {
 
     /**
      * FRONTIER FALDOWN PROTOCOL (Resilient Chain) - Updated 26/01/2026
-     * Models: Claude Opus 4.5 -> GPT-5.2 -> Grok 4.1 -> Gemini 3 Flash
-     * IDs: claude-opus-4-5-20251101, gpt-5.2, grok-4-1-fast-reasoning, gemini-3-flash
+     * Models: Claude Opus 4.6 -> GPT-5.2 -> Grok 4.1 -> Gemini 3 Flash Preview
+     * IDs: claude-opus-4-6, gpt-5.2, grok-4-1-fast-reasoning, gemini-3-flash-preview
      * Fallbacks: Claude Opus 4.5 -> Claude 3.5 Sonnet (within Claude chain)
      */
     async generateWithFallback(prompt) {
@@ -95,15 +93,32 @@ class LLMGateway {
     }
 
     async _generateGemini(prompt) {
-        if (!this.genAI) throw new Error("GEMINI_API_KEY missing");
+        if (!this.geminiKey) throw new Error("GEMINI_API_KEY missing");
+        const url = `${GEMINI_BASE_URL}/${GEMINI_MODEL}:generateContent?key=${this.geminiKey}`;
         let attempt = 0;
         while (attempt < 3) {
             try {
-                const gemResult = await this.geminiModel.generateContent(prompt);
-                const gemResponse = await gemResult.response;
-                return gemResponse.text();
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+                if (res.status === 503 || res.status === 429) {
+                    attempt++;
+                    console.error(`[LLM] Gemini Overloaded (Attempt ${attempt}/3). Retrying...`);
+                    await new Promise(r => setTimeout(r, 1000 * attempt));
+                    continue;
+                }
+                if (!res.ok) {
+                    const errText = await res.text();
+                    throw new Error(`Gemini API ${res.status}: ${errText}`);
+                }
+                const data = await res.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
             } catch (e) {
-                if (e.message.includes('503') || e.message.includes('overloaded')) {
+                if (e.message.includes('503') || e.message.includes('overloaded') || e.message.includes('429')) {
                     attempt++;
                     console.error(`[LLM] Gemini Overloaded (Attempt ${attempt}/3). Retrying...`);
                     await new Promise(r => setTimeout(r, 1000 * attempt));
@@ -267,26 +282,32 @@ class LLMGateway {
     }
 
     /**
-     * SOTA Pattern Update: Multimodal STT (Session 250.219)
-     * Transcribes audio using Gemini 1.5 Flash (SOTA for transcription/Darija)
+     * SOTA Pattern Update: Multimodal STT (Session 250.219, updated 250.222)
+     * Transcribes audio using Gemini 3 Flash Preview (direct REST API)
      */
     async transcribeAudio(buffer, mimeType = 'audio/ogg') {
         if (!this.geminiKey) throw new Error("GEMINI_API_KEY missing for transcription");
 
+        const url = `${GEMINI_BASE_URL}/${GEMINI_MODEL}:generateContent?key=${this.geminiKey}`;
         try {
-            const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-            const result = await model.generateContent([
-                {
-                    inlineData: {
-                        data: buffer.toString("base64"),
-                        mimeType: mimeType
-                    }
-                },
-                "Transcribe this audio. If it is in Darija (Moroccan Arabic), translate it to French. Return ONLY the transcription/translation text."
-            ]);
-
-            const response = await result.response;
-            return response.text().trim();
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { inline_data: { mime_type: mimeType, data: buffer.toString('base64') } },
+                            { text: 'Transcribe this audio. If it is in Darija (Moroccan Arabic), translate it to French. Return ONLY the transcription/translation text.' }
+                        ]
+                    }]
+                })
+            });
+            if (!res.ok) {
+                const errText = await res.text();
+                throw new Error(`Gemini STT ${res.status}: ${errText}`);
+            }
+            const data = await res.json();
+            return (data.candidates?.[0]?.content?.parts?.[0]?.text || '').trim();
         } catch (e) {
             console.error(`[LLM] STT ERROR: ${e.message}`);
             throw e;

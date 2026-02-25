@@ -39,7 +39,7 @@ Un restaurant avec une cuisine equipee, des recettes testees et un systeme de se
 | VPS hardening | OK | SSH key-only, fail2ban, UFW |
 | Tests | OK | 5,019 pass, 0 fail |
 | Widget code | OK | 7 widgets, Shadow DOM, escapeHTML, minifie |
-| Personas | OK | 38 personas x 5 langues (code present) |
+| Personas | OK | 40 personas x 5 langues (code present) |
 | Disk | OK | 20% (19G/96G) |
 
 ### Ce qui NE fonctionne PAS
@@ -77,7 +77,7 @@ Visiteur → vocalia.ma → Clique "S'inscrire"
 | **Retell AI** | ~50-120$ | ~200-400$ | retellai.com/pricing |
 | **Bland AI** | ~100-200$ | ~300-600$ | bland.ai |
 
-**VocalIA est 3-6x PLUS CHER que Vapi/Retell au faible volume.** L'ancien claim "60% moins cher" etait **faux** et a ete supprime (250.195). Le positionnement est **tout-inclus** (IA + 38 personas + analytics dans le prix/min, vs composants factures separement chez les concurrents). Repriced 0.10→0.24€/min (250.204).
+**VocalIA est 3-6x PLUS CHER que Vapi/Retell au faible volume.** L'ancien claim "60% moins cher" etait **faux** et a ete supprime (250.195). Le positionnement est **tout-inclus** (IA + 40 personas + analytics dans le prix/min, vs composants factures separement chez les concurrents). Repriced 0.10→0.24€/min (250.204).
 
 Avantage reel de VocalIA : plateforme tout-en-un (widget + telephonie + personas pre-construits). Mais cet avantage n'est **pas valide par le marche** (0 clients).
 
@@ -205,7 +205,7 @@ Le widget voice utilise `Web Speech API` (navigateur) — PAS WebRTC.
 
 1. **Base de code fonctionnelle** — 87K+ lignes, 5,019+ tests, 440+ bugs fixes. Rare pour un solo dev.
 2. **Niche linguistique** — Arabe MSA + Darija marocain. Peu de concurrents ont ca.
-3. **38 personas pre-construits** — Time-to-value immediat pour un client. Vapi/Retell = zero personas.
+3. **40 personas pre-construits** — Time-to-value immediat pour un client. Vapi/Retell = zero personas.
 4. **Infrastructure low-cost** — ~50EUR/mois (VPS 20EUR + domaine). Brulage de cash minimal.
 5. **5 langues** — FR, EN, ES, AR, ARY. Marche europeen + MENA adressable.
 

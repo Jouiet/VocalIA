@@ -2,8 +2,8 @@
 
 `personas/voice-persona-injector.cjs` has TWO structures per persona. This is INTENTIONAL.
 
-1. **SYSTEM_PROMPTS** (line 42-779): Multilingual prompts (38 × 5 langs = 190 prompts)
-2. **PERSONAS** (line 781-5010): Metadata + EN-only fallback systemPrompt
+1. **SYSTEM_PROMPTS** (line 77-4482): Multilingual prompts (40 × 5 langs = 200 prompts, all with SECURITY section)
+2. **PERSONAS** (line 4484+): Metadata + EN-only fallback systemPrompt
 
 ```
 buildFullInstructions():

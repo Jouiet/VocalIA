@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> VocalIA est une plateforme Voice AI tout-en-un pour entreprises. Trois produits: Voice Widget B2B, Voice Widget E-commerce, Voice Telephony AI. 38 personas IA, 5 langues natives (FR, EN, ES, AR, Darija) avec detection automatique. Tarification tout-inclus (IA + personas + analytics dans un seul abonnement) — pas de composants factures separement. 86 fonctionnalites verifiees (voir features). Marches cibles: Europe, MENA, International.
+> VocalIA est une plateforme Voice AI tout-en-un pour entreprises. Trois produits: Voice Widget B2B, Voice Widget E-commerce, Voice Telephony AI. 40 personas IA, 5 langues natives (FR, EN, ES, AR, Darija) avec detection automatique. Tarification tout-inclus (IA + personas + analytics dans un seul abonnement) — pas de composants factures separement. 86 fonctionnalites verifiees (voir features). Marches cibles: Europe, MENA, International.
 
 VocalIA fournit des agents vocaux IA professionnels pour automatiser les interactions clients — sur le web (widget) et par telephone (PSTN). La plateforme combine Widget + Telephonie dans une offre unifiee tout-inclus. Contrairement aux concurrents qui facturent STT + LLM + TTS separement, VocalIA inclut tout dans un seul abonnement.
 
@@ -36,7 +36,7 @@ Francais, English, Espanol, Arabic (MSA), Darija. Detection automatique de la la
 - Architecture: Multi-AI fallback (Grok > Gemini > Claude > Atlas > rule-based)
 - Latence: < 400ms reponse vocale
 - Securite: CSP, HTTPS, Shadow DOM isolation, AES-256-GCM credentials
-- Personas: 38 personas metier pre-configures
+- Personas: 40 personas metier pre-configures
 - MCP Server: 203 tools, 25 categories
 
 ## Conformite

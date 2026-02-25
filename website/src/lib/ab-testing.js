@@ -37,7 +37,7 @@
         value: {
           text: 'Plateforme Tout-en-Un',
           textEn: 'All-in-One Platform',
-          subtext: '38 personas • 5 langues • 203 connecteurs'
+          subtext: '40 personas • 5 langues • 203 connecteurs'
         },
         social: {
           text: 'Découvrir VocalIA',

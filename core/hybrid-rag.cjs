@@ -4,7 +4,7 @@
  * 
  * Architecture:
  * - Sparse Search: BM25 (Best Matching 25) for keyword precision.
- * - Dense Search: Gemini Embeddings (text-embedding-004) for semantic depth.
+ * - Dense Search: Gemini Embeddings (gemini-embedding-001) for semantic depth.
  * - Fusion: Reciprocal Rank Fusion (RRF) for robust result merging.
  * - Multi-Tenancy: Isolated indices and caches per tenant.
  */

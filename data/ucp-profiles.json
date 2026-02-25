@@ -1,0 +1,35 @@
+{
+  "profiles": {
+    "agency_internal::anonymous": {
+      "userId": "anonymous",
+      "tenantId": "agency_internal",
+      "country": "JP",
+      "market": "europe",
+      "locale": "fr",
+      "currency": "EUR",
+      "currencySymbol": "€",
+      "enforced": true,
+      "timestamp": "2026-02-25T19:32:04.650Z",
+      "interactionHistory": [],
+      "behavioralEvents": [],
+      "totalInteractions": 0,
+      "lifetimeValue": 0
+    },
+    "client_demo::anonymous": {
+      "userId": "anonymous",
+      "tenantId": "client_demo",
+      "country": "MA",
+      "market": "us_main",
+      "locale": "en",
+      "currency": "USD",
+      "currencySymbol": "$",
+      "enforced": true,
+      "timestamp": "2026-02-25T19:32:04.605Z",
+      "interactionHistory": [],
+      "behavioralEvents": [],
+      "totalInteractions": 0,
+      "lifetimeValue": 0
+    }
+  },
+  "lastUpdated": "2026-02-25T19:32:04.650Z"
+}

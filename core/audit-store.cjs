@@ -75,6 +75,79 @@ function initAuditSubscriptions() {
     console.log(`✅ [Auditor] HITL Action recorded for ${tenantId}: ${type}`);
   }, { name: 'Auditor.onHITLAction' });
 
+  // B97 fix (250.222b): RGPD compliance — audit memory purges
+  AgencyEventBus.subscribe('memory.purged', async (event) => {
+    const tenantId = event.tenantId || event.payload?.tenantId;
+    if (!tenantId) return;
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.MEMORY_PURGED,
+      actor: 'system',
+      resource: 'tenant_memory',
+      details: { reason: 'rgpd_purge' }
+    });
+    console.log(`✅ [Auditor] Memory purge audited for ${tenantId}`);
+  }, { name: 'Auditor.onMemoryPurged' });
+
+  // B98 fix (250.222b): Audit lead creation
+  AgencyEventBus.subscribe('lead.created', async (event) => {
+    const { tenantId, email, source, crm } = event.payload || event;
+    if (!tenantId) return;
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.LEAD_CREATED,
+      actor: 'system',
+      resource: `lead:${email || 'unknown'}`,
+      details: { source, crm, email }
+    });
+  }, { name: 'Auditor.onLeadCreated' });
+
+  // B99 fix (250.222b): Audit qualification updates
+  AgencyEventBus.subscribe('voice.qualification_updated', async (event) => {
+    const { tenantId, sessionId, score, status } = event.payload || event;
+    if (!tenantId) return;
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.LEAD_QUALIFICATION,
+      actor: 'system',
+      resource: `session:${sessionId || 'unknown'}`,
+      details: { score, status }
+    });
+  }, { name: 'Auditor.onQualificationUpdated' });
+
+  // B100 fix (250.222b): Track WhatsApp message delivery
+  AgencyEventBus.subscribe('whatsapp.status_update', async (event) => {
+    const { recipientPhone, status, messageId } = event.payload || event;
+    const tenantId = event.payload?.tenantId || 'system';
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.WHATSAPP_STATUS,
+      actor: 'system',
+      resource: `whatsapp:${messageId || 'unknown'}`,
+      details: { recipientPhone, status }
+    });
+  }, { name: 'Auditor.onWhatsAppStatus' });
+
+  // B101 fix (250.222b): Audit lead interest signals
+  AgencyEventBus.subscribe('lead.interest', async (event) => {
+    const { tenantId, sessionId, interest } = event.payload || event;
+    if (!tenantId) return;
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.LEAD_INTEREST,
+      actor: 'system',
+      resource: `session:${sessionId || 'unknown'}`,
+      details: { interest }
+    });
+  }, { name: 'Auditor.onLeadInterest' });
+
+  // B102 fix (250.222b): Audit tenant creation
+  AgencyEventBus.subscribe('tenant.created', async (event) => {
+    const { tenantId, name, vertical } = event.payload || event;
+    if (!tenantId) return;
+    auditor.log(tenantId, {
+      action: ACTION_CATEGORIES.TENANT_CREATED,
+      actor: 'system',
+      resource: `tenant:${tenantId}`,
+      details: { name, vertical }
+    });
+  }, { name: 'Auditor.onTenantCreated' });
+
   console.log('✅ [Auditor] SOTA Event-to-DB Integrity Worker ACTIVE');
 }
 
@@ -123,7 +196,21 @@ const ACTION_CATEGORIES = {
   // System
   SYSTEM_ERROR: 'system.error',
   SYSTEM_STARTUP: 'system.startup',
-  SYSTEM_SHUTDOWN: 'system.shutdown'
+  SYSTEM_SHUTDOWN: 'system.shutdown',
+
+  // CRM/Lead (B98-B101 fix — 250.222b)
+  LEAD_CREATED: 'lead.created',
+  LEAD_INTEREST: 'lead.interest',
+  LEAD_QUALIFICATION: 'lead.qualification_updated',
+
+  // Tenant lifecycle
+  TENANT_CREATED: 'tenant.created',
+
+  // Messaging
+  WHATSAPP_STATUS: 'whatsapp.status_update',
+
+  // RGPD/Compliance
+  MEMORY_PURGED: 'memory.purged'
 };
 
 /**

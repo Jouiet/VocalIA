@@ -1,7 +1,7 @@
 # VocalIA - Analyse Stratégique des Use Cases
 
 > **Version**: 2.2.0 | **Date**: 31/01/2026 | **Session**: 250
-> **MCP Server**: v0.7.0 | **203 tools** | **28 Intégrations** | **4 Sensors** | **3 Agents** | **38 Personas**
+> **MCP Server**: v0.7.0 | **203 tools** | **28 Intégrations** | **4 Sensors** | **3 Agents** | **40 Personas**
 > **Statut**: VÉRIFIÉ EMPIRIQUEMENT (audit codebase 31/01/2026)
 > **Session 249.21**: Stripe (19 tools) + E-commerce FULL CRUD (7 plateformes)
 
@@ -350,7 +350,7 @@ Maroc-first                   →      Afrique francophone
 ### 8.1 Court terme (Q1 2026)
 
 1. **Exploiter Darija**: Marketing ciblé diaspora + entreprises marocaines
-2. **Package "PME Ready"**: 38 personas + templates = déploiement 5 min
+2. **Package "PME Ready"**: 40 personas + templates = déploiement 5 min
 3. **Case studies**: Documenter 3-5 clients réels avec ROI
 
 ### 8.2 Moyen terme (Q2-Q3 2026)
@@ -398,7 +398,7 @@ Maroc-first                   →      Afrique francophone
 |:------|:-------|:-------|
 | **Darija unique** | Atlas-Chat-9B implémenté (voice-api-resilient.cjs:109-119) | Monopole Maroc 45M personnes |
 | **Pricing tout-inclus** | 0.24€/min tout-inclus (IA+personas+analytics) vs composants séparés concurrents | Valeur perçue PME |
-| **38 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
+| **40 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
 | **Widget + Telephony** | Seul à offrir les 2 nativement | Omnichannel complet |
 | **iPaaS triple** | Zapier + Make + n8n (3 modules MCP) | 7000+ apps accessibles |
 | **25 Function Tools** | voice-telephony-bridge.cjs | Automatisation avancée |

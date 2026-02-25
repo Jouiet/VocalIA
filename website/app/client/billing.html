@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob: https://*.stripe.com; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <title>Facturation - VocalIA</title>
@@ -21,6 +21,8 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
   <script src="/src/lib/escape-html.js"></script>
+  <!-- Stripe.js for checkout redirect -->
+  <script src="https://js.stripe.com/v3/" defer></script>
 </head>
 
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
@@ -276,7 +278,10 @@
         }
 
         document.getElementById('usage-calls').textContent = thisMonth.length.toLocaleString();
-        document.getElementById('usage-calls-sub').textContent = plan === 'starter' ? VocaliaI18n.t('dashboard.billing_page.limited_monthly') : VocaliaI18n.t('dashboard.billing_page.unlimited_plan');
+        const unlimitedPlans = ['pro', 'ecommerce'];
+        document.getElementById('usage-calls-sub').textContent = unlimitedPlans.includes(plan)
+          ? VocaliaI18n.t('dashboard.billing_page.unlimited_plan')
+          : VocaliaI18n.t('dashboard.billing_page.limited_monthly');
 
         // Integrations count from tenant config
         const integrations = tenant?.integrations || [];
@@ -366,10 +371,11 @@
 
     // Stripe Price IDs (à configurer après création dans Stripe Dashboard)
     const STRIPE_PRICES = {
-      starter:   'price_PLACEHOLDER_STARTER',
-      pro:       'price_PLACEHOLDER_PRO',
-      ecommerce: 'price_PLACEHOLDER_ECOMMERCE',
-      telephony: 'price_PLACEHOLDER_TELEPHONY'
+      starter:      'price_PLACEHOLDER_STARTER',
+      pro:          'price_PLACEHOLDER_PRO',
+      ecommerce:    'price_PLACEHOLDER_ECOMMERCE',
+      expert_clone: 'price_PLACEHOLDER_EXPERT_CLONE',
+      telephony:    'price_PLACEHOLDER_TELEPHONY'
     };
 
     // Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (identical to db-api + voice-api)
@@ -380,40 +386,35 @@
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
         ecom_recommendations: false, export: false, custom_branding: false,
-        api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false
-      },
+        api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false      },
       pro: {
         voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
         ecom_recommendations: false, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
-      },
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false      },
       ecommerce: {
         voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false,
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
         ecom_recommendations: true, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
-      },
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false      },
       expert_clone: {
         voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
         ecom_recommendations: false, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true
-      },
+        api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true      },
       telephony: {
         voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true,
         whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
         ecom_recommendations: true, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
-      }
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false      }
     };
 
     // Session 250.220: All 23 feature labels (D9: bant_crm_push renamed to Qualification CRM)
@@ -428,8 +429,7 @@
       ecom_gamification: 'Gamification', ecom_recommendations: 'Recommandations IA',
       export: 'Export données', custom_branding: 'Branding personnalisé',
       api_access: 'Connexions externes', webhooks: 'Notifications automatiques',
-      voice_cloning: 'Clonage vocal', expert_dashboard: 'Tableau expert',
-      revenue_share: 'Partage de revenus'
+      voice_cloning: 'Clonage vocal', expert_dashboard: 'Tableau expert'
     };
     const FEATURE_LABELS = new Proxy(FEATURE_LABELS_FR, {
       get(target, key) {

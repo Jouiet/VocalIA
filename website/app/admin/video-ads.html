@@ -196,7 +196,7 @@
                 <!-- Creation Suite -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Script Editor + Engine Selector -->
-                    <div class="glass-panel p-8 space-y-6">
+                    <div class="glass-panel p-5 md:p-8 space-y-6">
                         <h3 class="text-lg font-bold outfit flex items-center gap-3">
                             <i data-lucide="pen-tool" class="w-5 h-5 text-blue-400"></i>
                             Video Script Draft
@@ -226,7 +226,7 @@
                             class="space-y-3 p-4 bg-amber-500/[0.03] border border-amber-500/10 rounded-xl">
                             <p class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Kling v2.6 — Options
                             </p>
-                            <div class="grid grid-cols-3 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
                                     <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Ratio</label>
                                     <select id="kling-ratio" aria-label="Aspect ratio"
@@ -267,7 +267,7 @@
                             class="hidden space-y-3 p-4 bg-purple-500/[0.03] border border-purple-500/10 rounded-xl">
                             <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Veo 3.1 — Options
                             </p>
-                            <div class="grid grid-cols-3 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
                                     <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Ratio</label>
                                     <select id="veo-ratio" aria-label="Aspect ratio"
@@ -328,7 +328,7 @@
                     </div>
 
                     <!-- Persona Grid -->
-                    <div class="glass-panel p-8 space-y-6">
+                    <div class="glass-panel p-5 md:p-8 space-y-6">
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-bold outfit flex items-center gap-3">
                                 <i data-lucide="clapperboard" class="w-5 h-5 text-indigo-400"></i>
@@ -336,7 +336,7 @@
                             </h3>
                             <span class="text-[10px] font-bold text-zinc-500 px-2 py-1 bg-white/5 rounded">9 SCÉNARIOS</span>
                         </div>
-                        <div class="grid grid-cols-3 gap-3" id="persona-grid">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="persona-grid">
                             <!-- Personas Injected -->
                         </div>
                     </div>
@@ -380,7 +380,7 @@
     <div id="review-modal"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl hidden">
         <div class="glass-panel w-full max-w-5xl overflow-hidden border-white/10 shadow-2xl">
-            <div class="flex items-center justify-between p-8 border-b border-white/5 bg-white/[0.02]">
+            <div class="flex items-center justify-between p-5 md:p-8 border-b border-white/5 bg-white/[0.02]">
                 <div>
                     <h2 class="text-2xl font-bold outfit gradient-text">Review Video Master</h2>
                     <p id="modal-id" class="text-[10px] text-zinc-600 font-mono mt-1">UUID: --</p>
@@ -391,7 +391,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-0">
                 <!-- Preview -->
-                <div class="lg:col-span-3 p-8 border-r border-white/5 bg-black/20">
+                <div class="lg:col-span-3 p-5 md:p-8 border-r border-white/5 bg-black/20">
                     <div
                         class="studio-stage aspect-video bg-zinc-950 flex items-center justify-center relative shadow-2xl border-white/5">
                         <video id="modal-video" controls class="w-full h-full rounded-xl"></video>
@@ -401,7 +401,7 @@
                             <p class="text-[10px] uppercase font-bold tracking-widest">Generating Frames...</p>
                         </div>
                     </div>
-                    <div class="mt-6 grid grid-cols-3 gap-4">
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
                             <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Engine</p>
                             <p class="text-sm font-bold" id="modal-engine">--</p>
@@ -418,7 +418,7 @@
                 </div>
 
                 <!-- Controls -->
-                <div class="lg:col-span-2 p-8 space-y-8">
+                <div class="lg:col-span-2 p-5 md:p-8 space-y-8">
                     <div>
                         <label class="flex justify-between items-center mb-3">
                             <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">Edit Generation
@@ -527,7 +527,7 @@
             { name: 'Artisan', role: 'PME / BTP', img: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=100&h=100&fit=crop', id: 'AD_ARTISAN', context: 'Publicité pour artisan/PME avec VocalIA: assistant vocal qui prend les demandes de devis, planifie les interventions et répond quand l\'artisan est sur chantier' },
             { name: 'Notaire', role: 'Juridique', img: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=100&h=100&fit=crop', id: 'AD_JURIDIQUE', context: 'Publicité pour cabinet juridique avec VocalIA: assistant vocal qui filtre les appels, prend les rendez-vous et informe sur les documents nécessaires' },
             { name: 'Support', role: 'SAV / Hotline', img: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=100&h=100&fit=crop', id: 'AD_SUPPORT', context: 'Publicité pour service SAV avec VocalIA: assistant vocal qui traite les demandes de support niveau 1, crée les tickets et escalade intelligemment' },
-            { name: 'Marque', role: 'Brand Intro', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=100&h=100&fit=crop', id: 'AD_BRAND', context: 'Vidéo de présentation de la marque VocalIA: plateforme Voice AI tout-en-un avec 38 personas, widget web, téléphonie PSTN et intégrations CRM/e-commerce' }
+            { name: 'Marque', role: 'Brand Intro', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=100&h=100&fit=crop', id: 'AD_BRAND', context: 'Vidéo de présentation de la marque VocalIA: plateforme Voice AI tout-en-un avec 40 personas, widget web, téléphonie PSTN et intégrations CRM/e-commerce' }
         ];
 
         personaGrid.innerHTML = personas.map(p => `

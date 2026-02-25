@@ -284,18 +284,18 @@
               class="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 drop-shadow-[0_0_30px_rgba(94,106,210,0.3)] animate-float-card"
               width="200" height="200" loading="eager">
           </div>
-          <!-- Badge with shimmer -->
-          <div class="glass px-4 py-2 rounded-full inline-flex items-center border-vocalia-500/30" data-animate="badge">
+          <!-- Badge with shimmer — hidden on <375px, compact on mobile -->
+          <div class="hidden sm:inline-flex glass px-4 py-2 rounded-full items-center border-vocalia-500/30" data-animate="badge">
             <div class="sound-wave inline-flex mr-3">
               <span></span><span></span><span></span><span></span><span></span>
             </div>
-            <span class="text-sm font-semibold tracking-tighter text-vocalia-200 uppercase" data-i18n="hero.badge">Voice
+            <span class="text-sm font-semibold tracking-tighter text-vocalia-200 uppercase whitespace-nowrap" data-i18n="hero.badge">Voice
               AI SOTA Platform</span>
           </div>
         </div>
 
         <!-- Title with staggered reveal -->
-        <h1 class="hero-title text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+        <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
           <span class="block" data-animate="title" data-i18n="hero.title">Vos Agents Vocaux IA</span>
           <br>
           <span class="text-gradient-animate animate-glow-pulse inline-block"

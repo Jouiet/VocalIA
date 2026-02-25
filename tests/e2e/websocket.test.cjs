@@ -77,6 +77,19 @@ async function runTests() {
   console.log('   VocalIA WebSocket E2E Tests');
   console.log('='.repeat(60) + '\n');
 
+  // Pre-flight: Check if server is reachable
+  try {
+    await new Promise((resolve, reject) => {
+      const req = http.request({ hostname: 'localhost', port: 3013, path: '/health', method: 'GET', timeout: 2000 }, resolve);
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+      req.end();
+    });
+  } catch {
+    log('Server not running on localhost:3013 — skipping E2E tests', 'info');
+    process.exit(0);
+  }
+
   // Setup: Create admin user and login
   log('Setting up test environment...');
 

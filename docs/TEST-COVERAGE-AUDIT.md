@@ -2,7 +2,7 @@
 
 > **Date** : 15/02/2026 — Session 250.210b (function coverage 100%)
 > **Methode** : Bottom-up factuelle — chaque chiffre verifie par execution reelle
-> **Total** : **6,042 tests** | **91 fichiers** | **1,001 suites** | **0 fail**
+> **Total** : **6,042+ tests** | **97 fichiers** (91 at 250.210b + 6 added since) | **1,001+ suites** | **0 fail**
 > **Verdict** : **221/221 fonctions exportees testees comportementalement (100%)** — 213 appels directs + 8 via HTTP E2E. **9 vraies chaines CRUD**. Scripts 2/33 testes (ceux avec pure functions exportees). Dashboard 0/25 (DOM-dependent, non testable en Node). **63.7% des tests executent du code production** (3,849/6,042), 28.9% static/content (1,746), 7.4% structural (447). Caller/callee verified (78 modules, 12 checks, 0 errors).
 
 ---
@@ -756,6 +756,61 @@ Les 21 modules `src/lib/` utilisent `window.location`, `document.querySelector`,
 | 10 | Widget DOM tests via Playwright | 7 widgets |
 | 11 | Dashboard smoke tests via Playwright | 23 pages |
 | 12 | Grok Realtime WebSocket tests | Realtime voice |
+
+---
+
+## 21. Promptfoo LLM Eval — Couverture reelle (250.230)
+
+> **Methode** : `promptfoo eval` cross-model (Grok + Gemini + Anthropic) avec assertions llm-rubric
+> **Outils** : promptfoo v0.120.25 (global) | Grader: google:gemini-3-flash-preview
+
+### Ce qui EST teste
+
+| Dimension | Couvert | Total | % |
+|:----------|:-------:|:-----:|:-:|
+| Personas (FR uniquement) | 40 | 40 | 100% |
+| Prompts (toutes langues) | 42 | 200 | **21%** |
+| Providers (Grok + Gemini) | 2 | 3 | **67%** |
+| Red team (AGENCY-FR seulement) | 1 persona | 40 | **2.5%** |
+| Multi-turn conversations | 0 | — | **0%** |
+| Function tool trigger validation | 0 | 25 tools | **0%** |
+
+### Ce qui N'EST PAS teste (fenêtres ouvertes)
+
+- **158 prompts non testes** : 0 ES, 0 AR, 39/40 EN manquants, 39/40 ARY manquants
+- **Anthropic provider BLOQUE** : "credit balance too low" — 131 erreurs systematiques (API key valide, billing = $0)
+- **Red team superficiel** : 14 tests adversariaux sur 1 seul persona (AGENCY-FR). Les 39 autres personas ont 0 test de securite LLM
+- **0 test multi-turn** : Toutes les 132 assertions sont single-turn (1 question → 1 reponse)
+- **0 validation de function calling** : Tools retires de 37/42 configs pour eviter les echecs Grok (tool calls JSON au lieu de texte). Les 5 configs avec tools ne verifient pas le bon declenchement
+- **Grader non-deterministe** : llm-rubric via Gemini Flash donne ~5% de faux negatifs aleatoires (tests differents a chaque run)
+
+### Resultats bruts (dernier eval-all)
+
+| Metrique | Valeur |
+|:---------|:-------|
+| Tests totaux | 132 assertions × 3 providers = 396 |
+| PASS | 248 |
+| FAIL (non-deterministe) | 14 |
+| ERRORS (Anthropic billing) | 131 |
+| Smoke test (3 tests × 3 providers) | 6 PASS, 0 FAIL, 3 ERRORS |
+| Red team (14 tests × 1 provider) | 14/14 PASS |
+
+### Ce qui a ete fait cote securite (dans le code source)
+
+- **200/200 prompts** dans `voice-persona-injector.cjs` ont maintenant une section SECURITE/SECURITY/SEGURIDAD dans toutes les langues
+- Injection bulk verifiee : `require()` charge le module sans erreur, 745/745 persona-audit tests passent
+- Mais : **seul 1/40 persona a ete valide adversarialement par Promptfoo** (les 39 autres ont la section SECURITE dans le code, mais n'ont jamais ete attaques pour verifier qu'elle fonctionne)
+
+### Verification
+
+```bash
+cd promptfoo
+./run-eval.sh eval                      # Smoke test (3 tests, ~20s)
+./run-eval.sh eval-all                  # Full suite (42 configs, ~15min)
+./run-eval.sh eval -c redteam/promptfooconfig.yaml  # Red team (14 tests, ~30s)
+./run-eval.sh sync                      # Re-extract prompts from source
+promptfoo view                          # Resultats dans browser
+```
 
 ---
 

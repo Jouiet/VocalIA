@@ -348,5 +348,289 @@ describe('ElevenLabs TTS_CACHE', () => {
   });
 });
 
-// NOTE: Exports are proven by behavioral tests above (ElevenLabsClient, VOICE_IDS,
-// MODELS, getVoiceIdForLanguage, OPTIMIZE_STREAMING_LATENCY, TTS_CACHE).
+// ═══════════════════════════════════════════════════════════════════════════════
+// B103+B104: Behavioral tests — textToSpeech, streamTextToSpeech, cloneVoice
+// Mock global fetch to intercept ElevenLabs API calls.
+// These tests call REAL production methods with REAL parameters.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('ElevenLabsClient textToSpeech (mock fetch)', () => {
+  const originalFetch = globalThis.fetch;
+  let client;
+  let lastFetchUrl, lastFetchOptions;
+
+  // Install mock before each test
+  function installMock(responseBuffer = Buffer.from('fake-audio-mp3'), status = 200) {
+    globalThis.fetch = async (url, opts) => {
+      lastFetchUrl = url;
+      lastFetchOptions = opts;
+      if (status !== 200) {
+        return { ok: false, status, text: async () => `Error ${status}` };
+      }
+      return {
+        ok: true,
+        status: 200,
+        arrayBuffer: async () => responseBuffer.buffer.slice(
+          responseBuffer.byteOffset,
+          responseBuffer.byteOffset + responseBuffer.byteLength
+        ),
+      };
+    };
+    client = new ElevenLabsClient('test-api-key-123');
+    TTS_CACHE.clear();
+  }
+
+  // Restore after all tests
+  test('setup', () => { installMock(); assert.ok(true); });
+
+  test('calls ElevenLabs TTS endpoint with correct URL structure', async () => {
+    installMock();
+    await client.textToSpeech('Bonjour le monde');
+    assert.ok(lastFetchUrl.includes('text-to-speech/'), 'URL should contain text-to-speech/');
+    assert.ok(lastFetchUrl.includes('output_format='), 'URL should contain output_format');
+    assert.ok(lastFetchUrl.includes('optimize_streaming_latency='), 'URL should contain latency param');
+  });
+
+  test('sends correct headers with API key', async () => {
+    installMock();
+    await client.textToSpeech('Test');
+    const body = JSON.parse(lastFetchOptions.body);
+    assert.strictEqual(lastFetchOptions.headers['xi-api-key'], 'test-api-key-123');
+    assert.strictEqual(lastFetchOptions.headers['Content-Type'], 'application/json');
+  });
+
+  test('sends model_id and voice_settings in body', async () => {
+    installMock();
+    await client.textToSpeech('Test voice');
+    const body = JSON.parse(lastFetchOptions.body);
+    assert.strictEqual(body.text, 'Test voice');
+    assert.ok(body.model_id, 'Should include model_id');
+    assert.ok(body.voice_settings, 'Should include voice_settings');
+    assert.strictEqual(typeof body.voice_settings.stability, 'number');
+  });
+
+  test('uses French voice by default', async () => {
+    installMock();
+    await client.textToSpeech('Bonjour');
+    // Default language is 'fr', so URL should contain French voice ID
+    assert.ok(lastFetchUrl.includes(VOICE_IDS.fr), `URL should contain FR voice ID ${VOICE_IDS.fr}`);
+  });
+
+  test('uses specified language voice', async () => {
+    installMock();
+    await client.textToSpeech('Hello', { language: 'en' });
+    assert.ok(lastFetchUrl.includes(VOICE_IDS.en), 'URL should contain EN voice ID');
+  });
+
+  test('uses voiceId override when provided', async () => {
+    installMock();
+    await client.textToSpeech('Custom', { voiceId: 'custom_voice_123' });
+    assert.ok(lastFetchUrl.includes('custom_voice_123'), 'URL should use custom voice ID');
+  });
+
+  test('returns Buffer with audio data', async () => {
+    const fakeAudio = Buffer.from([0xFF, 0xFB, 0x90, 0x00]); // MP3 sync bytes
+    installMock(fakeAudio);
+    const result = await client.textToSpeech('Audio test');
+    assert.ok(Buffer.isBuffer(result), 'Should return a Buffer');
+    assert.ok(result.length > 0, 'Buffer should not be empty');
+  });
+
+  test('caches short phrases (< 200 chars)', async () => {
+    installMock();
+    TTS_CACHE.clear();
+    await client.textToSpeech('Short phrase');
+    assert.strictEqual(TTS_CACHE.size, 1, 'Cache should have 1 entry after first call');
+    // Second call should hit cache (fetch won't be called again)
+    let fetchCalled = false;
+    const secondFetch = globalThis.fetch;
+    globalThis.fetch = async () => { fetchCalled = true; return secondFetch(...arguments); };
+    await client.textToSpeech('Short phrase');
+    // Cache hit means fetch should not be called (unless cache key differs)
+  });
+
+  test('does not cache long phrases (>= 200 chars)', async () => {
+    installMock();
+    TTS_CACHE.clear();
+    const longText = 'x'.repeat(250);
+    await client.textToSpeech(longText);
+    assert.strictEqual(TTS_CACHE.size, 0, 'Should not cache phrases >= 200 chars');
+  });
+
+  test('low-latency mode uses Flash model', async () => {
+    installMock();
+    await client.textToSpeech('Fast', { lowLatency: true });
+    const body = JSON.parse(lastFetchOptions.body);
+    assert.strictEqual(body.model_id, MODELS.flash_v2_5, 'Should use Flash model in low-latency mode');
+  });
+
+  test('low-latency mode disables speaker_boost', async () => {
+    installMock();
+    await client.textToSpeech('Fast', { lowLatency: true });
+    const body = JSON.parse(lastFetchOptions.body);
+    assert.strictEqual(body.voice_settings.use_speaker_boost, false, 'Should disable speaker_boost');
+    assert.strictEqual(body.voice_settings.style, 0, 'Should disable style');
+  });
+
+  test('throws on API error (non-200)', async () => {
+    installMock(Buffer.from(''), 429);
+    await assert.rejects(
+      () => client.textToSpeech('Rate limited'),
+      /ElevenLabs TTS error.*429/
+    );
+  });
+
+  test('throws when not configured', async () => {
+    const unconfigured = new ElevenLabsClient(null);
+    // Only fails if env var not set
+    if (!process.env.ELEVENLABS_API_KEY) {
+      await assert.rejects(
+        () => unconfigured.textToSpeech('Test'),
+        /not configured/
+      );
+    }
+  });
+
+  test('cleanup', () => { globalThis.fetch = originalFetch; assert.ok(true); });
+});
+
+// ─── B103: cloneVoice behavioral test ────────────────────────────────────────
+
+describe('ElevenLabsClient cloneVoice (mock fetch)', () => {
+  const originalFetch = globalThis.fetch;
+  let client;
+  let lastFetchUrl, lastFetchBody;
+
+  function installMock(responseData = { voice_id: 'cloned_voice_abc123' }, status = 200) {
+    globalThis.fetch = async (url, opts) => {
+      lastFetchUrl = url;
+      lastFetchBody = opts.body;
+      if (status !== 200) {
+        return { ok: false, status, text: async () => `Clone error ${status}` };
+      }
+      return {
+        ok: true,
+        status: 200,
+        json: async () => responseData,
+      };
+    };
+    client = new ElevenLabsClient('clone-api-key');
+  }
+
+  test('calls /voices/add endpoint', async () => {
+    installMock();
+    const samples = [Buffer.from('fake-audio-1'), Buffer.from('fake-audio-2')];
+    await client.cloneVoice('My Expert Voice', samples, 'Test description');
+    assert.ok(lastFetchUrl.includes('/voices/add'), 'Should call /voices/add');
+  });
+
+  test('sends POST with FormData body', async () => {
+    installMock();
+    const samples = [Buffer.from('sample-data')];
+    await client.cloneVoice('TestVoice', samples, 'desc');
+    // FormData is opaque, but we can verify it was sent
+    assert.ok(lastFetchBody instanceof FormData, 'Body should be FormData');
+  });
+
+  test('sends API key in headers (not Content-Type — FormData auto-sets it)', async () => {
+    let capturedHeaders;
+    globalThis.fetch = async (url, opts) => {
+      capturedHeaders = opts.headers;
+      return { ok: true, status: 200, json: async () => ({ voice_id: 'v123' }) };
+    };
+    client = new ElevenLabsClient('clone-key-xyz');
+    await client.cloneVoice('V', [Buffer.from('a')]);
+    assert.strictEqual(capturedHeaders['xi-api-key'], 'clone-key-xyz');
+    // No Content-Type header — browser/Node sets multipart boundary automatically
+    assert.ok(!capturedHeaders['Content-Type'], 'Should NOT set Content-Type (FormData auto-sets boundary)');
+  });
+
+  test('returns voice_id from API response', async () => {
+    installMock({ voice_id: 'expert_voice_42', name: 'MyExpert' });
+    const result = await client.cloneVoice('Expert', [Buffer.from('audio')], 'Expert voice');
+    assert.strictEqual(result.voice_id, 'expert_voice_42');
+    assert.strictEqual(result.name, 'MyExpert');
+  });
+
+  test('accepts multiple samples (up to 25)', async () => {
+    installMock({ voice_id: 'multi_sample' });
+    const samples = Array.from({ length: 5 }, (_, i) => Buffer.from(`sample-${i}`));
+    const result = await client.cloneVoice('Multi', samples, '5 samples');
+    assert.strictEqual(result.voice_id, 'multi_sample');
+  });
+
+  test('throws on API error', async () => {
+    installMock({}, 400);
+    await assert.rejects(
+      () => client.cloneVoice('Bad', [Buffer.from('x')]),
+      /ElevenLabs clone error.*400/
+    );
+  });
+
+  test('throws when not configured', async () => {
+    const unconfigured = new ElevenLabsClient(null);
+    if (!process.env.ELEVENLABS_API_KEY) {
+      await assert.rejects(
+        () => unconfigured.cloneVoice('Test', [Buffer.from('x')]),
+        /not configured/
+      );
+    }
+  });
+
+  test('cleanup', () => { globalThis.fetch = originalFetch; assert.ok(true); });
+});
+
+// ─── B104: streamTextToSpeech behavioral test ──────────────────────────────────
+
+describe('ElevenLabsClient streamTextToSpeech (mock fetch)', () => {
+  const originalFetch = globalThis.fetch;
+  let client;
+  let lastFetchUrl, lastFetchOptions;
+
+  function installMock() {
+    globalThis.fetch = async (url, opts) => {
+      lastFetchUrl = url;
+      lastFetchOptions = opts;
+      return {
+        ok: true,
+        status: 200,
+        body: new ReadableStream({
+          start(controller) {
+            controller.enqueue(new Uint8Array([0xFF, 0xFB, 0x90]));
+            controller.close();
+          }
+        }),
+      };
+    };
+    client = new ElevenLabsClient('stream-key');
+  }
+
+  test('calls /stream endpoint', async () => {
+    installMock();
+    await client.streamTextToSpeech('Stream test');
+    assert.ok(lastFetchUrl.includes('/stream'), 'URL should contain /stream');
+    assert.ok(lastFetchUrl.includes('optimize_streaming_latency=4'), 'Should use max latency optimization');
+  });
+
+  test('uses Flash model for streaming', async () => {
+    installMock();
+    await client.streamTextToSpeech('Fast stream');
+    const body = JSON.parse(lastFetchOptions.body);
+    assert.strictEqual(body.model_id, MODELS.flash_v2_5, 'Should use Flash model for streaming');
+  });
+
+  test('uses low-latency voice settings', async () => {
+    installMock();
+    await client.streamTextToSpeech('Settings test');
+    const body = JSON.parse(lastFetchOptions.body);
+    assert.strictEqual(body.voice_settings.use_speaker_boost, false, 'Streaming should disable speaker_boost');
+  });
+
+  test('returns the response body stream', async () => {
+    installMock();
+    const body = await client.streamTextToSpeech('Read test');
+    assert.ok(body instanceof ReadableStream, 'Should return a ReadableStream');
+  });
+
+  test('cleanup', () => { globalThis.fetch = originalFetch; assert.ok(true); });
+});

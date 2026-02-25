@@ -134,15 +134,15 @@ const PROVIDERS = {
     enabled: !!ENV.XAI_API_KEY,
   },
   gemini: {
-    name: 'Gemini 3 Flash (SOTA 2026)',
-    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent',
+    name: 'Gemini 3 Flash Preview',
+    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
     apiKey: ENV.GEMINI_API_KEY,
     enabled: !!ENV.GEMINI_API_KEY,
   },
   anthropic: {
-    name: 'Claude Opus 4.5',
+    name: 'Claude Opus 4.6',
     url: 'https://api.anthropic.com/v1/messages',
-    model: 'claude-opus-4-5-20251101',
+    model: 'claude-opus-4-6',
     apiKey: ENV.ANTHROPIC_API_KEY,
     enabled: !!ENV.ANTHROPIC_API_KEY,
   },
@@ -420,40 +420,35 @@ const PLAN_FEATURES = {
     whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: false, custom_branding: false,
-    api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false
-  },
+    api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false  },
   pro: {
     voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
     whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: true, custom_branding: true,
-    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
-  },
+    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false  },
   ecommerce: {
     voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false,
     whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
     ecom_recommendations: true, export: true, custom_branding: true,
-    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
-  },
+    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false  },
   expert_clone: {
     voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
     whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: true, custom_branding: true,
-    api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true
-  },
+    api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true  },
   telephony: {
     voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true,
     crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true,
     whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
     ecom_recommendations: true, export: true, custom_branding: true,
-    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false
-  }
+    api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false  }
 };
 
 /**
@@ -2359,14 +2354,14 @@ function startServer(port = 3004) {
             products: {
               triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
               response: lang === 'ary'
-                ? 'VocalIA 3andها 3 dial offres: Starter (49€/شهر), Pro/E-commerce (99€/شهر), و Telephony (199€/شهر + 0.24€/دقيقة)'
-                : 'VocalIA propose 3 offres: Starter (49€/mois), Pro/E-commerce (99€/mois) et Telephony (199€/mois + 0.24€/min)'
+                ? 'VocalIA 3andها 5 dial offres: Starter (49€/شهر), Pro (99€/شهر), E-commerce (99€/شهر), Expert Clone (149€/شهر), و Telephony (199€/شهر + 0.24€/دقيقة)'
+                : 'VocalIA propose 5 offres: Starter (49€/mois), Pro (99€/mois), E-commerce (99€/mois), Expert Clone (149€/mois) et Telephony (199€/mois + 0.24€/min)'
             },
             pricing: {
               triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
               response: lang === 'ary'
-                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + 0.24€/دقيقة.'
-                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.24€/min.'
+                ? 'Starter: 49€/شهر. Pro: 99€/شهر. E-commerce: 99€/شهر. Expert Clone: 149€/شهر. Telephony: 199€/شهر + 0.24€/دقيقة.'
+                : 'Starter: 49€/mois. Pro: 99€/mois. E-commerce: 99€/mois. Expert Clone: 149€/mois. Telephony: 199€/mois + 0.24€/min.'
             }
           };
         }
@@ -3430,7 +3425,7 @@ function startServer(port = 3004) {
             try {
               const audioBase64 = audioBuffer.toString('base64');
               const geminiResp = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${geminiKey}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiKey}`,
                 {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },

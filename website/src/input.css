@@ -8,7 +8,95 @@
 @media (max-width: 1024px) {
   .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
   .sidebar.open { transform: translateX(0); }
+  [dir="rtl"] .sidebar { transform: translateX(100%); }
+  [dir="rtl"] .sidebar.open { transform: translateX(0); }
 }
+
+/* ==========================================================================
+   Mobile Foundation — Touch Targets, Typography, Overflow (Session 250.235)
+   WCAG 2.5.8: 44×44px minimum touch targets
+   Apple HIG: 44pt minimum
+   ========================================================================== */
+
+/* Touch targets: all interactive elements get 44px min on mobile */
+@media (max-width: 768px) {
+  button:not([class*="min-h-"]),
+  [role="button"],
+  a[class*="p-1"],
+  a[class*="p-2"],
+  button[class*="p-1"],
+  button[class*="p-2"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Form inputs: 44px touch target */
+  input:not([type="hidden"]),
+  select,
+  textarea {
+    min-height: 44px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  /* Prevent horizontal overflow globally */
+  body { overflow-x: hidden; }
+  main, section, article { overflow-x: hidden; }
+
+  /* Word break for long text/URLs/Arabic */
+  p, li, td, th, span, label, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Scale down text-xs to readable size on small screens */
+  .text-xs { font-size: 0.8125rem; /* 13px instead of 12px */ }
+
+  /* Reduce excessive padding on mobile cards/sections */
+  .glass.p-8, .reward-card.p-8, .solution-card.p-8 {
+    padding: 1.25rem; /* 20px instead of 32px */
+  }
+
+  /* Reduce large gaps on mobile — proportional, not aggressive */
+  .gap-12 { gap: 1.75rem; }  /* 28px instead of 48px (42% reduction) */
+  .gap-10 { gap: 1.5rem; }   /* 24px instead of 40px (40% reduction) */
+  .gap-8 { gap: 1.25rem; }   /* 20px instead of 32px (37% reduction) */
+
+  /* Note: heading sizes rely on per-element responsive classes (text-4xl sm:text-5xl etc.)
+     No global override — dashboard h1s use text-xl/text-2xl intentionally */
+
+  /* Tables inside scroll wrappers: smaller font + tighter padding */
+  .overflow-x-auto table { font-size: 0.8125rem; }
+  .overflow-x-auto th, .overflow-x-auto td { padding-left: 0.5rem; padding-right: 0.5rem; }
+
+  /* Images: prevent any image from breaking layout */
+  img:not([width]) { max-width: 100%; height: auto; }
+
+  /* Horizontal scroll hint for overflow tables */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* Sidebar overlay background */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 35;
+  }
+}
+
+/* Extra small screens (320px devices like iPhone SE) */
+@media (max-width: 380px) {
+  .glass.p-8, .reward-card.p-8, .solution-card.p-8 {
+    padding: 1rem; /* 16px */
+  }
+  .p-6 { padding: 1rem; }
+  .px-6 { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* Note: RTL rules consolidated in section at bottom of file (line ~3099) */
+/* Session 250.235: Added missing ml-1, mr-1, pl-3, pl-10, pr-3, pr-10, rounded-l-lg, rounded-r-lg */
 
 /* ==========================================================================
    VocalIA Design System v4.0 - Enterprise Dark (Linear/Stripe-inspired)
@@ -3031,22 +3119,28 @@ body.gsap-ready [data-reveal="scale"] {
 [dir="rtl"] .space-x-6 > :not([hidden]) ~ :not([hidden]) { margin-left: 0; margin-right: 1.5rem; }
 [dir="rtl"] .space-x-8 > :not([hidden]) ~ :not([hidden]) { margin-left: 0; margin-right: 2rem; }
 
-/* Flip margins and paddings for RTL */
+/* Flip margins and paddings for RTL (Session 250.235: added ml-1, mr-1, pl-3, pl-10, pr-3, pr-10) */
+[dir="rtl"] .ml-1 { margin-left: 0; margin-right: 0.25rem; }
 [dir="rtl"] .ml-2 { margin-left: 0; margin-right: 0.5rem; }
 [dir="rtl"] .ml-3 { margin-left: 0; margin-right: 0.75rem; }
 [dir="rtl"] .ml-4 { margin-left: 0; margin-right: 1rem; }
 [dir="rtl"] .ml-6 { margin-left: 0; margin-right: 1.5rem; }
 [dir="rtl"] .ml-8 { margin-left: 0; margin-right: 2rem; }
 [dir="rtl"] .ml-auto { margin-left: 0; margin-right: auto; }
+[dir="rtl"] .mr-1 { margin-right: 0; margin-left: 0.25rem; }
 [dir="rtl"] .mr-2 { margin-right: 0; margin-left: 0.5rem; }
 [dir="rtl"] .mr-3 { margin-right: 0; margin-left: 0.75rem; }
 [dir="rtl"] .mr-4 { margin-right: 0; margin-left: 1rem; }
 [dir="rtl"] .mr-auto { margin-right: 0; margin-left: auto; }
 
+[dir="rtl"] .pl-3 { padding-left: 0; padding-right: 0.75rem; }
 [dir="rtl"] .pl-4 { padding-left: 0; padding-right: 1rem; }
 [dir="rtl"] .pl-6 { padding-left: 0; padding-right: 1.5rem; }
+[dir="rtl"] .pl-10 { padding-left: 0; padding-right: 2.5rem; }
+[dir="rtl"] .pr-3 { padding-right: 0; padding-left: 0.75rem; }
 [dir="rtl"] .pr-4 { padding-right: 0; padding-left: 1rem; }
 [dir="rtl"] .pr-6 { padding-right: 0; padding-left: 1.5rem; }
+[dir="rtl"] .pr-10 { padding-right: 0; padding-left: 2.5rem; }
 
 /* Flip text alignment for RTL */
 [dir="rtl"] .text-left { text-align: right; }
@@ -3056,7 +3150,9 @@ body.gsap-ready [data-reveal="scale"] {
 [dir="rtl"] .left-0 { left: auto; right: 0; }
 [dir="rtl"] .right-0 { right: auto; left: 0; }
 
-/* Border radius flip for RTL */
+/* Border radius flip for RTL (Session 250.235: added lg variants) */
+[dir="rtl"] .rounded-l-lg { border-radius: 0 0.5rem 0.5rem 0; }
+[dir="rtl"] .rounded-r-lg { border-radius: 0.5rem 0 0 0.5rem; }
 [dir="rtl"] .rounded-l-xl { border-radius: 0 0.75rem 0.75rem 0; }
 [dir="rtl"] .rounded-r-xl { border-radius: 0.75rem 0 0 0.75rem; }
 

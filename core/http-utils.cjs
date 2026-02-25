@@ -42,8 +42,10 @@ function parseBody(req, maxBodySize = 1024 * 1024) {
  * @param {Object} headers - Optional extra headers
  */
 function sendJson(res, statusCode, data, headers = {}) {
+    const cors = res._corsHeaders || {};
     res.writeHead(statusCode, {
         'Content-Type': 'application/json',
+        ...cors,
         ...headers
     });
     res.end(JSON.stringify(data));

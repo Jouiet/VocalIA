@@ -70,7 +70,7 @@ All schemas include `voice_description` fields optimized for TTS:
 | **MEDIUM** (10) | renter | Fleet |
 | **MEDIUM** (10) | travel_agent, concierge | Trips |
 
-**Total Coverage**: 23/38 personas (58%)
+**Total Coverage**: 23/40 personas (58%)
 
 ## Related Files
 

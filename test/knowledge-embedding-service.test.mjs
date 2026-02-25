@@ -142,8 +142,10 @@ describe('KnowledgeEmbeddingService getEmbedding', () => {
     // Without GEMINI_API_KEY set, getModel() returns null → embedContent throws → returns null
     const origKey = process.env.GEMINI_API_KEY;
     const origKey2 = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const origInstanceKey = embeddingService.apiKey;
     delete process.env.GEMINI_API_KEY;
     delete process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    embeddingService.apiKey = null; // Must also clear cached instance key
     try {
       const result = await embeddingService.getEmbedding(
         `chunk_no_key_${Date.now()}`, 'test text', null, 'test_nokey'
@@ -152,14 +154,17 @@ describe('KnowledgeEmbeddingService getEmbedding', () => {
     } finally {
       if (origKey) process.env.GEMINI_API_KEY = origKey;
       if (origKey2) process.env.GOOGLE_GENERATIVE_AI_API_KEY = origKey2;
+      embeddingService.apiKey = origInstanceKey;
     }
   });
 
   test('cache eviction when full (MAX_CACHE_ENTRIES)', async () => {
     // Create a temporary service to test eviction without polluting singleton
     const svc = new (embeddingService.constructor)();
-    // Pre-fill with entries close to MAX (5000 from source code)
-    // We'll use a smaller test — just verify the eviction code path
+    // Clear any entries loaded from disk cache
+    for (const k of Object.keys(svc.cache)) delete svc.cache[k];
+    svc.apiKey = null; // Ensure no API calls during eviction test
+    // Pre-fill with entries at MAX (5000 from source code)
     const MAX = 5000;
     for (let i = 0; i < MAX; i++) {
       svc.cache[`evict_${i}`] = [0.1];
@@ -178,14 +183,17 @@ describe('KnowledgeEmbeddingService getQueryEmbedding', () => {
   test('without API key → returns null (graceful)', async () => {
     const origKey = process.env.GEMINI_API_KEY;
     const origKey2 = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const origInstanceKey = embeddingService.apiKey;
     delete process.env.GEMINI_API_KEY;
     delete process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    embeddingService.apiKey = null;
     try {
       const result = await embeddingService.getQueryEmbedding('test query', null);
       assert.strictEqual(result, null);
     } finally {
       if (origKey) process.env.GEMINI_API_KEY = origKey;
       if (origKey2) process.env.GOOGLE_GENERATIVE_AI_API_KEY = origKey2;
+      embeddingService.apiKey = origInstanceKey;
     }
   });
 });

@@ -525,7 +525,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | **TTS Darija** | ElevenLabs Ghizlane | Web Speech | MiniMax | Qualité + naturel |
 | **STT Darija** | ElevenLabs Scribe | Whisper | Web Speech | Précision Maghrebi |
 
-> ✅ **INTÉGRATION COMPLÈTE (Session 250.44quater):** `elevenlabs-client.cjs` **INTÉGRÉ** dans `voice-telephony-bridge.cjs` ET `voice-api-resilient.cjs`. Widget a fallback ElevenLabs via `/tts` endpoint. Telephony utilise ElevenLabs Ghizlane/Jawad pour Darija. **5 Knowledge Bases créées** (FR 38 personas, EN/ES/AR/ARY 16 personas chacun).
+> ✅ **INTÉGRATION COMPLÈTE (Session 250.44quater):** `elevenlabs-client.cjs` **INTÉGRÉ** dans `voice-telephony-bridge.cjs` ET `voice-api-resilient.cjs`. Widget a fallback ElevenLabs via `/tts` endpoint. Telephony utilise ElevenLabs Ghizlane/Jawad pour Darija. **5 Knowledge Bases créées** (FR 40 personas, EN/ES/AR/ARY 16 personas chacun).
 
 #### Voix Darija ElevenLabs Configurées (elevenlabs-client.cjs)
 
@@ -615,7 +615,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 |--------|--------|----------|--------|
 | voice-api-resilient.cjs | 3,086 | API multi-provider (Grok→Gemini→Claude) | ✅ Production |
 | voice-telephony-bridge.cjs | 4,709 | Bridge Twilio PSTN ↔ Grok WebSocket, 25 function tools | ✅ Code ready |
-| voice-persona-injector.cjs | 6,722 | 38 personas × 5 langues | ✅ Production |
+| voice-persona-injector.cjs | 6,722 | 40 personas × 5 langues | ✅ Production |
 | db-api.cjs | 2,733 | REST API + Auth + WebSocket | ✅ Production |
 | voice-quality-sensor.cjs | 282 | Monitoring qualité | ✅ Production |
 | voice-ecommerce-tools.cjs | 389 | Outils e-commerce (Shopify/WooCommerce) | ✅ Production |
@@ -1889,7 +1889,7 @@ BLOCKERS:
 Raisons:
 
 - Contrôle total roadmap produit
-- Marges maximisées (pas de revenue share)
+- Marges maximisées (modèle abonnement uniquement)
 - IP propriétaire complète
 - Différenciation technologique
 - Agilité et vitesse d'exécution

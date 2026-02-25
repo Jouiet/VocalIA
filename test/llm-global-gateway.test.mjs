@@ -174,12 +174,10 @@ describe('LLMGateway constructor', () => {
     assert.ok('openaiKey' in gateway, 'Should have openaiKey property');
   });
 
-  test('initializes Gemini model when key is available', () => {
-    if (gateway.geminiKey) {
-      assert.ok(gateway.genAI, 'Should have GoogleGenerativeAI instance when key present');
-      assert.ok(gateway.geminiModel, 'Should have Gemini model when key present');
-    } else {
-      assert.strictEqual(gateway.genAI, undefined, 'No GenAI when key missing');
-    }
+  test('uses direct REST API for Gemini (no SDK dependency)', () => {
+    // Session 250.222: @google/generative-ai SDK removed, replaced with direct fetch
+    // Verify the gateway has geminiKey property but no genAI SDK instance
+    assert.ok('geminiKey' in gateway, 'Should have geminiKey property');
+    assert.strictEqual(gateway.genAI, undefined, 'Should NOT have SDK instance (deprecated SDK removed)');
   });
 });

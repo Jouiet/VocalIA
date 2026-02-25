@@ -364,9 +364,12 @@ describe('T6: db-api quota fields', () => {
     });
   }
 
-  test('Quotas increase with plan tier (calls_monthly)', () => {
-    assert.ok(PLAN_QUOTAS.starter.calls_monthly < PLAN_QUOTAS.pro.calls_monthly);
-    assert.ok(PLAN_QUOTAS.pro.calls_monthly <= PLAN_QUOTAS.telephony.calls_monthly);
+  test('Quotas match pricing page (starter=500, pro/ecom=unlimited, expert=5000, telephony=100min)', () => {
+    assert.strictEqual(PLAN_QUOTAS.starter.calls_monthly, 500);
+    assert.strictEqual(PLAN_QUOTAS.pro.calls_monthly, 999999);
+    assert.strictEqual(PLAN_QUOTAS.ecommerce.calls_monthly, 999999);
+    assert.strictEqual(PLAN_QUOTAS.expert_clone.calls_monthly, 5000);
+    assert.strictEqual(PLAN_QUOTAS.telephony.calls_monthly, 100); // telephony minutes, not widget calls
   });
 });
 

@@ -115,7 +115,7 @@ ECOM:  54 tenants (10%)
 - France, Spain, UK, UAE, Belgium, Netherlands, Switzerland, Canada, Germany
 
 **Scripts Created:**
-- `scripts/seed-500-tenants.cjs` - 38 personas × 12 regions = 480 tenants
+- `scripts/seed-500-tenants.cjs` - 40 personas × 12 regions = 480 tenants
 - `scripts/check-tenant-state.cjs` - Verification tool
 - `scripts/cleanup-uuid-tenants.cjs` - UUID cleanup
 - `scripts/fix-missing-tenants.cjs` - Gap filling
@@ -313,7 +313,7 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 | Travel Agency | `voice-widget-v3.js` | `CATALOG_TYPE: TRIPS` |
 | Car Rental | `voice-widget-v3.js` | `CATALOG_TYPE: FLEET` |
 | Shopify, WooCommerce | `voice-widget-v3.js` | `CATALOG_TYPE: PRODUCTS` |
-| Téléphonie PSTN | `voice-telephony-bridge.cjs` | 38 personas |
+| Téléphonie PSTN | `voice-telephony-bridge.cjs` | 40 personas |
 
 ---
 
@@ -348,7 +348,7 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 ## 9. ⚠️ PERSONA-WIDGET SEGMENTATION (Session 250.78 - CRITICAL GAP)
 
 > [!CAUTION]
-> **GAP CRITIQUE:** Les 38 personas sont disponibles pour TOUS les widgets sans validation.
+> **GAP CRITIQUE:** Les 40 personas sont disponibles pour TOUS les widgets sans validation.
 
 ### 9.1 Problème Identifié
 
@@ -364,7 +364,7 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 | Widget Type | Personas Compatibles |
 |:------------|:--------------------|
 | **ECOM** | UNIVERSAL_ECOMMERCE, RETAILER, GROCERY, BAKERY, PRODUCER, DISPATCHER |
-| **TELEPHONY** | Tous les 38 personas (universel) |
+| **TELEPHONY** | Tous les 40 personas (universel) |
 
 ### 9.3 Code Evidence (GAP)
 

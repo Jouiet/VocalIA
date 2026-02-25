@@ -20,7 +20,7 @@
   },
   "agency_v3": {
     "produits": "VocalIA propose 3 produits Voice AI: Voice Widget B2B (qualification leads), E-commerce Widget Pro (8 intégrations + panier, carousel, quiz) et Voice Telephony AI (ligne PSTN via Twilio).",
-    "personas": "38 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
+    "personas": "40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
     "langues": "5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain).",
     "contact": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
     "tarifs": "Essai 14 jours inclus. Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€/mois + 0.24€/min.",
@@ -32,7 +32,7 @@
     "deploiement": "Déploiement en moins de 10 minutes: copiez 1 ligne de code JavaScript sur votre site. Compatible WordPress (plugin dédié), Shopify, et tout site HTML.",
     "annulation": "Annulation possible à tout moment depuis votre espace client, sans frais. L'accès reste actif jusqu'à la fin de la période payée.",
     "api": "API REST complète documentée sur vocalia.ma/docs/api. Endpoints pour conversations, KB, analytics, webhooks. 203 MCP tools disponibles pour intégration avancée.",
-    "clients": "VocalIA est une plateforme récente en phase de lancement commercial. La plateforme est opérationnelle avec 38 personas sectoriels et 5 langues.",
+    "clients": "VocalIA est une plateforme récente en phase de lancement commercial. La plateforme est opérationnelle avec 40 personas sectoriels et 5 langues.",
     "sla": "VocalIA offre un service best-effort avec monitoring 24/7 et alertes automatiques. Pas de SLA contractuel garanti à ce stade.",
     "ia": "VocalIA utilise Grok (xAI) comme moteur IA principal, avec fallback automatique vers Gemini (Google), Claude (Anthropic) et un modèle local. Temps de réponse moyen < 2 secondes.",
     "wordpress": "Plugin WordPress officiel disponible: installez-le depuis votre dashboard WP, entrez votre tenant ID, et le widget est actif. Configuration zéro code.",
@@ -54,7 +54,7 @@
     "webhook": "Webhooks disponibles pour tous les événements: conversation démarrée, lead qualifié, booking créé, paiement, erreur. Intégration avec Zapier, Make, n8n.",
     "shopify": "Installation Shopify en 2 clics via l'app VocalIA. Le widget e-commerce détecte automatiquement votre catalogue produits et peut recommander des articles.",
     "facturation": "Facturation mensuelle par carte bancaire via Stripe. Factures disponibles dans votre espace client. TVA appliquée selon votre pays.",
-    "comparaison": "VocalIA se distingue par: 38 personas sectoriels pré-configurés, 5 langues dont le Darija, widget e-commerce spécialisé, et pricing transparent sans surprises."
+    "comparaison": "VocalIA se distingue par: 40 personas sectoriels pré-configurés, 5 langues dont le Darija, widget e-commerce spécialisé, et pricing transparent sans surprises."
   },
   "healer_v1": {
     "specialites": "Généraliste, Pédiatrie, Gynécologie, Kinésithérapie, Cardiologie.",

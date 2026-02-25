@@ -62,7 +62,7 @@
     "messages": [
       { "text": "Widget vocal disponible en 5 langues" },
       { "text": "Intégrations CRM natives : HubSpot, Shopify, Klaviyo" },
-      { "text": "38 personas métier configurés" },
+      { "text": "40 personas métier configurés" },
       { "text": "Téléphonie IA : 0,24€/min tout inclus" },
       { "text": "Démonstration gratuite disponible" }
     ]
@@ -86,7 +86,7 @@
         "what do you sell",
         "shnou 3andkom"
       ],
-      "response": "VocalIA propose 4 offres Voice AI :\n\n1. **Starter** (49€/mois) - Assistant vocal IA pour sites web\n2. **Pro** (99€/mois) - Qualification leads & services B2B\n3. **E-commerce** (99€/mois) - Shopify, WooCommerce, Magento...\n4. **Telephony** (199€/mois + 0.24€/min) - Ligne téléphonique IA\n\nNos atouts : 38 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quelle offre vous intéresse ?"
+      "response": "VocalIA propose 4 offres Voice AI :\n\n1. **Starter** (49€/mois) - Assistant vocal IA pour sites web\n2. **Pro** (99€/mois) - Qualification leads & services B2B\n3. **E-commerce** (99€/mois) - Shopify, WooCommerce, Magento...\n4. **Telephony** (199€/mois + 0.24€/min) - Ligne téléphonique IA\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quelle offre vous intéresse ?"
     },
     "pricing": {
       "keywords": [
@@ -130,7 +130,7 @@
         "ivr",
         "svi"
       ],
-      "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à 0,24€/minute tout inclus (IA + 38 personas + analytics). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
+      "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à 0,24€/minute tout inclus (IA + 40 personas + analytics). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
     },
     "integration": {
       "keywords": [
@@ -184,7 +184,7 @@
         "voix",
         "ton"
       ],
-      "response": "VocalIA propose 38 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
+      "response": "VocalIA propose 40 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
     },
     "no": {
       "keywords": [

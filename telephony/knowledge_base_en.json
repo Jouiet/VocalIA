@@ -20,7 +20,7 @@
   },
   "agency_v3": {
     "produits": "VocalIA offers 3 Voice AI products: Voice Widget B2B (lead qualification), E-commerce Widget Pro (8 integrations + cart, carousel, quiz), and Voice Telephony AI (PSTN line via Twilio).",
-    "personas": "38 pre-configured industry personas: dentists, real estate, restaurants, e-commerce, SMEs and more.",
+    "personas": "40 pre-configured industry personas: dentists, real estate, restaurants, e-commerce, SMEs and more.",
     "langues": "5 languages supported: French, English, Spanish, Arabic and Moroccan Darija.",
     "contact": "Contact us via vocalia.ma/booking or email contact@vocalia.ma.",
     "tarifs": "14-day free trial included. Starter €49/month, Pro €99/month, E-commerce €99/month, Telephony €199/month + €0.24/min.",
@@ -32,7 +32,7 @@
     "deploiement": "Deploy in under 10 minutes: copy 1 line of JavaScript to your site. Compatible with WordPress (dedicated plugin), Shopify, and any HTML site.",
     "annulation": "Cancel anytime from your dashboard, no fees. Access remains active until the end of the paid period.",
     "api": "Full REST API documented at vocalia.ma/docs/api. Endpoints for conversations, KB, analytics, webhooks. 203 MCP tools available for advanced integration.",
-    "clients": "VocalIA is a recently launched platform in commercial launch phase. The platform is operational with 38 industry personas and 5 languages.",
+    "clients": "VocalIA is a recently launched platform in commercial launch phase. The platform is operational with 40 industry personas and 5 languages.",
     "sla": "VocalIA offers best-effort service with 24/7 monitoring and automatic alerts. No contractual SLA guaranteed at this stage.",
     "ia": "VocalIA uses Grok (xAI) as its primary AI engine, with automatic fallback to Gemini (Google), Claude (Anthropic), and a local model. Average response time < 2 seconds.",
     "wordpress": "Official WordPress plugin available: install from your WP dashboard, enter your tenant ID, and the widget is active. Zero-code setup.",
@@ -54,7 +54,7 @@
     "webhook": "Webhooks available for all events: conversation started, lead qualified, booking created, payment, error. Integration with Zapier, Make, n8n.",
     "shopify": "Shopify installation in 2 clicks via VocalIA app. E-commerce widget auto-detects your product catalog and can recommend items.",
     "facturation": "Monthly billing by credit card via Stripe. Invoices available in your dashboard. VAT applied based on your country.",
-    "comparaison": "VocalIA stands out with: 38 pre-configured industry personas, 5 languages including Darija, specialized e-commerce widget, and transparent pricing."
+    "comparaison": "VocalIA stands out with: 40 pre-configured industry personas, 5 languages including Darija, specialized e-commerce widget, and transparent pricing."
   },
   "healer_v1": {
     "specialites": "General Practice, Pediatrics, Gynecology, Physiotherapy, Cardiology.",

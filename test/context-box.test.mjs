@@ -16,6 +16,8 @@
  * - _suggestActions (context-based suggestions)
  * - listSessions
  * - cleanupStale
+ * - getTenantFacts (B110: full chain promoteFact → getTenantFacts)
+ * - promoteFact (B110: enriches with sessionId, delegates to TenantMemory)
  *
  * NOTE: Tests pure logic with temp directory. Does NOT require EventBus.
  *
@@ -528,6 +530,142 @@ describe('ContextBox getWithPrediction', () => {
 
     const result = box.getWithPrediction('predict-med');
     assert.strictEqual(result.prediction.likelyNextAgent, 'BookingAgent');
+    cleanup(tmpDir);
+  });
+});
+
+// ─── B110: getTenantFacts + promoteFact chain ────────────────────────────────
+
+describe('ContextBox getTenantFacts + promoteFact (B110)', () => {
+  const tenantId = `ctx_test_${Date.now()}`;
+
+  test('promoteFact returns false without tenantId', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.promoteFact('sess1', null, { key: 'hours', value: '9-18h' });
+    assert.strictEqual(result, false, 'Should reject when tenantId is null');
+    cleanup(tmpDir);
+  });
+
+  test('promoteFact returns false with empty tenantId', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.promoteFact('sess1', '', { key: 'hours', value: '9-18h' });
+    assert.strictEqual(result, false, 'Should reject when tenantId is empty string');
+    cleanup(tmpDir);
+  });
+
+  test('promoteFact enriches fact with sessionId and delegates to TenantMemory', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Spy on tenantMemory.promoteFact to capture what ContextBox sends
+    let capturedTenantId, capturedFact;
+    const origPromote = box.tenantMemory.promoteFact;
+    box.tenantMemory.promoteFact = async (tid, fact) => {
+      capturedTenantId = tid;
+      capturedFact = fact;
+      return true;
+    };
+
+    const result = await box.promoteFact('session-abc', tenantId, {
+      key: 'specialty',
+      value: 'orthodontie'
+    });
+
+    assert.strictEqual(result, true);
+    assert.strictEqual(capturedTenantId, tenantId, 'Should pass tenant ID through');
+    assert.strictEqual(capturedFact.sessionId, 'session-abc', 'Should enrich fact with sessionId');
+    assert.strictEqual(capturedFact.key, 'specialty');
+    assert.strictEqual(capturedFact.value, 'orthodontie');
+
+    // Restore
+    box.tenantMemory.promoteFact = origPromote;
+    cleanup(tmpDir);
+  });
+
+  test('getTenantFacts delegates to tenantMemory.getFacts', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Spy on tenantMemory.getFacts
+    let capturedTenantId, capturedOptions;
+    const origGetFacts = box.tenantMemory.getFacts;
+    box.tenantMemory.getFacts = async (tid, opts) => {
+      capturedTenantId = tid;
+      capturedOptions = opts;
+      return [
+        { key: 'hours', value: '9h-18h', confidence: 0.9 },
+        { key: 'specialty', value: 'orthodontie', confidence: 0.85 }
+      ];
+    };
+
+    const facts = await box.getTenantFacts(tenantId, { limit: 5 });
+    assert.strictEqual(capturedTenantId, tenantId);
+    assert.deepStrictEqual(capturedOptions, { limit: 5 });
+    assert.strictEqual(facts.length, 2);
+    assert.strictEqual(facts[0].key, 'hours');
+    assert.strictEqual(facts[1].value, 'orthodontie');
+
+    // Restore
+    box.tenantMemory.getFacts = origGetFacts;
+    cleanup(tmpDir);
+  });
+
+  test('getTenantFacts returns empty array for unknown tenant', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Use real tenantMemory — unknown tenant has no facts
+    const facts = await box.getTenantFacts(`unknown_${Date.now()}`);
+    assert.ok(Array.isArray(facts), 'Should return an array');
+    assert.strictEqual(facts.length, 0, 'Unknown tenant should have no facts');
+
+    cleanup(tmpDir);
+  });
+
+  test('full chain: promoteFact → getTenantFacts round-trip', async () => {
+    const { box, tmpDir } = createTestBox();
+    const tid = `chain_test_${Date.now()}`;
+
+    // Promote 3 facts (TenantMemory normalizes: keeps type, value, source, sessionId)
+    await box.promoteFact('sess-chain-1', tid, {
+      type: 'business_hours',
+      value: 'Lun-Ven 9h-18h',
+      confidence: 0.95,
+      source: 'explicit'
+    });
+    await box.promoteFact('sess-chain-1', tid, {
+      type: 'location',
+      value: 'Casablanca',
+      confidence: 0.9,
+      source: 'explicit'
+    });
+    await box.promoteFact('sess-chain-2', tid, {
+      type: 'specialty',
+      value: 'implants dentaires',
+      confidence: 0.85,
+      source: 'inferred'
+    });
+
+    // Retrieve all facts
+    const facts = await box.getTenantFacts(tid);
+    assert.ok(Array.isArray(facts), 'Should return array');
+    assert.ok(facts.length >= 2, `Should have at least 2 facts (got ${facts.length})`);
+
+    // Verify facts contain our promoted values
+    const values = facts.map(f => f.value);
+    assert.ok(
+      values.includes('Lun-Ven 9h-18h') || values.includes('Casablanca') || values.includes('implants dentaires'),
+      `Should contain at least one promoted fact value (got: ${values.join(', ')})`
+    );
+
+    // Verify facts have enriched sessionId from ContextBox.promoteFact
+    const sessionIds = [...new Set(facts.map(f => f.sessionId))];
+    assert.ok(
+      sessionIds.includes('sess-chain-1') || sessionIds.includes('sess-chain-2'),
+      'Should contain enriched sessionId from promoteFact'
+    );
+
+    // Cleanup TenantMemory data for this tenant
+    try {
+      await box.tenantMemory.purgeTenantMemory(tid);
+    } catch { /* ignore if purge fails */ }
     cleanup(tmpDir);
   });
 });

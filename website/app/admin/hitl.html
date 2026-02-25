@@ -249,7 +249,7 @@
 
       if (pendingItems.length === 0) {
         container.innerHTML = `
-          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-8 text-center">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 md:p-8 text-center">
             <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
             </div>
@@ -281,7 +281,7 @@
           <p class="text-zinc-700 dark:text-zinc-300 mb-4">${escapeHtml(item.summary)}</p>
 
           ${item.context.bant ? `
-            <div class="grid grid-cols-4 gap-2 mb-4">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
               ${['budget', 'authority', 'need', 'timeline'].map(key => `
                 <div class="text-center p-2 bg-zinc-50 dark:bg-[#050505] rounded">
                   <p class="text-xs text-zinc-500 uppercase">${key[0]}</p>

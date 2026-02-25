@@ -562,6 +562,29 @@ const registerAgentOpsIntegrations = () => {
         }
     }, { name: 'BookingNotification.ntfy' });
 
+    // B96 fix (250.222): Subscribe to quota.threshold_reached — notify via ntfy + console
+    eventBus.subscribe('quota.threshold_reached', async (event) => {
+        const { tenantId, metric, current, limit, percentage } = event || {};
+        console.warn(`⚠️ [QuotaAlert] ${tenantId}: ${metric} at ${percentage}% (${current}/${limit})`);
+
+        const ntfyTopic = process.env.NTFY_TOPIC;
+        if (!ntfyTopic) return;
+
+        try {
+            const https = require('https');
+            const title = `Quota ${percentage}% — ${tenantId}`;
+            const body = `${metric}: ${current}/${limit} (${percentage}%)`;
+            const req = https.request(`https://ntfy.sh/${ntfyTopic}`, {
+                method: 'POST',
+                headers: { 'Title': title, 'Priority': percentage >= 95 ? 'urgent' : 'high', 'Tags': 'warning' }
+            });
+            req.on('error', () => {});
+            req.end(body);
+        } catch (e) {
+            console.warn('[QuotaAlert] ntfy failed:', e.message);
+        }
+    }, { name: 'QuotaAlert.ntfy' });
+
     console.log('[EventBus] Agent Ops v3.0 integrations registered');
 };
 

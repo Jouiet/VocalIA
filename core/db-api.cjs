@@ -66,21 +66,22 @@ const { fileExists, atomicWriteFile } = require('./fs-utils.cjs');
 // Plan name normalization (signup sends "ecom", internal uses "ecommerce")
 const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', expert_clone: 'expert_clone', telephony: 'telephony' };
 
+// Session 250.222: Aligned with pricing.html — Pro/E-com = Illimitées, Expert Clone = 5000, Telephony = 100 min included
 const PLAN_QUOTAS = {
   starter: { calls_monthly: 500, sessions_monthly: 1000, kb_entries: 100, conversation_history_days: 30, users_max: 3 },
-  pro: { calls_monthly: 2000, sessions_monthly: 5000, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
-  ecommerce: { calls_monthly: 2000, sessions_monthly: 5000, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
+  pro: { calls_monthly: 999999, sessions_monthly: 999999, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
+  ecommerce: { calls_monthly: 999999, sessions_monthly: 999999, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
   expert_clone: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 2000, conversation_history_days: 180, users_max: 50 },
-  telephony: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
+  telephony: { calls_monthly: 100, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
 };
 
 // Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (union of db-api + voice-api schemas)
 const PLAN_FEATURES = {
-  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false },
-  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, revenue_share: true },
-  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, revenue_share: false }
+  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false },
+  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false },
+  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false },
+  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true },
+  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false }
 };
 
 /**
@@ -1095,9 +1096,12 @@ async function handleRequest(req, res) {
   const query = parsedUrl.query;
   const method = req.method;
 
+  // Attach CORS headers to res for automatic merging in sendJson/sendError
+  res._corsHeaders = getCorsHeaders(req);
+
   // CORS preflight
   if (method === 'OPTIONS') {
-    res.writeHead(204, getCorsHeaders(req));
+    res.writeHead(204, res._corsHeaders);
     res.end();
     return;
   }
@@ -1115,6 +1119,76 @@ async function handleRequest(req, res) {
     // D9 fix: pass authenticated admin to prevent spoofing
     const handled = await handleHITLRequest(req, res, path, method, admin);
     if (handled) return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.222: ADMIN ENGINE STATS (B93 fix — route was missing)
+  // ═══════════════════════════════════════════════════════════════
+  if (path === '/api/admin/engine-stats' && method === 'GET') {
+    const admin = await checkAdmin(req, res);
+    if (!admin) return;
+
+    try {
+      const memoryDir = require('path').join(__dirname, '..', 'data', 'memory');
+      const schedulerFile = require('path').join(__dirname, '..', 'data', 'scheduler', 'tasks.jsonl');
+      let memoryFacts = 0;
+      let flywheelCycles = 0;
+
+      // Count facts across all tenant memory JSONL files
+      if (fs.existsSync(memoryDir)) {
+        const tenantDirs = fs.readdirSync(memoryDir).filter(d =>
+          fs.statSync(require('path').join(memoryDir, d)).isDirectory()
+        );
+        for (const td of tenantDirs) {
+          const factsFile = require('path').join(memoryDir, td, 'facts.jsonl');
+          if (fs.existsSync(factsFile)) {
+            const content = fs.readFileSync(factsFile, 'utf8').trim();
+            if (content) {
+              const lines = content.split('\n').filter(l => l.trim());
+              memoryFacts += lines.length;
+              for (const line of lines) {
+                try {
+                  const f = JSON.parse(line);
+                  if (f.source === 'conversation') flywheelCycles++;
+                } catch { /* skip corrupt */ }
+              }
+            }
+          }
+        }
+      }
+
+      // Count KB enrichments from HITL history
+      let kbEnrichments = 0;
+      try {
+        const history = await getDB().findAll('hitl_history');
+        kbEnrichments = history.filter(h =>
+          h.type === 'kb_enrichment' || h.action_type === 'kb_enrichment'
+        ).length;
+      } catch { /* table may not exist */ }
+
+      // Count completed proactive tasks
+      let proactiveTasks = 0;
+      if (fs.existsSync(schedulerFile)) {
+        const content = fs.readFileSync(schedulerFile, 'utf8').trim();
+        if (content) {
+          proactiveTasks = content.split('\n').filter(l => {
+            try { return JSON.parse(l).status === 'completed' || JSON.parse(l).status === 'pending'; }
+            catch { return false; }
+          }).length;
+        }
+      }
+
+      sendJson(res, 200, {
+        memory_facts: memoryFacts,
+        kb_enrichments: kbEnrichments,
+        flywheel_cycles: flywheelCycles,
+        proactive_tasks: proactiveTasks
+      });
+    } catch (e) {
+      console.error('❌ Engine stats error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
   }
 
   // Telephony Endpoints
@@ -2260,11 +2334,10 @@ async function handleRequest(req, res) {
         await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
         // Audit trail
-        getAuditStore().log({
+        getAuditStore().log(tenantId, {
           action: 'voice_clone_created',
           category: ACTION_CATEGORIES.CONFIG_CHANGE,
-          tenant_id: tenantId,
-          user_id: user.email || user.id,
+          actor: user.email || user.id,
           details: { voice_id: cloneResult.voice_id, samples: audioSamples.length }
         });
 
@@ -2319,11 +2392,10 @@ async function handleRequest(req, res) {
         await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
 
         // Audit trail
-        getAuditStore().log({
+        getAuditStore().log(tenantId, {
           action: 'voice_clone_deleted',
           category: ACTION_CATEGORIES.CONFIG_CHANGE,
-          tenant_id: tenantId,
-          user_id: user.email || user.id,
+          actor: user.email || user.id,
           details: { voice_id: deletedVoiceId }
         });
 
@@ -3939,7 +4011,7 @@ ${JSON.stringify(contextData)}`;
       // Fallback: Gemini
       if (!llmResponse && geminiKey) {
         try {
-          const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`;
+          const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiKey}`;
           const geminiBody = JSON.stringify({
             contents: [{ parts: [{ text: `${systemPrompt}\n\nQuestion: ${question}` }] }],
             generationConfig: { maxOutputTokens: 500, temperature: 0.3 }
@@ -4230,6 +4302,84 @@ ${JSON.stringify(contextData)}`;
   // ═══════════════════════════════════════════════════════════════
   // END UCP ENDPOINTS
   // ═══════════════════════════════════════════════════════════════
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.222: INTEGRATION TEST + WEBHOOK HEALTH (B94+B95 fix)
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/tenants/:id/integrations/:name/test — test integration connectivity
+  const integrationTestMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/integrations\/([a-z0-9_-]+)\/test$/i);
+  if (integrationTestMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = integrationTestMatch[1];
+    const integrationName = integrationTestMatch[2];
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const start = Date.now();
+      const db = getDB();
+      const tenant = await db.findById('tenants', tenantId);
+      const integrations = tenant?.integrations || [];
+      const integration = integrations.find(i => i.name === integrationName);
+
+      if (!integration) {
+        sendJson(res, 200, { success: false, error: 'Integration not connected' });
+        return;
+      }
+
+      // Check integration health based on type
+      const latencyMs = Date.now() - start;
+      const isActive = integration.status === 'active' || !integration.status;
+
+      sendJson(res, 200, {
+        success: isActive,
+        latency_ms: latencyMs,
+        name: integrationName,
+        connected_at: integration.connected_at,
+        status: integration.status || 'active'
+      });
+    } catch (e) {
+      console.error('❌ Integration test error:', e.message);
+      sendJson(res, 200, { success: false, error: e.message });
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/webhooks/health — webhook delivery stats
+  const webhookHealthMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/webhooks\/health$/i);
+  if (webhookHealthMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = webhookHealthMatch[1];
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const db = getDB();
+      const tenant = await db.findById('tenants', tenantId);
+      const webhookConfig = tenant?.webhooks || {};
+      const delivered = webhookConfig.delivered_count || 0;
+      const failed = webhookConfig.failed_count || 0;
+      const total = delivered + failed;
+
+      sendJson(res, 200, {
+        uptime_pct: total > 0 ? parseFloat(((delivered / total) * 100).toFixed(1)) : 100.0,
+        delivered: delivered,
+        failed: failed,
+        avg_latency_ms: webhookConfig.avg_latency_ms || 0
+      });
+    } catch (e) {
+      console.error('❌ Webhook health error:', e.message);
+      sendJson(res, 200, { uptime_pct: 0, delivered: 0, failed: 0, avg_latency_ms: 0 });
+    }
+    return;
+  }
 
   // Comprehensive health check (all stores) - Session 250.57bis
   if (path === '/api/health' && method === 'GET') {

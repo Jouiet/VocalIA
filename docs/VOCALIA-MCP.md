@@ -136,7 +136,7 @@ MCP définit **3 primitives serveur** (spec 2025-06-18) :
 | 0.1 | **Unifier version** → `1.0.0` | ✅ | package.json, api_status, startup log, server constructor |
 | 0.2 | **Corriger `api_status`** → `tools_count: 203` | ✅ | Was 75 |
 | 0.3 | **Corriger `personas_list`** → `total: 38` | ✅ | Dynamic (4+8+12+14=38) |
-| 0.4 | **Compléter SYSTEM_PROMPTS** → 38 personas | ✅ | Dynamic loading from voice-persona-injector.cjs |
+| 0.4 | **Compléter SYSTEM_PROMPTS** → 40 personas | ✅ | Dynamic loading from voice-persona-injector.cjs |
 | 0.5 | **Sécuriser `translation_qa_check`** | ✅ | FALSE ALARM: takes `{}`, no user input |
 
 ### Phase 1 — Migration API Moderne ✅ DONE (250.171c)
@@ -159,7 +159,7 @@ MCP définit **3 primitives serveur** (spec 2025-06-18) :
 
 | Resource URI | Description | Source |
 |:-------------|:------------|:-------|
-| `vocalia://personas` | Liste 38 personas avec metadata | `PERSONAS_DATA` (dynamic) |
+| `vocalia://personas` | Liste 40 personas avec metadata | `PERSONAS_DATA` (dynamic) |
 | `vocalia://personas/{key}` | Template — détails persona + system prompts (38 URIs) | `PERSONAS_DATA` + `INJECTOR_*` |
 | `vocalia://knowledge-base` | Status KB (chunks, categories, search modes) | `data/knowledge-base/status.json` |
 | `vocalia://market-rules` | Règles marché (MA→FR/MAD, EU→FR/EUR, etc.) | statique |

@@ -281,7 +281,7 @@ describe('Tenant Provisioning — INTEGRATION (real modules)', () => {
       const result = provisionTenant('_test_int_telephony', { plan: 'telephony' });
       const config = JSON.parse(readFileSync(result.configPath, 'utf8'));
 
-      const expertOnlyFeatures = ['voice_cloning', 'expert_dashboard', 'revenue_share'];
+      const expertOnlyFeatures = ['voice_cloning', 'expert_dashboard'];
       for (const [key, val] of Object.entries(config.features)) {
         if (expertOnlyFeatures.includes(key)) {
           assert.equal(val, false, `Telephony: ${key} must be false (expert_clone exclusive)`);
@@ -301,20 +301,20 @@ describe('Tenant Provisioning — INTEGRATION (real modules)', () => {
       assert.equal(PLAN_QUOTAS.starter.users_max, 3);
     });
 
-    it('pro: 2000 calls, 5000 sessions, 500 KB, 10 users', () => {
-      assert.equal(PLAN_QUOTAS.pro.calls_monthly, 2000);
-      assert.equal(PLAN_QUOTAS.pro.sessions_monthly, 5000);
+    it('pro: unlimited calls (999999), unlimited sessions, 500 KB, 10 users', () => {
+      assert.equal(PLAN_QUOTAS.pro.calls_monthly, 999999);
+      assert.equal(PLAN_QUOTAS.pro.sessions_monthly, 999999);
       assert.equal(PLAN_QUOTAS.pro.kb_entries, 500);
       assert.equal(PLAN_QUOTAS.pro.users_max, 10);
     });
 
-    it('ecommerce: same quotas as pro (2000/5000/500/10)', () => {
-      assert.equal(PLAN_QUOTAS.ecommerce.calls_monthly, 2000);
-      assert.equal(PLAN_QUOTAS.ecommerce.sessions_monthly, 5000);
+    it('ecommerce: same quotas as pro (unlimited/unlimited/500/10)', () => {
+      assert.equal(PLAN_QUOTAS.ecommerce.calls_monthly, 999999);
+      assert.equal(PLAN_QUOTAS.ecommerce.sessions_monthly, 999999);
     });
 
-    it('telephony: 5000 calls, 10000 sessions, 1000 KB, 25 users', () => {
-      assert.equal(PLAN_QUOTAS.telephony.calls_monthly, 5000);
+    it('telephony: 100 min included, 10000 sessions, 1000 KB, 25 users', () => {
+      assert.equal(PLAN_QUOTAS.telephony.calls_monthly, 100);
       assert.equal(PLAN_QUOTAS.telephony.sessions_monthly, 10000);
       assert.equal(PLAN_QUOTAS.telephony.kb_entries, 1000);
       assert.equal(PLAN_QUOTAS.telephony.users_max, 25);

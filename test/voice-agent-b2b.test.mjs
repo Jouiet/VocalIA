@@ -23,8 +23,8 @@ import { VoiceAgentB2B, RAGRetrieval, SERVICE_PACKS } from '../core/voice-agent-
 // ─── SERVICE_PACKS ──────────────────────────────────────────────────
 
 describe('VoiceAgentB2B SERVICE_PACKS', () => {
-  test('has 4 plans', () => {
-    assert.strictEqual(Object.keys(SERVICE_PACKS).length, 4);
+  test('has 5 plans', () => {
+    assert.strictEqual(Object.keys(SERVICE_PACKS).length, 5);
   });
 
   test('has starter plan', () => {
@@ -40,6 +40,11 @@ describe('VoiceAgentB2B SERVICE_PACKS', () => {
   test('has ecommerce plan', () => {
     assert.ok(SERVICE_PACKS.ecommerce);
     assert.strictEqual(SERVICE_PACKS.ecommerce.name, 'E-commerce');
+  });
+
+  test('has expert_clone plan', () => {
+    assert.ok(SERVICE_PACKS.expert_clone);
+    assert.strictEqual(SERVICE_PACKS.expert_clone.name, 'Expert Clone');
   });
 
   test('has telephony plan', () => {
@@ -232,7 +237,7 @@ describe('VoiceAgentB2B session lifecycle', () => {
     assert.strictEqual(typeof status.rag_initialized, 'boolean');
     assert.strictEqual(typeof status.api_key_configured, 'boolean');
     assert.ok(Array.isArray(status.service_packs));
-    assert.strictEqual(status.service_packs.length, 4);
+    assert.strictEqual(status.service_packs.length, 5);
   });
 
   test('getStatus shows active session when started', () => {

@@ -194,3 +194,48 @@
   if (rejectBtn) rejectBtn.addEventListener('click', function() { dismiss('rejected'); });
 })();
 </script>
+<!-- Core Web Vitals (native PerformanceObserver, 0 dependencies) -->
+<script>
+(function() {
+  'use strict';
+  function report(metric, value) {
+    if (window.plausible) plausible('CWV', { props: { metric: metric, value: Math.round(value) } });
+  }
+
+  // LCP
+  try {
+    new PerformanceObserver(function(list) {
+      var entries = list.getEntries();
+      if (entries.length) report('LCP', entries[entries.length - 1].startTime);
+    }).observe({ type: 'largest-contentful-paint', buffered: true });
+  } catch (e) { /* unsupported */ }
+
+  // CLS
+  try {
+    var cls = 0;
+    new PerformanceObserver(function(list) {
+      var entries = list.getEntries();
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].hadRecentInput) cls += entries[i].value;
+      }
+    }).observe({ type: 'layout-shift', buffered: true });
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden') report('CLS', cls * 1000);
+    }, { once: true });
+  } catch (e) { /* unsupported */ }
+
+  // INP
+  try {
+    var inp = 0;
+    new PerformanceObserver(function(list) {
+      var entries = list.getEntries();
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].duration > inp) inp = entries[i].duration;
+      }
+    }).observe({ type: 'event', durationThreshold: 40, buffered: true });
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden' && inp > 0) report('INP', inp);
+    }, { once: true });
+  } catch (e) { /* unsupported */ }
+})();
+</script>

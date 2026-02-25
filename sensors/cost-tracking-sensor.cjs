@@ -33,14 +33,14 @@ const PRICING = {
         'whisper': { perMinute: 0.006 }
     },
     anthropic: {
-        'claude-opus-4-5': { input: 0.015, output: 0.075 },
-        'claude-sonnet-4': { input: 0.003, output: 0.015 }
+        'claude-opus-4-6': { input: 0.005, output: 0.025 },
+        'claude-sonnet-4-6': { input: 0.003, output: 0.015 }
     },
     xai: {
         'grok-4-1': { input: 0.005, output: 0.015 }
     },
     google: {
-        'gemini-3-flash': { input: 0.00035, output: 0.00105 }
+        'gemini-3-flash-preview': { input: 0.0005, output: 0.003 }
     },
     elevenlabs: {
         'tts': { perCharacter: 0.00003 }

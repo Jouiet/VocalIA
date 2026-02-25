@@ -2,7 +2,7 @@
 # VocalIA Promptfoo Runner
 # Usage:
 #   ./run-eval.sh eval                         # Quick smoke test (agency-fr, 3 tests)
-#   ./run-eval.sh eval-all                     # Full suite (42 configs, ~126 tests)
+#   ./run-eval.sh eval-all                     # Full suite (200 configs, ~1200 tests)
 #   ./run-eval.sh eval -c configs/dental-fr.yaml  # Single persona
 #   ./run-eval.sh redteam generate && ./run-eval.sh redteam run  # Red team
 #   ./run-eval.sh sync                         # Sync prompts from source
@@ -61,13 +61,15 @@ if [ "${1:-}" = "eval-all" ]; then
     if [ ! -f "$config" ]; then continue; fi
     echo ""
     echo "--- Running: $config ---"
-    OUTPUT=$(promptfoo eval -c "$config" --no-cache "${EXTRA_ARGS[@]}" 2>&1) || true
+    RAW_OUTPUT=$(promptfoo eval -c "$config" --no-cache "${EXTRA_ARGS[@]}" 2>&1) || true
+    # Strip ANSI color codes for reliable parsing
+    OUTPUT=$(echo "$RAW_OUTPUT" | sed $'s/\x1b\[[0-9;]*m//g')
     echo "$OUTPUT" | grep -E "^(Results:|Duration:|Total Tokens:)" || true
-    PASS=$(echo "$OUTPUT" | sed -n 's/.*✓ \([0-9]*\) passed.*/\1/p' | tail -1)
+    PASS=$(echo "$OUTPUT" | sed -n 's/.*[✓] \([0-9]*\) passed.*/\1/p' | tail -1)
     PASS=${PASS:-0}
-    FAIL=$(echo "$OUTPUT" | sed -n 's/.*✗ \([0-9]*\) failed.*/\1/p' | tail -1)
+    FAIL=$(echo "$OUTPUT" | sed -n 's/.*[✗] \([0-9]*\) failed.*/\1/p' | tail -1)
     FAIL=${FAIL:-0}
-    ERR=$(echo "$OUTPUT" | sed -n 's/.*✗ \([0-9]*\) errors.*/\1/p' | tail -1)
+    ERR=$(echo "$OUTPUT" | sed -n 's/.*[✗] \([0-9]*\) error.*/\1/p' | tail -1)
     ERR=${ERR:-0}
     TOTAL_PASS=$((TOTAL_PASS + PASS))
     TOTAL_FAIL=$((TOTAL_FAIL + FAIL))

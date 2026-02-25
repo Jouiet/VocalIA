@@ -379,7 +379,7 @@ describe('CSF-4: Quota → Feature gating chain', () => {
 
   it('PLAN_FEATURES all plans have same key structure', () => {
     const plans = Object.keys(PLAN_FEATURES);
-    assert.ok(plans.length >= 4, 'Should have at least 4 plans');
+    assert.ok(plans.length >= 5, 'Should have at least 5 plans');
 
     const baseKeys = Object.keys(PLAN_FEATURES[plans[0]]).sort();
     for (const plan of plans.slice(1)) {
@@ -390,7 +390,7 @@ describe('CSF-4: Quota → Feature gating chain', () => {
 
   it('PLAN_QUOTAS all plans have same quota key structure', () => {
     const plans = Object.keys(PLAN_QUOTAS);
-    assert.ok(plans.length >= 4, 'Should have at least 4 plans');
+    assert.ok(plans.length >= 5, 'Should have at least 5 plans');
 
     const baseKeys = Object.keys(PLAN_QUOTAS[plans[0]]).sort();
     for (const plan of plans.slice(1)) {

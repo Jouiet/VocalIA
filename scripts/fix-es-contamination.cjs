@@ -46,7 +46,7 @@ async function translateBatch(items) {
   const prompt = 'Translate these French texts to proper Spanish (Spain).\nKeep technical terms unchanged (VocalIA, Widget, API, CRM, B2B, BANT, ROI).\nReturn ONLY key-value pairs in format: "key": "Spanish translation"\n\n' + textItems;
 
   const response = await fetch(
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_API_KEY,
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=' + GEMINI_API_KEY,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

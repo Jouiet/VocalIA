@@ -3,7 +3,7 @@
  * VocalIA - Product Embedding Service
  *
  * SOTA e-commerce embeddings for product recommendations:
- * - Gemini text-embedding-004 (primary) - efficient and high-quality
+ * - Gemini gemini-embedding-001 (primary) with output_dimensionality=768
  * - Scalable to Marqo E-commerce Embeddings in future iterations
  *
  * Features:
@@ -12,10 +12,11 @@
  * - Persistent caching (file-based)
  * - Multi-tenant isolation
  *
- * Version: 1.0.0 | Session 250.79 | 03/02/2026
+ * Version: 1.1.0 | Session 250.222 | 20/02/2026
+ * Migration: Removed deprecated @google/generative-ai SDK → direct REST API
+ * Migration: text-embedding-004 (shut down Jan 2026) → gemini-embedding-001
  */
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
@@ -25,29 +26,27 @@ dotenv.config();
 const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 const CACHE_DIR = path.join(__dirname, '../data/embeddings');
+const EMBEDDING_MODEL = 'gemini-embedding-001';
+const EMBEDDING_URL = `https://generativelanguage.googleapis.com/v1beta/models/${EMBEDDING_MODEL}:embedContent`;
 
-// Lazy init — avoids process crash at require-time if API key missing
-let _genAI = null;
-let _embeddingModel = null;
+// Lazy init
+let _apiKey = null;
 
-function getEmbeddingModel() {
-  if (!_embeddingModel) {
-    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    if (!apiKey) {
+function getApiKey() {
+  if (!_apiKey) {
+    _apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    if (!_apiKey) {
       console.error('❌ GEMINI_API_KEY / GOOGLE_GENERATIVE_AI_API_KEY not set — embeddings unavailable');
-      return null;
     }
-    _genAI = new GoogleGenerativeAI(apiKey);
-    _embeddingModel = _genAI.getGenerativeModel({ model: 'text-embedding-004' });
   }
-  return _embeddingModel;
+  return _apiKey;
 }
 
 // Marqo Configuration
 const MARQO_URL = process.env.MARQO_URL || 'http://localhost:8882';
 const MARQO_API_KEY = process.env.MARQO_API_KEY;
 
-// Embedding dimensions (Gemini text-embedding-004)
+// Embedding dimensions (gemini-embedding-001 with MRL truncation to 768)
 const EMBEDDING_DIM = 768;
 
 /**
@@ -186,12 +185,25 @@ class ProductEmbeddingService {
       console.warn('[ProductEmbedding] Marqo failed, falling back to Gemini.');
     }
 
-    // Fallback: Gemini text-embedding-004
+    // Fallback: Gemini gemini-embedding-001 (direct REST API)
     try {
-      const model = getEmbeddingModel();
-      if (!model) return null;
-      const result = await model.embedContent(text);
-      return result.embedding.values;
+      const key = getApiKey();
+      if (!key) return null;
+      const res = await fetch(`${EMBEDDING_URL}?key=${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: { parts: [{ text }] },
+          outputDimensionality: EMBEDDING_DIM
+        })
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error(`[ProductEmbedding] API Error (${res.status}):`, errText);
+        return null;
+      }
+      const data = await res.json();
+      return data.embedding?.values || null;
     } catch (e) {
       console.error('[ProductEmbedding] Gemini embedding failed:', e.message);
       return null;

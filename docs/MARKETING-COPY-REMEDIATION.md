@@ -39,7 +39,7 @@
 - **VocalIA est comparable** à Retell/Vapi à haut volume (5000+ min/mois)
 - **VocalIA est moins cher que Bland** à tous les volumes (<5000 min/mois)
 - **La claim "60% moins cher" est FAUSSE** — elle ne tient dans aucun scénario réaliste
-- **VocalIA inclut** 38 personas, KB, analytics, multi-AI fallback — les concurrents facturent ces extras séparément
+- **VocalIA inclut** 40 personas, KB, analytics, multi-AI fallback — les concurrents facturent ces extras séparément
 - **Le vrai avantage**: tout-en-un avec personas métier pré-configurés, pas le prix
 
 ### Remplacement recommandé pour "60% moins cher"
@@ -156,7 +156,7 @@
 | Hero/titre | "60% Moins Cher" | "Plateforme Tout-en-Un" |
 | Moat/avantage | "Jusqu'à 60% moins cher que les alternatives EU" | "Tarification transparente tout inclus : IA + personas + analytics dans un seul abonnement" |
 | Comparaison | "60% d'économie" | "0.10€/min tout compris — pas de surcoût par composant (STT, LLM, TTS facturés séparément chez les concurrents)" |
-| Investor moats | "Moat Prix: 60% moins cher" | "Moat Valeur: plateforme unifiée Widget + Téléphonie + 38 personas inclus" |
+| Investor moats | "Moat Prix: 60% moins cher" | "Moat Valeur: plateforme unifiée Widget + Téléphonie + 40 personas inclus" |
 | Investor moat_3 | "Architecture optimisée: jusqu'à 60% moins cher" | "Architecture optimisée: tarif unique tout inclus vs facturation par composant" |
 
 **Fichiers à modifier** (grep exhaustif):
