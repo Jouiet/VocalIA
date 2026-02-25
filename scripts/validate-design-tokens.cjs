@@ -126,16 +126,17 @@ const PLATFORM_NUMBERS = {
 };
 
 // Stale number patterns (detect old counts across ALL file types)
+// Current verified values: 40 personas, 203 MCP tools
 const STALE_NUMBER_PATTERNS = [
-  // Personas: was 40, now 38
-  { regex: /\b40\s+persona/gi, reason: 'Stale "40 personas" → should be 38' },
-  { regex: /\b40\s+Persona/g, reason: 'Stale "40 Persona" → should be 38' },
-  { regex: />40<\/.*persona/gi, reason: 'Stale "40" persona in HTML → should be 38' },
-  { regex: /40 industry persona/gi, reason: 'Stale "40 industry personas" → should be 38' },
-  { regex: /40 PERSONAS/g, reason: 'Stale "40 PERSONAS" → should be 38' },
-  { regex: /40 SOTA persona/gi, reason: 'Stale "40 SOTA personas" → should be 38' },
-  { regex: /40 pre-configured/gi, reason: 'Stale "40 pre-configured" → should be 38' },
-  // MCP Tools: was 182, now 203
+  // Personas: detect OLD value 38 (correct is 40, verified by grep command)
+  { regex: /\b38\s+persona/gi, reason: 'Stale "38 personas" → should be 40' },
+  { regex: /\b38\s+Persona/g, reason: 'Stale "38 Persona" → should be 40' },
+  { regex: />38<\/.*persona/gi, reason: 'Stale "38" persona in HTML → should be 40' },
+  { regex: /38 industry persona/gi, reason: 'Stale "38 industry personas" → should be 40' },
+  { regex: /38 PERSONAS/g, reason: 'Stale "38 PERSONAS" → should be 40' },
+  { regex: /38 SOTA persona/gi, reason: 'Stale "38 SOTA personas" → should be 40' },
+  { regex: /38 pre-configured/gi, reason: 'Stale "38 pre-configured" → should be 40' },
+  // MCP Tools: detect OLD value 182 (correct is 203, verified by test)
   { regex: /\b182\s+(?:MCP\s+)?tools?\b/gi, reason: 'Stale "182 tools" → should be 203' },
   { regex: /\b182\s+integration/gi, reason: 'Stale "182 integration" → should be 203' },
   { regex: /MCP[^)]*182/gi, reason: 'Stale "MCP...182" → should be 203' },
@@ -364,13 +365,17 @@ function validate() {
     ...findFiles(path.join(ROOT_DIR, 'data'), ['.json']),
     ...findFiles(path.join(ROOT_DIR, 'scripts'), ['.cjs', '.js']),
   ];
-  // Exclude: this validator, coverage, generated indexes, test-generated data
+  // Exclude: this validator, coverage, generated indexes, test-generated data, archives, dist, KB chunks
   const codebaseFilesFiltered = codebaseFiles.filter(f =>
     !f.includes('validate-design-tokens') && !f.includes('coverage')
     && !f.includes('tfidf_index') && !f.includes('automations-registry-index')
     && !f.includes('remotion-hitl') && !f.includes('data/conversations/')
     && !f.includes('data/ucp/') && !f.includes('data/kb-usage/')
     && !f.includes('data/feedback/') && !f.includes('data/audit/')
+    && !f.includes('data/knowledge-base/tenants/') && !f.includes('/dist/')
+    && !f.includes('promptfoo/output/') && !f.includes('docs/archive/')
+    && !f.includes('data/translation_batches') && !f.includes('data/new_i18n_keys')
+    && !f.includes('data/remotion-hitl/') && !f.includes('data/pressure-matrix')
   );
 
   for (const file of codebaseFilesFiltered) {
@@ -396,14 +401,15 @@ function validate() {
       const rel = relPath(file);
 
       // Check for stale numbers in locale values
+      // Current verified: 40 personas, 203 MCP tools
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLowerCase();
-        // Stale persona count
-        if (line.includes('"40') && (line.includes('persona') || line.includes('شخصية'))) {
-          errors.push({ file: rel, line: i + 1, rule: 'STALE_LOCALE', msg: `"40" persona count → should be 38` });
+        // Stale persona count (38 is old, 40 is current)
+        if (line.includes('"38') && (line.includes('persona') || line.includes('شخصية'))) {
+          errors.push({ file: rel, line: i + 1, rule: 'STALE_LOCALE', msg: `"38" persona count → should be 40` });
         }
-        // Stale MCP tools count
+        // Stale MCP tools count (182 is old, 203 is current)
         if (line.includes('182') && (line.includes('tool') || line.includes('mcp') || line.includes('outil'))) {
           errors.push({ file: rel, line: i + 1, rule: 'STALE_LOCALE', msg: `"182" MCP tools count → should be 203` });
         }

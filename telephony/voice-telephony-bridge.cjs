@@ -811,12 +811,13 @@ function validateWhatsAppSignature(req, bodyRaw) {
  */
 const whatsappMessageCache = new Map();
 // Cleanup cache every 24h
-setInterval(() => {
+const whatsappCacheCleanupInterval = setInterval(() => {
   const now = Date.now();
   for (const [id, expiry] of whatsappMessageCache.entries()) {
     if (now > expiry) whatsappMessageCache.delete(id);
   }
 }, 86400000);
+whatsappCacheCleanupInterval.unref();
 
 /**
  * Download Media from Meta Cloud API (Session 250.219)

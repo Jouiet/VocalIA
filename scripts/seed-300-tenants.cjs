@@ -2,7 +2,7 @@
  * SEED 300 MULTI-TENANT CLIENTS
  * Session 250.97sexies - Production-ready diverse tenant database
  *
- * Distribution: 38 personas × ~7-8 tenants = 300 tenants
+ * Distribution: 40 personas × ~7-8 tenants = 300 tenants
  * Coverage: B2B, B2C, ECOM across Morocco, France, Spain, UK, UAE, Belgium, Netherlands
  * Languages: FR, EN, ES, AR, ARY (Darija)
  *
@@ -299,7 +299,7 @@ async function seed300Tenants(options = {}) {
 
     console.log('\n' + '█'.repeat(70));
     console.log('  300 MULTI-TENANT SEEDER');
-    console.log('  Session 250.97sexies - 38 Personas × ~8 Tenants');
+    console.log('  Session 250.97sexies - 40 Personas × ~8 Tenants');
     console.log('█'.repeat(70));
     console.log(`\n  Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
     console.log(`  Target: 300 tenants × 5 languages = 1,500 KB files`);

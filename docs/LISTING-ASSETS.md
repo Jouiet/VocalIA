@@ -6,11 +6,11 @@ Standardized high-quality descriptions, tags, and strategic metadata for interna
 
 ### English
 
-AI-powered voice assistant widget for websites. 38 industry personas, 5 languages, BANT lead qualification, and $0 API cost using native Web Speech API.
+AI-powered voice assistant widget for websites. 40 industry personas, 5 languages, BANT lead qualification, and $0 API cost using native Web Speech API.
 
 ### French
 
-Widget d'assistant vocal IA pour sites web. 38 personas métiers, 5 langues (dont Darija), qualification BANT, et coût API de 0 € via Web Speech API.
+Widget d'assistant vocal IA pour sites web. 40 personas métiers, 5 langues (dont Darija), qualification BANT, et coût API de 0 € via Web Speech API.
 
 ---
 
@@ -60,9 +60,9 @@ Le web traditionnel est silencieux. Dans un monde où l'immédiateté est la rè
 
 VocalIA n'est pas un simple "chat" ; c'est un assistant intelligent capable de comprendre l'intention derrière les mots. Un utilisateur sur votre site e-commerce peut dire : "Je cherche une robe rouge pour un mariage samedi prochain, budget moins de 100€." En quelques secondes, l'assistant VocalIA sélectionne les articles, vérifie les stocks et guide l'utilisateur vers le paiement. C'est l'équivalent d'avoir votre meilleur vendeur disponible 24h/24, 7j/7, sur chaque page de votre site.
 
-#### 38 Personas Métiers : L'Expertise au Service de la Discussion
+#### 40 Personas Métiers : L'Expertise au Service de la Discussion
 
-L'IA de VocalIA ne parle pas de manière générique. Nous avons développé **38 personas spécifiques** adaptés à chaque secteur d'activité.
+L'IA de VocalIA ne parle pas de manière générique. Nous avons développé **40 personas spécifiques** adaptés à chaque secteur d'activité.
 
 - **Immobilier :** Capable de gérer des critères complexes (localisation, type de bien, budget).
 - **SaaS & Tech :** Focalisé sur la démonstration de valeur et la prise de rendez-vous.
@@ -97,7 +97,7 @@ Le traitement de la voix se fait localement sur le navigateur de l'internaute (E
 To maximize conversion on marketplaces, the following 5 visual assets are required:
 
 1. **The "Hero" Interface:** A high-fidelity mockup of a luxury website featuring the VocalIA widget in action. Caption: *"Minimalist design, maximum impact. The future of web interaction."*
-2. **The "Persona Switcher":** A split-screen showing the admin interface where 38 personas are selectable. Caption: *"38 Expert Personas. Your industry, your voice."*
+2. **The "Persona Switcher":** A split-screen showing the admin interface where 40 personas are selectable. Caption: *"38 Expert Personas. Your industry, your voice."*
 3. **The Multilingual Demo:** A montage showing the widget responding in English, French, and Arabic/Darija. Caption: *"Speak their language. Native support for FR, EN, ES, and Arabic/Darija."*
 4. **CRM Integration:** A screenshot of a HubSpot/Pipedrive dashboard showing a lead qualified via VocalIA with BANT scores. Caption: *"Don't just chat, qualify. Real-time BANT scoring synced to your CRM."*
 5. **The Zero-Cost Architecture:** A simple, premium infographic showing browser-native processing vs expensive cloud APIs. Caption: *"0€ Speech Utilities. Using browser power to eliminate per-minute bills."*

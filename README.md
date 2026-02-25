@@ -2,7 +2,7 @@
 
 > **Domain:** https://vocalia.ma | **Version:** 2.7.0 | **Session:** 250.205
 > **🌐 PRODUCTION LIVE** | HTTP/2 ✅ | HSTS preload ✅ | Security 100/100 ✅
-> **MÉTRIQUES VÉRIFIÉ 13/02/2026:** ~87k lignes | 84 pages | 203 MCP tools | 38 Personas | 25 Function Tools | 7 Widgets
+> **MÉTRIQUES VÉRIFIÉ 13/02/2026:** ~87k lignes | 84 pages | 203 MCP tools | 40 Personas | 25 Function Tools | 7 Widgets
 
 ## Overview
 
@@ -93,7 +93,7 @@ VocalIA/                          # ~87,000 lignes source
 ├── telephony/               # 1 fichier (~4,800 lignes)
 │   └── voice-telephony-bridge.cjs (25 function tools)
 ├── personas/                # 3 fichiers (8,800 lignes)
-│   └── voice-persona-injector.cjs (38 personas × 5 langs)
+│   └── voice-persona-injector.cjs (40 personas × 5 langs)
 ├── integrations/            # 7 fichiers (2,234 lignes)
 ├── sensors/                 # 4 fichiers (852 lignes)
 ├── mcp-server/              # TypeScript (~19,300 lignes, 33 .ts, 203 tools)

@@ -287,7 +287,7 @@ const SYSTEM_PROMPT = `You are the VocalIA Voice AI Assistant.
 WHAT VOCALIA OFFERS:
 1. Voice Widget: JavaScript embed for 24/7 website voice assistant
 2. Voice Telephony: PSTN AI Bridge via Twilio for real phone calls
-3. 38 Industry Personas: Pre-configured for dental, property, contractors, restaurants, etc.
+3. 40 Industry Personas: Pre-configured for dental, property, contractors, restaurants, etc.
 4. MCP Server: 203 integration tools (CRM, e-commerce, payments, calendar)
 
 RESPONSE PROTOCOL:
@@ -313,7 +313,7 @@ VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
 2. Voice Telephony: رقم تيليفون ذكي كيجاوب على المكالمات
 
 شنو كنقدمو:
-- 38 persona حسب الصناعة: طبيب، عقار، مطعم، متجر...
+- 40 persona حسب الصناعة: طبيب، عقار، مطعم، متجر...
 - 5 لغات: فرنسية، إنجليزية، إسبانية، عربية، دارجة
 - تكامل مع: CRM، Shopify، Stripe، Calendar
 

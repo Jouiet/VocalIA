@@ -99,7 +99,7 @@
   },
   "clients": {
     "question": "Do you have clients?",
-    "response": "VocalIA is a recent platform in its commercial launch phase. The technology is operational with 38 industry personas, 5 languages, and a deployed and monitored production system. We are looking for our first partner clients with premium onboarding support.",
+    "response": "VocalIA is a recent platform in its commercial launch phase. The technology is operational with 40 industry personas, 5 languages, and a deployed and monitored production system. We are looking for our first partner clients with premium onboarding support.",
     "keywords": ["clients", "references", "users", "who uses", "testimonials", "customers"]
   },
   "sla": {

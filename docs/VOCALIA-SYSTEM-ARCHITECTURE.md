@@ -292,9 +292,9 @@ telephony/voice-telephony-bridge.cjs
 ```
 personas/voice-persona-injector.cjs
 ├── SYSTEM_PROMPTS (lignes 68-805)
-│   └── 38 personas × 5 langues = 200 prompts multilingues
+│   └── 40 personas × 5 langues = 200 prompts multilingues
 ├── PERSONAS (lignes 807-5000)
-│   └── 38 personas avec metadata
+│   └── 40 personas avec metadata
 │       ├── personality_traits
 │       ├── example_dialogues
 │       ├── complaint_scenarios
@@ -307,7 +307,7 @@ personas/voice-persona-injector.cjs
     └── Behavioral context injection
 ```
 
-**38 Personas:**
+**40 Personas:**
 ```
 AGENCY, UNIVERSAL_ECOMMERCE, DENTAL, PROPERTY, COLLECTOR,
 RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT,
@@ -707,7 +707,7 @@ Methods:
 | Composant | Fichier | Lignes | Fonction |
 |:----------|:--------|:------:|:---------|
 | **MCP WooCommerce Tools** | `mcp-server/src/tools/woocommerce.ts` | **687** | 7 tools REST API v3 |
-| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (38 personas, 5 langues) |
+| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (40 personas, 5 langues) |
 | **WordPress Plugin Ecom** | `distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php` | **161** | WooCommerce widget |
 | **Catalog Connector** | `core/catalog-connector.cjs` (WooCommerceCatalogConnector) | **~200** | Sync produits REST v3 |
 | **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | **389** | checkOrderStatus(), getOrderHistory() |
@@ -1041,7 +1041,7 @@ POST /respond                     Same as 11.1, plus:
 S1 (3004) ──► reads ──► GoogleSheetsDB (via S2:3013 or direct)
 S1 (3004) ──► reads ──► tenant-kb-loader → hybrid-rag → knowledge files
 S1 (3004) ──► reads ──► client_registry.json (CORS, tenant config)
-S4 (3009) ──► reads ──► VoicePersonaInjector (38 personas × 5 langs)
+S4 (3009) ──► reads ──► VoicePersonaInjector (40 personas × 5 langs)
 S4 (3009) ──► reads ──► SecretVault (per-tenant API keys)
 S2 (3013) ──► reads/writes ──► Google Sheets API (7 tables)
 S2 (3013) ──► sends ──► email-service.cjs (Resend primary + nodemailer fallback: verification, reset, transactional)

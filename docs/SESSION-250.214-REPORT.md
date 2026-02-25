@@ -1,9 +1,12 @@
 # VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.230 (23/02/2026)
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.236 (25/02/2026)
 > **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
-> **Tests**: ~6,250 pass, 0-1 fail intermittent (97 .mjs, B52 Node.js bug) | **Timeout**: 180s | **40 personas** (not 38)
+> **Tests**: 6,474 pass, 0 fail, 0 cancelled (97 .mjs) | **Timeout**: 180s | **40 personas**
 > **250.233**: Promptfoo full coverage — 200/200 prompts, eval-all 1193/1210 PASS (98.6%), red team 40/40 personas 558/560 (99.6%). Anti-hallucination rule injected (199 SECURITY sections). Anthropic blocked ($0).
+> **250.234**: Deep Surgery Test Audit — +47 behavioral tests (B103-B110), B123 real bug found & fixed (voice-clone audit trail wrong API signature).
+> **250.235**: Mobile Optimization Forensic Audit — ALL 88 HTML pages audited, 33 files modified, CSS foundation (touch targets, iOS zoom, overflow, responsive padding/gaps/grids/tables), 5 CSS bugs self-caught & fixed. 833/833 tests pass.
+> **250.236**: Test Reliability + 38→40 Global Fix — B52 test timeouts resolved (3/4), STT test env-fix, validator 23/23 ✅ 0 errors (was 332), health-check 45/45 ✅ 100%, 30+ source files 38→40 corrected. 6474/6474 tests pass.
 
 ---
 
@@ -461,12 +464,12 @@ Le choix architectural est delibere: **maximum de valeur, minimum de risque**.
 
 | # | Action | Effort | Statut |
 |:-:|:-------|:------:|:------:|
-| 1 | Page produit Expert Clone (pricing + landing) | 2h | TODO |
-| 2 | Persona voice dedie (ElevenLabs voice cloning flow) | 1j | TODO |
-| 3 | Dashboard expert (KB score + revenue attribution par client) | 1j | TODO |
-| 4 | Billing: tier Expert Clone dans StripeService.cjs | 1j | TODO — requiert Stripe |
-| 5 | ConversationLearner integration (amelioration continue) | 1j | TODO |
-| 6 | i18n Expert Clone × 5 langues | 2h | TODO |
+| 1 | Page produit Expert Clone (pricing + landing) | 2h | **FAIT** (250.219) — 471 lignes, full page |
+| 2 | Persona voice dedie (ElevenLabs voice cloning flow) | 1j | **FAIT** (250.219) — ElevenLabs client (cloneVoice/deleteVoice/streamTTS), voice-clone routes (GET/POST/DELETE) in db-api.cjs, feature gate expert_clone plan, 81 behavioral tests (250.234) |
+| 3 | Dashboard expert (KB score + revenue attribution par client) | 1j | **FAIT** (250.219) — KB score data-driven via quota API (B68 fix), revenue shows real session counts (B69 fix) |
+| 4 | Billing: tier Expert Clone dans StripeService.cjs | 1j | TODO — requiert STRIPE_SECRET_KEY |
+| 5 | ConversationLearner integration (amelioration continue) | 1j | **FAIT** (250.221) — TenantMemory auto-promote flywheel: ContextBox.promoteFact() → TenantMemory.promoteFact() → vector indexing → getTenantFacts() retrieval. 46 tests (250.234) |
+| 6 | i18n Expert Clone × 5 langues | 2h | **FAIT** (250.219) — 39+ keys × 5 langs |
 
 ### 7.5 Post-Stripe
 
@@ -641,3 +644,117 @@ Caller/callee verification                       → 0 errors
 ---
 
 *Sessions 250.214-218 — 4 features strategiques + Jargon Purge L1+L2 (~350 substitutions) + 21 bugs (B38-B59) + Expert Clone approuve + 4 UI/UX gaps + Actions temps reel (override 13 tools + custom actions + i18n × 5 langues)*
+
+---
+
+## 11. Session 250.234 — Deep Surgery Test Audit
+
+> **Date**: 2026-02-23 | **Tests**: ~6,250 pass, 0-1 fail intermittent (B52) | **Timeout**: 180s
+
+### 11.1 Objectif
+
+Audit systematique function-by-function des modules insuffisamment testes. Pas de "theater tests" (typeof/structure) — uniquement des tests comportementaux qui appellent le code de production avec des entrees reelles et verifient les sorties.
+
+### 11.2 Tests Ecrits (+47 tests)
+
+| Module | Bug ID | Tests ajoutes | Pattern | Resultat |
+|:-------|:-------|:-------------|:--------|:---------|
+| `elevenlabs-client.cjs` | B103/B104 | +30 | Mock `globalThis.fetch` → verify URL, headers, body, response parsing. `textToSpeech()` (14 tests), `cloneVoice()` (8 tests), `streamTextToSpeech()` (8 tests) | **81/81 pass** |
+| `db-api.cjs` (voice-clone routes) | B108 | +11 | Multipart form builder + require.cache patching for ElevenLabs mock. Auth 401, feature gate 403, cross-tenant 403, GET null, POST 400 (non-multipart, no samples), POST 200 (mock), GET after create, DELETE, idempotent DELETE, 405 PUT | **178/178 pass** |
+| `ContextBox.cjs` (getTenantFacts + promoteFact) | B110 | +6 | Spy pattern (intercept TenantMemory methods) + real round-trip chain. Null/empty guards, sessionId enrichment, delegation verification, empty array for unknown tenant | **46/46 pass** |
+
+### 11.3 Bug Reel Decouvert
+
+| ID | Severite | Bug | Fix |
+|:---|:---------|:----|:----|
+| **B123** | HIGH | `db-api.cjs:2337,2395` — `getAuditStore().log({...})` utilisait la mauvaise signature (1 arg au lieu de 2). Tous les autres appels audit utilisent `log(tenantId, event)` mais voice-clone utilisait `log({action: ..., tenant_id: ...})`. La piste d'audit voice-clone crashait silencieusement (500 error). | Changed to correct 2-argument signature: `getAuditStore().log(tenantId, { action, category, actor, details })`. Also fixed `user_id:` → `actor:` to match AuditStore schema. |
+
+### 11.4 Verification Empirique
+
+```
+elevenlabs-client.test.mjs     81/81 pass (636 lines)
+db-api-routes.test.mjs        178/178 pass (2805 lines)
+context-box.test.mjs           46/46 pass (671 lines)
+B123 voice-clone audit        FIXED + verified by E2E tests (POST 200 + DELETE 200)
+```
+
+### 11.5 Gaps Restants (Low Priority)
+
+| Module | Gap | Raison |
+|:-------|:----|:-------|
+| `conversation-store.cjs` exports (CSV/PDF/JSON) | Fonctions d'export jamais appelees dans les tests | Deps optionnelles (pdfkit, xlsx) |
+| WebSocket broadcast/broadcastToTenant | Jamais teste | Necessiterait un client WS dans les tests |
+| WebhookRouter/OAuthGateway | Services standalone, tests partiels | Serveurs independants, testes a part |
+
+---
+
+---
+
+## 12. Session 250.235 — Mobile Optimization Forensic Audit
+
+> **Date**: 2026-02-25 | **Tests**: 833/833 pass (config-consistency 534 + security-regression 299) | **CSS**: Tailwind v4.1.18
+
+### 12.1 Objectif
+
+Audit forensique de TOUTES les 88 pages HTML pour optimisation mobile complete. Pas de surface patching — deep surgery CSS + HTML.
+
+### 12.2 CSS Foundation (website/src/input.css)
+
+| Regle | Effet | Portee |
+|:------|:------|:-------|
+| 44px touch targets | WCAG 2.5.8 buttons/inputs | `@media (max-width: 768px)` |
+| `font-size: 16px` inputs | Prevention iOS Safari auto-zoom | All form elements |
+| `overflow-x: hidden` | No horizontal scroll | body, main, section, article |
+| `overflow-wrap: break-word` | Long URLs/Arabic wrap | All text elements |
+| `.text-xs → 13px` | Readable on small screens | Global |
+| `.glass.p-8`, `.reward-card.p-8`, `.solution-card.p-8 → 20px` | Card padding reduction | Scoped to card classes |
+| `gap-8/10/12 → 20/24/28px` | Proportional 37-42% reduction | Global mobile |
+| `.overflow-x-auto table` font/padding | Table readability | Scoped to scroll wrappers ONLY |
+| `img:not([width]) max-width: 100%` | Image overflow prevention | Global mobile |
+| Sidebar `translateX(-100%)` + RTL `translateX(100%)` | Sidebar off-screen by default | ≤1024px |
+| Extra-small (≤380px) `.glass.p-8 → 16px`, `.p-6 → 16px` | iPhone SE support | iPhone SE/5 |
+
+### 12.3 HTML Fixes (33 files)
+
+| Category | Files | Count | Fix |
+|:---------|:-----:|:-----:|:----|
+| Grid responsive | 9 | 13 instances | `grid-cols-3/4` → `grid-cols-1 sm:grid-cols-3/4` |
+| Table overflow | 5 | 11 tables | `<div class="overflow-x-auto">` wrappers |
+| Auth padding | 5 | 5 cards | `p-8` → `p-6 sm:p-8` |
+| Card padding (non-glass) | 8 | 15+ cards | `p-8` → `p-6 md:p-8` (expert-clone, investor, lead-qual, voice-widget, about, status, blog, dashboards) |
+| Dashboard panels | 3 | 5 panels | `p-8` → `p-5 md:p-8` (video-ads, hitl, catalog, expert-dash, knowledge-base) |
+| Homepage hero | 1 | 2 elements | Badge `hidden sm:inline-flex`, title `text-4xl sm:text-5xl md:text-6xl lg:text-7xl` |
+
+### 12.4 Self-Audit — 5 Critical CSS Bugs Caught & Fixed
+
+| Bug | Impact | Fix |
+|:----|:-------|:----|
+| `.text-4xl { clamp(...) }` global override | Shrank pricing numbers (49€, 99€) and stat figures | Removed — per-element responsive classes already correct |
+| `h1 { clamp(...) }` | Forced dashboard h1s (text-xl=20px) UP to 24px | Removed |
+| `.flex.items-center.gap-4 { flex-wrap }` | Broke icon+text rows across pages | Removed |
+| `table { font-size }`, `th, td { padding }` | Unlayered selectors beat Tailwind layered classes | Scoped to `.overflow-x-auto table` |
+| `gap-8 → 1rem` (50% reduction) | Too aggressive for vertical spacing | Changed to 1.25rem (37%) |
+
+**Root cause**: Tailwind v4 uses `@layer utilities`. Custom CSS outside layers has HIGHER cascade priority — even element selectors (0,0,1) beat class selectors (0,1,0) if the class is layered. This is critical for anyone writing custom CSS alongside Tailwind v4.
+
+### 12.5 Verification
+
+- Playwright at 375×812 (iPhone X): 8 pages verified (homepage, pricing, contact, login, blog, e-commerce, expert-clone, investor)
+- All 88 pages have viewport meta tag (9 without are component fragments/redirects)
+- All text-4xl/text-5xl headings have responsive breakpoints
+- All 20 newsletter forms use `flex-col sm:flex-row`
+- All 17 dashboard pages have hamburger toggle with `lg:hidden`
+- Zero inline `style="width: Xpx"` anywhere
+- **833/833 tests pass, 0 fail**
+
+### 12.6 Remaining Minor Gaps
+
+| Gap | Severity |
+|:----|:--------:|
+| 1 JS-generated `p-8` in install-widget.html error state | Negligible |
+| `.p-6 → 1rem` at ≤380px applies to all `.p-6` elements | Low |
+| No pixel-level screenshots (font loading timeout) | Low |
+
+---
+
+*Sessions 250.214-235 — 4 features strategiques + Jargon Purge + 22 bugs (B38-B59, B123) + Expert Clone + Actions + Promptfoo 200/200 + Deep Surgery Test Audit (+47 behavioral tests) + Mobile Optimization (88 pages, 33 files, 5 CSS bugs self-caught)*

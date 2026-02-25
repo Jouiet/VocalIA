@@ -52,8 +52,8 @@ describe('GrokClient BASE_SYSTEM_PROMPT', () => {
     assert.ok(BASE_SYSTEM_PROMPT.includes('Twilio'));
   });
 
-  test('mentions 38 personas', () => {
-    assert.ok(BASE_SYSTEM_PROMPT.includes('38'), 'Should reference 38 personas (not 40 — 5 eliminated session 250.120)');
+  test('mentions 40 personas', () => {
+    assert.ok(BASE_SYSTEM_PROMPT.includes('40'), 'Should reference 40 personas (verified count)');
     assert.ok(BASE_SYSTEM_PROMPT.includes('ersonas') || BASE_SYSTEM_PROMPT.includes('PERSONAS'));
   });
 
@@ -130,8 +130,8 @@ describe('GrokClient BASE_SYSTEM_PROMPT section headers', () => {
     assert.ok(BASE_SYSTEM_PROMPT.includes('## NOS 2 PRODUITS'));
   });
 
-  test('has 38 PERSONAS section', () => {
-    assert.ok(BASE_SYSTEM_PROMPT.includes('## 38 PERSONAS'), 'Should say "38 PERSONAS" (5 eliminated session 250.120)');
+  test('has 40 PERSONAS section', () => {
+    assert.ok(BASE_SYSTEM_PROMPT.includes('## 40 PERSONAS'), 'Should say "40 PERSONAS" (verified count)');
   });
 
   test('has INTÉGRATIONS section', () => {

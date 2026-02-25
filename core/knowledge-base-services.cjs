@@ -493,7 +493,7 @@ class ServiceKnowledgeBase {
       this.chunks.push(chunk);
     }
 
-    // Merge Legacy Knowledge Base (Session 250.15 - 38 Personas FAQ)
+    // Merge Legacy Knowledge Base (Session 250.15 - 40 Personas FAQ)
     if (fs.existsSync(LEGACY_KB_FILE)) {
       console.log('   Merging legacy knowledge base (persona FAQ)...');
       let legacyKB;

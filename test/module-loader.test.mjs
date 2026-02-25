@@ -10,11 +10,29 @@
  * Run: node --test test/module-loader.test.mjs
  */
 
-import { test, describe } from 'node:test';
+import { test, describe, after } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+
+// B52 fix: Clean up singletons to allow process exit
+after(() => {
+  try {
+    const eventBus = require('../core/AgencyEventBus.cjs');
+    eventBus.shutdown();
+    eventBus.subscribers.clear();
+    eventBus.idempotencyCache.clear();
+  } catch { /* ignore */ }
+  try {
+    const tenantMemory = require('../core/tenant-memory.cjs');
+    if (tenantMemory.vectorStores) {
+      for (const [, store] of tenantMemory.vectorStores) store.close?.();
+      tenantMemory.vectorStores.clear();
+    }
+    if (tenantMemory._dedupSets) tenantMemory._dedupSets.clear();
+  } catch { /* ignore */ }
+});
 
 // ─── Helper: safely require a module ─────────────────────────────────────────
 

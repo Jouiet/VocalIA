@@ -13,7 +13,7 @@
  * Technology Stack:
  * - Grok Voice API (xAI) for real-time voice
  * - Multi-AI fallback (Grok → Gemini → Claude → Atlas for Darija)
- * - 38 Industry Personas (SOTA structure)
+ * - 40 Industry Personas (SOTA structure)
  * - 5 Languages: FR, EN, ES, AR, Darija
  * - MCP Server with 203 tools
  *
@@ -58,7 +58,7 @@ const AGENT_CARD = {
     {
       id: "persona_guidance",
       name: "Persona Guidance",
-      description: "Help select from 38 industry personas (dental, property, contractor, etc.)",
+      description: "Help select from 40 industry personas (dental, property, contractor, etc.)",
       inputModes: ["audio", "text"],
       outputModes: ["audio", "text"]
     },
@@ -124,7 +124,7 @@ const GROK_MODEL = 'grok-4-1-fast-non-reasoning';
 const BASE_DIR = path.join(__dirname, '..');
 const CONVERSATION_LOG_DIR = path.join(BASE_DIR, 'logs/voice_conversations');
 
-// VocalIA Pricing Plans (Voice AI Platform) — 4 tiers, updated 250.145
+// VocalIA Pricing Plans (Voice AI Platform) — 5 tiers, updated 250.222
 const SERVICE_PACKS = {
   starter: {
     name: 'Starter',
@@ -132,7 +132,7 @@ const SERVICE_PACKS = {
     price: '49€/mois',
     description: 'Voice Widget with included quota',
     description_fr: 'Widget Voice avec quota inclus',
-    includes: ['Voice Widget', '500 interactions/mois', '3 personas']
+    includes: ['Voice Widget', '500 conversations/mois', '100 entrées KB']
   },
   pro: {
     name: 'Pro',
@@ -140,7 +140,7 @@ const SERVICE_PACKS = {
     price: '99€/mois',
     description: 'Full Voice Widget + CRM + Calendar + Export',
     description_fr: 'Widget Voice complet + CRM + Calendrier + Export',
-    includes: ['Voice Widget illimité', 'CRM sync (HubSpot/Pipedrive)', 'Calendrier', 'Export', 'Webhooks', 'API']
+    includes: ['Conversations illimitées', 'CRM sync (HubSpot)', 'Calendrier', 'Export', 'Webhooks', 'API', '500 entrées KB']
   },
   ecommerce: {
     name: 'E-commerce',
@@ -148,15 +148,23 @@ const SERVICE_PACKS = {
     price: '99€/mois',
     description: 'Full e-commerce suite with cart recovery and AI recommendations',
     description_fr: 'Suite e-commerce complète avec récupération panier et recommandations IA',
-    includes: ['Voice Widget illimité', 'Récupération panier', 'Quiz produit', 'Gamification', 'Recommandations IA', 'CRM']
+    includes: ['Conversations illimitées', 'Récupération panier', 'Quiz produit', 'Gamification', 'Recommandations IA', 'CRM', '500 entrées KB']
+  },
+  expert_clone: {
+    name: 'Expert Clone',
+    name_fr: 'Expert Clone',
+    price: '149€/mois',
+    description: 'Voice cloning + expert dashboard + 2000 KB entries',
+    description_fr: 'Clonage vocal + tableau de bord expert + 2 000 entrées KB',
+    includes: ['Tout Pro +', 'Clonage vocal (votre voix)', '5 000 conversations/mois', 'Tableau de bord expert', '2 000 entrées KB']
   },
   telephony: {
     name: 'Telephony',
     name_fr: 'Telephony',
     price: '199€/mois + 0.24€/min',
-    description: 'All features + PSTN telephony',
-    description_fr: 'Toutes fonctionnalités + téléphonie PSTN',
-    includes: ['Toutes fonctionnalités', 'Téléphonie PSTN (Twilio)', '38 personas', 'Multi-tenant', 'SLA dédié']
+    description: 'All features + PSTN telephony + 100 included minutes',
+    description_fr: 'Toutes fonctionnalités + téléphonie PSTN + 100 min incluses',
+    includes: ['Ligne téléphonique dédiée', '25 outils métier', '100 min incluses', '1 000 entrées KB', 'Transfert humain intelligent']
   }
 };
 
@@ -274,7 +282,7 @@ PRODUCT 2: VOICE TELEPHONY (PSTN AI Bridge)
 - Cost: Competitive per-minute pricing
 
 ═══════════════════════════════════════════════════════════════════
-38 INDUSTRY PERSONAS
+40 INDUSTRY PERSONAS
 ═══════════════════════════════════════════════════════════════════
 VocalIA offers pre-configured AI personas for specific industries:
 
@@ -304,10 +312,11 @@ TECHNICAL CAPABILITIES
 ═══════════════════════════════════════════════════════════════════
 PRICING
 ═══════════════════════════════════════════════════════════════════
-- Starter: 49€/month - Voice Widget, 500 interactions/month
-- Pro: 99€/month - Full widget + CRM + Calendar + Export + API
-- E-commerce: 99€/month - Full e-commerce suite (cart recovery, quiz, recommendations)
-- Telephony: 199€/month + 0.24€/min - All features + PSTN telephony
+- Starter: 49€/month - Voice Widget, 500 conversations/month, 100 KB entries
+- Pro: 99€/month - Unlimited conversations, CRM + Calendar + Export + API, 500 KB entries
+- E-commerce: 99€/month - Unlimited conversations, cart recovery, quiz, recommendations, 500 KB entries
+- Expert Clone: 149€/month - Voice cloning, expert dashboard, 5000 conversations/month, 2000 KB entries
+- Telephony: 199€/month + 0.24€/min - Dedicated phone line, 25 business tools, 100 min included, 1000 KB entries
 
 ═══════════════════════════════════════════════════════════════════
 VOICE RESPONSE GUIDELINES
@@ -321,7 +330,7 @@ VOICE RESPONSE GUIDELINES
 IMPORTANT RULES
 ═══════════════════════════════════════════════════════════════════
 - VocalIA = Voice AI Platform: Voice Widget + Voice Telephony
-- 38 industry personas across 5 languages
+- 40 industry personas across 5 languages
 - Always be honest about capabilities and limitations
 `;
   }
@@ -490,7 +499,7 @@ IMPORTANT RULES
 
     // PRICING / PACKS
     if (input.includes('price') || input.includes('cost') || input.includes('pricing') || input.includes('pack') || input.includes('tarif')) {
-      return "We have four plans: Starter at 49 euros per month for Voice Widget, Pro at 99 euros for full widget with CRM and calendar, E-commerce at 99 euros for the full e-commerce suite, and Telephony at 199 euros plus 10 cents per minute for PSTN calls. Which fits your needs?";
+      return "We have five plans: Starter at 49 euros per month, Pro at 99 euros with CRM and calendar, E-commerce at 99 euros for the full e-commerce suite, Expert Clone at 149 euros with voice cloning and expert dashboard, and Telephony at 199 euros plus 24 cents per minute for PSTN calls. Which fits your needs?";
     }
 
     // BOOKING
@@ -510,12 +519,12 @@ IMPORTANT RULES
 
     // VOICE AI GENERAL
     if (input.includes('voice') || input.includes('ai assistant')) {
-      return "VocalIA offers two Voice AI products: a browser-based Widget for websites and Telephony for real phone calls. Both support 5 languages including Darija and have 38 industry personas. Which interests you?";
+      return "VocalIA offers two Voice AI products: a browser-based Widget for websites and Telephony for real phone calls. Both support 5 languages including Darija and have 40 industry personas. Which interests you?";
     }
 
     // PERSONAS
     if (input.includes('persona') || input.includes('industry') || input.includes('sector') || input.includes('template')) {
-      return "We have 38 pre-configured industry personas: dental clinics, real estate, contractors, restaurants, e-commerce, and more. Each includes industry-specific vocabulary and lead qualification. What's your industry?";
+      return "We have 40 pre-configured industry personas: dental clinics, real estate, contractors, restaurants, e-commerce, and more. Each includes industry-specific vocabulary and lead qualification. What's your industry?";
     }
 
     // LANGUAGES / DARIJA
@@ -540,7 +549,7 @@ IMPORTANT RULES
 
     // WHAT DO YOU DO / SERVICES
     if (input.includes('what do you') || input.includes('services') || input.includes('do you offer') || input.includes('about')) {
-      return "VocalIA is a Voice AI platform with two products: Voice Widget for websites and Voice Telephony for phone calls. We have 38 industry personas and support 5 languages including Darija. How can I help?";
+      return "VocalIA is a Voice AI platform with two products: Voice Widget for websites and Voice Telephony for phone calls. We have 40 industry personas and support 5 languages including Darija. How can I help?";
     }
 
     // CONTEXT-BASED (if RAG found something)
@@ -549,7 +558,7 @@ IMPORTANT RULES
     }
 
     // DEFAULT
-    return "VocalIA provides Voice AI solutions: a browser Widget for 24/7 website support and Telephony for AI-powered phone lines. We support 5 languages and have 38 industry personas. What would you like to know?";
+    return "VocalIA provides Voice AI solutions: a browser Widget for 24/7 website support and Telephony for AI-powered phone lines. We support 5 languages and have 40 industry personas. What would you like to know?";
   }
 
   endSession() {

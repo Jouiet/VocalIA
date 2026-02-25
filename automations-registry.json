@@ -70,7 +70,7 @@
       "name": "Voice Persona Injector",
       "name_fr": "Injecteur Persona Vocale",
       "category": "personas",
-      "description": "38 SOTA personas with marketing science frameworks",
+      "description": "40 SOTA personas with marketing science frameworks",
       "script": "personas/voice-persona-injector.cjs",
       "status": "production",
       "benefit_en": "Industry-specific AI personalities with BANT, PAS, CIALDINI, AIDA, LAER frameworks. 100% translations in 5 languages.",

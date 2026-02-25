@@ -2,7 +2,7 @@
  * SEED 500 MULTI-TENANT CLIENTS - RIGOROUS TESTING SCALE
  * Session 250.97octies - Production-ready diverse tenant database
  *
- * Distribution: 38 personas × 12+ tenants = 500+ tenants
+ * Distribution: 40 personas × 12+ tenants = 500+ tenants
  * Coverage: B2B, B2C, ECOM across Morocco, France, Spain, UK, UAE, Belgium, Netherlands
  * Languages: FR, EN, ES, AR, ARY (Darija)
  *

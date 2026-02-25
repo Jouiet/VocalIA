@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
-// Catalog types aligned with 38 personas
+// Catalog types aligned with 40 personas
 const CATALOG_TYPES = {
   PRODUCTS: 'products',      // universal_ecom, retailer, grocery, producer
   MENU: 'menu',              // restaurateur, bakery

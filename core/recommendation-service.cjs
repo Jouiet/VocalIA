@@ -24,7 +24,7 @@ const RULES_DIR = path.join(__dirname, '../data/recommendations');
 
 /**
  * Persona-specific terminology for voice responses
- * Maps 38 personas to their specific domain terms
+ * Maps 40 personas to their specific domain terms
  */
 const PERSONA_CONFIG = {
   // PRODUCTS

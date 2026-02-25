@@ -24,7 +24,7 @@
   },
   "personas": {
     "question": "Que tipos de personas ofrecen?",
-    "response": "VocalIA ofrece 38 personas preconstruidos adaptados a diferentes sectores: clinicas dentales, consultorios medicos, inmobiliarias, notarias, e-commerce (moda, electronica, alimentacion...), hosteleria, restaurantes, reclutamiento, consultoria, seguros, logistica, eventos, juridico, bienestar, coaching, conserjeria, peluqueria. Cada persona esta optimizado para el vocabulario y los escenarios de su sector.",
+    "response": "VocalIA ofrece 40 personas preconstruidos adaptados a diferentes sectores: clinicas dentales, consultorios medicos, inmobiliarias, notarias, e-commerce (moda, electronica, alimentacion...), hosteleria, restaurantes, reclutamiento, consultoria, seguros, logistica, eventos, juridico, bienestar, coaching, conserjeria, peluqueria. Cada persona esta optimizado para el vocabulario y los escenarios de su sector.",
     "keywords": ["persona", "sector", "industria", "especializado", "adaptado", "38"]
   },
   "languages": {
@@ -99,7 +99,7 @@
   },
   "clients": {
     "question": "Tienen clientes?",
-    "response": "VocalIA es una plataforma reciente en fase de lanzamiento comercial. La tecnologia esta operativa con 38 personas sectoriales, 5 idiomas y un sistema de produccion desplegado y monitorizado. Buscamos nuestros primeros clientes socios con acompanamiento privilegiado.",
+    "response": "VocalIA es una plataforma reciente en fase de lanzamiento comercial. La tecnologia esta operativa con 40 personas sectoriales, 5 idiomas y un sistema de produccion desplegado y monitorizado. Buscamos nuestros primeros clientes socios con acompanamiento privilegiado.",
     "keywords": ["clientes", "referencias", "usuarios", "quien usa", "testimonios"]
   },
   "sla": {

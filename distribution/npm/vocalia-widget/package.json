@@ -1,7 +1,7 @@
 {
     "name": "vocalia-widget",
     "version": "1.0.0",
-    "description": "AI-powered voice assistant widget for websites. 38 industry personas, 5 languages (FR/EN/ES/AR/Darija), BANT lead qualification, RTL support. Zero API cost via Web Speech API.",
+    "description": "AI-powered voice assistant widget for websites. 40 industry personas, 5 languages (FR/EN/ES/AR/Darija), BANT lead qualification, RTL support. Zero API cost via Web Speech API.",
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {

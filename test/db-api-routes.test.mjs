@@ -225,8 +225,45 @@ after(async () => {
   }
   // Reset rate limit state to prevent memory accumulation across test suites
   resetStore();
-  // Allow pending callbacks to drain before test runner serializes results
-  await new Promise(resolve => setTimeout(resolve, 500));
+
+  // B52 fix (250.222c): Clean up ALL singletons loaded by db-api.cjs
+  // Root cause: require('../core/db-api.cjs') eagerly loads AgencyEventBus (which
+  // starts a 30s health check setInterval), AuditStore (11 EventBus subscribers),
+  // TenantMemory (SQLite vector stores), and ConversationStore (purge interval).
+  // Without full cleanup, the health check timer keeps publishing events,
+  // subscribers keep executing async handlers, and the process never exits.
+  try {
+    const eventBus = require('../core/AgencyEventBus.cjs');
+    // shutdown() clears the health check interval + removes EventEmitter listeners
+    eventBus.shutdown();
+    // subscribers Map is separate from EventEmitter — clear explicitly
+    eventBus.subscribers.clear();
+    eventBus.idempotencyCache.clear();
+  } catch { /* ignore */ }
+  try {
+    const tenantMemory = require('../core/tenant-memory.cjs');
+    if (tenantMemory.vectorStores) {
+      for (const [, store] of tenantMemory.vectorStores) {
+        store.close?.();
+      }
+      tenantMemory.vectorStores.clear();
+    }
+    if (tenantMemory._dedupSets) {
+      tenantMemory._dedupSets.clear();
+    }
+  } catch { /* ignore */ }
+  // B52: Destroy HTTP keep-alive connections + unref remaining handles
+  try {
+    const http = require('http');
+    const https = require('https');
+    http.globalAgent.destroy();
+    https.globalAgent.destroy();
+  } catch { /* ignore */ }
+  try {
+    for (const h of process._getActiveHandles()) {
+      if (typeof h.unref === 'function') h.unref();
+    }
+  } catch { /* ignore */ }
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2501,5 +2538,280 @@ describe('Auth resend verification E2E', () => {
     assert.ok(updatedUser, 'User should still exist');
     assert.ok(updatedUser.email_verify_token, 'Verify token hash should be set');
     assert.ok(updatedUser.email_verify_expires, 'Verify expiry should be set');
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// B108: VOICE CLONE HTTP ROUTES — /api/tenants/:id/voice-clone
+// Tests the full E2E chain: auth → feature gate → multipart parsing → ElevenLabs
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('Voice Clone Routes /api/tenants/:id/voice-clone (B108)', () => {
+  const nodePath = require('path');
+  const nodeFs = require('fs');
+  const { fileURLToPath } = require('url');
+  const __dirname_vc = nodePath.dirname(fileURLToPath(import.meta.url));
+  let adminUser, regularUser;
+  let tenantConfigDir, tenantConfigPath;
+  const originalFetch = globalThis.fetch;
+
+  // Build raw multipart body (no external deps)
+  function buildMultipart(fields, boundary) {
+    const parts = [];
+    for (const { name, filename, contentType, data } of fields) {
+      let disposition = `Content-Disposition: form-data; name="${name}"`;
+      if (filename) disposition += `; filename="${filename}"`;
+      let headers = disposition;
+      if (contentType) headers += `\r\nContent-Type: ${contentType}`;
+      parts.push(Buffer.from(`--${boundary}\r\n${headers}\r\n\r\n`));
+      parts.push(Buffer.isBuffer(data) ? data : Buffer.from(data));
+      parts.push(Buffer.from('\r\n'));
+    }
+    parts.push(Buffer.from(`--${boundary}--\r\n`));
+    return Buffer.concat(parts);
+  }
+
+  before(() => {
+    // Create admin user with a known tenant that has expert_clone plan
+    adminUser = createUserDirect(`vc_admin_${Date.now()}@test.com`, { role: 'admin' });
+
+    // Create client config dir + config.json with expert_clone plan
+    tenantConfigDir = nodePath.join(__dirname_vc, '..', 'clients', adminUser.tenantId);
+    tenantConfigPath = nodePath.join(tenantConfigDir, 'config.json');
+    nodeFs.mkdirSync(tenantConfigDir, { recursive: true });
+    nodeFs.writeFileSync(tenantConfigPath, JSON.stringify({
+      plan: 'expert_clone',
+      tenant_id: adminUser.tenantId
+    }, null, 2));
+
+    // Regular user with starter plan (no voice cloning)
+    regularUser = createUserDirect(`vc_user_${Date.now()}@test.com`, { role: 'user' });
+    const regConfigDir = nodePath.join(__dirname_vc, '..', 'clients', regularUser.tenantId);
+    nodeFs.mkdirSync(regConfigDir, { recursive: true });
+    nodeFs.writeFileSync(nodePath.join(regConfigDir, 'config.json'), JSON.stringify({
+      plan: 'starter',
+      tenant_id: regularUser.tenantId
+    }, null, 2));
+  });
+
+  after(() => {
+    // Cleanup created directories
+    try { nodeFs.rmSync(tenantConfigDir, { recursive: true, force: true }); } catch {}
+    try {
+      const regDir = nodePath.join(__dirname_vc, '..', 'clients', regularUser.tenantId);
+      nodeFs.rmSync(regDir, { recursive: true, force: true });
+    } catch {}
+  });
+
+  // ─── Auth & Feature Gate ────────────────────────────────────────────
+
+  it('GET /api/tenants/:id/voice-clone — 401 without auth', async () => {
+    const res = await get(`/api/tenants/${adminUser.tenantId}/voice-clone`);
+    assert.equal(res.status, 401);
+  });
+
+  it('GET /api/tenants/:id/voice-clone — 403 for starter plan (feature gate)', async () => {
+    const res = await get(
+      `/api/tenants/${regularUser.tenantId}/voice-clone`,
+      authHeader(regularUser.token)
+    );
+    assert.equal(res.status, 403);
+    const data = await res.json();
+    assert.ok(data.error.includes('Expert Clone'), 'Should mention Expert Clone plan requirement');
+  });
+
+  it('GET /api/tenants/:id/voice-clone — 403 for cross-tenant access', async () => {
+    // Regular user trying to access admin's tenant
+    const res = await get(
+      `/api/tenants/${adminUser.tenantId}/voice-clone`,
+      authHeader(regularUser.token)
+    );
+    assert.equal(res.status, 403);
+  });
+
+  // ─── GET (status) ──────────────────────────────────────────────────
+
+  it('GET /api/tenants/:id/voice-clone — returns null when no clone configured', async () => {
+    const res = await get(
+      `/api/tenants/${adminUser.tenantId}/voice-clone`,
+      authHeader(adminUser.token)
+    );
+    assert.equal(res.status, 200);
+    const data = await res.json();
+    assert.strictEqual(data.voice_clone, null, 'Should return null before clone is created');
+  });
+
+  // ─── POST (create clone) ──────────────────────────────────────────
+
+  it('POST /api/tenants/:id/voice-clone — 400 without multipart content type', async () => {
+    const res = await post(
+      `/api/tenants/${adminUser.tenantId}/voice-clone`,
+      { name: 'test' },
+      authHeader(adminUser.token)
+    );
+    assert.equal(res.status, 400);
+    const data = await res.json();
+    assert.ok(data.error.includes('multipart'), 'Should require multipart/form-data');
+  });
+
+  it('POST /api/tenants/:id/voice-clone — 400 without audio samples', async () => {
+    const boundary = `---boundary${Date.now()}`;
+    const body = buildMultipart([
+      { name: 'name', data: 'MyVoice' }
+    ], boundary);
+
+    const res = await fetch(`${BASE}/api/tenants/${adminUser.tenantId}/voice-clone`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${boundary}`,
+        'X-Forwarded-For': uniqueIp(),
+        ...authHeader(adminUser.token)
+      },
+      body
+    });
+    assert.equal(res.status, 400);
+    const data = await res.json();
+    assert.ok(data.error.includes('audio sample'), 'Should require at least one audio sample');
+  });
+
+  it('POST /api/tenants/:id/voice-clone — creates clone with mock ElevenLabs', async () => {
+    // Mock ElevenLabs cloneVoice: intercept require cache
+    const elevenLabsPath = require.resolve('../core/elevenlabs-client.cjs');
+    const origModule = require(elevenLabsPath);
+    const OrigClass = origModule.ElevenLabsClient;
+
+    // Create a mock class that inherits but overrides cloneVoice + isConfigured
+    class MockElevenLabsClient extends OrigClass {
+      constructor(...args) {
+        super(...args);
+        this.apiKey = 'mock-test-key';
+      }
+      isConfigured() { return true; }
+      async cloneVoice(name, samples, description) {
+        return { voice_id: `mock_voice_${Date.now()}` };
+      }
+    }
+
+    // Patch the require cache
+    require.cache[elevenLabsPath].exports = {
+      ...origModule,
+      ElevenLabsClient: MockElevenLabsClient
+    };
+
+    try {
+      const boundary = `---boundary${Date.now()}`;
+      const fakeAudio = Buffer.alloc(1024, 0xFF); // 1KB of fake audio bytes
+      const body = buildMultipart([
+        { name: 'name', data: 'TestExpertVoice' },
+        { name: 'samples', filename: 'sample1.mp3', contentType: 'audio/mpeg', data: fakeAudio },
+        { name: 'samples', filename: 'sample2.mp3', contentType: 'audio/mpeg', data: fakeAudio }
+      ], boundary);
+
+      const res = await fetch(`${BASE}/api/tenants/${adminUser.tenantId}/voice-clone`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${boundary}`,
+          'X-Forwarded-For': uniqueIp(),
+          ...authHeader(adminUser.token)
+        },
+        body
+      });
+      assert.equal(res.status, 200, `Expected 200, got ${res.status}: ${await res.clone().text()}`);
+      const data = await res.json();
+      assert.ok(data.success, 'Should return success: true');
+      assert.ok(data.voice_clone, 'Should return voice_clone object');
+      assert.ok(data.voice_clone.voice_id.startsWith('mock_voice_'), 'Should have mock voice ID');
+      assert.strictEqual(data.voice_clone.voice_name, 'TestExpertVoice');
+      assert.strictEqual(data.voice_clone.sample_count, 2, 'Should count 2 audio samples');
+      assert.strictEqual(data.voice_clone.status, 'active');
+      assert.ok(data.voice_clone.created_at, 'Should have created_at timestamp');
+
+      // Verify persisted in config.json
+      const config = JSON.parse(nodeFs.readFileSync(tenantConfigPath, 'utf8'));
+      assert.ok(config.voice_clone, 'Config should have voice_clone');
+      assert.strictEqual(config.voice_clone.voice_name, 'TestExpertVoice');
+    } finally {
+      // Restore original module
+      require.cache[elevenLabsPath].exports = origModule;
+    }
+  });
+
+  // ─── GET after POST ────────────────────────────────────────────────
+
+  it('GET /api/tenants/:id/voice-clone — returns clone status after creation', async () => {
+    const res = await get(
+      `/api/tenants/${adminUser.tenantId}/voice-clone`,
+      authHeader(adminUser.token)
+    );
+    assert.equal(res.status, 200);
+    const data = await res.json();
+    assert.ok(data.voice_clone, 'Should return voice_clone object');
+    assert.strictEqual(data.voice_clone.status, 'active');
+    assert.strictEqual(data.voice_clone.voice_name, 'TestExpertVoice');
+  });
+
+  // ─── DELETE ────────────────────────────────────────────────────────
+
+  it('DELETE /api/tenants/:id/voice-clone — deletes clone + cleans config', async () => {
+    // Mock fetch for ElevenLabs DELETE /voices/:id
+    const savedFetch = globalThis.fetch;
+    const origElevenLabs = require(require.resolve('../core/elevenlabs-client.cjs'));
+    const OrigEL = origElevenLabs.ElevenLabsClient;
+
+    class MockDel extends OrigEL {
+      constructor(...args) {
+        super(...args);
+        this.apiKey = 'mock-test-key';
+      }
+      isConfigured() { return true; }
+    }
+    require.cache[require.resolve('../core/elevenlabs-client.cjs')].exports = {
+      ...origElevenLabs,
+      ElevenLabsClient: MockDel
+    };
+
+    // Mock the fetch call for ElevenLabs DELETE
+    globalThis.fetch = async (url, opts) => {
+      if (typeof url === 'string' && url.includes('api.elevenlabs.io') && opts?.method === 'DELETE') {
+        return { ok: true, status: 200, text: async () => 'ok' };
+      }
+      return savedFetch(url, opts);
+    };
+
+    try {
+      const res = await del(
+        `/api/tenants/${adminUser.tenantId}/voice-clone`,
+        authHeader(adminUser.token)
+      );
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(data.success, 'Should return success: true');
+
+      // Verify config.json voice_clone is null
+      const config = JSON.parse(nodeFs.readFileSync(tenantConfigPath, 'utf8'));
+      assert.strictEqual(config.voice_clone, null, 'Config voice_clone should be null after delete');
+    } finally {
+      globalThis.fetch = savedFetch;
+      require.cache[require.resolve('../core/elevenlabs-client.cjs')].exports = origElevenLabs;
+    }
+  });
+
+  it('DELETE /api/tenants/:id/voice-clone — idempotent when no clone exists', async () => {
+    const res = await del(
+      `/api/tenants/${adminUser.tenantId}/voice-clone`,
+      authHeader(adminUser.token)
+    );
+    assert.equal(res.status, 200);
+    const data = await res.json();
+    assert.ok(data.success);
+  });
+
+  it('PUT /api/tenants/:id/voice-clone — 405 method not allowed', async () => {
+    const res = await put(
+      `/api/tenants/${adminUser.tenantId}/voice-clone`,
+      { name: 'test' },
+      authHeader(adminUser.token)
+    );
+    assert.equal(res.status, 405);
   });
 });

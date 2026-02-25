@@ -52,17 +52,17 @@ const TOP_5_PERSONAS = ['DENTAL', 'PROPERTY', 'RESTAURATEUR', 'UNIVERSAL_ECOMMER
 const ALL_PERSONA_KEYS = Object.keys(PERSONAS);
 
 // ═══════════════════════════════════════════════════════
-// 1. Global: ALL 38 personas structural completeness
+// 1. Global: ALL 40 personas structural completeness
 // ═══════════════════════════════════════════════════════
 
 describe('ALL personas — structural completeness', () => {
-  test('exactly 38 personas in PERSONAS', () => {
-    assert.strictEqual(ALL_PERSONA_KEYS.length, 38, `Expected 38, got ${ALL_PERSONA_KEYS.length}: ${ALL_PERSONA_KEYS.join(', ')}`);
+  test('exactly 40 personas in PERSONAS', () => {
+    assert.strictEqual(ALL_PERSONA_KEYS.length, 40, `Expected 38, got ${ALL_PERSONA_KEYS.length}: ${ALL_PERSONA_KEYS.join(', ')}`);
   });
 
-  test('exactly 38 personas in SYSTEM_PROMPTS', () => {
+  test('exactly 40 personas in SYSTEM_PROMPTS', () => {
     const spKeys = Object.keys(SYSTEM_PROMPTS);
-    assert.strictEqual(spKeys.length, 38, `Expected 38, got ${spKeys.length}`);
+    assert.strictEqual(spKeys.length, 40, `Expected 38, got ${spKeys.length}`);
   });
 
   test('PERSONAS and SYSTEM_PROMPTS have same keys', () => {
@@ -387,14 +387,14 @@ describe('Cross-persona consistency', () => {
       `Duplicate names: ${names.filter((n, i) => names.indexOf(n) !== i).join(', ')}`);
   });
 
-  test('no persona has stale "40 personas" reference', () => {
+  test('no persona has stale "38 personas" reference (correct is 40)', () => {
     for (const key of ALL_PERSONA_KEYS) {
       const sp = PERSONAS[key].systemPrompt;
       const bg = PERSONAS[key].background;
-      assert.ok(!sp.includes('40 persona') && !sp.includes('40 industry'),
-        `${key}.systemPrompt contains stale "40 personas"`);
-      assert.ok(!bg.includes('40 persona') && !bg.includes('40 industry'),
-        `${key}.background contains stale "40 personas"`);
+      assert.ok(!sp.includes('38 persona') && !sp.includes('38 industry'),
+        `${key}.systemPrompt contains stale "38 personas" (should be 40)`);
+      assert.ok(!bg.includes('38 persona') && !bg.includes('38 industry'),
+        `${key}.background contains stale "38 personas" (should be 40)`);
     }
   });
 

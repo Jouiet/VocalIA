@@ -24,7 +24,7 @@
   },
   "personas": {
     "question": "Quels types de personas proposez-vous ?",
-    "response": "VocalIA propose 38 personas pré-construits adaptés à différents secteurs : cabinets dentaires, cabinets médicaux, immobilier, notaires, e-commerce (mode, électronique, alimentation...), hôtellerie, restauration, recrutement, consulting, assurance, logistique, événementiel, juridique, bien-être, coaching, conciergerie, coiffure. Chaque persona est optimisé pour le vocabulaire et les scénarios de son secteur.",
+    "response": "VocalIA propose 40 personas pré-construits adaptés à différents secteurs : cabinets dentaires, cabinets médicaux, immobilier, notaires, e-commerce (mode, électronique, alimentation...), hôtellerie, restauration, recrutement, consulting, assurance, logistique, événementiel, juridique, bien-être, coaching, conciergerie, coiffure. Chaque persona est optimisé pour le vocabulaire et les scénarios de son secteur.",
     "keywords": ["persona", "secteur", "industrie", "métier", "adapté", "spécialisé", "38"]
   },
   "languages": {
@@ -99,7 +99,7 @@
   },
   "clients": {
     "question": "Avez-vous des clients ?",
-    "response": "VocalIA est une plateforme récente en phase de lancement commercial. La technologie est opérationnelle avec 38 personas sectoriels, 5 langues et un système de production déployé et monitoré. Nous cherchons nos premiers clients partenaires avec un accompagnement privilégié.",
+    "response": "VocalIA est une plateforme récente en phase de lancement commercial. La technologie est opérationnelle avec 40 personas sectoriels, 5 langues et un système de production déployé et monitoré. Nous cherchons nos premiers clients partenaires avec un accompagnement privilégié.",
     "keywords": ["clients", "références", "utilisateurs", "qui utilise", "témoignages"]
   },
   "sla": {

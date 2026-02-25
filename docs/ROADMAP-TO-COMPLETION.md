@@ -1,8 +1,8 @@
-> **Date:** 2026-02-23 | **Session:** 250.233 (Red Team 40/40 + Eval-All 200/200)
+> **Date:** 2026-02-25 | **Session:** 250.236 (Test Reliability + 38→40 Persona Global Fix)
 > **Code Completeness:** 9.8/10 | **Production Readiness:** 9.0/10 | **Security:** 9.2/10 | **Weighted:** 9.4/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **Test Reliability** (250.236): 6474/6474 pass, 0 fail, 0 cancelled. B52 fixes (3/4 timeouts resolved), STT test env-fix, validator 23/23 ✅ 0 errors, health-check 45/45 ✅ 100%. **38→40 global fix**: 30+ source files corrected. Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.233. Latest: **250.233** Red team 40/40 + eval-all 200/200 + anti-hallucination hardening.
+> **Source:** 60+ audit phases across sessions 250.105-250.236. Latest: **250.236** Test reliability + 38→40 persona global fix.
 
 ---
 
@@ -300,7 +300,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: ~6,250 tests | ~6,250 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.231 — 23/02/2026)
+**TOTAL: 6,474 tests | 6,474 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.236 — 25/02/2026)
 
 **Function coverage: 221/221 exported functions (100%)** — 213 direct calls + 8 via HTTP E2E.
 
@@ -317,7 +317,7 @@ Test classification (verified empirically — 250.210b, test counts updated 250.
 | **Execute real code** | **66** | **3,849** | **63.7%** | — |
 
 97 test files (was 91 at 250.210b; +6 since: promptfoo eval configs + persona security tests). Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
-Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (167), catalog-connector (164).
+Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (**178** — +11 voice-clone E2E, 250.234), catalog-connector (164), elevenlabs-client (**81** — +30 behavioral, 250.234), context-box (**46** — +6, 250.234).
 
 ### 5.3 The 25 Function Tools
 
@@ -556,7 +556,9 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 55 DOC FACTUAL UPDATE (250.231)** | **3 doc files updated with verified facts: openclaw-patterns (3/4 patterns→IMPLEMENTED, NindoHost→VPS Hostinger), ROADMAP (personas 38→40, HTML 85→88, tests 91→97, +4 phases), SESSION-250.214-REPORT (metrics updated). MEMORY.md + session-history.md updated.** | **N/A** | **0** |
 | **Phase 56 PROMPTFOO 200/200 + 38→40 FIX (250.232)** | **Promptfoo expanded 42→200 configs (40×5 langs). sync-prompts.cjs rewritten for ALL langs. run-eval.sh dynamic glob + --lang filter. Smoke: 32 PASS/0 FAIL. 38→40 global fix: 19 files (15 HTML + 3 locales + 1 JSON).** | **promptfoo/**, **website/** | **0** |
 | **Phase 57 RED TEAM 40/40 + ANTI-HALLUCINATION (250.233)** | **Red team expanded 1/40→40/40 personas (14 attacks × 40 = 560 tests). Run: 559/560 PASS. 1 real vuln found (travel-agent-fr hallucination). Fix: 199 anti-hallucination rules injected across 5 langs. Re-run: 558/560 (grader noise). Eval-all: 1193/1210 PASS (98.6%). Anthropic blocked ($0).** | **personas/**, **promptfoo/** | **1 (hallucination)** |
-| **CUMULATIVE** | **434+** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA + EVAL tasks complete — only BUSINESS remain (Stripe key, first customer).** |
+| **Phase 58 DEEP SURGERY TEST AUDIT (250.234)** | **Function-by-function behavioral test audit. +47 tests: ElevenLabs client (30 mock-fetch B103/B104, 81 total), voice-clone HTTP routes (11 E2E with multipart+require.cache mock B108, 178 total), ContextBox chain (6 spy+round-trip B110, 46 total). B123 REAL BUG: voice-clone audit trail wrong API signature (1-arg→2-arg). Fixed in db-api.cjs:2337,2395.** | **test/**, **core/db-api.cjs** | **1 (B123)** |
+| **Phase 59 TEST RELIABILITY + 38→40 GLOBAL (250.236)** | **B52 fix: 3/4 test suite timeouts resolved (voice-telephony-pure, module-loader, telephony-handlers partial). WhatsApp cache interval `.unref()` added. STT test fixed (env-dependent). Validator stale number patterns corrected (was flagging 40 as stale). 38→40 persona fix: 30+ source files (core/, mcp-server/, personas/, clients/, scripts/, docs/, distribution/). Validator exclusions for generated data (KB chunks, dist/, archive/). Health-check RAG paths updated (multi-tenant). 6474/6474 tests pass, 0 fail, 0 cancelled. Validator 23/23 ✅ 0 errors. Health-check 45/45 ✅ 100%.** | **test/**, **core/**, **scripts/**, **mcp-server/**, **personas/** | **0** |
+| **CUMULATIVE** | **435+** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA + EVAL + TEST AUDIT tasks complete — only BUSINESS remain (Stripe key, first customer).** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
 
@@ -664,9 +666,9 @@ create_booking          get_recommendations    qualify_lead
 
 **Code Completeness: 9.5/10** | **Production Readiness: 8.5/10** | **Security: 9.0/10** | **Weighted: 9.2/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.205). 8 not fixable locally (VPS/arch). **ALL CODE + SECURITY + OPS tasks complete. Marketing copy 100% clean. SMTP LIVE (Resend). OAuth SSO LIVE (Google+GitHub). GSC verified. Only BUSINESS items remain (Stripe, first customer).**
+**Remaining actionable bugs: 0** (verified 250.234). 8 not fixable locally (VPS/arch). **ALL CODE + SECURITY + OPS + TEST AUDIT tasks complete. Marketing copy 100% clean. SMTP LIVE (Resend). OAuth SSO LIVE (Google+GitHub). GSC verified. Only BUSINESS items remain (Stripe, first customer).**
 
-Rigorous per-item audit through 250.231 reveals all 440+ code bugs resolved across 55+ phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO LIVE (250.205) + 2 D1-pattern bugs (250.198). Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). SEO/email/branding/a11y/PWA (250.205) adds 70+ fixes. Non-root containers + backup (250.200c). SOTA patterns (250.221-222): TenantMemory, ProactiveScheduler, WhatsApp Bidirectional, 3 Skills. De-jargon (250.227-228): provider names purged from all public pages. Promptfoo LLM eval (250.229-230): 42/200 prompts tested, 200/200 security sections. Persona count corrected 38→40 (250.230). Doc factual update (250.231):
+Rigorous per-item audit through 250.234 reveals all 435+ code bugs resolved across 58+ phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO LIVE (250.205) + 2 D1-pattern bugs (250.198). Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). SEO/email/branding/a11y/PWA (250.205) adds 70+ fixes. Non-root containers + backup (250.200c). SOTA patterns (250.221-222): TenantMemory, ProactiveScheduler, WhatsApp Bidirectional, 3 Skills. De-jargon (250.227-228): provider names purged from all public pages. Promptfoo LLM eval (250.229-233): 200/200 prompts, red team 40/40, eval-all 98.6%. Persona count corrected 38→40 (250.230). Deep Surgery Test Audit (250.234): +47 behavioral tests, B123 real bug found & fixed:
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):
@@ -976,5 +978,39 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 
 ---
 
-*Document mis a jour le 2026-02-18 — Session 250.218*
-*Changelog: sessions 250.105→218 (469+ bugs reported across 53 phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). **SOTA Pattern implementation complete (250.218)**: TenantMemory (P0), WhatsApp Bidirectional (P0), ProactiveScheduler (P1). 12/12 regression tests passed. Details: `memory/session-history.md`*
+### 6.20 Phase — Mobile Optimization (250.235) — 88 Pages Audited, 33 Files Modified
+
+> **Source**: Forensic audit of ALL 88 HTML pages at 375×812 viewport (iPhone X)
+> **Tool**: Tailwind v4.1.18, Playwright MCP, CSS cascade layer analysis
+
+**CSS Foundation (input.css):**
+- 44px WCAG touch targets on buttons/inputs (≤768px)
+- iOS zoom prevention (font-size: 16px on inputs)
+- overflow-x hidden (body/main/section/article)
+- Word-break for long URLs/Arabic text
+- `.glass.p-8`/`.reward-card.p-8`/`.solution-card.p-8` → 20px mobile padding
+- Gap reductions: gap-8→20px (37%), gap-10→24px (40%), gap-12→28px (42%)
+- Scoped table styling: `.overflow-x-auto table` (NOT `table`)
+- Extra-small (≤380px) overrides for iPhone SE
+
+**HTML Modifications (33 files):**
+- 13 bare grid-cols-3/4 → responsive (9 files)
+- 11 tables wrapped in overflow-x-auto (5 files)
+- 5 auth page cards p-8 → p-6 sm:p-8
+- 15+ non-glass cards p-8 → p-6 md:p-8 (8 files)
+- 5 dashboard panels p-8 → p-5 md:p-8 (3 files)
+- Homepage hero: badge hidden sm:inline-flex, title text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+
+**Self-Audit — 5 Critical CSS Bugs Caught & Fixed:**
+1. `.text-4xl { clamp }` broke pricing numbers → removed
+2. `h1 { clamp }` forced dashboard h1s UP → removed
+3. `.flex.items-center.gap-4 { flex-wrap }` too broad → removed
+4. `table/th/td` element selectors beat Tailwind layers → scoped to `.overflow-x-auto`
+5. `gap-8 → 1rem` too aggressive (50%) → changed to 1.25rem (37%)
+
+**Tests**: 833/833 pass (config-consistency 534 + security-regression 299)
+
+---
+
+*Document mis a jour le 2026-02-25 — Session 250.235*
+*Changelog: sessions 250.105→235 (469+ bugs reported across 53+ phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). **SOTA Pattern implementation complete (250.218)**: TenantMemory (P0), WhatsApp Bidirectional (P0), ProactiveScheduler (P1). **Promptfoo 200/200** (250.233): eval-all 98.6%, red team 40/40 99.6%. **Deep Surgery Test Audit** (250.234): +47 tests, B123 fixed. **Mobile Optimization** (250.235): 88 pages, 33 files, 5 CSS bugs self-caught, 833/833 pass. Details: `memory/session-history.md`*

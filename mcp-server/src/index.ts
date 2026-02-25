@@ -308,7 +308,7 @@ const server = new McpServer({
 // =============================================================================
 
 const LanguageEnum = z.enum(["fr", "en", "es", "ar", "ary"]);
-// Session 250.120: Synced with 38 personas from voice-persona-injector.cjs
+// Session 250.120: Synced with 40 personas from voice-persona-injector.cjs
 const PersonaKeyEnum = z.enum([
   // Tier 1 - Core (4)
   "AGENCY", "DENTAL", "PROPERTY", "CONTRACTOR",
@@ -326,7 +326,7 @@ const PersonaKeyEnum = z.enum([
 ]);
 
 // =============================================================================
-// FACTUAL DATA - 38 PERSONAS (synced from voice-persona-injector.cjs - Session 250.120)
+// FACTUAL DATA - 40 PERSONAS (synced from voice-persona-injector.cjs - Session 250.120)
 // =============================================================================
 
 const PERSONAS_DATA = {
@@ -385,17 +385,17 @@ const SYSTEM_PROMPTS: Record<string, Record<string, string>> = {
 1. Voice Widget: Assistant vocal 24/7 pour sites web
 2. Voice Telephony: Ligne téléphonique IA (via Twilio)
 OBJECTIF: Qualifier le prospect et proposer une démo à vocalia.ma/booking.
-ATOUTS: 38 personas sectoriels, 5 langues dont Darija, intégrations CRM/e-commerce.`,
+ATOUTS: 40 personas sectoriels, 5 langues dont Darija, intégrations CRM/e-commerce.`,
     en: `You are VocalIA's Voice AI consultant. VocalIA is a Voice AI platform with 2 products:
 1. Voice Widget: 24/7 voice assistant for websites
 2. Voice Telephony: AI phone line (via Twilio)
 GOAL: Qualify prospects and offer a demo at vocalia.ma/booking.
-STRENGTHS: 38 industry personas, 5 languages including Darija, CRM/e-commerce integrations.`,
+STRENGTHS: 40 industry personas, 5 languages including Darija, CRM/e-commerce integrations.`,
     es: `Eres el consultor de Voice AI de VocalIA. VocalIA es una plataforma Voice AI con 2 productos:
 1. Voice Widget: Asistente de voz 24/7 para sitios web
 2. Voice Telephony: Línea telefónica IA (via Twilio)
 OBJETIVO: Calificar prospectos y ofrecer demo en vocalia.ma/booking.
-FORTALEZAS: 38 personas sectoriales, 5 idiomas incluyendo Darija, integraciones CRM/e-commerce.`,
+FORTALEZAS: 40 personas sectoriales, 5 idiomas incluyendo Darija, integraciones CRM/e-commerce.`,
     ar: `أنت مستشار Voice AI في فوكاليا. فوكاليا هي منصة Voice AI بمنتجين:
 1. Voice Widget: مساعد صوتي 24/7 للمواقع
 2. Voice Telephony: خط هاتف ذكي (Twilio)
@@ -469,7 +469,7 @@ server.registerTool(
 server.registerTool(
   "voice_generate_response",
   {
-    description: "Generate an AI voice response using VocalIA's multi-provider fallback chain (Grok → Gemini → Claude → Atlas-Chat). Supports 38 industry personas across 5 languages with integrated lead scoring.",
+    description: "Generate an AI voice response using VocalIA's multi-provider fallback chain (Grok → Gemini → Claude → Atlas-Chat). Supports 40 industry personas across 5 languages with integrated lead scoring.",
     inputSchema: {
       message: z.string().describe("The user's message or query to respond to"),
       language: LanguageEnum.optional().describe("Response language (default: fr)"),
@@ -581,7 +581,7 @@ server.registerTool(
 // PERSONA TOOLS (3) - LOCAL, NO API NEEDED
 // =============================================================================
 
-// Tool 3: personas_list - List all 38 personas by tier
+// Tool 3: personas_list - List all 40 personas by tier
 server.registerTool(
   "personas_list",
   {
@@ -653,7 +653,7 @@ server.registerTool(
 server.registerTool(
   "personas_get_system_prompt",
   {
-    description: "Get the complete system prompt for a specific persona in a given language. Supports all 38 personas across 5 languages (fr, en, es, ar, ary).",
+    description: "Get the complete system prompt for a specific persona in a given language. Supports all 40 personas across 5 languages (fr, en, es, ar, ary).",
     inputSchema: {
       personaKey: PersonaKeyEnum.describe("The persona key"),
       language: LanguageEnum.optional().describe("Language for the prompt (default: fr)"),
@@ -2036,7 +2036,7 @@ server.registerResource(
               period: "month",
               usage: "0.24€/min",
               target: "Call centers & enterprises",
-              features: ["AI phone line", "38 personas", "5 languages", "Twilio PSTN", "25 function tools", "Dedicated support"],
+              features: ["AI phone line", "40 personas", "5 languages", "Twilio PSTN", "25 function tools", "Dedicated support"],
               margin: "~77% on usage",
             },
           ],

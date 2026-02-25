@@ -101,7 +101,7 @@
 
 **VocalIA structural advantage**: Grok $0.05/min includes LLM+STT+TTS in one price. Competitors charge each separately.
 
-**"60% cheaper" claim REMOVED (250.204)**: At 0.24€/min, VocalIA is NOT cheaper than Bland ($0.09-0.11) or Retell (~$0.14). Competitive moat = tout-inclus (IA + 38 personas + analytics in one subscription).
+**"60% cheaper" claim REMOVED (250.204)**: At 0.24€/min, VocalIA is NOT cheaper than Bland ($0.09-0.11) or Retell (~$0.14). Competitive moat = tout-inclus (IA + 40 personas + analytics in one subscription).
 
 ### 3B. Voice Widget
 
@@ -150,7 +150,7 @@
 |:--------|:----|:--------|:---------------------|
 | PME francaises (widget) | ~500K with websites | 49€/month | Voice + 5 langs + price |
 | E-commerce FR (ECOM widget) | ~200K sites | 99€/month | Cart recovery + voice shopping |
-| Marketing agencies FR | ~15K agencies | White-label reseller | Multi-tenant, 38 personas |
+| Marketing agencies FR | ~15K agencies | White-label reseller | Multi-tenant, 40 personas |
 | Call centers FR/MA | ~2K centers | 0.24€/min tout-inclus | Darija + plateforme unifiée |
 
 ---
@@ -231,7 +231,7 @@
 
 | Element | Location | Content | Status |
 |:--------|:---------|:--------|:------:|
-| "38 Personas IA" | `index.html` stats bar | Factually true (code verified) | **TRUE** |
+| "40 Personas IA" | `index.html` stats bar | Factually true (code verified) | **TRUE** |
 | "203 MCP Tools" | `index.html` stats bar | Factually true (test verified) | **TRUE** |
 | "25 Function Tools" | `index.html` stats bar | Factually true | **TRUE** |
 | "5 Langues" | `index.html` stats bar | Factually true | **TRUE** |
@@ -272,7 +272,7 @@
 ```
 AWARENESS (GA4+Plausible): Visitors → vocalia.ma (52 events tracking)
     ↓
-INTEREST (Homepage):     Scenario-based social proof (38 personas, 203 tools — real stats)
+INTEREST (Homepage):     Scenario-based social proof (40 personas, 203 tools — real stats)
     ↓
 CONSIDERATION (Pricing): 4 tiers (Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.24€/min)
     ↓

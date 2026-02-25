@@ -1,6 +1,6 @@
 # vocalia-widget
 
-AI-powered voice assistant widget for websites. 38 industry personas, 5 languages (FR/EN/ES/AR/Darija), BANT lead qualification, RTL support.
+AI-powered voice assistant widget for websites. 40 industry personas, 5 languages (FR/EN/ES/AR/Darija), BANT lead qualification, RTL support.
 
 ## Installation
 

@@ -12,10 +12,12 @@
  * Run: node --test test/telephony-handlers.test.mjs
  */
 
-import { test, describe, beforeEach } from 'node:test';
+import { test, describe, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'path';
 import fs from 'fs';
+import { createRequire } from 'module';
+const _require = createRequire(import.meta.url);
 
 // Import the module
 const bridge = await import(`file://${path.join(import.meta.dirname, '..', 'telephony', 'voice-telephony-bridge.cjs')}?t=${Date.now()}`).then(m => m.default);
@@ -1413,4 +1415,35 @@ describe('handleSendPaymentDetails — i18n error path', () => {
       assert.ok(result.error, `lang=${lang} should have error message`);
     }
   });
+});
+
+// B52 fix: Clean up singletons + open sockets to allow process exit
+after(() => {
+  try {
+    const eventBus = _require('../core/AgencyEventBus.cjs');
+    eventBus.shutdown();
+    eventBus.subscribers.clear();
+    eventBus.idempotencyCache.clear();
+  } catch { /* ignore */ }
+  try {
+    const tenantMemory = _require('../core/tenant-memory.cjs');
+    if (tenantMemory.vectorStores) {
+      for (const [, store] of tenantMemory.vectorStores) store.close?.();
+      tenantMemory.vectorStores.clear();
+    }
+    if (tenantMemory._dedupSets) tenantMemory._dedupSets.clear();
+  } catch { /* ignore */ }
+  // Destroy HTTP/HTTPS keep-alive connections from Twilio/WhatsApp API calls
+  try {
+    const http = _require('http');
+    const https = _require('https');
+    http.globalAgent.destroy();
+    https.globalAgent.destroy();
+  } catch { /* ignore */ }
+  // Unref all remaining active handles
+  try {
+    for (const h of process._getActiveHandles()) {
+      if (typeof h.unref === 'function') h.unref();
+    }
+  } catch { /* ignore */ }
 });

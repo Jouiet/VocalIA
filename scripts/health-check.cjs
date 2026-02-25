@@ -48,9 +48,8 @@ const modules = {
     'sensors/retention-sensor.cjs'
   ],
   'RAG Index': [
-    'data/knowledge-base/chunks.json',
-    'data/knowledge-base/tfidf_index.json',
-    'data/knowledge-base/status.json'
+    'data/knowledge-base/embeddings_cache.json',
+    'data/knowledge-base/tenants'
   ]
 };
 
@@ -66,6 +65,13 @@ for (const [category, paths] of Object.entries(modules)) {
     if (!fs.existsSync(fullPath)) {
       console.log(`  ${COLORS.red}❌ ${modulePath} (NOT FOUND)${COLORS.reset}`);
       totalFail++;
+      continue;
+    }
+
+    // Directories: just check existence
+    if (fs.statSync(fullPath).isDirectory()) {
+      console.log(`  ${COLORS.green}✅ ${path.basename(modulePath)}/${COLORS.reset}`);
+      totalOk++;
       continue;
     }
 

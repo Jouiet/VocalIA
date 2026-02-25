@@ -21,9 +21,11 @@
 
 
 
-import { test, describe } from 'node:test';
+import { test, describe, after } from 'node:test';
 import assert from 'node:assert';
+import { createRequire } from 'module';
 import bridge from '../telephony/voice-telephony-bridge.cjs';
+const _require = createRequire(import.meta.url);
 
 const {
   getGrokVoiceFromPreferences,
@@ -460,3 +462,21 @@ describe('Telephony HITL_CONFIG', () => {
 // NOTE: Telephony exports are proven by behavioral tests above
 // (getGrokVoiceFromPreferences, getTwiMLLanguage, detectFinancialCommitment, calculateBANTScore,
 // detectQueryLanguage, safeJsonParse, generateSessionId, checkRateLimit, CONFIG, HITL_CONFIG).
+
+// B52 fix: Clean up singletons to allow process exit
+after(() => {
+  try {
+    const eventBus = _require('../core/AgencyEventBus.cjs');
+    eventBus.shutdown();
+    eventBus.subscribers.clear();
+    eventBus.idempotencyCache.clear();
+  } catch { /* ignore */ }
+  try {
+    const tenantMemory = _require('../core/tenant-memory.cjs');
+    if (tenantMemory.vectorStores) {
+      for (const [, store] of tenantMemory.vectorStores) store.close?.();
+      tenantMemory.vectorStores.clear();
+    }
+    if (tenantMemory._dedupSets) tenantMemory._dedupSets.clear();
+  } catch { /* ignore */ }
+});
