@@ -109,6 +109,8 @@ const { getDB } = require('./GoogleSheetsDB.cjs'); // Session 250.89: DB for quo
 const eventBus = require('./AgencyEventBus.cjs');
 const A2UIService = require('./a2ui-service.cjs');
 const hybridRAG = require('./hybrid-rag.cjs').getInstance();
+// Session 250.239: Outbound webhook dispatcher (G8)
+const webhookDispatcher = require('./webhook-dispatcher.cjs');
 
 // Session 250.220: SOTA modules (lazy-loaded in main() — prevents fork bomb + Redis in tests)
 let SkillRegistry, Scheduler;
@@ -1519,14 +1521,20 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
   const anthropicKey = tenantSecrets.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY;
   const atlasKey = tenantSecrets.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY; // For Darija
 
-  const ragresults = hybridRAG
-    ? await hybridRAG.search(tenantId, language, userMessage, { limit: 3, geminiKey })
-    : KB.search(userMessage, 3);
+  let ragresults = [];
+  try {
+    ragresults = hybridRAG
+      ? await hybridRAG.search(tenantId, language, userMessage, { limit: 3, geminiKey })
+      : KB.search(userMessage, 3);
+  } catch (ragErr) {
+    console.warn('[Voice API] RAG search failed, degrading gracefully:', ragErr.message);
+    ragresults = [];
+  }
 
   let ragContext = "";
-  if (hybridRAG && ragresults.length > 0) {
+  if (hybridRAG && Array.isArray(ragresults) && ragresults.length > 0) {
     ragContext = ragresults.map(r => `[ID: ${r.id}] ${r.text}`).join('\n');
-  } else {
+  } else if (Array.isArray(ragresults)) {
     ragContext = KB.formatForVoice(ragresults, language);
   }
 
@@ -1726,9 +1734,15 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     }
   }
 
-  // All AI providers failed - ZERO REGEX POLICY
+  // All AI providers failed - ZERO REGEX POLICY (graceful degradation, not throw)
   console.warn(`[Voice API] All providers failed. Zero Regex Policy active. Returning error.`);
-  throw new Error("Service temporarily unavailable (All AI providers execution failed).");
+  return {
+    success: false,
+    error: 'Service temporarily unavailable (All AI providers failed).',
+    errors,
+    provider: 'none',
+    fallbacksUsed: errors.length
+  };
 
   /* DEAD CODE - LOCAL FALLBACK DISABLED
   const localResult = getLocalResponse(userMessage, language);
@@ -1754,6 +1768,8 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 function startServer(port = 3004) {
   // P1 FIX: Rate limiter (60 req/min per IP for voice responses)
   const rateLimiter = new RateLimiter({ maxRequests: 60, windowMs: 60000 });
+  // G13: Per-tenant rate limiter (plan-based: starter=20/min, pro/ecom=60/min, expert/telephony=120/min)
+  const tenantRateLimiter = new RateLimiter({ maxRequests: 120, windowMs: 60000, maxEntries: 5000 });
 
   const server = http.createServer(async (req, res) => {
     // Session 250.54: Request tracing
@@ -2624,6 +2640,24 @@ function startServer(port = 3004) {
             return;
           }
 
+          // G13: Per-tenant rate limiting (plan-based requests/minute)
+          if (tenantId !== 'default') {
+            const TENANT_RATE_LIMITS = { starter: 20, pro: 60, ecommerce: 60, expert_clone: 120, telephony: 120 };
+            const db0 = getDB();
+            const tConfig = db0.getTenantConfig(tenantId);
+            const plan = tConfig?.plan || 'starter';
+            const maxPerMin = TENANT_RATE_LIMITS[plan] || 20;
+            // The shared limiter has maxRequests=120 (ceiling). We check count manually for lower plans.
+            const tenantRate = tenantRateLimiter.check(tenantId);
+            // remaining = 120 - timestamps.length (after push). If timestamps.length > maxPerMin, reject.
+            const currentCount = 120 - tenantRate.remaining;
+            if (currentCount > maxPerMin) {
+              res.writeHead(429, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: `Rate limit exceeded for plan "${plan}". Max ${maxPerMin} requests/min.`, plan, limit: maxPerMin }));
+              return;
+            }
+          }
+
           const db = getDB();
           const quotaCheck = db.checkQuota(tenantId, 'sessions');
           if (!quotaCheck.allowed) {
@@ -2718,6 +2752,20 @@ function startServer(port = 3004) {
           };
 
           const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language, { forceFailProviders: bodyParsed.data.forceFailProviders });
+
+          // Handle all-providers-failed gracefully
+          if (!result.success) {
+            const errorResponse = {
+              success: false,
+              response: language === 'fr'
+                ? 'Désolé, le service est temporairement indisponible. Veuillez réessayer.'
+                : 'Sorry, the service is temporarily unavailable. Please try again.',
+              error: result.error,
+              provider: 'none'
+            };
+            sendJson(res, errorResponse, 503);
+            return;
+          }
 
           // Add AI response to session
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });
@@ -3722,6 +3770,20 @@ async function main() {
       repeat: { cron: '0 8 * * *' },
       jobId: 'quota_alert_daily'
     }).catch(e => console.error('[Automation] Quota Alert Cron Failed:', e.message));
+
+    // Session 250.239: Outbound webhook subscriptions (G8)
+    AgencyEventBus.subscribe('lead.qualified', async (event) => {
+      const { tenantId, sessionId, score, status, extractedData } = event;
+      if (tenantId) {
+        webhookDispatcher.dispatch(tenantId, 'lead.qualified', { sessionId, score, status, extractedData });
+      }
+    });
+    AgencyEventBus.subscribe('call.completed', async (event) => {
+      const { tenantId, sessionId, duration, summary } = event;
+      if (tenantId) {
+        webhookDispatcher.dispatch(tenantId, 'call.completed', { sessionId, duration, summary });
+      }
+    });
 
     startServer(parseInt(args.port) || 3004);
     return;

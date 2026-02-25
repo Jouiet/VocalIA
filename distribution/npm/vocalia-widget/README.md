@@ -151,7 +151,7 @@ Control widget behavior without writing JavaScript using HTML data attributes:
 
 ## Personas
 
-VocalIA includes 38 fine-tuned personas, categorized by industry:
+VocalIA includes 40 fine-tuned personas, categorized by industry:
 
 * **Real Estate:** `PROPERTY`, `LISTINGS`, `CLIENT_RELATIONS`
 * **Healthcare:** `DENTAL`, `HEALTHCARE`, `WELLNESS`

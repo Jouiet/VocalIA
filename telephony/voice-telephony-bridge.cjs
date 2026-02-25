@@ -94,6 +94,9 @@ const { getInstance: getConversationStore } = require('../core/conversation-stor
 const conversationStore = getConversationStore();
 console.log('✅ Conversation store initialized for telephony');
 
+// Session 250.239: Outbound webhook dispatcher (G8)
+const webhookDispatcher = require('../core/webhook-dispatcher.cjs');
+
 // Session 250.188: UCP auto-enrichment for telephony calls
 const { getInstance: getUCPStore } = require('../core/ucp-store.cjs');
 
@@ -340,6 +343,15 @@ const TWIML_MESSAGES = {
     'es': 'Le estoy transfiriendo a un asesor humano. Por favor, espere un momento.',
     'ar': 'سأحولك إلى مستشار بشري. يرجى الانتظار لحظة.',
     'ary': 'غادي نوصلك بواحد المستشار. تسنى شوية عافاك.'
+  },
+
+  // G9: Recording consent notice (GDPR/compliance)
+  recordingConsent: {
+    'fr': 'Cet appel peut être enregistré à des fins d\'amélioration du service.',
+    'en': 'This call may be recorded for quality and training purposes.',
+    'es': 'Esta llamada puede ser grabada con fines de calidad y formación.',
+    'ar': 'قد يتم تسجيل هذه المكالمة لأغراض تحسين الجودة.',
+    'ary': 'هاد لاپيل يقدر يتسجل باش نحسنو الخدمة ديالنا.'
   }
 };
 
@@ -622,6 +634,16 @@ function cleanupSession(sessionId) {
         // Save full conversation
         conversationStore.save(tenantId, sessionId, session.conversationLog, conversationMetadata);
         console.log(`[ConversationStore] Saved ${session.conversationLog.length} messages for ${tenantId}/${sessionId}`);
+
+        // G8: Fire outbound webhook for call.completed
+        webhookDispatcher.dispatch(tenantId, 'call.completed', {
+          sessionId,
+          duration_sec: callDuration,
+          messages: session.conversationLog.length,
+          lead_score: session.qualificationScore || null,
+          language: session.metadata?.language,
+          call_sid: session.callSid
+        });
       }
     } catch (convErr) {
       console.warn('[ConversationStore] Save warning:', convErr.message);
@@ -4075,14 +4097,17 @@ function logConversionEvent(session, eventType, data) {
  * @param {string} lang - Language code (fr, en, es, ar, ary)
  * @returns {string} TwiML XML
  */
-function generateTwiML(streamUrl, lang = CONFIG.defaultLanguage) {
+function generateTwiML(streamUrl, lang = CONFIG.defaultLanguage, { recording = false } = {}) {
   const twimlLang = getTwiMLLanguage(lang);
-  const message = getTwiMLMessage('connecting', lang);
+  const consentMsg = getTwiMLMessage('recordingConsent', lang);
+
+  // G9: Recording consent + optional call recording
+  const recordingXml = recording
+    ? `\n  <Say voice="alice" language="${twimlLang}">${consentMsg}</Say>`
+    : '';
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<Response>
-  <!-- SOTA Optimization: Instant Connect -->
-  <!-- <Say voice="alice" language="${twimlLang}">${message}</Say> -->
+<Response>${recordingXml}
   <Connect>
     <Stream url="${streamUrl}">
       <Parameter name="codec" value="mulaw"/>
@@ -4157,8 +4182,18 @@ async function handleInboundCall(req, res, body) {
     const protocol = req.headers['x-forwarded-proto'] || 'http';
     const streamUrl = `wss://${host}/stream/${session.id}`;
 
+    // G9: Check if tenant has recording enabled
+    const tenantConfigPath = path.join(__dirname, '..', 'clients', tenantId, 'config.json');
+    let recordingEnabled = false;
+    try {
+      if (fs.existsSync(tenantConfigPath)) {
+        const tConfig = JSON.parse(fs.readFileSync(tenantConfigPath, 'utf8'));
+        recordingEnabled = tConfig.features?.call_recording === true;
+      }
+    } catch (_e) { /* default to false */ }
+
     // Respond with TwiML (multilingual - Session 166sexies)
-    const twiml = generateTwiML(streamUrl, sessionLang);
+    const twiml = generateTwiML(streamUrl, sessionLang, { recording: recordingEnabled });
 
     res.writeHead(200, {
       'Content-Type': 'text/xml',

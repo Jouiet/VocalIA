@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pourquoi votre chatbot ne vend pas (et comment un agent vocal intelligent change la donne) - VocalIA Blog</title>
+  <meta name="description" content="Votre chatbot est une FAQ d&eacute;guis&eacute;e : 0 lead qualifi&eacute;, 0 relance, 0 vente. D&eacute;couvrez comment un agent vocal intelligent comprend, m&eacute;morise et agit pour g&eacute;n&eacute;rer du chiffre d'affaires.">
+  <link rel="canonical" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas" />
+  <!-- Hreflang for i18n SEO (5 languages) -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas?lang=ar" />
+  <link rel="alternate" hreflang="ary" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas?lang=ary" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas" />
+  <meta property="og:title" content="Pourquoi votre chatbot ne vend pas" />
+  <meta property="og:description" content="Un chatbot r&eacute;cite une FAQ. Un agent vocal intelligent comprend, m&eacute;morise et agit." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@vocalia_ma">
+
+  <meta property="article:published_time" content="2026-02-25" />
+  <meta property="article:author" content="&Eacute;quipe VocalIA" />
+
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <meta name="theme-color" content="#5E6AD2">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Pourquoi votre chatbot ne vend pas (et comment un agent vocal intelligent change la donne)",
+    "datePublished": "2026-02-25",
+    "author": {"@type": "Organization", "name": "VocalIA"},
+    "publisher": {"@type": "Organization", "name": "VocalIA", "url": "https://vocalia.ma"},
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".article-title", ".article-excerpt", ".article-content p:first-of-type"]
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+        {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://vocalia.ma/blog/"},
+        {"@type": "ListItem", "position": 3, "name": "Pourquoi votre chatbot ne vend pas", "item": "https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas"}
+      ]
+    }
+  }
+  </script>
+
+  <link href="/public/css/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    .prose { max-width: 65ch; }
+    .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; }
+    .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+    .prose p { margin-bottom: 1rem; line-height: 1.75; color: #cbd5e1; }
+    .prose ul { margin-bottom: 1rem; padding-left: 1.5rem; }
+    .prose li { margin-bottom: 0.5rem; color: #cbd5e1; }
+    .prose strong { color: #fff; }
+    .comparison-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .comparison-card { border-radius: 1rem; padding: 1.25rem; }
+    .card-chatbot { background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.02)); border: 1px solid rgba(239, 68, 68, 0.2); }
+    .card-vocalia { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.02)); border: 1px solid rgba(16, 185, 129, 0.2); }
+    @media (max-width: 640px) { .comparison-row { grid-template-columns: 1fr; } }
+  </style>
+
+  <meta name="twitter:url" content="https://vocalia.ma/blog/articles/pourquoi-chatbot-ne-vend-pas" />
+  <meta name="twitter:title" content="Pourquoi votre chatbot ne vend pas" />
+  <meta name="twitter:description" content="Un chatbot r&eacute;cite. Un agent vocal intelligent g&eacute;n&egrave;re des leads." />
+  <meta name="twitter:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Plausible Analytics -->
+  <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
+
+</head>
+<body class="bg-[#050505] text-white antialiased">
+  <!-- Simple Nav -->
+  <div data-component="header"></div>
+
+  <main class="pt-24 pb-16" id="main-content">
+    <article class="max-w-4xl mx-auto px-4">
+      <!-- Header -->
+      <header class="mb-12">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
+            <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-vocalia-400">Analyse</li>
+          </ol>
+        </nav>
+
+        <span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-sm font-semibold mb-4">Analyse</span>
+
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+          Pourquoi votre chatbot <span class="gradient-text">ne vend pas</span> (et comment un agent vocal intelligent change la donne)
+        </h1>
+
+        <p class="text-xl text-zinc-300 mb-6 max-w-2xl">
+          La diff&eacute;rence entre un chatbot et un agent vocal intelligent n'est pas la technologie &mdash; c'est la valeur commerciale.
+        </p>
+
+        <div class="flex items-center gap-4 text-zinc-400">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
+              <span class="text-sm font-semibold">VA</span>
+            </div>
+            <span>&Eacute;quipe VocalIA</span>
+          </div>
+          <span>&bull;</span>
+          <time datetime="2026-02-25">25 f&eacute;vrier 2026</time>
+          <span>&bull;</span>
+          <span>10 min de lecture</span>
+        </div>
+      </header>
+
+      <!-- Table of Contents -->
+      <nav class="glass rounded-xl p-6 mb-12" aria-label="Sommaire">
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="list" class="w-5 h-5 text-vocalia-400"></i>
+          Sommaire
+        </h2>
+        <ol class="space-y-2 text-zinc-300">
+          <li><a href="#intro" class="hover:text-vocalia-400 transition">Introduction : votre chatbot est une FAQ d&eacute;guis&eacute;e</a></li>
+          <li><a href="#comprendre" class="hover:text-vocalia-400 transition">1. Comprendre vs r&eacute;citer</a></li>
+          <li><a href="#souvenir" class="hover:text-vocalia-400 transition">2. Se souvenir vs tout oublier</a></li>
+          <li><a href="#agir" class="hover:text-vocalia-400 transition">3. Agir vs attendre</a></li>
+          <li><a href="#conclusion" class="hover:text-vocalia-400 transition">Conclusion : la valeur commerciale, pas la technologie</a></li>
+        </ol>
+      </nav>
+
+      <!-- Content -->
+      <div class="prose">
+
+        <!-- Introduction -->
+        <section id="intro">
+          <h2>Introduction : votre chatbot est une FAQ d&eacute;guis&eacute;e</h2>
+          <p>
+            La plupart des chatbots sont des <strong>FAQ d&eacute;guis&eacute;es</strong>. Ils r&eacute;citent des r&eacute;ponses pr&eacute;-&eacute;crites. Si le client formule sa question diff&eacute;remment, ils sont perdus. Si le client revient, ils ont tout oubli&eacute;.
+          </p>
+          <p>
+            R&eacute;sultat : <strong>0 lead qualifi&eacute;, 0 relance, 0 vente.</strong>
+          </p>
+          <p>
+            Votre chatbot r&eacute;pond aux questions. C'est tout. Il ne sait pas <em>qui</em> est le client, ce qu'il <em>veut</em>, ce qu'il a dit <em>avant</em>, ni ce qu'il faudrait faire <em>apr&egrave;s</em>.
+          </p>
+          <p>
+            Un agent vocal intelligent est fondamentalement diff&eacute;rent. Il ne se contente pas de r&eacute;pondre &mdash; il <strong>comprend</strong>, il <strong>m&eacute;morise</strong>, et il <strong>agit</strong>.
+          </p>
+        </section>
+
+        <!-- Partie 1 -->
+        <section id="comprendre">
+          <h2>1. Comprendre vs r&eacute;citer</h2>
+
+          <h3>Le probl&egrave;me : le pattern matching</h3>
+          <p>
+            Un chatbot classique fait du <strong>pattern matching</strong> : &laquo;&nbsp;si le client dit X, r&eacute;pondre Y&nbsp;&raquo;. C'est une table de correspondance d&eacute;guis&eacute;e en intelligence artificielle.
+          </p>
+          <ul>
+            <li>Si le client dit &laquo;&nbsp;quels sont vos tarifs&nbsp;&raquo;, le chatbot r&eacute;pond avec le texte de la page Tarifs.</li>
+            <li>Si le client dit &laquo;&nbsp;combien &ccedil;a co&ucirc;te&nbsp;&raquo;, le chatbot h&eacute;site ou r&eacute;pond &agrave; c&ocirc;t&eacute;.</li>
+            <li>Si le client dit &laquo;&nbsp;c'est dans mon budget ?&nbsp;&raquo;, le chatbot ne comprend pas.</li>
+          </ul>
+
+          <h3>La solution : la recherche s&eacute;mantique</h3>
+          <p>
+            Un agent vocal intelligent ne cherche pas les <em>mots</em> &mdash; il cherche le <strong>sens</strong>. Il combine la recherche par mots-cl&eacute;s (BM25) et la recherche s&eacute;mantique (embeddings) pour croiser plusieurs sources de donn&eacute;es.
+          </p>
+          <p>
+            R&eacute;sultat : <strong>la bonne r&eacute;ponse m&ecirc;me si la question est formul&eacute;e diff&eacute;remment</strong>. &laquo;&nbsp;Quels sont vos tarifs&nbsp;&raquo;, &laquo;&nbsp;combien &ccedil;a co&ucirc;te&nbsp;&raquo; et &laquo;&nbsp;c'est dans mon budget ?&nbsp;&raquo; m&egrave;nent tous &agrave; la m&ecirc;me r&eacute;ponse pertinente.
+          </p>
+
+          <div class="comparison-row">
+            <div class="comparison-card card-chatbot">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="x-circle" class="w-5 h-5 text-red-400"></i>
+                <span class="font-semibold text-red-400">Chatbot classique</span>
+              </div>
+              <p class="text-sm text-zinc-400 mb-0">Cherche des mots exacts dans une FAQ fig&eacute;e. Si la formulation change, il est perdu.</p>
+            </div>
+            <div class="comparison-card card-vocalia">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+                <span class="font-semibold text-emerald-400">Agent vocal intelligent</span>
+              </div>
+              <p class="text-sm text-zinc-400 mb-0">Comprend le sens de la question, croise vos donn&eacute;es m&eacute;tier, formule une r&eacute;ponse adapt&eacute;e au contexte.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Partie 2 -->
+        <section id="souvenir">
+          <h2>2. Se souvenir vs tout oublier</h2>
+
+          <h3>Le probl&egrave;me : l'amn&eacute;sie chronique</h3>
+          <p>
+            Le client dit &laquo;&nbsp;mon budget est de 5&nbsp;000 euros&nbsp;&raquo;. Le chatbot note l'information... jusqu'&agrave; la fin de la session. &Agrave; la session suivante ? <strong>Tout est effac&eacute;.</strong> Le client doit tout r&eacute;p&eacute;ter.
+          </p>
+          <p>
+            M&ecirc;me chose pour les objections (&laquo;&nbsp;c'est trop cher&nbsp;&raquo;), les pr&eacute;f&eacute;rences (&laquo;&nbsp;je pr&eacute;f&egrave;re le mod&egrave;le bleu&nbsp;&raquo;), et les d&eacute;lais (&laquo;&nbsp;il me le faut avant le 15&nbsp;&raquo;).
+          </p>
+
+          <h3>La solution : la m&eacute;moire cross-session</h3>
+          <p>
+            Un agent intelligent <strong>extrait automatiquement</strong> les faits importants de chaque conversation &mdash; budget, d&eacute;lai, objections, pr&eacute;f&eacute;rences &mdash; et les <strong>stocke pour les prochains contacts</strong>.
+          </p>
+
+          <ul>
+            <li><strong>Jour 1</strong> : L'IA conna&icirc;t vos produits et FAQ</li>
+            <li><strong>Semaine 2</strong> : Elle conna&icirc;t les objections fr&eacute;quentes de vos clients</li>
+            <li><strong>Mois 3</strong> : Elle conna&icirc;t les pr&eacute;f&eacute;rences de vos clients r&eacute;currents et anticipe leurs besoins</li>
+          </ul>
+
+          <p>
+            <strong>Effet compos&eacute;</strong> : chaque conversation rend l'IA plus pertinente. Au bout de 100 conversations, elle conna&icirc;t vos clients mieux que n'importe quel CRM.
+          </p>
+
+          <div class="comparison-row">
+            <div class="comparison-card card-chatbot">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="x-circle" class="w-5 h-5 text-red-400"></i>
+                <span class="font-semibold text-red-400">Chatbot classique</span>
+              </div>
+              <p class="text-sm text-zinc-400 mb-0">Oublie tout &agrave; chaque session. Le client doit tout r&eacute;p&eacute;ter. Aucun apprentissage.</p>
+            </div>
+            <div class="comparison-card card-vocalia">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+                <span class="font-semibold text-emerald-400">Agent vocal intelligent</span>
+              </div>
+              <p class="text-sm text-zinc-400 mb-0">Se souvient du budget, des pr&eacute;f&eacute;rences, des objections. Chaque appel enrichit sa m&eacute;moire.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Partie 3 -->
+        <section id="agir">
+          <h2>3. Agir vs attendre</h2>
+
+          <h3>Le probl&egrave;me : la passivit&eacute;</h3>
+          <p>
+            Un chatbot attend la question suivante. Il ne d&eacute;tecte pas les signaux d'achat. Il ne qualifie pas le prospect. Il ne d&eacute;clenche aucune action.
+          </p>
+          <p>
+            Un prospect chaud quitte votre site sans r&eacute;server ? Le chatbot ne fait rien. Pas de relance, pas de notification, pas de suivi. Ce lead est perdu.
+          </p>
+
+          <h3>La solution : les d&eacute;cisions commerciales automatiques</h3>
+          <p>
+            Un agent intelligent d&eacute;tecte les signaux d'achat, qualifie le lead, et d&eacute;clenche les bonnes actions au bon moment :
+          </p>
+          <ul>
+            <li><strong>Prospect chaud qui n'a pas r&eacute;serv&eacute; ?</strong> Relance WhatsApp automatique &agrave; 24h</li>
+            <li><strong>R&eacute;servation confirm&eacute;e ?</strong> Notification instantan&eacute;e sur votre t&eacute;l&eacute;phone</li>
+            <li><strong>Produit demand&eacute; ?</strong> Recommandation personnalis&eacute;e (produits similaires, fr&eacute;quemment achet&eacute;s ensemble)</li>
+            <li><strong>Chaque conversation</strong> g&eacute;n&egrave;re un score BANT automatique : chaud, ti&egrave;de, froid</li>
+          </ul>
+
+          <div class="comparison-row">
+            <div class="comparison-card card-chatbot">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="x-circle" class="w-5 h-5 text-red-400"></i>
+                <span class="font-semibold text-red-400">Chatbot classique</span>
+              </div>
+              <p class="text-sm text-zinc-400 mb-0">Attend la prochaine question. Aucune qualification, aucun suivi, aucune action commerciale.</p>
+            </div>
+            <div class="comparison-card card-vocalia">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+                <span class="font-semibold text-emerald-400">Agent vocal intelligent</span>
+              </div>
+              <p class="text-sm text-zinc-400 mb-0">D&eacute;tecte les signaux d'achat, qualifie chaque lead, relance automatiquement. G&eacute;n&egrave;re du CA.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusion">
+          <h2>Conclusion : la valeur commerciale, pas la technologie</h2>
+          <p>
+            La diff&eacute;rence entre un chatbot et un agent vocal intelligent <strong>n'est pas la technologie</strong> &mdash; c'est la <strong>valeur commerciale</strong>.
+          </p>
+          <p>
+            L'un r&eacute;pond aux questions. L'autre <strong>g&eacute;n&egrave;re des leads, des r&eacute;servations et du chiffre d'affaires</strong>.
+          </p>
+
+          <!-- Summary table -->
+          <div class="overflow-x-auto my-8">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-white/[0.08]">
+                  <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-zinc-500"></th>
+                  <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-red-400">Chatbot classique</th>
+                  <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-emerald-400">Agent vocal intelligent</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.06]">
+                <tr>
+                  <td class="px-4 py-3 font-medium text-white">Compr&eacute;hension</td>
+                  <td class="px-4 py-3 text-zinc-500">Mots exacts uniquement</td>
+                  <td class="px-4 py-3 text-emerald-400">Sens, contexte, croisement de sources</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-medium text-white">M&eacute;moire</td>
+                  <td class="px-4 py-3 text-zinc-500">Oublie tout entre sessions</td>
+                  <td class="px-4 py-3 text-emerald-400">Budget, pr&eacute;f&eacute;rences, objections persist&eacute;s</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-medium text-white">Qualification</td>
+                  <td class="px-4 py-3 text-zinc-500">Aucune</td>
+                  <td class="px-4 py-3 text-emerald-400">Score BANT automatique</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-medium text-white">Suivi</td>
+                  <td class="px-4 py-3 text-zinc-500">Aucun</td>
+                  <td class="px-4 py-3 text-emerald-400">Relance WhatsApp automatique</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-3 font-medium text-white">R&eacute;sultat</td>
+                  <td class="px-4 py-3 text-zinc-500">R&eacute;pond aux questions</td>
+                  <td class="px-4 py-3 text-emerald-400">G&eacute;n&egrave;re des leads et du CA</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- CTA Final -->
+        <div class="glass rounded-xl p-8 my-12 text-center">
+          <h3 class="text-2xl font-bold mb-4">Passez du chatbot &agrave; l'intelligence commerciale</h3>
+          <p class="text-zinc-400 mb-6 max-w-lg mx-auto">
+            VocalIA ne r&eacute;cite pas une FAQ. Il comprend chaque client, se souvient de ses pr&eacute;f&eacute;rences, et prend les bonnes d&eacute;cisions commerciales &agrave; votre place.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/pricing" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
+              Essai 14 jours
+            </a>
+            <a href="/features" class="inline-block px-8 py-3 border border-white/[0.08] hover:border-vocalia-400 rounded-xl font-semibold transition">
+              Voir les fonctionnalit&eacute;s
+            </a>
+          </div>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="border-t border-white/[0.08] pt-8 mt-12">
+          <h3 class="text-lg font-semibold mb-6">Articles connexes</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <a href="/blog/articles/guide-qualification-leads-bant" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
+              <span class="text-xs text-emerald-400 mb-1 block">Guide</span>
+              <h4 class="font-medium">Guide BANT : Qualifier vos leads par t&eacute;l&eacute;phone avec l'IA vocale</h4>
+            </a>
+            <a href="/blog/articles/voice-ai-vs-chatbot-comparatif" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
+              <span class="text-xs text-blue-400 mb-1 block">Comparatif</span>
+              <h4 class="font-medium">Voice AI vs Chatbot : Quel outil choisir en 2026 ?</h4>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <div data-component="footer"></div>
+
+  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+
+  <script>
+    const LANG_LABELS = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'دارجة' };
+    function toggleLangDropdown() { document.getElementById('langDropdown').classList.toggle('hidden'); }
+    function switchLang(lang) {
+      document.getElementById('currentLang').textContent = LANG_LABELS[lang] || lang.toUpperCase();
+      document.getElementById('langDropdown').classList.add('hidden');
+      localStorage.setItem('vocalia_lang', lang);
+    }
+    document.addEventListener('click', (e) => {
+      const d = document.getElementById('langDropdown');
+      if (!e.target.closest('[onclick*="toggleLangDropdown"]') && d && !d.contains(e.target)) d.classList.add('hidden');
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const l = localStorage.getItem('vocalia_lang') || 'fr';
+      document.getElementById('currentLang').textContent = LANG_LABELS[l] || l.toUpperCase();
+    });
+  </script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/geo-detect.js?v=240"></script>
+  <script src="/src/lib/i18n.js?v=240"></script>
+  <script src="/src/lib/event-delegation.js?v=250" defer></script>
+
+  <!-- Inline Fallback (403 workaround) -->
+  <script>
+  (function() {
+    'use strict';
+    window.plausible = window.plausible || function() {
+      (window.plausible.q = window.plausible.q || []).push(arguments);
+    };
+
+    function initLucide() {
+      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+
+    function initMobileMenu() {
+      var btn = document.getElementById('mobileMenuBtn');
+      var menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function() {
+        var isOpen = menu.classList.contains('translate-x-0');
+        if (isOpen) {
+          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+          document.body.style.overflow = '';
+        } else {
+          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    }
+
+    async function initI18n() {
+      if (typeof VocaliaI18n === 'undefined') return;
+      try {
+        var storedLang = localStorage.getItem('vocalia_lang');
+        if (storedLang) {
+          await VocaliaI18n.setLocale(storedLang);
+        } else if (typeof VocaliaGeo !== 'undefined') {
+          var geo = await VocaliaGeo.getGeo();
+          await VocaliaI18n.setLocale(geo.lang);
+        } else {
+          await VocaliaI18n.setLocale('fr');
+        }
+        VocaliaI18n.translatePage();
+      } catch (e) {}
+    }
+
+    window.switchLang = async function(lang) {
+      if (typeof VocaliaI18n === 'undefined') return;
+      await VocaliaI18n.setLocale(lang);
+      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
+      var el = document.getElementById('currentLang');
+      if (el) el.textContent = labels[lang] || lang.toUpperCase();
+      var dd = document.getElementById('langDropdown');
+      if (dd) dd.classList.add('hidden');
+      VocaliaI18n.translatePage();
+      localStorage.setItem('vocalia_lang', lang);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initLucide();
+        initMobileMenu();
+        initI18n();
+      });
+    } else {
+      initLucide();
+      initMobileMenu();
+      initI18n();
+    }
+
+    window.addEventListener('load', initLucide);
+    window.addEventListener('load', initI18n);
+  })();
+  </script>
+  <!-- Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="agency_internal" defer></script>
+  <script src="/src/lib/components.js" defer></script>
+</body>
+</html>

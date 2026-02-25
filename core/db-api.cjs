@@ -114,10 +114,14 @@ function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' 
   const now = new Date().toISOString();
   const periodStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
 
+  // Generate unique API key for this tenant (vk_ prefix + 48 hex chars)
+  const apiKey = 'vk_' + crypto.randomBytes(24).toString('hex');
+
   const config = {
     tenant_id: safeTId,
     name: company || safeTId,
     type: 'client',
+    api_key: apiKey,
     vertical: normalizedPlan === 'ecommerce' ? 'ecommerce' : 'universal_sme',
     plan: normalizedPlan,
     status: 'active',
@@ -193,7 +197,7 @@ function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' 
     fs.writeFileSync(tmpPath, JSON.stringify(config, null, 2));
     fs.renameSync(tmpPath, configPath);
     console.log(`✅ [Provision] Tenant ${safeTId} provisioned (plan: ${normalizedPlan})`);
-    return { success: true, configPath };
+    return { success: true, configPath, apiKey };
   } catch (e) {
     console.error(`❌ [Provision] Failed to provision tenant ${safeTId}:`, e.message);
     return { success: false, configPath: null };
@@ -448,7 +452,7 @@ async function handleAuthRequest(req, res, path, method) {
         success: true,
         message: 'Registration successful. Please verify your email.',
         user: { ...result, tenant_id: safeTenantId },
-        tenant: { id: safeTenantId, plan: normalizedPlan, provisioned: provision.success }
+        tenant: { id: safeTenantId, plan: normalizedPlan, provisioned: provision.success, api_key: provision.apiKey || null }
       });
       return true;
     }
@@ -1641,6 +1645,78 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // POST /api/tenants/:id/api-key/rotate - Rotate API key
+  const apiKeyRotateMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/api-key\/rotate$/i);
+  if (apiKeyRotateMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(apiKeyRotateMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!await fileExists(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+      const oldKeyPrefix = config.api_key ? config.api_key.substring(0, 7) + '...' : 'none';
+      config.api_key = 'vk_' + crypto.randomBytes(24).toString('hex');
+      config.updated_at = new Date().toISOString();
+      await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
+
+      try {
+        auditStore.log(tenantId, {
+          action: 'tenant.api_key_rotated',
+          category: ACTION_CATEGORIES?.SECURITY || 'security',
+          actor: user.id || user.email,
+          target: tenantId,
+          details: { old_key_prefix: oldKeyPrefix }
+        });
+      } catch (_e) { /* non-critical */ }
+
+      console.log(`✅ [Security] API key rotated for tenant ${tenantId} by ${user.email}`);
+      sendJson(res, 200, { success: true, tenantId, api_key: config.api_key });
+    } catch (e) {
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/api-key - Get current API key (authenticated)
+  const apiKeyGetMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/api-key$/i);
+  if (apiKeyGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(apiKeyGetMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!await fileExists(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+      sendJson(res, 200, { success: true, tenantId, api_key: config.api_key || null });
+    } catch (e) {
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
   // PUT /api/tenants/:id/widget-config - Update widget configuration
   const widgetConfigMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/widget-config$/i);
   if (widgetConfigMatch && method === 'PUT') {
@@ -1700,6 +1776,241 @@ async function handleRequest(req, res) {
 
       sendJson(res, 200, { success: true, tenantId, widget_config: config.widget_config });
     } catch (e) {
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.239: WEBHOOK CONFIG API (G8 — Outbound Webhooks)
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/tenants/:id/webhooks - Get webhook configuration
+  const webhookGetMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/webhooks$/i);
+  if (webhookGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(webhookGetMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!await fileExists(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+      sendJson(res, 200, {
+        success: true,
+        tenantId,
+        webhook_url: config.webhook_url || null,
+        webhook_events: config.webhook_events || [],
+        webhook_secret_set: !!config.webhook_secret
+      });
+    } catch (e) {
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // PUT /api/tenants/:id/webhooks - Update webhook configuration
+  const webhookPutMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/webhooks$/i);
+  if (webhookPutMatch && method === 'PUT') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(webhookPutMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    // Check plan allows webhooks
+    const nodePath = require('path');
+    const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+    if (!await fileExists(configPath)) {
+      sendError(res, 404, 'Tenant not found');
+      return;
+    }
+
+    try {
+      const body = await parseBody(req);
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+
+      // Check plan allows webhooks
+      const planFeatures = PLAN_FEATURES[config.plan] || PLAN_FEATURES.starter;
+      if (!planFeatures.webhooks) {
+        sendError(res, 403, 'Webhooks not available on your plan. Upgrade to Pro or higher.');
+        return;
+      }
+
+      // Validate URL (must be HTTPS in production)
+      if (body.webhook_url !== undefined) {
+        if (body.webhook_url === null || body.webhook_url === '') {
+          // Allow clearing webhook
+          config.webhook_url = null;
+          config.webhook_secret = null;
+          config.webhook_events = [];
+        } else {
+          try {
+            const parsed = new URL(body.webhook_url);
+            if (!['https:', 'http:'].includes(parsed.protocol)) {
+              sendError(res, 400, 'Webhook URL must use HTTPS');
+              return;
+            }
+            config.webhook_url = body.webhook_url;
+          } catch (_e) {
+            sendError(res, 400, 'Invalid webhook URL');
+            return;
+          }
+        }
+      }
+
+      // Generate new secret if requested
+      if (body.rotate_secret) {
+        config.webhook_secret = crypto.randomBytes(32).toString('hex');
+      }
+
+      // Validate events list
+      const VALID_EVENTS = ['lead.qualified', 'call.started', 'call.completed', 'conversation.ended', 'cart.abandoned', 'appointment.booked', 'quota.warning', 'tenant.provisioned'];
+      if (body.webhook_events && Array.isArray(body.webhook_events)) {
+        config.webhook_events = body.webhook_events.filter(e => VALID_EVENTS.includes(e));
+      }
+
+      config.updated_at = new Date().toISOString();
+      await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
+
+      try {
+        auditStore.log(tenantId, {
+          action: 'tenant.webhooks_updated',
+          category: ACTION_CATEGORIES?.CONFIG || 'config',
+          actor: user.id || user.email,
+          target: tenantId,
+          details: { url_set: !!config.webhook_url, events: config.webhook_events?.length || 0 }
+        });
+      } catch (_e) { /* non-critical */ }
+
+      sendJson(res, 200, {
+        success: true,
+        tenantId,
+        webhook_url: config.webhook_url,
+        webhook_events: config.webhook_events || [],
+        webhook_secret: body.rotate_secret ? config.webhook_secret : undefined,
+        webhook_secret_set: !!config.webhook_secret
+      });
+    } catch (e) {
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.239: GDPR RIGHT-TO-ERASURE (G18)
+  // ═══════════════════════════════════════════════════════════════
+
+  // DELETE /api/tenants/:id/data - GDPR right-to-erasure: delete ALL tenant data
+  const gdprEraseMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/data$/i);
+  if (gdprEraseMatch && method === 'DELETE') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(gdprEraseMatch[1]);
+
+    // Only admin or tenant owner can erase data
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const clientDir = nodePath.join(__dirname, '..', 'clients', tenantId);
+
+      if (!await fileExists(clientDir)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const body = await parseBody(req);
+      // Require explicit confirmation
+      if (body.confirm !== `DELETE_ALL_DATA_${tenantId}`) {
+        sendError(res, 400, `Confirmation required. Send { "confirm": "DELETE_ALL_DATA_${tenantId}" }`);
+        return;
+      }
+
+      const erased = {
+        conversations: 0,
+        kb_entries: 0,
+        analytics: 0,
+        config_cleared: false
+      };
+
+      // 1. Delete conversations
+      const convDir = nodePath.join(clientDir, 'conversations');
+      if (await fileExists(convDir)) {
+        const convFiles = await fsp.readdir(convDir);
+        for (const f of convFiles) {
+          await fsp.unlink(nodePath.join(convDir, f));
+          erased.conversations++;
+        }
+      }
+
+      // 2. Delete KB entries
+      const kbDir = nodePath.join(clientDir, 'kb');
+      if (await fileExists(kbDir)) {
+        const kbFiles = await fsp.readdir(kbDir);
+        for (const f of kbFiles) {
+          const fullPath = nodePath.join(kbDir, f);
+          const stat = await fsp.stat(fullPath);
+          if (stat.isFile()) {
+            await fsp.unlink(fullPath);
+            erased.kb_entries++;
+          }
+        }
+      }
+
+      // 3. Delete analytics/UCP data
+      const ucpDir = nodePath.join(clientDir, 'ucp');
+      if (await fileExists(ucpDir)) {
+        const ucpFiles = await fsp.readdir(ucpDir);
+        for (const f of ucpFiles) {
+          await fsp.unlink(nodePath.join(ucpDir, f));
+          erased.analytics++;
+        }
+      }
+
+      // 4. Clear PII from config but keep structural data for billing reconciliation
+      const configPath = nodePath.join(clientDir, 'config.json');
+      if (await fileExists(configPath)) {
+        const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+        config.contact = { email: '[REDACTED]', phone: '[REDACTED]', company_name: '[REDACTED]', address: '[REDACTED]', website: '[REDACTED]' };
+        config.status = 'erased';
+        config.metadata = { ...config.metadata, erased_at: new Date().toISOString(), erased_by: user.email };
+        config.updated_at = new Date().toISOString();
+        await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
+        erased.config_cleared = true;
+      }
+
+      // Audit log (immutable — kept for legal compliance even after erasure)
+      try {
+        auditStore.log(tenantId, {
+          action: 'tenant.gdpr_erasure',
+          category: ACTION_CATEGORIES?.SECURITY || 'security',
+          actor: user.id || user.email,
+          target: tenantId,
+          details: erased
+        });
+      } catch (_e) { /* non-critical */ }
+
+      console.log(`✅ [GDPR] Tenant ${tenantId} data erased by ${user.email}: ${JSON.stringify(erased)}`);
+      sendJson(res, 200, { success: true, tenantId, erased });
+    } catch (e) {
+      console.error(`❌ [GDPR] Erasure failed for ${tenantId}:`, e.message);
       sendError(res, 500, 'Internal server error');
     }
     return;
@@ -4216,6 +4527,74 @@ ${JSON.stringify(contextData)}`;
       sendJson(res, 200, { success: true, event: interaction });
     } catch (e) {
       console.error('❌ UCP event error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.239: TENANT USAGE OVERVIEW (G20)
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/tenants/:id/usage - Unified usage overview for client dashboard
+  const usageOverviewMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/usage$/i);
+  if (usageOverviewMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(usageOverviewMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      if (!await fileExists(configPath)) {
+        sendError(res, 404, 'Tenant not found');
+        return;
+      }
+
+      const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+      const plan = config.plan || 'starter';
+      const quotas = PLAN_QUOTAS[plan] || PLAN_QUOTAS.starter;
+      const features = PLAN_FEATURES[plan] || PLAN_FEATURES.starter;
+      const usage = config.usage || { calls_current: 0, sessions_current: 0, kb_entries_current: 0 };
+
+      // Count conversations
+      let conversationCount = 0;
+      const convDir = nodePath.join(__dirname, '..', 'clients', tenantId, 'conversations');
+      if (await fileExists(convDir)) {
+        const convFiles = await fsp.readdir(convDir);
+        conversationCount = convFiles.filter(f => f.endsWith('.json')).length;
+      }
+
+      // Count KB entries
+      let kbEntryCount = 0;
+      const kbDir = nodePath.join(__dirname, '..', 'clients', tenantId, 'kb');
+      if (await fileExists(kbDir)) {
+        const kbFiles = await fsp.readdir(kbDir);
+        kbEntryCount = kbFiles.filter(f => f.endsWith('.json')).length;
+      }
+
+      sendJson(res, 200, {
+        success: true,
+        tenantId,
+        plan,
+        status: config.status || 'active',
+        quotas: {
+          calls: { used: usage.calls_current || 0, limit: quotas.calls_monthly, pct: quotas.calls_monthly ? Math.round(((usage.calls_current || 0) / quotas.calls_monthly) * 100) : 0 },
+          sessions: { used: usage.sessions_current || 0, limit: quotas.sessions_monthly, pct: quotas.sessions_monthly ? Math.round(((usage.sessions_current || 0) / quotas.sessions_monthly) * 100) : 0 },
+          kb_entries: { used: kbEntryCount, limit: quotas.kb_entries, pct: quotas.kb_entries ? Math.round((kbEntryCount / quotas.kb_entries) * 100) : 0 }
+        },
+        conversations: conversationCount,
+        features_enabled: Object.keys(features).filter(k => features[k]),
+        period_start: usage.period_start || null,
+        created_at: config.created_at || null,
+        widget_config: config.widget_config || {}
+      });
+    } catch (e) {
       sendError(res, 500, 'Internal server error');
     }
     return;

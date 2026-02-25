@@ -31,6 +31,7 @@ let _lastLoad = 0;
 
 function loadTenantOrigins() {
   try {
+    // Source 1: Static registry (personas/client_registry.json)
     const registryPath = path.join(__dirname, '..', 'personas', 'client_registry.json');
     const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
     _tenantRegistry = registry.clients || {};
@@ -42,10 +43,50 @@ function loadTenantOrigins() {
         }
       }
     }
+
+    // Source 2: Provisioned tenants (clients/*/config.json)
+    // These are created dynamically via signup/onboarding and may have custom origins
+    const clientsDir = path.join(__dirname, '..', 'clients');
+    if (fs.existsSync(clientsDir)) {
+      const tenantDirs = fs.readdirSync(clientsDir, { withFileTypes: true });
+      for (const dirent of tenantDirs) {
+        if (!dirent.isDirectory()) continue;
+        const configPath = path.join(clientsDir, dirent.name, 'config.json');
+        try {
+          if (!fs.existsSync(configPath)) continue;
+          const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+          const tenantId = dirent.name;
+
+          // Merge into registry if not already present (provisioned tenants)
+          if (!_tenantRegistry[tenantId]) {
+            _tenantRegistry[tenantId] = {
+              name: config.name || config.contact?.company_name || tenantId,
+              sector: config.vertical || 'UNIVERSAL_SME',
+              currency: config.market_rules?.default?.currency || 'EUR',
+              language: config.widget_config?.default_language || 'fr',
+              knowledge_base_id: `kb_${tenantId}`,
+              widget_type: config.widget_config?.persona === 'UNIVERSAL_ECOMMERCE' ? 'ECOM' : 'B2B',
+              allowed_origins: config.allowed_origins || [],
+              api_key: config.api_key || null
+            };
+          }
+
+          // Always merge provisioned origins (they may be updated via API)
+          if (config.allowed_origins) {
+            for (const o of config.allowed_origins) {
+              origins.add(o.replace(/\/$/, ''));
+            }
+          }
+        } catch (_e) {
+          // Skip malformed config files
+        }
+      }
+    }
+
     _tenantOrigins = origins;
     _lastLoad = Date.now();
     if (origins.size > 0) {
-      console.log(`✅ [CORS] Loaded ${origins.size} tenant origins from registry`);
+      console.log(`✅ [CORS] Loaded ${origins.size} tenant origins (registry + provisioned)`);
     }
   } catch (err) {
     console.warn('[CORS] Could not load tenant origins:', err.message);

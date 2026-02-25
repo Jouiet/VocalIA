@@ -33,6 +33,13 @@
 | **SECURITY.md** | Politiques securite | ✅ |
 | **SOC2-PREPARATION.md** | Preparation SOC2 | ✅ |
 
+### Marketing & Communication
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **INTELLIGENCE-OPERATIONNELLE.md** | Source de verite business : copie marketing, blog, academie | ✅ v1.0.0 (250.238) |
+| **MARKETING-COPY-REMEDIATION.md** | Checklist 34 items — 0% bullshit, benchmark prix | ✅ 100% (250.195) |
+
 ### Strategie & Analyse
 
 | Document | Description | Status |

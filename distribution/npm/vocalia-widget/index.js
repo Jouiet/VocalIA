@@ -8,23 +8,31 @@
 export function initVocalia(config) {
     if (typeof window === 'undefined') return;
 
-    // Set Global Config
-    window.VOCALIA_CONFIG = {
-        tenantId: config.tenantId,
-        position: config.position || 'bottom-right',
-        themeColor: config.primaryColor || '#5E6AD2',
-        ecommerceMode: config.ecommerceMode !== undefined ? config.ecommerceMode : true,
-        ...config
-    };
+    // Map NPM config keys to widget SAFE_CONFIG_KEYS format
+    const safeConfig = {};
+    if (config.ecommerceMode !== undefined) safeConfig.ECOMMERCE_MODE = config.ecommerceMode;
+    if (config.position) safeConfig.widgetPosition = config.position;
+    if (config.language) safeConfig.DEFAULT_LANG = config.language === 'auto' ? undefined : config.language;
+    if (config.exitIntent !== undefined) safeConfig.EXIT_INTENT_ENABLED = config.exitIntent;
+    if (config.socialProof !== undefined) safeConfig.SOCIAL_PROOF_ENABLED = config.socialProof;
+    if (config.aiMode !== undefined) safeConfig.AI_MODE = config.aiMode;
+    if (config.apiTimeout) safeConfig.API_TIMEOUT = config.apiTimeout;
+
+    // Set safe config keys (these pass through widget H8 filter)
+    window.VOCALIA_CONFIG = safeConfig;
 
     // Load Script dynamically from CDN/API (Unified V3 Kernel)
+    // tenantId is passed via data-vocalia-tenant attribute (widget reads this natively)
+    // primaryColor is applied server-side via /config endpoint based on tenant
     if (!document.getElementById('vocalia-script')) {
         const script = document.createElement('script');
         script.id = 'vocalia-script';
         script.src = `https://api.vocalia.ma/voice-assistant/voice-widget-v3.js`;
         script.defer = true;
+        // Pass tenantId via data attribute — widget detectTenantId() reads this (line 3704)
+        if (config.tenantId) script.dataset.vocaliaTenant = config.tenantId;
+        if (config.apiKey) script.dataset.vocaliaApiKey = config.apiKey;
         document.body.appendChild(script);
-        console.log(`[VocalIA] Initializing unified V3 widget via NPM`);
     }
 }
 

@@ -258,7 +258,7 @@ function getInstance() {
     return instance;
 }
 
-module.exports = { HybridRAG, getInstance };
+module.exports = { HybridRAG, getInstance, BM25Engine };
 
 // CLI Test Mode
 if (require.main === module) {

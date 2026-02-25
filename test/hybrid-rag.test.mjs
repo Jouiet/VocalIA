@@ -1,152 +1,41 @@
 /**
- * VocalIA Hybrid RAG Tests — BM25 Engine
+ * VocalIA Hybrid RAG Tests — BM25Engine + HybridRAG
  *
- * Tests the BM25 sparse search engine in isolation (no external API deps).
- * The HybridRAG class requires EmbeddingService (Gemini API) so we only test
- * the BM25Engine which is pure computation.
+ * Tests the REAL BM25Engine and HybridRAG._fuseResults (no replicas).
+ * BM25Engine is pure computation — no external API deps.
+ *
+ * Session 250.238: Converted from REPLICA (TestBM25 class copy) to
+ * testing the REAL exported BM25Engine from production code.
  *
  * Run: node --test test/hybrid-rag.test.mjs
  */
 
-
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { HybridRAG, getInstance } from '../core/hybrid-rag.cjs';
+import { HybridRAG, getInstance, BM25Engine } from '../core/hybrid-rag.cjs';
 
-// We need to extract BM25Engine from hybrid-rag
-// Since it's not exported directly, we test via HybridRAG import
-// BM25Engine is internal — let's test it through require and access the prototype
+// ─── BM25Engine tokenize ─────────────────────────────────────────────────────
 
-describe('HybridRAG Module', () => {
-  test('HybridRAG creates instance with empty tenantEngines map', () => {
-    const rag = new HybridRAG();
-    assert.ok(rag.tenantEngines instanceof Map);
-    assert.strictEqual(rag.tenantEngines.size, 0);
-  });
-});
+describe('BM25Engine.tokenize()', () => {
+  const bm25 = new BM25Engine();
 
-// Test BM25Engine by creating it manually via the module scope
-// Since BM25Engine is not exported, we replicate its logic for testing
-// Actually let's test it through the module file directly
-describe('BM25 Engine (via source extraction)', () => {
-  // We'll create our own lightweight BM25 to verify the algorithm
-  // matches the implementation in hybrid-rag.cjs
-  let BM25Engine;
-
-  // Extract BM25Engine from module source
-  test('BM25Engine can be instantiated from HybridRAG internals', () => {
-    // The BM25 engine is created inside _getEngine
-    // We can verify the algorithm by testing HybridRAG's search behavior
-    // But since it needs tenant KB data, let's test the tokenizer pattern
-    const rag = new HybridRAG();
-    assert.ok(rag);
-  });
-});
-
-// Since BM25Engine is internal, let's verify the tokenization and search
-// algorithm by testing it through a minimal BM25 implementation
-// that matches the code in hybrid-rag.cjs
-describe('BM25 Algorithm Verification', () => {
-  // Replicate the exact BM25Engine from hybrid-rag.cjs for testing
-  class TestBM25 {
-    constructor(options = {}) {
-      this.k1 = options.k1 || 1.5;
-      this.b = options.b || 0.75;
-      this.avgdl = 0;
-      this.docCount = 0;
-      this.idf = new Map();
-      this.documents = [];
-      this.termFreqs = [];
-    }
-
-    tokenize(text) {
-      if (!text) return [];
-      return text.toLowerCase()
-        .replace(/[^\w\s\u0600-\u06FF]/g, ' ')
-        .split(/\s+/)
-        .filter(t => t.length > 2);
-    }
-
-    build(documents) {
-      this.documents = documents;
-      this.docCount = documents.length;
-      this.termFreqs = [];
-      const df = new Map();
-      let totalLen = 0;
-
-      documents.forEach((doc) => {
-        const tokens = this.tokenize(doc.text);
-        const tf = new Map();
-        tokens.forEach(t => {
-          tf.set(t, (tf.get(t) || 0) + 1);
-        });
-        this.termFreqs.push(tf);
-        totalLen += tokens.length;
-
-        for (const term of tf.keys()) {
-          df.set(term, (df.get(term) || 0) + 1);
-        }
-      });
-
-      this.avgdl = totalLen / (this.docCount || 1);
-
-      for (const [term, freq] of df) {
-        const idf = Math.log((this.docCount - freq + 0.5) / (freq + 0.5) + 1);
-        this.idf.set(term, Math.max(idf, 0.01));
-      }
-    }
-
-    search(query, topK = 10) {
-      const tokens = this.tokenize(query);
-      const scores = [];
-
-      this.termFreqs.forEach((tf, idx) => {
-        let score = 0;
-        const docLen = this.tokenize(this.documents[idx].text).length;
-
-        tokens.forEach(token => {
-          if (!tf.has(token)) return;
-          const f = tf.get(token);
-          const idf = this.idf.get(token) || 0;
-          const numerator = f * (this.k1 + 1);
-          const denominator = f + this.k1 * (1 - this.b + this.b * (docLen / this.avgdl));
-          score += idf * (numerator / denominator);
-        });
-
-        if (score > 0) {
-          scores.push({ index: idx, score });
-        }
-      });
-
-      return scores
-        .sort((a, b) => b.score - a.score)
-        .slice(0, topK)
-        .map(s => ({ ...this.documents[s.index], sparseScore: s.score }));
-    }
-  }
-
-  const docs = [
-    { id: '1', text: 'Comment prendre rendez-vous chez le dentiste à Casablanca' },
-    { id: '2', text: 'Les tarifs de consultation dentaire sont de 350 DH' },
-    { id: '3', text: 'Notre cabinet est ouvert du lundi au vendredi de 9h à 18h' },
-    { id: '4', text: 'Pour annuler un rendez-vous, appelez-nous 24h avant' },
-    { id: '5', text: 'Nous acceptons les paiements par carte bancaire et espèces' },
-    { id: '6', text: 'كيفاش نقدر ندير موعد عند طبيب الأسنان في كازا' }, // Darija
-    { id: '7', text: 'The dental clinic is located in Casablanca city center' }
-  ];
-
-  let bm25;
-
-  test('builds index from documents', () => {
-    bm25 = new TestBM25();
-    bm25.build(docs);
-    assert.strictEqual(bm25.docCount, 7);
-    assert.ok(bm25.avgdl > 0);
-    assert.ok(bm25.idf.size > 0);
+  test('returns empty array for empty string', () => {
+    assert.deepStrictEqual(bm25.tokenize(''), []);
   });
 
-  test('tokenize filters short words (length <= 2)', () => {
-    bm25 = new TestBM25();
+  test('returns empty array for null/undefined', () => {
+    assert.deepStrictEqual(bm25.tokenize(null), []);
+    assert.deepStrictEqual(bm25.tokenize(undefined), []);
+  });
+
+  test('lowercases all tokens', () => {
+    const tokens = bm25.tokenize('HELLO World Testing');
+    assert.ok(tokens.includes('hello'));
+    assert.ok(tokens.includes('world'));
+    assert.ok(tokens.includes('testing'));
+  });
+
+  test('filters short words (length <= 2)', () => {
     const tokens = bm25.tokenize('Le chat est sur la table de la cuisine');
     assert.ok(!tokens.includes('le'));
     assert.ok(!tokens.includes('la'));
@@ -156,26 +45,56 @@ describe('BM25 Algorithm Verification', () => {
     assert.ok(tokens.includes('cuisine'));
   });
 
-  test('tokenize handles Arabic text', () => {
-    bm25 = new TestBM25();
+  test('handles Arabic text', () => {
     const tokens = bm25.tokenize('كيفاش نقدر ندير موعد عند طبيب الأسنان');
     assert.ok(tokens.length > 0);
     assert.ok(tokens.some(t => /[\u0600-\u06FF]/.test(t)));
   });
 
-  test('tokenize handles empty/null input', () => {
-    bm25 = new TestBM25();
-    assert.deepStrictEqual(bm25.tokenize(''), []);
-    assert.deepStrictEqual(bm25.tokenize(null), []);
-    assert.deepStrictEqual(bm25.tokenize(undefined), []);
+  test('strips punctuation but keeps Arabic chars', () => {
+    const tokens = bm25.tokenize('hello, world! مرحبا بالعالم');
+    assert.ok(tokens.includes('hello'));
+    assert.ok(tokens.includes('world'));
+    assert.ok(tokens.some(t => /[\u0600-\u06FF]/.test(t)));
+  });
+});
+
+// ─── BM25Engine build + search ───────────────────────────────────────────────
+
+describe('BM25Engine.build() + search()', () => {
+  const docs = [
+    { id: '1', text: 'Comment prendre rendez-vous chez le dentiste à Casablanca' },
+    { id: '2', text: 'Les tarifs de consultation dentaire sont de 350 DH' },
+    { id: '3', text: 'Notre cabinet est ouvert du lundi au vendredi de 9h à 18h' },
+    { id: '4', text: 'Pour annuler un rendez-vous, appelez-nous 24h avant' },
+    { id: '5', text: 'Nous acceptons les paiements par carte bancaire et espèces' },
+    { id: '6', text: 'كيفاش نقدر ندير موعد عند طبيب الأسنان في كازا' },
+    { id: '7', text: 'The dental clinic is located in Casablanca city center' }
+  ];
+
+  test('builds index with correct docCount', () => {
+    const bm25 = new BM25Engine();
+    bm25.build(docs);
+    assert.strictEqual(bm25.docCount, 7);
+  });
+
+  test('builds index with positive avgdl', () => {
+    const bm25 = new BM25Engine();
+    bm25.build(docs);
+    assert.ok(bm25.avgdl > 0, `avgdl should be > 0, got ${bm25.avgdl}`);
+  });
+
+  test('builds IDF map with terms', () => {
+    const bm25 = new BM25Engine();
+    bm25.build(docs);
+    assert.ok(bm25.idf.size > 0, 'IDF map should have entries');
   });
 
   test('search returns relevant results for FR query', () => {
-    bm25 = new TestBM25();
+    const bm25 = new BM25Engine();
     bm25.build(docs);
     const results = bm25.search('rendez-vous dentiste');
-    assert.ok(results.length > 0);
-    // First result should be about dental appointment
+    assert.ok(results.length > 0, 'Should find matching documents');
     assert.ok(
       results[0].text.includes('rendez-vous') || results[0].text.includes('dentiste'),
       'Top result should be about dental appointment'
@@ -183,7 +102,7 @@ describe('BM25 Algorithm Verification', () => {
   });
 
   test('search returns relevant results for EN query', () => {
-    bm25 = new TestBM25();
+    const bm25 = new BM25Engine();
     bm25.build(docs);
     const results = bm25.search('dental clinic Casablanca');
     assert.ok(results.length > 0);
@@ -191,30 +110,30 @@ describe('BM25 Algorithm Verification', () => {
   });
 
   test('search returns empty for unrelated query', () => {
-    bm25 = new TestBM25();
+    const bm25 = new BM25Engine();
     bm25.build(docs);
     const results = bm25.search('programming javascript react');
     assert.strictEqual(results.length, 0);
   });
 
   test('search respects topK parameter', () => {
-    bm25 = new TestBM25();
+    const bm25 = new BM25Engine();
     bm25.build(docs);
     const results = bm25.search('dentiste', 2);
     assert.ok(results.length <= 2);
   });
 
   test('search results have sparseScore property', () => {
-    bm25 = new TestBM25();
+    const bm25 = new BM25Engine();
     bm25.build(docs);
     const results = bm25.search('tarifs consultation');
     assert.ok(results.length > 0);
-    assert.ok(typeof results[0].sparseScore === 'number');
+    assert.strictEqual(typeof results[0].sparseScore, 'number');
     assert.ok(results[0].sparseScore > 0);
   });
 
-  test('search results are sorted by score desc', () => {
-    bm25 = new TestBM25();
+  test('search results sorted by score descending', () => {
+    const bm25 = new BM25Engine();
     bm25.build(docs);
     const results = bm25.search('dentiste casablanca');
     for (let i = 1; i < results.length; i++) {
@@ -222,8 +141,43 @@ describe('BM25 Algorithm Verification', () => {
     }
   });
 
+  test('search empty query returns empty', () => {
+    const bm25 = new BM25Engine();
+    bm25.build(docs);
+    const results = bm25.search('');
+    assert.deepStrictEqual(results, []);
+  });
+
+  test('empty document set returns empty search', () => {
+    const bm25 = new BM25Engine();
+    bm25.build([]);
+    assert.strictEqual(bm25.docCount, 0);
+    assert.deepStrictEqual(bm25.search('anything'), []);
+  });
+
+  test('single document index works', () => {
+    const bm25 = new BM25Engine();
+    bm25.build([{ id: 'sole', text: 'the quick brown fox jumps over the lazy dog' }]);
+    assert.strictEqual(bm25.docCount, 1);
+    const results = bm25.search('quick fox');
+    assert.strictEqual(results.length, 1);
+    assert.strictEqual(results[0].id, 'sole');
+  });
+
+  test('repeated term gives higher score', () => {
+    const bm25 = new BM25Engine();
+    bm25.build([
+      { id: 'repeat', text: 'vocalia vocalia vocalia voice platform' },
+      { id: 'single', text: 'vocalia is nice for business consulting' }
+    ]);
+    const results = bm25.search('vocalia');
+    assert.strictEqual(results.length, 2);
+    assert.strictEqual(results[0].id, 'repeat');
+    assert.ok(results[0].sparseScore > results[1].sparseScore);
+  });
+
   test('IDF gives higher weight to rare terms', () => {
-    bm25 = new TestBM25();
+    const bm25 = new BM25Engine();
     bm25.build([
       { id: '1', text: 'common word common word common word' },
       { id: '2', text: 'common word rare term' },
@@ -231,14 +185,25 @@ describe('BM25 Algorithm Verification', () => {
     ]);
     const commonIdf = bm25.idf.get('common') || 0;
     const rareIdf = bm25.idf.get('rare') || 0;
-    assert.ok(rareIdf > commonIdf, 'Rare terms should have higher IDF');
+    assert.ok(rareIdf > commonIdf, `Rare terms should have higher IDF: rare=${rareIdf} common=${commonIdf}`);
+  });
+
+  test('IDF minimum is 0.01', () => {
+    const bm25 = new BM25Engine();
+    bm25.build([
+      { id: '1', text: 'common term' },
+      { id: '2', text: 'common term' },
+      { id: '3', text: 'common term' }
+    ]);
+    const idf = bm25.idf.get('common');
+    assert.ok(idf >= 0.01, `IDF should be >= 0.01, got ${idf}`);
   });
 });
 
-// ─── HybridRAG _fuseResults (RRF) ──────────────────────────────
+// ─── HybridRAG._fuseResults (Reciprocal Rank Fusion) ────────────────────────
 
-describe('HybridRAG _fuseResults (Reciprocal Rank Fusion)', () => {
-  test('fuses sparse and dense results', () => {
+describe('HybridRAG._fuseResults()', () => {
+  test('fuses sparse and dense results — overlap gets highest score', () => {
     const rag = new HybridRAG();
     const sparse = [
       { id: 'A', text: 'doc A', sparseScore: 2.5 },
@@ -250,15 +215,13 @@ describe('HybridRAG _fuseResults (Reciprocal Rank Fusion)', () => {
     ];
     const results = rag._fuseResults(sparse, dense, 5);
     assert.ok(results.length >= 2);
-    // B appears in both → highest RRF score
-    assert.strictEqual(results[0].id, 'B');
+    assert.strictEqual(results[0].id, 'B', 'B appears in both → highest RRF');
     assert.ok(results[0].rrfScore > results[1].rrfScore);
   });
 
-  test('returns empty array for empty inputs', () => {
+  test('returns empty for empty inputs', () => {
     const rag = new HybridRAG();
-    const results = rag._fuseResults([], [], 5);
-    assert.deepStrictEqual(results, []);
+    assert.deepStrictEqual(rag._fuseResults([], [], 5), []);
   });
 
   test('handles sparse-only results', () => {
@@ -285,26 +248,11 @@ describe('HybridRAG _fuseResults (Reciprocal Rank Fusion)', () => {
 
   test('respects limit parameter', () => {
     const rag = new HybridRAG();
-    const sparse = Array.from({ length: 10 }, (_, i) => ({ id: `S${i}`, text: `sparse ${i}`, sparseScore: 10 - i }));
-    const dense = Array.from({ length: 10 }, (_, i) => ({ id: `D${i}`, text: `dense ${i}`, denseScore: 0.9 - i * 0.05 }));
-    const results = rag._fuseResults(sparse, dense, 3);
+    const sparse = Array.from({ length: 10 }, (_, i) => ({
+      id: `S${i}`, text: `sparse ${i}`, sparseScore: 10 - i
+    }));
+    const results = rag._fuseResults(sparse, [], 3);
     assert.strictEqual(results.length, 3);
-  });
-
-  test('overlapping items get boosted score', () => {
-    const rag = new HybridRAG();
-    const sparse = [
-      { id: 'overlap', text: 'both results', sparseScore: 1.0 },
-      { id: 'sparse_only', text: 'only sparse', sparseScore: 5.0 }
-    ];
-    const dense = [
-      { id: 'overlap', text: 'both results', denseScore: 0.9 },
-      { id: 'dense_only', text: 'only dense', denseScore: 0.8 }
-    ];
-    const results = rag._fuseResults(sparse, dense, 5);
-    const overlap = results.find(r => r.id === 'overlap');
-    const sparseOnly = results.find(r => r.id === 'sparse_only');
-    assert.ok(overlap.rrfScore > sparseOnly.rrfScore, 'Overlapping result should have higher RRF score');
   });
 
   test('results have rrfScore property', () => {
@@ -329,9 +277,9 @@ describe('HybridRAG _fuseResults (Reciprocal Rank Fusion)', () => {
   });
 });
 
-// ─── HybridRAG invalidate ───────────────────────────────────────
+// ─── HybridRAG invalidate ────────────────────────────────────────────────────
 
-describe('HybridRAG invalidate', () => {
+describe('HybridRAG.invalidate()', () => {
   test('removes matching tenant engines', () => {
     const rag = new HybridRAG();
     rag.tenantEngines.set('tenant1:fr', { bm25: {} });
@@ -351,174 +299,28 @@ describe('HybridRAG invalidate', () => {
 
   test('removes all languages for a tenant', () => {
     const rag = new HybridRAG();
-    rag.tenantEngines.set('t1:fr', {});
-    rag.tenantEngines.set('t1:en', {});
-    rag.tenantEngines.set('t1:es', {});
-    rag.tenantEngines.set('t1:ar', {});
-    rag.tenantEngines.set('t1:ary', {});
+    for (const lang of ['fr', 'en', 'es', 'ar', 'ary']) {
+      rag.tenantEngines.set(`t1:${lang}`, {});
+    }
     rag.invalidate('t1');
     assert.strictEqual(rag.tenantEngines.size, 0);
   });
 });
 
-// ─── HybridRAG getInstance ─────────────────────────────────────
+// ─── HybridRAG getInstance (singleton) ───────────────────────────────────────
 
-describe('HybridRAG getInstance', () => {
-
+describe('HybridRAG.getInstance()', () => {
   test('returns HybridRAG instance', () => {
     const inst = getInstance();
     assert.ok(inst instanceof HybridRAG);
   });
 
   test('returns same instance (singleton)', () => {
-    const a = getInstance();
-    const b = getInstance();
-    assert.strictEqual(a, b);
-  });
-});
-
-// NOTE: HybridRAG exports are proven by behavioral tests above
-// (getInstance singleton, _fuseResults ranking, BM25 edge cases, etc.)
-
-// ─── BM25 Edge Cases ────────────────────────────────────────────
-
-describe('BM25 Algorithm Edge Cases', () => {
-  class TestBM25Edge {
-    constructor(options = {}) {
-      this.k1 = options.k1 || 1.5;
-      this.b = options.b || 0.75;
-      this.avgdl = 0;
-      this.docCount = 0;
-      this.idf = new Map();
-      this.documents = [];
-      this.termFreqs = [];
-    }
-    tokenize(text) {
-      if (!text) return [];
-      return text.toLowerCase()
-        .replace(/[^\w\s\u0600-\u06FF]/g, ' ')
-        .split(/\s+/)
-        .filter(t => t.length > 2);
-    }
-    build(documents) {
-      this.documents = documents;
-      this.docCount = documents.length;
-      this.termFreqs = [];
-      const df = new Map();
-      let totalLen = 0;
-      documents.forEach((doc) => {
-        const tokens = this.tokenize(doc.text);
-        const tf = new Map();
-        tokens.forEach(t => { tf.set(t, (tf.get(t) || 0) + 1); });
-        this.termFreqs.push(tf);
-        totalLen += tokens.length;
-        for (const term of tf.keys()) { df.set(term, (df.get(term) || 0) + 1); }
-      });
-      this.avgdl = totalLen / (this.docCount || 1);
-      for (const [term, freq] of df) {
-        const idf = Math.log((this.docCount - freq + 0.5) / (freq + 0.5) + 1);
-        this.idf.set(term, Math.max(idf, 0.01));
-      }
-    }
-    search(query, topK = 10) {
-      const tokens = this.tokenize(query);
-      const scores = [];
-      this.termFreqs.forEach((tf, idx) => {
-        let score = 0;
-        const docLen = this.tokenize(this.documents[idx].text).length;
-        tokens.forEach(token => {
-          if (!tf.has(token)) return;
-          const f = tf.get(token);
-          const idf = this.idf.get(token) || 0;
-          const numerator = f * (this.k1 + 1);
-          const denominator = f + this.k1 * (1 - this.b + this.b * (docLen / this.avgdl));
-          score += idf * (numerator / denominator);
-        });
-        if (score > 0) { scores.push({ index: idx, score }); }
-      });
-      return scores.sort((a, b) => b.score - a.score).slice(0, topK)
-        .map(s => ({ ...this.documents[s.index], sparseScore: s.score }));
-    }
-  }
-
-  test('empty document set returns empty search', () => {
-    const bm25 = new TestBM25Edge();
-    bm25.build([]);
-    assert.strictEqual(bm25.docCount, 0);
-    const results = bm25.search('anything');
-    assert.deepStrictEqual(results, []);
+    assert.strictEqual(getInstance(), getInstance());
   });
 
-  test('single document index', () => {
-    const bm25 = new TestBM25Edge();
-    bm25.build([{ id: 'sole', text: 'the quick brown fox jumps over the lazy dog' }]);
-    assert.strictEqual(bm25.docCount, 1);
-    const results = bm25.search('quick fox');
-    assert.strictEqual(results.length, 1);
-    assert.strictEqual(results[0].id, 'sole');
-  });
-
-  test('custom k1 and b parameters', () => {
-    const bm25 = new TestBM25Edge({ k1: 2.0, b: 0.5 });
-    assert.strictEqual(bm25.k1, 2.0);
-    assert.strictEqual(bm25.b, 0.5);
-  });
-
-  test('repeated term gives higher score', () => {
-    const bm25 = new TestBM25Edge();
-    bm25.build([
-      { id: 'repeat', text: 'vocalia vocalia vocalia voice platform' },
-      { id: 'single', text: 'vocalia is nice for business consulting' }
-    ]);
-    const results = bm25.search('vocalia');
-    assert.strictEqual(results.length, 2);
-    assert.strictEqual(results[0].id, 'repeat');
-    assert.ok(results[0].sparseScore > results[1].sparseScore);
-  });
-
-  test('tokenize lowercases text', () => {
-    const bm25 = new TestBM25Edge();
-    const tokens = bm25.tokenize('HELLO World Testing');
-    assert.ok(tokens.includes('hello'));
-    assert.ok(tokens.includes('world'));
-    assert.ok(tokens.includes('testing'));
-  });
-
-  test('tokenize strips punctuation but keeps Arabic', () => {
-    const bm25 = new TestBM25Edge();
-    const tokens = bm25.tokenize('hello, world! مرحبا بالعالم');
-    assert.ok(tokens.includes('hello'));
-    assert.ok(tokens.includes('world'));
-    assert.ok(tokens.some(t => /[\u0600-\u06FF]/.test(t)));
-  });
-
-  test('search empty query returns empty', () => {
-    const bm25 = new TestBM25Edge();
-    bm25.build([{ id: '1', text: 'some document text here' }]);
-    const results = bm25.search('');
-    assert.deepStrictEqual(results, []);
-  });
-
-  test('avgdl computed correctly', () => {
-    const bm25 = new TestBM25Edge();
-    bm25.build([
-      { id: '1', text: 'one two three four five' },     // 5 tokens (all > 2 chars)
-      { id: '2', text: 'alpha beta gamma' }              // 3 tokens
-    ]);
-    // "one" is 3 chars, "two" is 3 chars — all pass filter
-    // avgdl = (5 + 3) / 2 = 4 (approximately — depends on exact token count)
-    assert.ok(bm25.avgdl > 0);
-  });
-
-  test('IDF minimum is 0.01', () => {
-    const bm25 = new TestBM25Edge();
-    // Term appearing in all docs → IDF near 0
-    bm25.build([
-      { id: '1', text: 'common term' },
-      { id: '2', text: 'common term' },
-      { id: '3', text: 'common term' }
-    ]);
-    const idf = bm25.idf.get('common');
-    assert.ok(idf >= 0.01, `IDF should be >= 0.01, got ${idf}`);
+  test('instance has tenantEngines map', () => {
+    const inst = getInstance();
+    assert.ok(inst.tenantEngines instanceof Map);
   });
 });
