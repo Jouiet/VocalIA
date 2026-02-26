@@ -714,7 +714,7 @@
     "vp_qualify": "Qualifie chaque lead (scoring BANT automatique)",
     "vp_memory": "Se souvient de chaque client (mémoire cross-session)",
     "vp_followup": "Relance les prospects chauds (WhatsApp automatique)",
-    "vp_reliability": "Jamais en panne (5 moteurs IA en cascade)",
+    "vp_reliability": "Disponibilité continue (5 moteurs IA en cascade)",
     "vp_personas": "40 personas métier",
     "vp_languages": "5 langues natives (détection automatique)",
     "vp_notifications": "Notification instantanée (chaque réservation)",
@@ -752,7 +752,7 @@
     "followup_vocalia": "Relance WhatsApp automatique si prospect chaud",
     "reliability_label": "Panne",
     "reliability_chatbot": "Hors service",
-    "reliability_vocalia": "5 moteurs IA se relaient — jamais en panne",
+    "reliability_vocalia": "5 moteurs IA se relaient en continu",
     "languages_label": "Langues",
     "languages_chatbot": "1 ou 2",
     "languages_vocalia": "5 langues natives (FR, EN, ES, AR, Darija)",
@@ -784,7 +784,7 @@
       "price": "0.24€/min",
       "features": [
         "Un vrai numéro de téléphone, dédié à votre entreprise",
-        "Jamais en panne — 5 moteurs IA se relaient automatiquement",
+        "Disponibilité continue — 5 moteurs IA se relaient automatiquement",
         "Formée sur vos données : produits, tarifs, horaires, FAQ",
         "Votre client dit « un humain » — transfert instantané"
       ]
@@ -1118,7 +1118,7 @@
     },
     "redundancy": {
       "title": "IA Multi-Niveaux",
-      "subtitle": "Jamais en panne",
+      "subtitle": "Disponibilité continue",
       "rule_based": "Règles",
       "level1": "IA Principale",
       "level2": "IA Secours",
@@ -1415,7 +1415,7 @@
     "personas": "Personas métier",
     "uptime": "Disponibilité",
     "ai_levels": "Niveaux IA",
-    "realtime": "REALTIME"
+    "realtime": "< 1s"
   },
   "cta": {
     "title": "Prêt à Avoir une IA qui Qualifie, Mémorise et Relance ?",
@@ -1626,9 +1626,9 @@
     "quote2": "La téléphonie VocalIA gère les rendez-vous 24/7 avec 25 fonctionnalités intégrées : prise de RDV, rappels, qualification et suivi — à partir de 199€/mois (0,24€/min) avec IA, personas et analytics inclus.",
     "name2": "Scénario Clinique",
     "role2": "Téléphonie IA • Prise de RDV 24/7",
-    "quote3": "Avec 203 connecteurs intégrés (Shopify, WooCommerce, HubSpot, Stripe...) et 40 personas métier, VocalIA s'adapte à n'importe quel secteur : immobilier, santé, e-commerce, restauration.",
+    "quote3": "Avec plus de 30 intégrations natives (Shopify, WooCommerce, HubSpot, Stripe...) et 40 personas métier, VocalIA s'adapte à n'importe quel secteur : immobilier, santé, e-commerce, restauration.",
     "name3": "Scénario Multi-Secteur",
-    "role3": "203 Intégrations • 40 Personas",
+    "role3": "31+ Intégrations • 40 Personas",
     "stat1": "Assistants métier prêts à l'emploi",
     "stat2": "Fonctionnalités vérifiées",
     "stat3": "Disponible sans interruption",
@@ -2325,7 +2325,7 @@
     "workflow_step2_title": "IA Conversationnelle",
     "workflow_step2_desc": "Multi-AI + 40 personas métier",
     "workflow_step3_title": "Actions Automatiques",
-    "workflow_step3_desc": "203 connecteurs + automatisations",
+    "workflow_step3_desc": "31+ intégrations + automatisations",
     "workflow_step4_title": "Résultat",
     "workflow_step4_desc": "CRM, Booking, SMS/Email",
     "integrations_title": "Stack d'Intégrations",
@@ -3405,7 +3405,7 @@
     "franais_14": "Français",
     "hitl_configurable_15": "Escalade immédiate vers vos équipes, sur simple demande",
     "rag_knowledge_base_16": "Formée sur vos données : produits, tarifs, horaires, FAQ",
-    "ia_multiprovider_17": "Jamais en panne — 5 moteurs IA se relaient automatiquement",
+    "ia_multiprovider_17": "Disponibilité continue — 5 moteurs IA se relaient automatiquement",
     "pstn_intgr_18": "Un vrai numéro de téléphone, dédié à votre entreprise",
     "intgration_en_2_19": "Intégration en 2 minutes",
     "web_speech_api_20": "Web Speech API native",

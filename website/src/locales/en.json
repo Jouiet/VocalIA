@@ -714,7 +714,7 @@
     "vp_qualify": "Qualifies every lead (automatic BANT scoring)",
     "vp_memory": "Remembers every client (cross-session memory)",
     "vp_followup": "Follows up hot leads (automatic WhatsApp)",
-    "vp_reliability": "Never down (5 AI engines in cascade)",
+    "vp_reliability": "Continuous availability (5 AI engines in cascade)",
     "vp_personas": "40 industry personas",
     "vp_languages": "5 native languages (auto-detection)",
     "vp_notifications": "Instant notification (every booking)",
@@ -752,7 +752,7 @@
     "followup_vocalia": "Automatic WhatsApp follow-up for hot leads",
     "reliability_label": "Outage",
     "reliability_chatbot": "Out of service",
-    "reliability_vocalia": "5 AI engines relay — never goes down",
+    "reliability_vocalia": "5 AI engines relay continuously",
     "languages_label": "Languages",
     "languages_chatbot": "1 or 2",
     "languages_vocalia": "5 native languages (FR, EN, ES, AR, Darija)",
@@ -784,7 +784,7 @@
       "price": "$0.26/min",
       "features": [
         "A real phone number, dedicated to your business",
-        "Never goes down — 5 AI engines relay automatically",
+        "Continuous availability — 5 AI engines relay automatically",
         "Trained on your data: products, prices, hours, FAQ",
         "Your customer says 'a human' — instant transfer"
       ]
@@ -1118,7 +1118,7 @@
     },
     "redundancy": {
       "title": "Multi-Level AI",
-      "subtitle": "Never goes down",
+      "subtitle": "Continuous availability",
       "rule_based": "Rules",
       "level1": "Primary AI",
       "level2": "Backup AI",
@@ -1415,7 +1415,7 @@
     "personas": "Business personas",
     "uptime": "Availability",
     "ai_levels": "AI Levels",
-    "realtime": "REALTIME"
+    "realtime": "< 1s"
   },
   "cta": {
     "title": "Ready for an AI that Qualifies, Remembers and Follows Up?",
@@ -1626,9 +1626,9 @@
     "quote2": "VocalIA telephony manages appointments 24/7 with 25 built-in features: booking, reminders, qualification and follow-up — from €199/month (€0.24/min) with AI, personas and analytics included.",
     "name2": "Clinic Scenario",
     "role2": "AI Telephony • 24/7 Booking",
-    "quote3": "With 203 built-in connectors (Shopify, WooCommerce, HubSpot, Stripe...) and 40 business personas, VocalIA adapts to any industry: real estate, healthcare, e-commerce, restaurants.",
+    "quote3": "With 30+ native integrations (Shopify, WooCommerce, HubSpot, Stripe...) and 40 business personas, VocalIA adapts to any industry: real estate, healthcare, e-commerce, restaurants.",
     "name3": "Multi-Industry Scenario",
-    "role3": "203 Integrations • 40 Personas",
+    "role3": "31+ Integrations • 40 Personas",
     "stat1": "Ready-to-use business assistants",
     "stat2": "Verified features",
     "stat3": "Available non-stop",
@@ -2325,7 +2325,7 @@
     "workflow_step2_title": "Conversational AI",
     "workflow_step2_desc": "Multi-AI + 40 business personas",
     "workflow_step3_title": "Automatic Actions",
-    "workflow_step3_desc": "203 connectors + automations",
+    "workflow_step3_desc": "31+ integrations + automations",
     "workflow_step4_title": "Result",
     "workflow_step4_desc": "CRM, Booking, SMS/Email",
     "integrations_title": "Integration Stack",
@@ -3405,7 +3405,7 @@
     "franais_14": "French",
     "hitl_configurable_15": "Instant handoff to your team, on request",
     "rag_knowledge_base_16": "Trained on your data: products, prices, hours, FAQ",
-    "ia_multiprovider_17": "Never goes down — 5 AI engines relay automatically",
+    "ia_multiprovider_17": "Continuous availability — 5 AI engines relay automatically",
     "pstn_intgr_18": "A real phone number, dedicated to your business",
     "intgration_en_2_19": "2-minute integration",
     "web_speech_api_20": "Web Speech API Native",
