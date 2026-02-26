@@ -4639,6 +4639,103 @@ ${JSON.stringify(contextData)}`;
     return;
   }
 
+  // GET /api/tenants/:id/analytics - Conversation Intelligence (MOAT — Session 250.241)
+  const analyticsMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/analytics$/i);
+  if (analyticsMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(analyticsMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const nodePath = require('path');
+      const convDir = nodePath.join(__dirname, '..', 'data', 'conversations');
+      const analytics = getAnalytics(convDir);
+
+      const urlObj = new URL(req.url, 'http://localhost');
+      const from = urlObj.searchParams.get('from') || null;
+      const to = urlObj.searchParams.get('to') || null;
+
+      const result = analytics.analyze(tenantId, { from, to });
+      sendJson(res, 200, { success: true, ...result });
+    } catch (e) {
+      console.error('❌ [Analytics]', e.message);
+      sendError(res, 500, 'Analytics computation failed');
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/analytics/compare - Period comparison (MOAT — Session 250.241)
+  const analyticsCompareMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/analytics\/compare$/i);
+  if (analyticsCompareMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(analyticsCompareMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const nodePath = require('path');
+      const convDir = nodePath.join(__dirname, '..', 'data', 'conversations');
+      const analytics = getAnalytics(convDir);
+
+      const urlObj = new URL(req.url, 'http://localhost');
+      const currentFrom = urlObj.searchParams.get('current_from');
+      const currentTo = urlObj.searchParams.get('current_to');
+      const previousFrom = urlObj.searchParams.get('previous_from');
+      const previousTo = urlObj.searchParams.get('previous_to');
+
+      if (!currentFrom || !previousFrom) {
+        sendError(res, 400, 'Missing required params: current_from, previous_from');
+        return;
+      }
+
+      const result = analytics.compare(
+        tenantId,
+        { from: currentFrom, to: currentTo },
+        { from: previousFrom, to: previousTo }
+      );
+      sendJson(res, 200, { success: true, ...result });
+    } catch (e) {
+      console.error('❌ [Analytics Compare]', e.message);
+      sendError(res, 500, 'Analytics comparison failed');
+    }
+    return;
+  }
+
+  // GET /api/analytics/personas - Global persona leaderboard (admin only — Session 250.241)
+  if (path === '/api/analytics/personas' && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+
+    if (user.role !== 'admin') {
+      sendError(res, 403, 'Admin only');
+      return;
+    }
+
+    try {
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const nodePath = require('path');
+      const convDir = nodePath.join(__dirname, '..', 'data', 'conversations');
+      const analytics = getAnalytics(convDir);
+      const leaderboard = analytics.personaLeaderboard();
+      sendJson(res, 200, { success: true, personas: leaderboard });
+    } catch (e) {
+      console.error('❌ [Persona Leaderboard]', e.message);
+      sendError(res, 500, 'Leaderboard computation failed');
+    }
+    return;
+  }
+
   // GET /api/tenants/:id/calls - List conversations/calls with metadata (Step 4.5)
   const callsListMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/calls$/i);
   if (callsListMatch && method === 'GET') {

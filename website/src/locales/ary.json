@@ -988,7 +988,20 @@
       "avg_duration": "المدة المتوسطة",
       "completion": "الإكمال"
     },
-    "no_data": "ما كاين حتى معطيات"
+    "no_data": "ما كاين حتى معطيات",
+    "intelligence": {
+      "title": "ذكاء المحادثات",
+      "badge": "BANT",
+      "hot": "سخون",
+      "warm": "دافي",
+      "cool": "بارد",
+      "cold": "بارد بزاف",
+      "bounce_rate": "نسبة الخروج",
+      "avg_score": "المعدل",
+      "deep_conv": "محادثات طويلة",
+      "conversion": "تحويل BANT",
+      "top_keywords": "الكلمات لّي تتكرر بزاف"
+    }
   },
   "agents": {
     "title": "وكلاء الذكاء الاصطناعي",

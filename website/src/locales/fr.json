@@ -988,7 +988,20 @@
       "avg_duration": "Durée moy.",
       "completion": "Complétion"
     },
-    "no_data": "Aucune donnée disponible"
+    "no_data": "Aucune donnée disponible",
+    "intelligence": {
+      "title": "Conversation Intelligence",
+      "badge": "BANT",
+      "hot": "Hot",
+      "warm": "Warm",
+      "cool": "Cool",
+      "cold": "Cold",
+      "bounce_rate": "Taux de rebond",
+      "avg_score": "Score moyen",
+      "deep_conv": "Conv. longues",
+      "conversion": "Conversion BANT",
+      "top_keywords": "Mots-clés fréquents"
+    }
   },
   "agents": {
     "title": "Agents IA",

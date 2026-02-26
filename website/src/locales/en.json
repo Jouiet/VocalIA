@@ -988,7 +988,20 @@
       "avg_duration": "Avg. Duration",
       "completion": "Completion"
     },
-    "no_data": "No data available"
+    "no_data": "No data available",
+    "intelligence": {
+      "title": "Conversation Intelligence",
+      "badge": "BANT",
+      "hot": "Hot",
+      "warm": "Warm",
+      "cool": "Cool",
+      "cold": "Cold",
+      "bounce_rate": "Bounce Rate",
+      "avg_score": "Avg Score",
+      "deep_conv": "Deep Conv.",
+      "conversion": "BANT Conversion",
+      "top_keywords": "Top Keywords"
+    }
   },
   "agents": {
     "title": "AI Agents",

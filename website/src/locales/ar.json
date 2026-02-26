@@ -988,7 +988,20 @@
       "avg_duration": "المدة المتوسطة",
       "completion": "الإكمال"
     },
-    "no_data": "لا توجد بيانات"
+    "no_data": "لا توجد بيانات",
+    "intelligence": {
+      "title": "ذكاء المحادثات",
+      "badge": "BANT",
+      "hot": "ساخن",
+      "warm": "دافئ",
+      "cool": "بارد",
+      "cold": "بارد جداً",
+      "bounce_rate": "معدل الارتداد",
+      "avg_score": "النتيجة المتوسطة",
+      "deep_conv": "محادثات طويلة",
+      "conversion": "تحويل BANT",
+      "top_keywords": "الكلمات الأكثر تكراراً"
+    }
   },
   "agents": {
     "title": "وكلاء الذكاء الاصطناعي",

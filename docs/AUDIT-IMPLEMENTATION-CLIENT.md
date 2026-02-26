@@ -40,10 +40,10 @@
 
 | Service | Port | Fichier | Rôle pour le client | État |
 |:--------|:----:|:--------|:-------------------|:-----|
-| **Voice API** | 3004 | `core/voice-api-resilient.cjs` (3,883 l.) | `/respond` (chat IA), `/config` (widget config), `/social-proof` | ✅ Déployé |
+| **Voice API** | 3004 | `core/voice-api-resilient.cjs` (3,944 l.) | `/respond` (chat IA), `/config` (widget config), `/social-proof` | ✅ Déployé 250.241 |
 | **Grok Realtime** | 3007 | `core/grok-voice-realtime.cjs` (1,109 l.) | WebSocket audio streaming, tenant origin validation | ✅ Déployé |
-| **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` (4,842 l.) | Twilio PSTN ↔ Grok WS, 25 function tools, outbound calls | ✅ Déployé |
-| **DB API** | 3013 | `core/db-api.cjs` (3,610 l.) | REST API tenants, catalog, auth, WebSocket | ✅ Déployé |
+| **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` (5,503 l.) | Twilio PSTN ↔ Grok WS, 25 function tools, outbound calls | ✅ Déployé 250.241 |
+| **DB API** | 3013 | `core/db-api.cjs` (5,346 l.) | REST API tenants, catalog, auth, WebSocket, GDPR, billing, KB | ✅ Déployé 250.241 |
 | **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | SSO Google + GitHub + Slack | ✅ Déployé |
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | Inbound webhooks (HubSpot, Shopify, Stripe, Klaviyo) | ✅ Déployé |
 
@@ -542,7 +542,7 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 
 ## RÉSUMÉ EXÉCUTIF
 
-### Score d'implémentation client : 45/100 → 78/100 → 88/100 → 93/100 (Session 250.240)
+### Score d'implémentation client : 45/100 → 78/100 → 88/100 → 93/100 → 95/100 (Session 250.241)
 
 | Dimension | Score 250.239 | Score 250.240 | Justification |
 |:----------|:----------:|:----------:|:-------------|
@@ -589,7 +589,9 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 | G21-G23 | Future | 10+ jours |
 | G24 (DPA template) | **FIXED 250.240** — `docs/legal/DPA.md` 10 sections, sub-processors, GDPR-compliant | Done |
 
-### La vérité — mise à jour (Session 250.240)
+### La vérité — mise à jour (Session 250.241)
+
+**VPS DÉPLOYÉ** — 7/7 containers healthy, code synchronisé avec commit `fc1d786`.
 
 Le **système est SOTA** — le code ET l'infrastructure multi-tenant sont pleinement opérationnels :
 - **Cloud voice streaming** dans le widget (Grok Realtime WebSocket, PCM16, plan-gated)
@@ -607,6 +609,23 @@ Le **système est SOTA** — le code ET l'infrastructure multi-tenant sont plein
 - **i18n trial keys** — all 5 languages (FR, EN, ES, AR, ARY)
 - **NPM `vocalia-widget@1.0.0`** — published on npmjs.com, ESM, TypeScript types
 - **DPA template** — GDPR-compliant, 10 sections, sub-processors table
+
+### Vérification VPS (250.241) — Delta avant/après déploiement
+
+| Fichier | Avant | Après | Delta |
+|:--------|:-----:|:-----:|:-----:|
+| db-api.cjs | 3,610 | 5,346 | +1,736 |
+| StripeService.cjs | 83 (stub) | 349 | +266 |
+| webhook-dispatcher.cjs | ABSENT | 163 | NEW |
+| voice-api-resilient.cjs | 3,883 | 3,944 | +61 |
+| telephony-bridge.cjs | 4,843 | 5,503 | +660 |
+| voice-widget-v3.js | 3,737 | 4,021 | +284 |
+
+### Seul blocage restant : Stripe Configuration (action utilisateur)
+
+1. `STRIPE_SECRET_KEY` → vide dans `/docker/vocalia/.env`
+2. `STRIPE_WEBHOOK_SECRET` → vide dans `/docker/vocalia/.env`
+3. 5 `price_PLACEHOLDER_*` → nécessite création Products/Prices dans Stripe Dashboard
 - **VPS Stripe prep** — `.env` keys placeholders + `docker-compose.yml` wired (`STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`)
 
 **Gap bloquant unique pour le premier client payant :**

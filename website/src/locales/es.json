@@ -988,7 +988,20 @@
       "avg_duration": "Duración prom.",
       "completion": "Completación"
     },
-    "no_data": "No hay datos disponibles"
+    "no_data": "No hay datos disponibles",
+    "intelligence": {
+      "title": "Inteligencia Conversacional",
+      "badge": "BANT",
+      "hot": "Caliente",
+      "warm": "Tibio",
+      "cool": "Fresco",
+      "cold": "Frío",
+      "bounce_rate": "Tasa de rebote",
+      "avg_score": "Puntuación media",
+      "deep_conv": "Conv. largas",
+      "conversion": "Conversión BANT",
+      "top_keywords": "Palabras clave frecuentes"
+    }
   },
   "agents": {
     "title": "Agentes IA",
