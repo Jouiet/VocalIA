@@ -59,6 +59,7 @@ class SystemHeartbeat {
 
     stop() {
         if (this.timer) clearInterval(this.timer);
+        this.timer = null;
         console.log('[SystemHeartbeat] Stopped.');
     }
 }

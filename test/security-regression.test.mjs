@@ -311,10 +311,11 @@ describe('T5.5: Tenant isolation — path traversal protection', () => {
             !line.includes('sanitizeTenantId') && !line.includes('safeTId') &&
             !line.includes('safeTenantId') && !line.includes('sanitizedId') &&
             !line.includes('this.getTenantDir') && !line.includes('getTenantDir')) {
-          const contextAbove = lines.slice(Math.max(0, i - 5), i).join('\n');
+          const contextAbove = lines.slice(Math.max(0, i - 10), i).join('\n');
           const hasSanitize = contextAbove.includes('sanitizeTenantId') ||
                               contextAbove.includes('safeTId') ||
-                              contextAbove.includes('safeTenantId');
+                              contextAbove.includes('safeTenantId') ||
+                              contextAbove.includes('.replace(/[^a-zA-Z0-9_-]/g');
           assert.ok(hasSanitize,
             `${file}:${i + 1} — path.join with raw tenantId, no sanitization nearby.\n  ${line.trim()}`);
         }

@@ -2,12 +2,11 @@
  * Stripe Service + Gateway — Unit Tests
  * VocalIA — Session 250.207
  *
- * Tests: core/StripeService.cjs (83 lines) + core/gateways/stripe-global-gateway.cjs (282 lines)
- * Was: 0 tests.
+ * Tests: core/StripeService.cjs (349 lines) + core/gateways/stripe-global-gateway.cjs (282 lines)
+ * 83 tests — ALL 13/13 StripeService methods + ALL gateway methods tested behaviorally.
  *
- * Strategy: Test StripeGlobalGateway pure functions (_buildFormData,
- * generateIdempotencyKey, verifyWebhookSignature, healthCheck) directly.
- * StripeService.cjs is a singleton that requires GoogleSheetsDB — tested via export shape.
+ * Strategy: Mock db.query + gateway methods to test StripeService behavioral logic.
+ * Test StripeGlobalGateway pure functions directly.
  *
  * Run: node --test test/stripe-service.test.mjs
  */
@@ -601,6 +600,679 @@ describe('StripeService singleton — behavioral', () => {
       svc.db.query = origQuery;
       svc.gateway.getCustomer = origGetCust;
       svc.gateway.request = origRequest;
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 9: StripeService — Usage-Based Billing (reportVoiceMinutes, reportApiCalls)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('StripeService — reportVoiceMinutes() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+
+  // Helper: mock tenant resolution + gateway
+  function mockTenant(svc) {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      reportMeterEvent: svc.gateway.reportMeterEvent,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    return orig;
+  }
+
+  function restore(svc, orig) {
+    svc.db.query = orig.query;
+    svc.gateway.getCustomer = orig.getCustomer;
+    svc.gateway.reportMeterEvent = orig.reportMeterEvent;
+  }
+
+  it('reports ceiled minutes to gateway.reportMeterEvent', async () => {
+    const orig = mockTenant(svc);
+    let reported = null;
+    svc.gateway.reportMeterEvent = async (eventName, customerId, value) => {
+      reported = { eventName, customerId, value };
+    };
+    try {
+      await svc.reportVoiceMinutes('t1', 2.3);
+      assert.deepEqual(reported, { eventName: 'voice_minutes', customerId: 'cus_x', value: 3 });
+    } finally {
+      restore(svc, orig);
+    }
+  });
+
+  it('ceils fractional minutes (0.1 → 1)', async () => {
+    const orig = mockTenant(svc);
+    let reportedValue = null;
+    svc.gateway.reportMeterEvent = async (_e, _c, value) => { reportedValue = value; };
+    try {
+      await svc.reportVoiceMinutes('t1', 0.1);
+      assert.equal(reportedValue, 1);
+    } finally {
+      restore(svc, orig);
+    }
+  });
+
+  it('skips report when minutes <= 0', async () => {
+    const orig = mockTenant(svc);
+    let called = false;
+    svc.gateway.reportMeterEvent = async () => { called = true; };
+    try {
+      await svc.reportVoiceMinutes('t1', 0);
+      assert.equal(called, false);
+      await svc.reportVoiceMinutes('t1', -5);
+      assert.equal(called, false);
+    } finally {
+      restore(svc, orig);
+    }
+  });
+
+  it('skips report when minutes is null/undefined', async () => {
+    const orig = mockTenant(svc);
+    let called = false;
+    svc.gateway.reportMeterEvent = async () => { called = true; };
+    try {
+      await svc.reportVoiceMinutes('t1', null);
+      assert.equal(called, false);
+      await svc.reportVoiceMinutes('t1', undefined);
+      assert.equal(called, false);
+    } finally {
+      restore(svc, orig);
+    }
+  });
+
+  it('does not throw when gateway fails (non-blocking)', async () => {
+    const orig = mockTenant(svc);
+    svc.gateway.reportMeterEvent = async () => { throw new Error('Stripe down'); };
+    try {
+      // Should NOT throw — error is caught internally
+      await svc.reportVoiceMinutes('t1', 5);
+    } finally {
+      restore(svc, orig);
+    }
+  });
+});
+
+describe('StripeService — reportApiCalls() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+
+  it('reports API calls to gateway.reportMeterEvent', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      reportMeterEvent: svc.gateway.reportMeterEvent,
+    };
+    let reported = null;
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.reportMeterEvent = async (eventName, customerId, value) => {
+      reported = { eventName, customerId, value };
+    };
+    try {
+      await svc.reportApiCalls('t1', 5);
+      assert.deepEqual(reported, { eventName: 'api_calls', customerId: 'cus_x', value: 5 });
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.reportMeterEvent = orig.reportMeterEvent;
+    }
+  });
+
+  it('defaults to 1 call when no count specified', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      reportMeterEvent: svc.gateway.reportMeterEvent,
+    };
+    let reportedValue = null;
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.reportMeterEvent = async (_e, _c, value) => { reportedValue = value; };
+    try {
+      await svc.reportApiCalls('t1');
+      assert.equal(reportedValue, 1);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.reportMeterEvent = orig.reportMeterEvent;
+    }
+  });
+
+  it('does not throw when gateway fails (non-blocking)', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      reportMeterEvent: svc.gateway.reportMeterEvent,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.reportMeterEvent = async () => { throw new Error('Stripe down'); };
+    try {
+      await svc.reportApiCalls('t1', 3);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.reportMeterEvent = orig.reportMeterEvent;
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 10: StripeService — getUsageSummary()
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('StripeService — getUsageSummary() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+
+  it('aggregates voice_minutes and api_calls from meter summaries', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      listMeters: svc.gateway.listMeters,
+      getMeterEventSummary: svc.gateway.getMeterEventSummary,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.listMeters = async () => ({
+      data: [
+        { id: 'mtr_vm', event_name: 'voice_minutes' },
+        { id: 'mtr_ac', event_name: 'api_calls' },
+      ]
+    });
+    svc.gateway.getMeterEventSummary = async (meterId) => {
+      if (meterId === 'mtr_vm') return { data: [{ aggregated_value: 120 }] };
+      if (meterId === 'mtr_ac') return { data: [{ aggregated_value: 450 }] };
+      return { data: [] };
+    };
+    try {
+      const summary = await svc.getUsageSummary('t1');
+      assert.equal(summary.voice_minutes, 120);
+      assert.equal(summary.api_calls, 450);
+      assert.ok(summary.period_start, 'should include period_start');
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.listMeters = orig.listMeters;
+      svc.gateway.getMeterEventSummary = orig.getMeterEventSummary;
+    }
+  });
+
+  it('returns zeros when no meter data exists', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      listMeters: svc.gateway.listMeters,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.listMeters = async () => ({ data: [] });
+    try {
+      const summary = await svc.getUsageSummary('t1');
+      assert.equal(summary.voice_minutes, 0);
+      assert.equal(summary.api_calls, 0);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.listMeters = orig.listMeters;
+    }
+  });
+
+  it('returns error summary when customer resolution fails', async () => {
+    const orig = { query: svc.db.query };
+    svc.db.query = async () => [];
+    try {
+      const summary = await svc.getUsageSummary('nonexistent');
+      assert.equal(summary.voice_minutes, 0);
+      assert.equal(summary.api_calls, 0);
+      assert.ok(summary.error, 'should include error message');
+    } finally {
+      svc.db.query = orig.query;
+    }
+  });
+
+  it('handles individual meter summary failure gracefully', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      listMeters: svc.gateway.listMeters,
+      getMeterEventSummary: svc.gateway.getMeterEventSummary,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.listMeters = async () => ({
+      data: [
+        { id: 'mtr_vm', event_name: 'voice_minutes' },
+        { id: 'mtr_ac', event_name: 'api_calls' },
+      ]
+    });
+    svc.gateway.getMeterEventSummary = async (meterId) => {
+      if (meterId === 'mtr_vm') throw new Error('meter not ready');
+      return { data: [{ aggregated_value: 100 }] };
+    };
+    try {
+      const summary = await svc.getUsageSummary('t1');
+      // voice_minutes meter failed → stays 0, api_calls succeeded → 100
+      assert.equal(summary.voice_minutes, 0);
+      assert.equal(summary.api_calls, 100);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.listMeters = orig.listMeters;
+      svc.gateway.getMeterEventSummary = orig.getMeterEventSummary;
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 11: StripeService — initializeMeters()
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('StripeService — initializeMeters() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+
+  it('creates both meters when none exist', async () => {
+    const orig = {
+      listMeters: svc.gateway.listMeters,
+      createMeter: svc.gateway.createMeter,
+    };
+    const created = [];
+    svc.gateway.listMeters = async () => ({ data: [] });
+    svc.gateway.createMeter = async (name, eventName, agg) => {
+      created.push({ name, eventName, agg });
+    };
+    try {
+      const result = await svc.initializeMeters();
+      assert.equal(result.success, true);
+      assert.equal(created.length, 2);
+      assert.equal(created[0].eventName, 'voice_minutes');
+      assert.equal(created[1].eventName, 'api_calls');
+    } finally {
+      svc.gateway.listMeters = orig.listMeters;
+      svc.gateway.createMeter = orig.createMeter;
+    }
+  });
+
+  it('skips creation when meters already exist', async () => {
+    const orig = {
+      listMeters: svc.gateway.listMeters,
+      createMeter: svc.gateway.createMeter,
+    };
+    let createCalled = false;
+    svc.gateway.listMeters = async () => ({
+      data: [
+        { event_name: 'voice_minutes' },
+        { event_name: 'api_calls' },
+      ]
+    });
+    svc.gateway.createMeter = async () => { createCalled = true; };
+    try {
+      const result = await svc.initializeMeters();
+      assert.equal(result.success, true);
+      assert.equal(createCalled, false);
+    } finally {
+      svc.gateway.listMeters = orig.listMeters;
+      svc.gateway.createMeter = orig.createMeter;
+    }
+  });
+
+  it('creates only missing meters', async () => {
+    const orig = {
+      listMeters: svc.gateway.listMeters,
+      createMeter: svc.gateway.createMeter,
+    };
+    const created = [];
+    svc.gateway.listMeters = async () => ({
+      data: [{ event_name: 'voice_minutes' }]
+    });
+    svc.gateway.createMeter = async (name, eventName) => { created.push(eventName); };
+    try {
+      const result = await svc.initializeMeters();
+      assert.equal(result.success, true);
+      assert.equal(created.length, 1);
+      assert.equal(created[0], 'api_calls');
+    } finally {
+      svc.gateway.listMeters = orig.listMeters;
+      svc.gateway.createMeter = orig.createMeter;
+    }
+  });
+
+  it('returns error on failure', async () => {
+    const orig = { listMeters: svc.gateway.listMeters };
+    svc.gateway.listMeters = async () => { throw new Error('Stripe API unavailable'); };
+    try {
+      const result = await svc.initializeMeters();
+      assert.equal(result.success, false);
+      assert.ok(result.error.includes('Stripe API unavailable'));
+    } finally {
+      svc.gateway.listMeters = orig.listMeters;
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 12: StripeService — grantTrialCredits()
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('StripeService — grantTrialCredits() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+  const StripeService = svc.constructor;
+
+  it('TRIAL_CREDITS static has all 5 plans', () => {
+    assert.ok(StripeService.TRIAL_CREDITS.starter);
+    assert.ok(StripeService.TRIAL_CREDITS.pro);
+    assert.ok(StripeService.TRIAL_CREDITS.ecommerce);
+    assert.ok(StripeService.TRIAL_CREDITS.expert_clone);
+    assert.ok(StripeService.TRIAL_CREDITS.telephony);
+  });
+
+  it('TRIAL_DAYS is 14', () => {
+    assert.equal(StripeService.TRIAL_DAYS, 14);
+  });
+
+  it('grants correct credit amount for starter plan', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      request: svc.gateway.request,
+    };
+    const requests = [];
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.request = async (ep, method, data) => {
+      requests.push({ ep, method, data });
+      return {};
+    };
+    try {
+      const result = await svc.grantTrialCredits('t1', 'starter');
+      assert.equal(result.success, true);
+      assert.equal(result.credit_amount, 49); // 4900 cents = 49€
+      assert.equal(result.currency, 'eur');
+      assert.equal(result.plan, 'starter');
+      assert.ok(result.trial_end, 'should include trial_end ISO string');
+      // Verify balance transaction was created
+      const balanceTx = requests.find(r => r.ep.includes('/balance_transactions'));
+      assert.ok(balanceTx, 'should create balance transaction');
+      assert.equal(balanceTx.data.amount, -4900);
+      assert.equal(balanceTx.data.currency, 'eur');
+      // Verify customer metadata was updated
+      const metadataUpdate = requests.find(r => r.ep === '/customers/cus_x' && r.method === 'POST');
+      assert.ok(metadataUpdate, 'should update customer metadata');
+      assert.equal(metadataUpdate.data.metadata.vocalia_plan, 'starter');
+      assert.equal(metadataUpdate.data.metadata.trial_credit_granted, 'true');
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.request = orig.request;
+    }
+  });
+
+  it('grants correct credit amount for telephony plan (199€)', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      request: svc.gateway.request,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.request = async () => ({});
+    try {
+      const result = await svc.grantTrialCredits('t1', 'telephony');
+      assert.equal(result.credit_amount, 199);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.request = orig.request;
+    }
+  });
+
+  it('falls back to starter credits for unknown plan', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      request: svc.gateway.request,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.request = async () => ({});
+    try {
+      const result = await svc.grantTrialCredits('t1', 'nonexistent_plan');
+      assert.equal(result.credit_amount, 49); // Falls back to starter
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.request = orig.request;
+    }
+  });
+
+  it('returns error on failure without throwing', async () => {
+    const orig = { query: svc.db.query };
+    svc.db.query = async () => [];
+    try {
+      const result = await svc.grantTrialCredits('nonexistent');
+      assert.equal(result.success, false);
+      assert.ok(result.error);
+    } finally {
+      svc.db.query = orig.query;
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 13: StripeService — getTrialStatus()
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('StripeService — getTrialStatus() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+
+  it('returns active trial with days remaining', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+    };
+    const futureDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({
+      id: 'cus_x',
+      balance: -2500, // 25€ credit remaining
+      metadata: {
+        trial_end: futureDate,
+        trial_credit_granted: 'true',
+        vocalia_plan: 'pro'
+      }
+    });
+    try {
+      const status = await svc.getTrialStatus('t1');
+      assert.equal(status.active, true);
+      assert.equal(status.trial_available, false);
+      assert.ok(status.days_remaining >= 6 && status.days_remaining <= 8);
+      assert.equal(status.credit_remaining, 25);
+      assert.equal(status.plan, 'pro');
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+    }
+  });
+
+  it('returns expired trial (days_remaining=0)', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+    };
+    const pastDate = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({
+      id: 'cus_x',
+      balance: 0,
+      metadata: {
+        trial_end: pastDate,
+        trial_credit_granted: 'true',
+        vocalia_plan: 'starter'
+      }
+    });
+    try {
+      const status = await svc.getTrialStatus('t1');
+      assert.equal(status.active, false);
+      assert.equal(status.days_remaining, 0);
+      assert.equal(status.credit_remaining, 0);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+    }
+  });
+
+  it('returns trial_available=true when no credits granted yet', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+    };
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({
+      id: 'cus_x',
+      balance: 0,
+      metadata: {}
+    });
+    try {
+      const status = await svc.getTrialStatus('t1');
+      assert.equal(status.active, false);
+      assert.equal(status.trial_available, true);
+      assert.equal(status.days_remaining, 0);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+    }
+  });
+
+  it('returns error status when customer not found', async () => {
+    const orig = { query: svc.db.query };
+    svc.db.query = async () => [];
+    try {
+      const status = await svc.getTrialStatus('nonexistent');
+      assert.equal(status.active, false);
+      assert.ok(status.error);
+    } finally {
+      svc.db.query = orig.query;
+    }
+  });
+
+  it('handles positive balance (no credit) correctly', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+    };
+    const futureDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({
+      id: 'cus_x',
+      balance: 500, // Positive = owes money, not credit
+      metadata: {
+        trial_end: futureDate,
+        trial_credit_granted: 'true'
+      }
+    });
+    try {
+      const status = await svc.getTrialStatus('t1');
+      assert.equal(status.credit_remaining, 0); // Positive balance = no credit
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 14: StripeService — createTrialSubscription()
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe('StripeService — createTrialSubscription() behavioral', () => {
+  const svc = require('../core/StripeService.cjs');
+
+  it('creates subscription with trial_end + grants credits', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      request: svc.gateway.request,
+      generateIdempotencyKey: svc.gateway.generateIdempotencyKey,
+    };
+    const requests = [];
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.generateIdempotencyKey = (action, seed) => 'idem_' + action;
+    svc.gateway.request = async (ep, method, data, opts) => {
+      requests.push({ ep, method, data, opts });
+      if (ep === '/subscriptions') {
+        return { id: 'sub_trial_123', status: 'trialing' };
+      }
+      return {};
+    };
+    try {
+      const result = await svc.createTrialSubscription('t1', 'price_starter_monthly', 'starter');
+      assert.equal(result.subscription_id, 'sub_trial_123');
+      assert.equal(result.status, 'trialing');
+      assert.ok(result.trial_end, 'should include trial_end');
+      // Verify subscription was created with trial_end
+      const subReq = requests.find(r => r.ep === '/subscriptions');
+      assert.ok(subReq, 'should call /subscriptions');
+      assert.equal(subReq.data.customer, 'cus_x');
+      assert.equal(subReq.data['items[0][price]'], 'price_starter_monthly');
+      assert.ok(subReq.data.trial_end > 0, 'trial_end should be a future unix timestamp');
+      assert.equal(subReq.data.metadata.vocalia_plan, 'starter');
+      assert.ok(subReq.opts.idempotencyKey, 'should use idempotency key');
+      // Verify credits were also granted (balance_transactions call)
+      const balanceReq = requests.find(r => r.ep.includes('/balance_transactions'));
+      assert.ok(balanceReq, 'should grant trial credits (balance transaction)');
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.request = orig.request;
+      svc.gateway.generateIdempotencyKey = orig.generateIdempotencyKey;
+    }
+  });
+
+  it('sets trial_end ~14 days in the future', async () => {
+    const orig = {
+      query: svc.db.query,
+      getCustomer: svc.gateway.getCustomer,
+      request: svc.gateway.request,
+      generateIdempotencyKey: svc.gateway.generateIdempotencyKey,
+    };
+    let capturedTrialEnd = null;
+    svc.db.query = async () => [{ id: 't1', stripe_customer_id: 'cus_x' }];
+    svc.gateway.getCustomer = async () => ({ id: 'cus_x' });
+    svc.gateway.generateIdempotencyKey = () => 'idem_test';
+    svc.gateway.request = async (ep, method, data) => {
+      if (ep === '/subscriptions') {
+        capturedTrialEnd = data.trial_end;
+        return { id: 'sub_1', status: 'trialing' };
+      }
+      return {};
+    };
+    try {
+      await svc.createTrialSubscription('t1', 'price_x', 'pro');
+      const now = Math.floor(Date.now() / 1000);
+      const expectedMin = now + 13 * 24 * 60 * 60; // ~13 days (allowing for timing)
+      const expectedMax = now + 15 * 24 * 60 * 60; // ~15 days
+      assert.ok(capturedTrialEnd >= expectedMin, `trial_end ${capturedTrialEnd} should be >= ${expectedMin}`);
+      assert.ok(capturedTrialEnd <= expectedMax, `trial_end ${capturedTrialEnd} should be <= ${expectedMax}`);
+    } finally {
+      svc.db.query = orig.query;
+      svc.gateway.getCustomer = orig.getCustomer;
+      svc.gateway.request = orig.request;
+      svc.gateway.generateIdempotencyKey = orig.generateIdempotencyKey;
+    }
+  });
+
+  it('throws when tenant not found (no try/catch in this method)', async () => {
+    const orig = { query: svc.db.query };
+    svc.db.query = async () => [];
+    try {
+      await assert.rejects(
+        () => svc.createTrialSubscription('nonexistent', 'price_x'),
+        /Tenant not found/
+      );
+    } finally {
+      svc.db.query = orig.query;
     }
   });
 });

@@ -3261,6 +3261,7 @@ async function handleCreateBooking(session, args) {
 }
 
 async function handleCreateBookingInternal(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
   session.analytics.outcome = 'booked';
   session.analytics.funnel_stage = 'closing';
 

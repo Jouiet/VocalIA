@@ -35,7 +35,8 @@ class ConversationAnalytics {
    * Load all conversations for a tenant within a date range
    */
   _loadConversations(tenantId, fromDate = null, toDate = null) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const safeTId = (tenantId || '').replace(/[^a-zA-Z0-9_-]/g, '');
+    const tenantDir = path.join(this.baseDir, safeTId);
     if (!fs.existsSync(tenantDir)) return [];
 
     const files = fs.readdirSync(tenantDir).filter(f => f.endsWith('.json'));

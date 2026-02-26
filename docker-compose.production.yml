@@ -66,18 +66,20 @@ services:
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
       - SMTP_FROM=${SMTP_FROM:-noreply@vocalia.ma}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
       - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN:-}
       - SLACK_NOTIFICATION_CHANNEL=${SLACK_NOTIFICATION_CHANNEL:-}
     command: >
       sh -c "
         apk add --no-cache git curl su-exec &&
-        mkdir -p /vocalia-data/metrics /vocalia-data/voice/hitl-pending /vocalia-data/audit /vocalia-data/clients &&
+        mkdir -p /vocalia-data/metrics /vocalia-data/voice/hitl-pending /vocalia-data/audit /vocalia-data/clients /vocalia-data/logs/analytics &&
         git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
-        rm -rf data clients 2>/dev/null || true &&
+        rm -rf data clients logs 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
         ln -sf /vocalia-data/clients clients &&
-        mkdir -p data &&
+        ln -sf /vocalia-data/logs logs &&
+        mkdir -p data logs/analytics &&
         echo '{\"spreadsheetId\":\"1USAmFgxpXh9yvtAFxvg0_CpmWVop1pOTmxALEE8M4PM\",\"sheets\":{\"tenants\":\"tenants\",\"sessions\":\"sessions\",\"logs\":\"logs\",\"users\":\"users\"}}' > data/google-sheets-config.json &&
         echo '{\"type\":\"authorized_user\",\"client_id\":\"'\"$$GOOGLE_CLIENT_ID\"'\",\"client_secret\":\"'\"$$GOOGLE_CLIENT_SECRET\"'\",\"refresh_token\":\"'\"$$GOOGLE_REFRESH_TOKEN\"'\"}' > data/google-oauth-tokens.json &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
@@ -142,12 +144,13 @@ services:
     command: >
       sh -c "
         apk add --no-cache git curl su-exec &&
-        mkdir -p /vocalia-data/metrics /vocalia-data/voice /vocalia-data/clients &&
+        mkdir -p /vocalia-data/metrics /vocalia-data/voice /vocalia-data/clients /vocalia-data/logs/analytics &&
         git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
-        rm -rf data clients 2>/dev/null || true &&
+        rm -rf data clients logs 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
         ln -sf /vocalia-data/clients clients &&
+        ln -sf /vocalia-data/logs logs &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         chown -R node:node /app /vocalia-data &&
         exec su-exec node node core/voice-api-resilient.cjs --server --port=3004

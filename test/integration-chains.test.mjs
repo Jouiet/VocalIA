@@ -38,12 +38,21 @@ after(() => {
       }
     }
   } catch { /* ignore */ }
-  // Clear all intervals (QuotaSync etc.)
+  // Clear all intervals/timeouts (QuotaSync, Heartbeat etc.)
   const maxId = setTimeout(() => {}, 0);
   for (let i = 0; i < maxId; i++) {
     clearTimeout(i);
     clearInterval(i);
   }
+  // B52: Aggressive handle cleanup — destroy ALL remaining sockets/timers
+  try {
+    for (const h of process._getActiveHandles()) {
+      if (typeof h.unref === 'function') h.unref();
+      if (typeof h.destroy === 'function') {
+        try { h.destroy(); } catch { /* ignore */ }
+      }
+    }
+  } catch { /* ignore */ }
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════
