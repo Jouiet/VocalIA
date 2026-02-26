@@ -1816,25 +1816,35 @@ function startServer(port = 3004) {
     // STATIC ASSETS SERVING (Sovereign Infrastructure)
     // ============================================================
 
-    // 1. Widget Scripts (Split Kernels)
+    // 1. Widget Scripts — serve ALL widget bundles from /voice-assistant/
     if (req.url.startsWith('/voice-assistant/') && req.method === 'GET') {
-      const fileName = req.url.split('/').pop();
-      const validScripts = ['voice-widget-v3.js', 'voice-widget.js'];
-
-      if (validScripts.includes(fileName)) {
-        const filePath = path.join(__dirname, '../widget', fileName);
-        if (await fileExists(filePath)) {
-          res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+      const parsedName = req.url.split('?')[0].split('/').pop();
+      // Whitelist: only .js and .min.js files, no path traversal
+      if (parsedName && /^voice-widget[\w-]*\.(min\.)?js$/.test(parsedName) && !parsedName.includes('..')) {
+        // Try deployed bundle first (website/voice-assistant/), then source (widget/)
+        const deployedPath = path.join(__dirname, '../website/voice-assistant', parsedName);
+        const sourcePath = path.join(__dirname, '../widget', parsedName);
+        const filePath = await fileExists(deployedPath) ? deployedPath : (await fileExists(sourcePath) ? sourcePath : null);
+        if (filePath) {
+          const corsHeaders = tenantCors.getCorsHeaders(req.headers.origin);
+          res.writeHead(200, {
+            'Content-Type': 'application/javascript; charset=utf-8',
+            'Cache-Control': 'public, max-age=3600',
+            ...corsHeaders
+          });
           fs.createReadStream(filePath).pipe(res);
           return;
         }
       }
-      // Fallback for Wix/Legacy paths
-      if (req.url.includes('voice-widget.js')) {
-        const filePath = path.join(__dirname, '../widget/voice-widget-v3.js'); // Default to unified version
-        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
-        fs.createReadStream(filePath).pipe(res);
-        return;
+      // Lang files served from /voice-assistant/lang/
+      if (parsedName && parsedName.startsWith('voice-') && parsedName.endsWith('.json')) {
+        const langPath = path.join(__dirname, '../website/voice-assistant/lang', parsedName);
+        if (await fileExists(langPath)) {
+          const corsHeaders = tenantCors.getCorsHeaders(req.headers.origin);
+          res.writeHead(200, { 'Content-Type': 'application/json', ...corsHeaders });
+          fs.createReadStream(langPath).pipe(res);
+          return;
+        }
       }
     }
 
@@ -2146,7 +2156,7 @@ function startServer(port = 3004) {
         return;
       }
 
-      const validPlatforms = ['html', 'shopify', 'wordpress', 'react', 'wix'];
+      const validPlatforms = ['html', 'shopify', 'wordpress', 'react', 'wix', 'squarespace', 'webflow', 'prestashop', 'gtm'];
       if (!validPlatforms.includes(platform)) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: `Invalid platform. Use: ${validPlatforms.join(', ')}` }));
@@ -2156,24 +2166,40 @@ function startServer(port = 3004) {
       const baseUrl = 'https://api.vocalia.ma';
       const snippets = {
         html: {
-          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
+          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Collez ce code juste avant </body> dans votre page HTML.'
         },
         shopify: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Dans Shopify Admin : Online Store > Themes > Edit Code > layout/theme.liquid > collez avant </body>.'
         },
         wordpress: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
-          instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA.'
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA WordPress.'
         },
         react: {
-          snippet: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${baseUrl}/voice-assistant/voice-widget-v3.js';\n    script.defer = true;\n    script.dataset.tenantId = '${tenantId}';\n    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> dans votre layout`,
+          snippet: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${baseUrl}/voice-assistant/voice-widget-v3.js';\n    script.defer = true;\n    script.dataset.vocaliaTenant = '${tenantId}';\n    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> dans votre layout`,
           instructions: 'Ajoutez le composant VocalIAWidget dans votre layout principal (App.jsx ou layout.tsx).'
         },
         wix: {
-          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-tenant-id="${tenantId}" defer></script>`,
-          instructions: 'Dans Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
+          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          instructions: 'Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
+        },
+        squarespace: {
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          instructions: 'Squarespace : Settings > Advanced > Code Injection > Footer > collez le snippet.'
+        },
+        webflow: {
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          instructions: 'Webflow : Project Settings > Custom Code > Footer Code > collez et publiez.'
+        },
+        prestashop: {
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          instructions: 'PrestaShop : Modules > Module Manager > uploadez vocalia.zip, ou collez dans Design > Theme & Logo > footer.'
+        },
+        gtm: {
+          snippet: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${baseUrl}/voice-assistant/voice-widget-v3.js';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n</script>`,
+          instructions: 'Google Tag Manager : Tags > New > Custom HTML > collez ce code > Trigger : All Pages > Submit.'
         }
       };
 

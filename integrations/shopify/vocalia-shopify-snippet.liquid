@@ -1,0 +1,27 @@
+{% comment %}
+  VocalIA Voice Assistant — Shopify Integration
+  =============================================
+  Version: 1.0.0
+  Docs: https://vocalia.ma/integrations
+
+  INSTALLATION:
+  1. In Shopify Admin → Online Store → Themes → Actions → Edit code
+  2. Open layout/theme.liquid
+  3. Paste this snippet just before </body>
+  4. Replace YOUR_TENANT_ID with your actual Tenant ID from https://vocalia.ma/app/client/settings.html
+  5. Save and preview your store
+
+  WIDGET TYPE:
+  - voice-widget-ecommerce.js → product search, cart recovery, recommendations
+  - voice-widget-b2b.js → lead qualification, B2B service business
+
+  IMPORTANT: Add your Shopify domain (yourstore.myshopify.com AND your custom domain)
+  to Allowed Origins in your VocalIA dashboard → Settings → Allowed Origins.
+{% endcomment %}
+
+{% comment %} VocalIA Voice Assistant {% endcomment %}
+<script
+  src="https://api.vocalia.ma/voice-assistant/voice-widget-ecommerce.js"
+  data-vocalia-tenant="YOUR_TENANT_ID"
+  defer>
+</script>

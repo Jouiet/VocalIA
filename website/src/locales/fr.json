@@ -6224,7 +6224,21 @@
     "gtm_step3": "3. Déclencheur : Toutes les pages > Publier",
     "copy_snippet": "Copier le snippet",
     "ecom_desc": "Instructions pas-à-pas pour votre plateforme. Sélectionnez votre plateforme dans la section \"Code\" ci-dessous.",
-    "see_instructions": "Voir les instructions"
+    "see_instructions": "Voir les instructions",
+    "universal": "Universel",
+    "download_module": "Télécharger le module",
+    "shopify_step1": "1. Online Store > Themes > Edit Code",
+    "shopify_step2": "2. Ouvrez theme.liquid",
+    "shopify_step3": "3. Collez le snippet avant </body>",
+    "ps_step1": "1. Modules > Module Manager > Upload",
+    "ps_step2": "2. Uploadez vocalia.zip",
+    "ps_step3": "3. Configure > collez votre Tenant ID",
+    "wix_step1": "1. Settings > Custom Code",
+    "wix_step2": "2. Add Code > Body End",
+    "wix_step3": "3. Collez le snippet > Publish",
+    "sq_step1": "1. Settings > Code Injection",
+    "sq_step2": "2. Section Footer",
+    "sq_step3": "3. Collez le snippet > Save"
   },
   "roi": {
     "title": "Calculez votre ROI",

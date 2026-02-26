@@ -60,7 +60,7 @@
                 <svg class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM3.01 12c0-1.42.34-2.76.93-3.95L8.09 19.5C5.04 18.15 3.01 15.29 3.01 12zM12 20.99c-.88 0-1.73-.13-2.54-.37l2.7-7.84 2.76 7.57c.02.04.04.09.06.12-.93.33-1.93.52-2.98.52zM13.43 7.53c.54-.03 1.03-.09 1.03-.09.49-.06.43-.77-.06-.74 0 0-1.46.11-2.4.11-.88 0-2.37-.11-2.37-.11-.48-.03-.54.72-.06.77 0 0 .46.06.94.09l1.4 3.84-1.97 5.91-3.28-9.75c.54-.03 1.03-.09 1.03-.09.48-.06.43-.77-.06-.74 0 0-1.46.11-2.4.11-.17 0-.37 0-.58-.01C6.37 4.53 9 3.01 12 3.01c2.24 0 4.28.86 5.81 2.26-.04 0-.07-.01-.11-.01-.88 0-1.51.77-1.51 1.6 0 .74.43 1.37.88 2.11.34.6.74 1.37.74 2.48 0 .77-.3 1.66-.69 2.91l-.9 3.02-3.79-11.85z"/></svg>
               </div>
               <div>
-                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">WordPress</h3>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">WordPress / WooCommerce</h3>
                 <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
               </div>
             </div>
@@ -69,9 +69,97 @@
               <li data-i18n="install_widget.wp_step2">2. Activez le plugin</li>
               <li data-i18n="install_widget.wp_step3">3. Réglages &gt; VocalIA &gt; collez votre Tenant ID</li>
             </ol>
-            <a id="download-wp-plugin" href="https://vocalia.ma/downloads/vocalia-voice-assistant.zip" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors">
+            <a id="download-wp-plugin" href="/downloads/vocalia-voice-assistant.zip" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors">
               <i data-lucide="download" class="w-3.5 h-3.5"></i>
               <span data-i18n="install_widget.download_plugin">Télécharger le plugin</span>
+            </a>
+          </div>
+
+          <!-- Shopify -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-600" viewBox="0 0 24 24" fill="currentColor"><path d="M15.34 3.03c-.07-.4-.4-.63-.66-.66-.26-.03-5.41-.4-5.41-.4s-3.62-3.53-4-3.93c-.37-.37-1.13-.27-1.42-.17-.03 0-.6.17-1.54.47C1.9 0 1.5 1.07 1.37 1.5.97 2.67.57 3.87.57 3.87L5.93 5.5s.07.03.1.03c.03 0 .07-.03.07-.07l.66-3.23 1.74.47S8.64.34 8.71.27c.2-.2.67-.17.93.07.23.23 3.83 7.07 3.83 7.07l2.3.73s-.33-4.67-.43-5.1zM8.44 2.2l-.83 2.8-2.37-.66S6.64 2 7.14 1.23c.5-.77 1.3-.03 1.3-.03v1zm-1.87 4.1L10 7.53c-.33 1.27-1 2.67-1.73 3.6-.77 1-1.77 1.57-2.1 1.7L4.8 11.6s.77-2.6 1.77-5.3zm7.77 1.03L12.47 7c.13-.77.5-1.9.87-2.63.37-.77.87-1.13 1.13-1.27l.67.2c-.2.77-.6 2.67-.8 4.03z"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Shopify</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.guided">Guidé</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.shopify_step1">1. Online Store &gt; Themes &gt; Edit Code</li>
+              <li data-i18n="install_widget.shopify_step2">2. Ouvrez theme.liquid</li>
+              <li data-i18n="install_widget.shopify_step3">3. Collez le snippet avant &lt;/body&gt;</li>
+            </ol>
+            <a href="#snippet-section" data-platform-link="shopify" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
+            </a>
+          </div>
+
+          <!-- PrestaShop -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-pink-600" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">PrestaShop</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.ps_step1">1. Modules &gt; Module Manager &gt; Upload</li>
+              <li data-i18n="install_widget.ps_step2">2. Uploadez vocalia.zip</li>
+              <li data-i18n="install_widget.ps_step3">3. Configure &gt; collez votre Tenant ID</li>
+            </ol>
+            <a href="https://vocalia.ma/integrations" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-pink-600 hover:bg-pink-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.download_module">Télécharger le module</span>
+            </a>
+          </div>
+
+          <!-- Wix -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-yellow-600" viewBox="0 0 24 24" fill="currentColor"><path d="M4.8 5.2l2.3 13.6L12 5.2l4.9 13.6L19.2 5.2"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Wix</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.wix_step1">1. Settings &gt; Custom Code</li>
+              <li data-i18n="install_widget.wix_step2">2. Add Code &gt; Body End</li>
+              <li data-i18n="install_widget.wix_step3">3. Collez le snippet &gt; Publish</li>
+            </ol>
+            <a href="#snippet-section" data-platform-link="wix" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-yellow-600 hover:bg-yellow-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
+            </a>
+          </div>
+
+          <!-- Squarespace / Webflow -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-zinc-200 dark:bg-zinc-700 rounded-lg flex items-center justify-center">
+                <i data-lucide="layout" class="w-5 h-5 text-zinc-600 dark:text-zinc-300"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Squarespace / Webflow</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.guided">Guidé</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.sq_step1">1. Settings &gt; Code Injection</li>
+              <li data-i18n="install_widget.sq_step2">2. Section Footer</li>
+              <li data-i18n="install_widget.sq_step3">3. Collez le snippet &gt; Save</li>
+            </ol>
+            <a href="#snippet-section" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-600 hover:bg-zinc-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
             </a>
           </div>
 
@@ -83,7 +171,7 @@
               </div>
               <div>
                 <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Google Tag Manager</h3>
-                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+                <span class="text-xs text-zinc-500 dark:text-zinc-400" data-i18n="install_widget.universal">Universel</span>
               </div>
             </div>
             <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
@@ -95,24 +183,6 @@
               <i data-lucide="copy" class="w-3.5 h-3.5"></i>
               <span data-i18n="install_widget.copy_snippet">Copier le snippet</span>
             </button>
-          </div>
-
-          <!-- Shopify / WooCommerce -->
-          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
-            <div class="flex items-center gap-3 mb-3">
-              <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                <i data-lucide="shopping-bag" class="w-5 h-5 text-green-600"></i>
-              </div>
-              <div>
-                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Shopify / Wix</h3>
-                <span class="text-xs text-zinc-500 dark:text-zinc-400" data-i18n="install_widget.guided">Guidé</span>
-              </div>
-            </div>
-            <p class="text-xs text-zinc-600 dark:text-zinc-400 mb-4" data-i18n="install_widget.ecom_desc">Instructions pas-à-pas pour votre plateforme. Sélectionnez votre plateforme dans la section "Code" ci-dessous.</p>
-            <a href="#snippet-section" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-lg transition-colors">
-              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
-              <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
-            </a>
           </div>
         </div>
       </section>
@@ -131,6 +201,10 @@
           <button role="tab" aria-selected="false" data-platform="wordpress" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">WordPress</button>
           <button role="tab" aria-selected="false" data-platform="react" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">React / Next.js</button>
           <button role="tab" aria-selected="false" data-platform="wix" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Wix</button>
+          <button role="tab" aria-selected="false" data-platform="squarespace" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Squarespace</button>
+          <button role="tab" aria-selected="false" data-platform="webflow" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Webflow</button>
+          <button role="tab" aria-selected="false" data-platform="prestashop" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">PrestaShop</button>
+          <button role="tab" aria-selected="false" data-platform="gtm" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">GTM</button>
         </div>
 
         <!-- Snippet Code Block -->
@@ -326,7 +400,7 @@
       throw new Error('No tenant ID');
     }
 
-    const API_BASE = 'https://vocalia.ma';
+    const API_BASE = 'https://api.vocalia.ma';
     let currentPlatform = 'html';
     let allowedOrigins = [];
     let widgetConfig = { primary_color: '#4FBAF1', position: 'bottom-right', ecommerce: false };
@@ -424,6 +498,22 @@
         wix: {
           code: `<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
           instructions: 'Dans Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
+        },
+        squarespace: {
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          instructions: 'Dans Squarespace : Settings > Advanced > Code Injection > Footer > collez le snippet.'
+        },
+        webflow: {
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          instructions: 'Dans Webflow : Project Settings > Custom Code > Footer Code > collez et publiez.'
+        },
+        prestashop: {
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          instructions: 'PrestaShop : Modules > Module Manager > uploadez vocalia.zip. Ou collez dans Design > Theme & Logo > Advanced > footer.'
+        },
+        gtm: {
+          code: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${API_BASE}/voice-assistant/${widgetFile}';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n<\/script>`,
+          instructions: 'Google Tag Manager : Tags > New > Custom HTML > collez ce code > Trigger : All Pages > Submit.'
         }
       };
     }
@@ -466,12 +556,23 @@
     // Initialize snippet
     updateSnippet('html');
 
+    // ─── Platform Quick Links (from 1-click cards) ───────────────
+    document.querySelectorAll('[data-platform-link]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const platform = link.dataset.platformLink;
+        updateSnippet(platform);
+        document.getElementById('snippet-section').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
     // ─── GTM Copy Button ──────────────────────────────────────────
     const gtmBtn = document.getElementById('copy-gtm-snippet');
     if (gtmBtn) {
       gtmBtn.addEventListener('click', () => {
         const snippets = getSnippets();
-        navigator.clipboard.writeText(snippets.html.code).then(() => {
+        const gtmSnippet = snippets.gtm?.code || snippets.html.code;
+        navigator.clipboard.writeText(gtmSnippet).then(() => {
           const origHTML = gtmBtn.innerHTML;
           gtmBtn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i><span>OK</span>';
           lucide.createIcons();

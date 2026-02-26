@@ -1,0 +1,41 @@
+<!--
+  VocalIA Voice Assistant — Google Tag Manager Integration
+  ========================================================
+  Version: 1.0.0
+
+  This works with ANY website that has GTM installed.
+  Covers: custom sites, Angular, Vue, Next.js, Gatsby, Hugo, Jekyll, etc.
+
+  INSTALLATION:
+  1. Open Google Tag Manager → your container
+  2. Create a new Tag:
+     - Tag Type: Custom HTML
+     - HTML: paste the code below
+  3. Trigger: All Pages (Page View)
+  4. Save → Submit → Publish
+
+  ADVANCED — Fire only on specific pages:
+  Use a Page Path trigger (e.g., /shop/* for e-commerce pages only)
+
+  IMPORTANT: Add your domain to Allowed Origins in VocalIA dashboard.
+-->
+
+<!-- VocalIA Voice Assistant — GTM Tag -->
+<script>
+(function() {
+  // === CONFIGURATION ===
+  var TENANT_ID = 'YOUR_TENANT_ID';
+  var WIDGET_TYPE = 'b2b'; // 'b2b' or 'ecommerce'
+  // === END CONFIG ===
+
+  var file = WIDGET_TYPE === 'ecommerce'
+    ? 'voice-widget-ecommerce.js'
+    : 'voice-widget-b2b.js';
+
+  var s = document.createElement('script');
+  s.src = 'https://api.vocalia.ma/voice-assistant/' + file;
+  s.defer = true;
+  s.setAttribute('data-vocalia-tenant', TENANT_ID);
+  document.body.appendChild(s);
+})();
+</script>

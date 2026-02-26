@@ -1,0 +1,33 @@
+<!--
+  VocalIA Voice Assistant — Webflow Integration
+  ==============================================
+  Version: 1.0.0
+
+  INSTALLATION (Method 1 — Site-wide, recommended):
+  1. In Webflow → Project Settings → Custom Code tab
+  2. In "Footer Code" section, paste the snippet below
+  3. Replace YOUR_TENANT_ID
+  4. Save and publish
+
+  INSTALLATION (Method 2 — Specific page):
+  1. In the Webflow Designer, drag an "Embed" component onto the page
+  2. Paste the snippet
+  3. Publish
+
+  INSTALLATION (Method 3 — Webflow Apps / Marketplace):
+  Coming soon — register interest at support@vocalia.ma
+
+  WIDGET TYPES:
+  - voice-widget-b2b.js → B2B, portfolios, agencies, SaaS
+  - voice-widget-ecommerce.js → Webflow E-commerce stores
+
+  IMPORTANT: Add your Webflow domain (*.webflow.io AND custom domain)
+  to Allowed Origins in your VocalIA dashboard.
+-->
+
+<!-- VocalIA Voice Assistant -->
+<script
+  src="https://api.vocalia.ma/voice-assistant/voice-widget-b2b.js"
+  data-vocalia-tenant="YOUR_TENANT_ID"
+  defer>
+</script>

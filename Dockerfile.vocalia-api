@@ -24,6 +24,8 @@ COPY personas/ ./personas/
 COPY integrations/ ./integrations/
 COPY sensors/ ./sensors/
 COPY data/knowledge-base/ ./data/knowledge-base/
+COPY widget/ ./widget/
+COPY website/voice-assistant/ ./website/voice-assistant/
 
 # Create data directories
 RUN mkdir -p ./data/ucp-profiles ./data/events

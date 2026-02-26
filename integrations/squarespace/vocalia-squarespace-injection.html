@@ -1,0 +1,29 @@
+<!--
+  VocalIA Voice Assistant — Squarespace Integration
+  ==================================================
+  Version: 1.0.0
+
+  INSTALLATION:
+  1. In Squarespace → Settings → Advanced → Code Injection
+  2. In the "Footer" section, paste the snippet below
+  3. Replace YOUR_TENANT_ID with your actual Tenant ID
+  4. Save
+
+  For specific pages only:
+  1. Edit the page → Settings (gear icon) → Advanced
+  2. Paste in "Page Header Code Injection" (Footer section)
+
+  WIDGET TYPES:
+  - voice-widget-ecommerce.js → for Squarespace Commerce stores
+  - voice-widget-b2b.js → for service/portfolio sites
+
+  IMPORTANT: Add your Squarespace domain to Allowed Origins in VocalIA dashboard.
+  Add BOTH your-site.squarespace.com AND your custom domain.
+-->
+
+<!-- VocalIA Voice Assistant -->
+<script
+  src="https://api.vocalia.ma/voice-assistant/voice-widget-b2b.js"
+  data-vocalia-tenant="YOUR_TENANT_ID"
+  defer>
+</script>

@@ -1,0 +1,47 @@
+{% comment %}
+  VocalIA Voice Assistant — Shopify App Block (Theme App Extension)
+  ================================================================
+  Version: 1.0.0
+
+  For Shopify 2.0 themes using App Blocks.
+  Place this in your theme app extension's blocks directory.
+
+  Schema allows merchants to configure directly from the Theme Editor.
+{% endcomment %}
+
+<script
+  src="https://api.vocalia.ma/voice-assistant/{{ block.settings.widget_type }}"
+  data-vocalia-tenant="{{ block.settings.tenant_id }}"
+  defer>
+</script>
+
+{% schema %}
+{
+  "name": "VocalIA Voice Assistant",
+  "target": "body",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tenant_id",
+      "label": "Tenant ID",
+      "info": "Your VocalIA Tenant ID from vocalia.ma dashboard"
+    },
+    {
+      "type": "select",
+      "id": "widget_type",
+      "label": "Widget Type",
+      "options": [
+        {
+          "value": "voice-widget-ecommerce.js",
+          "label": "E-commerce (recommended for Shopify)"
+        },
+        {
+          "value": "voice-widget-b2b.js",
+          "label": "B2B / Service Business"
+        }
+      ],
+      "default": "voice-widget-ecommerce.js"
+    }
+  ]
+}
+{% endschema %}

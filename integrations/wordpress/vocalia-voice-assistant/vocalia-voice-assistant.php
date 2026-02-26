@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 
 define('VOCALIA_VERSION', '1.0.0');
 define('VOCALIA_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('VOCALIA_CDN_BASE', 'https://vocalia.ma/voice-assistant');
+define('VOCALIA_CDN_BASE', 'https://api.vocalia.ma/voice-assistant');
 
 /**
  * Register settings page
