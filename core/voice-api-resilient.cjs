@@ -1817,7 +1817,7 @@ function startServer(port = 3004) {
     // ============================================================
 
     // 1. Widget Scripts — serve ALL widget bundles from /voice-assistant/
-    if (req.url.startsWith('/voice-assistant/') && req.method === 'GET') {
+    if (req.url.startsWith('/voice-assistant/') && (req.method === 'GET' || req.method === 'HEAD')) {
       const parsedName = req.url.split('?')[0].split('/').pop();
       // Whitelist: only .js and .min.js files, no path traversal
       if (parsedName && /^voice-widget[\w-]*\.(min\.)?js$/.test(parsedName) && !parsedName.includes('..')) {
