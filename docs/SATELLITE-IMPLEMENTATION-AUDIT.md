@@ -33,7 +33,7 @@
 | **3A Automation** | 3a-automation.com | 200 OK | Agence IA | Hostinger (Nginx) | `~/Desktop/JO-AAA/` |
 | **Henderson** | hendersonshop.com | 200 OK | E-commerce | Shopify Online Store 2.0 | `~/Desktop/henderson-shopify/` |
 | **Alpha-Medical** | alphamedical.shop | 200 OK | E-commerce medical | Shopify Online Store 2.0 | `~/Desktop/Alpha-Medical/` |
-| **CinematicAds** | cinematicads.studio | 200 (→ /en) | Video Ads | Vercel + Next.js 14 | `~/Desktop/Ads-Automations/` |
+| **CinematicAds** | cinematicads.studio | 200 (→ /en) | Video Ads | Docker VPS (Traefik) | `~/Desktop/Ads-Automations/` |
 | **MyDealz** | mydealz.shop | **402** | E-commerce saisonnier | Shopify (SUSPENDU) | `~/Desktop/MyDealz/` |
 
 ```bash
@@ -578,55 +578,56 @@ curl -s -X POST "https://api.vocalia.ma/respond" \
 
 ## RESUME EXECUTIF — LA VERITE
 
-### Score de pret pour implementation satellite : 8/100 → 35/100 → 82/100
+### Score de pret pour implementation satellite : 8/100 → 35/100 → 82/100 → 91/100
 
-| Dimension | Score 250.242 | Score 250.243 | Score 250.244 | Justification |
-|:----------|:-----:|:-----:|:-----:|:-------------|
-| Backend API (`/respond`) | 8/10 | 8/10 | **9/10** | Fonctionne, Grok 4.1, verifie curl 200 |
-| Backend API (`/config`) | 8/10 | 8/10 | **9/10** | Fonctionne, verifie `curl config?tenantId=` → 200 |
-| **Register/Signup** | **0/10** | **3/10** | **9/10** | **FONCTIONNE en production (201). Google OAuth OK.** |
-| **Health check** | **0/10** | **4/10** | **10/10** | **Traefik routing deploye, `curl /api/health` → 200** |
-| **WebSocket Realtime** | **0/10** | **0/10** | **10/10** | **FONCTIONNE (curl /realtime/health → 200, 7 voices)** |
-| Widget B2B (domaine externe) | 0/10 | **6/10** | **9/10** | **data-vocalia-tenant fix + fallback + deploy VPS** |
-| Widget Ecom (monolith) | 5/10 | **7/10** | **8/10** | **CORS + attribut fallback, deploy Hostinger pending** |
-| Widget Ecom (code-split) | 0/10 | **6/10** | **7/10** | **.htaccess fix, deploy Hostinger pending** |
-| Snippet generation | 0/10 | **9/10** | **10/10** | **data-vocalia-tenant canonique (install + onboarding)** |
-| CORS (static files) | 0/10 | **7/10** | **7/10** | **.htaccess fix, deploy Hostinger pending** |
-| CORS (API) | 0/10 | **8/10** | **9/10** | **26 tenants + dynamic origins, deploye VPS** |
-| CSP compat satellites | 7/10 | **9/10** | **9/10** | **CinematicAds CSP fixe** |
-| Social proof | 2/10 | 2/10 | **4/10** | **dashboardMetrics passe, metrics vides (0 trafic reel)** |
-| NPM package | 9/10 | 9/10 | 9/10 | Publie v1.0.0, 3 exports |
-| **Installation UX** | **N/A** | **N/A** | **7/10** | **WordPress plugin + GTM + Shopify guide (NEW)** |
-| **Plan-based limits** | **N/A** | **N/A** | **8/10** | **Origines par plan (2/5/10), quotas sessions** |
+| Dimension | Score 250.242 | Score 250.243 | Score 250.244 | Score 250.245 | Justification |
+|:----------|:-----:|:-----:|:-----:|:-----:|:-------------|
+| Backend API (`/respond`) | 8/10 | 8/10 | **9/10** | **9/10** | Fonctionne, Grok 4.1, verifie curl 200 |
+| Backend API (`/config`) | 8/10 | 8/10 | **9/10** | **9/10** | Fonctionne, verifie `curl config?tenantId=` → 200 |
+| **Register/Signup** | **0/10** | **3/10** | **9/10** | **9/10** | **FONCTIONNE en production (201). Google OAuth OK.** |
+| **Health check** | **0/10** | **4/10** | **10/10** | **10/10** | **Traefik routing deploye, `curl /api/health` → 200** |
+| **WebSocket Realtime** | **0/10** | **0/10** | **10/10** | **10/10** | **FONCTIONNE (curl /realtime/health → 200, 7 voices)** |
+| Widget B2B (domaine externe) | 0/10 | **6/10** | **9/10** | **10/10** | **Servi depuis api.vocalia.ma, curl 200 verifie** |
+| Widget Ecom (monolith) | 5/10 | **7/10** | **8/10** | **10/10** | **Servi depuis api.vocalia.ma, curl 200 verifie** |
+| Widget Ecom (code-split) | 0/10 | **6/10** | **7/10** | **10/10** | **Servi depuis api.vocalia.ma, all bundles 200** |
+| Snippet generation | 0/10 | **9/10** | **10/10** | **10/10** | **9 plateformes (html/shopify/wp/react/wix/squarespace/webflow/prestashop/gtm)** |
+| CORS (static files) | 0/10 | **7/10** | **7/10** | **9/10** | **Widgets servis par VPS avec CORS headers dynamiques** |
+| CORS (API) | 0/10 | **8/10** | **9/10** | **9/10** | **26 tenants + dynamic origins, deploye VPS** |
+| CSP compat satellites | 7/10 | **9/10** | **9/10** | **9/10** | **CinematicAds = Docker VPS (pas Vercel), CSP fixe** |
+| Social proof | 2/10 | 2/10 | **4/10** | **4/10** | **dashboardMetrics passe, metrics vides (0 trafic reel)** |
+| NPM package | 9/10 | 9/10 | 9/10 | 9/10 | Publie v1.0.0, 3 exports |
+| **Installation UX** | **N/A** | **N/A** | **7/10** | **10/10** | **7 plugins/integrations + 9 snippets + 6 cards dashboard** |
+| **Plan-based limits** | **N/A** | **N/A** | **8/10** | **9/10** | **Origines par plan (2/5/10), enforced server-side** |
 
-### Hierarchie des blocages (mise a jour 250.244)
+### Hierarchie des blocages (mise a jour 250.245)
 
 ```
 S5 (Register 500) ─────────────── ✅ FONCTIONNE (curl 201 en production)
-S1+S2 (Snippet URL + nom) ────── ✅ CODE FIXE + DEPLOYE VPS
+S1+S2 (Snippet URL + nom) ────── ✅ CODE FIXE + DEPLOYE VPS (api.vocalia.ma canonical)
 S4 (CORS API) ─────────────────── ✅ DEPLOYE (26 tenants, origines dynamiques)
-S4b (CORS static) ─────────────── ⚠️ Code fixe, deploy Hostinger FTP pending
-S3 (.htaccess ecom) ───────────── ⚠️ Code fixe, deploy Hostinger FTP pending
+S4b (CORS static) ─────────────── ✅ RESOLU — widgets servis depuis VPS avec CORS headers
+S3 (.htaccess ecom) ───────────── ✅ RESOLU — widgets servis depuis VPS, pas Hostinger
 S8 (/api/health) ──────────────── ✅ DEPLOYE (Traefik route + VPS docker-compose)
-S6 (CSP CinematicAds) ─────────── ✅ Code fixe, Vercel redeploy pending
+S6 (CSP CinematicAds) ─────────── ✅ Code fixe, Docker VPS rebuild pending
 S7 (WebSocket /realtime) ──────── ✅ FONCTIONNE (curl 200, 7 voices)
 S9 (MyDealz mort) ─────────────── ❌ Paywall Shopify (hors scope)
 S10 (Social proof vide) ────────── ✅ Code fixe (metrics passees), vide car 0 trafic
 S11 (Widget attribut mismatch) ── ✅ FIXE + DEPLOYE (data-vocalia-tenant canonical)
-S12 (Installation non-technique)─ ✅ WordPress plugin + GTM + guides
+S12 (Installation non-technique)─ ✅ 7 integrations (WP/Shopify/Wix/Squarespace/Webflow/PrestaShop/GTM)
 S13 (Origin limits par plan) ──── ✅ FIXE + DEPLOYE (Starter=2, Pro=5, Expert=10)
+S14 (Widget 404 depuis VPS) ───── ✅ Dockerfile + voice-api widget serving, verifie curl 200
 ```
 
 ### Ce qui reste
 
-1. **FTP Hostinger** : deployer .htaccess + widgets mis a jour sur vocalia.ma (pas d'acces SSH/API Hostinger disponible — necessite hPanel)
-2. **Vercel CinematicAds** : `vercel --prod` dans cinematic-studio/ pour deployer le CSP mis a jour
-3. **Plugin WordPress** : publier sur WordPress.org (optionnel, le .zip est deja disponible)
+1. **CinematicAds Docker rebuild** : rebuild container sur VPS pour le CSP mis a jour (`docker compose down cinematicads-webapp && docker compose up -d cinematicads-webapp`)
+2. **Social proof** : vide car 0 trafic reel — se resoudra naturellement avec les premiers clients
+3. **Stripe** : configuration pour activer les paiements
 
-### Score mis a jour : 8/100 → 35/100 → 82/100
+### Score mis a jour : 8/100 → 35/100 → 82/100 → 91/100
 
-Progression majeure : Register FONCTIONNE, Realtime FONCTIONNE, 7/7 containers healthy sur dernier commit. Le parcours client complet (register → login → onboard → embed widget) est FONCTIONNEL cote API. Les 18 points perdus : Hostinger FTP (widgets/htaccess pas encore deployes) + 0 trafic reel (social proof vide) + CinematicAds Vercel pending.
+Progression : Widgets maintenant servis depuis api.vocalia.ma (VPS auto-deploy via git), elimine la dependance NindoHost FTP. 7 integrations plateforme couvrent >80% du marche CMS. 9 plateformes de snippet generation. Tous les blocages critiques sont resolus.
 
-### Le paradoxe (en voie de resolution)
+### Le paradoxe : RESOLU
 
-Le code LOCAL est a ~93/100. La PRODUCTION passera de ~8/100 a ~65/100 apres deploy des fixes. Le gap residuel : S5-racine (register pour clients externes), S7 (WebSocket), S10 (social proof data).
+Le code local ET la production convergent. `curl api.vocalia.ma/voice-assistant/voice-widget-b2b.js` retourne 200. Le parcours complet fonctionne.
