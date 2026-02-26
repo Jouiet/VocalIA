@@ -15,20 +15,28 @@
  *   const markdown = await ingestor.scrape("https://client-site.com/pricing");
  */
 
-const { chromium } = require('playwright-extra');
-const stealth = require('puppeteer-extra-plugin-stealth')();
-chromium.use(stealth);
-const { Readability } = require('@mozilla/readability');
-const { JSDOM } = require('jsdom');
-const TurndownService = require('turndown');
+// Lazy-loaded optional deps (removed from package.json in B76 — 240MB savings)
+let chromium, stealth, Readability, JSDOM, TurndownService;
+let depsAvailable = false;
+try {
+  chromium = require('playwright-extra').chromium;
+  stealth = require('puppeteer-extra-plugin-stealth')();
+  chromium.use(stealth);
+  Readability = require('@mozilla/readability').Readability;
+  JSDOM = require('jsdom').JSDOM;
+  TurndownService = require('turndown');
+  depsAvailable = true;
+} catch (e) {
+  // Dependencies not installed — scrape() will return 503
+}
 
 class KnowledgeIngestion {
     constructor(options = {}) {
         this.browser = null;
-        this.turndownService = new TurndownService({
+        this.turndownService = depsAvailable ? new TurndownService({
             headingStyle: 'atx',
             codeBlockStyle: 'fenced'
-        });
+        }) : null;
         this.options = {
             headless: true, // true for production, false for debugging
             timeout: 30000,
@@ -40,6 +48,9 @@ class KnowledgeIngestion {
      * Initialize Browser (Lazy Loading)
      */
     async init() {
+        if (!depsAvailable) {
+            throw new Error('KnowledgeIngestion deps not installed (playwright-extra, jsdom, turndown). Install with: npm install playwright-extra puppeteer-extra-plugin-stealth @mozilla/readability jsdom turndown');
+        }
         if (!this.browser) {
             console.log('[KnowledgeIngestion] Launching Headless Operations...');
             this.browser = await chromium.launch({

@@ -135,7 +135,11 @@ class ContextBox {
     updated.metadata.tokenEstimate = this._estimateTokens(updated.pillars);
 
     const filePath = this._getPath(id);
-    fs.writeFileSync(filePath, JSON.stringify(updated, null, 2));
+    try {
+      fs.writeFileSync(filePath, JSON.stringify(updated, null, 2));
+    } catch (e) {
+      console.error(`❌ [ContextBox] Failed to write ${id}:`, e.message);
+    }
     return updated;
   }
 

@@ -844,6 +844,15 @@ class GoogleSheetsDB {
       return { allowed: false, current: 0, limit: 0, remaining: 0, error: 'Unknown tenant — no quota config found' };
     }
 
+    // F2 fix: Enforce trial expiry (B146 — quota allowed but trial expired = denied)
+    const trialEnd = config.trial_end || config.stripe?.trial_end;
+    if (trialEnd && new Date(trialEnd) < new Date()) {
+      const hasPaidPlan = config.stripe?.subscription_status === 'active' || config.stripe?.subscription_status === 'trialing';
+      if (!hasPaidPlan) {
+        return { allowed: false, current: 0, limit: 0, remaining: 0, error: 'Trial expired', trial_expired: true };
+      }
+    }
+
     const quotaMap = {
       calls: { quota: 'calls_monthly', usage: 'calls_current' },
       sessions: { quota: 'sessions_monthly', usage: 'sessions_current' },

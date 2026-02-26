@@ -329,8 +329,12 @@ class ErrorScience {
             }
         });
 
-        fs.writeFileSync(this.learnedRulesFile, JSON.stringify(merged, null, 2));
-        console.log(`[ErrorScience] Rules updated: ${merged.length} active rules`);
+        try {
+          fs.writeFileSync(this.learnedRulesFile, JSON.stringify(merged, null, 2));
+          console.log(`[ErrorScience] Rules updated: ${merged.length} active rules`);
+        } catch (e) {
+          console.error('❌ [ErrorScience] Failed to write rules:', e.message);
+        }
     }
 
     /**

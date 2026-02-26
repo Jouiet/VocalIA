@@ -199,6 +199,11 @@ async function register({ email, password, name, tenantId = null, role: _role })
     throw new AuthError('Invalid email format', 'INVALID_EMAIL');
   }
 
+  // F4 fix (B147): Validate name length to prevent DoS via oversized fields
+  if (name && name.length > 200) {
+    throw new AuthError('Name must be less than 200 characters', 'INVALID_NAME');
+  }
+
   // Validate password
   const passwordValidation = validatePassword(password);
   if (!passwordValidation.valid) {

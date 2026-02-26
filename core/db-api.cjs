@@ -2607,9 +2607,18 @@ async function handleRequest(req, res) {
           return;
         }
 
-        // Collect request body
+        // Collect request body (B143: 50MB limit for audio samples)
+        const MAX_UPLOAD_SIZE = 50 * 1024 * 1024;
         const chunks = [];
-        for await (const chunk of req) chunks.push(chunk);
+        let totalSize = 0;
+        for await (const chunk of req) {
+          totalSize += chunk.length;
+          if (totalSize > MAX_UPLOAD_SIZE) {
+            sendError(res, 413, `Upload too large. Max ${MAX_UPLOAD_SIZE / 1024 / 1024}MB.`);
+            return;
+          }
+          chunks.push(chunk);
+        }
         const body = Buffer.concat(chunks);
 
         // Parse multipart parts
@@ -5081,8 +5090,8 @@ ${JSON.stringify(contextData)}`;
       // POST /api/db/:sheet - Create
     case 'POST': {
       const createData = await parseBody(req);
-      // Auto-set tenant_id for non-admin
-      if (tenantId && user.role !== 'admin' && !createData.tenant_id) {
+      // SECURITY: Force tenant_id for non-admin (B142 — prevent horizontal privilege escalation)
+      if (tenantId && user.role !== 'admin') {
         createData.tenant_id = tenantId;
       }
       const created = await db.create(sheet, createData);

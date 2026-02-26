@@ -415,9 +415,13 @@ class BillingAgent {
     // Keep last 1000 entries
     if (costs.length > 1000) costs = costs.slice(-1000);
 
-    const logDir = path.dirname(logPath);
-    if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
-    fs.writeFileSync(logPath, JSON.stringify(costs, null, 2));
+    try {
+      const logDir = path.dirname(logPath);
+      if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
+      fs.writeFileSync(logPath, JSON.stringify(costs, null, 2));
+    } catch (e) {
+      console.error('❌ [BillingAgent] Failed to write cost log:', e.message);
+    }
 
     return costEntry;
   }

@@ -189,7 +189,8 @@ try {
 } catch (e) {
   console.error('❌ Missing dependency: ws');
   console.error('   Run: npm install ws');
-  process.exit(1);
+  if (require.main === module) process.exit(1);
+  else throw new Error('Missing required dependency: ws');
 }
 
 // Optional: Twilio SDK for signature validation
@@ -4605,6 +4606,7 @@ async function sendWhatsAppConfirmation(bookingData, lang = CONFIG.defaultLangua
 }
 
 async function finalizeSession(sessionId, wasAbandoned = false) {
+  try {
   const session = activeSessions.get(sessionId);
   if (!session) return;
 
@@ -4767,6 +4769,9 @@ async function finalizeSession(sessionId, wasAbandoned = false) {
 
   // Cleanup after delay
   setTimeout(() => cleanupSession(sessionId), 5000);
+  } catch (err) {
+    console.error(`❌ [Session] finalizeSession(${sessionId}) crashed:`, err.message);
+  }
 }
 
 // ============================================

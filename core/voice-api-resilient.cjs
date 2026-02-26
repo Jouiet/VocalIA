@@ -3662,6 +3662,8 @@ function startServer(port = 3004) {
     if (!healthy) {
       console.warn('[Server] Starting despite health check warnings...');
     }
+  }).catch(err => {
+    console.error('❌ [Server] Health check error:', err.message);
   });
 
   server.listen(port, () => {
