@@ -48,7 +48,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **i18n**: 5 langs. Geo-detect: MA→FR+MAD, EU→FR+EUR, Other→EN+USD
 - **Fallback**: grok (grok-4-1-fast-reasoning) → gemini (gemini-3-flash) → anthropic (claude-opus-4-5) → atlas → local
 - **Pricing**: Starter 49€ | Pro 99€ | E-commerce 99€ | Expert Clone 149€ | Telephony 199€ + 0.24€/min. No Free Tier, 14-day trial.
-- **Multi-Tenant**: 22 registered (0 paying) | 1,248 client folders = test data | 40 personas × 5 langs
+- **Multi-Tenant**: 26 registered (22 test + 4 satellites, 0 paying) | 1,248 client folders = test data | 40 personas × 5 langs
 
 ## Key Docs (read with Read tool ONLY when needed — NOT auto-loaded)
 

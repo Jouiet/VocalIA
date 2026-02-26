@@ -536,6 +536,80 @@
             "allowed_origins": [
                 "https://vocalia.ma"
             ]
+        },
+        "satellite_3a_automation": {
+            "name": "3A Automation",
+            "sector": "AGENCY",
+            "currency": "EUR",
+            "language": "fr",
+            "knowledge_base_id": "agency_v3",
+            "payment_method": "STRIPE",
+            "phone": "+33600000001",
+            "email": "contact@3a-automation.com",
+            "address": "3A Automation — AI Agency",
+            "widget_type": "B2B",
+            "booking_url": "https://3a-automation.com/contact",
+            "api_key": "vk_d4001db4c07d9d45b9435e67009d82e18b2ddfce9a77a089",
+            "allowed_origins": [
+                "https://3a-automation.com",
+                "https://www.3a-automation.com",
+                "https://vocalia.ma"
+            ]
+        },
+        "satellite_henderson": {
+            "name": "Henderson Shop",
+            "sector": "UNIVERSAL_ECOMMERCE",
+            "currency": "EUR",
+            "language": "en",
+            "knowledge_base_id": "universal_ecom_v1",
+            "payment_method": "SHOPIFY_CHECKOUT",
+            "phone": "+33700000002",
+            "email": "contact@hendersonshop.com",
+            "address": "Henderson Shop — Fashion E-commerce",
+            "widget_type": "ECOM",
+            "api_key": "vk_d375d9ab571987f1facdedf4af5f1b9cc9848173751b49c7",
+            "allowed_origins": [
+                "https://hendersonshop.com",
+                "https://www.hendersonshop.com",
+                "https://vocalia.ma"
+            ]
+        },
+        "satellite_alpha_medical": {
+            "name": "Alpha Medical",
+            "sector": "UNIVERSAL_ECOMMERCE",
+            "currency": "EUR",
+            "language": "fr",
+            "knowledge_base_id": "universal_ecom_v1",
+            "payment_method": "SHOPIFY_CHECKOUT",
+            "phone": "+33700000003",
+            "email": "contact@alphamedical.shop",
+            "address": "Alpha Medical — Medical E-commerce",
+            "widget_type": "ECOM",
+            "api_key": "vk_f0217bad7f1be1d7a09e1149f91e0109e2cf4238f3da8943",
+            "allowed_origins": [
+                "https://alphamedical.shop",
+                "https://www.alphamedical.shop",
+                "https://vocalia.ma"
+            ]
+        },
+        "satellite_cinematicads": {
+            "name": "CinematicAds Studio",
+            "sector": "AGENCY",
+            "currency": "USD",
+            "language": "en",
+            "knowledge_base_id": "agency_v3",
+            "payment_method": "STRIPE",
+            "phone": "+14155550001",
+            "email": "contact@cinematicads.studio",
+            "address": "CinematicAds — Video Ads Studio",
+            "widget_type": "B2B",
+            "booking_url": "https://cinematicads.studio/contact",
+            "api_key": "vk_13bb40d40ad29cb589772f21a47260573c28f9b318a918f5",
+            "allowed_origins": [
+                "https://cinematicads.studio",
+                "https://www.cinematicads.studio",
+                "https://vocalia.ma"
+            ]
         }
     },
     "sectors": {

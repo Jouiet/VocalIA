@@ -382,8 +382,8 @@ describe('T6: Client registry', () => {
     const content = fs.readFileSync(regPath, 'utf8');
     const data = JSON.parse(content);
     assert.ok(data.clients, 'Should have clients property');
-    assert.strictEqual(Object.keys(data.clients).length, 22,
-      'Should have 22 registered tenants');
+    assert.strictEqual(Object.keys(data.clients).length, 26,
+      'Should have 26 registered tenants (22 original + 4 satellites)');
   });
 });
 

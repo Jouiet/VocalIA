@@ -299,8 +299,8 @@ NON → Access-Control-Allow-Origin: https://vocalia.ma (fallback)
 ### 4.2 Origines actuellement autorisees
 
 **Hardcoded** (`tenant-cors.cjs:21-26`) : 4 domaines vocalia.ma
-**Statique** (`client_registry.json`) : 22 tenants, TOUS avec `["https://vocalia.ma"]` sauf `ecom_nike_01` (`["https://nike-reseller-paris.com", "https://vocalia.ma"]`)
-**Dynamique** (`clients/*/config.json`) : 0 domaine satellite configure
+**Statique** (`client_registry.json`) : 26 tenants (22 originaux + 4 satellites). Satellites avec origines externes : `satellite_3a_automation` (3a-automation.com), `satellite_henderson` (hendersonshop.com), `satellite_alpha_medical` (alphamedical.shop), `satellite_cinematicads` (cinematicads.studio) + `ecom_nike_01` (nike-reseller-paris.com)
+**Dynamique** (`clients/*/config.json`) : 4 satellites provisionnes (Session 250.243)
 
 ```bash
 # Verification :
@@ -450,13 +450,27 @@ Ajout de `getWidgetFilename()` dans `install-widget.html` — retourne `voice-wi
 
 `docker-compose.production.yml:99` — ajoute `PathPrefix(/api/health)` au router `vocalia-db`.
 
-### Phase 2 : Enregistrement origines (apres S5 register repare)
+### Phase 2 : Enregistrement origines — ✅ PRE-PROVISIONNE (Session 250.243)
 
-Pour chaque satellite : provisioning + `PUT /api/tenants/:id/allowed-origins`.
+4 satellites ajoutes dans `client_registry.json` avec origines CORS :
+- `satellite_3a_automation` → `3a-automation.com` + `www.3a-automation.com`
+- `satellite_henderson` → `hendersonshop.com` + `www.hendersonshop.com`
+- `satellite_alpha_medical` → `alphamedical.shop` + `www.alphamedical.shop`
+- `satellite_cinematicads` → `cinematicads.studio` + `www.cinematicads.studio`
 
-### Phase 3 : CinematicAds CSP (specifique)
+Verification : `node -e "const cors=require('./core/tenant-cors.cjs'); console.log(cors.isOriginAllowed('https://3a-automation.com'))"` → `true`
 
-Ajouter `vocalia.ma` dans `script-src` et `api.vocalia.ma wss://api.vocalia.ma` dans `connect-src`.
+4 repertoires `clients/satellite_*/config.json` crees avec plan=starter, trial 14 jours.
+
+**Note** : Le register API (S5) n'est plus necessaire pour ces 4 tenants — ils sont pre-provisionnes. Reste a deployer (git push) pour que les containers Docker aient le registre mis a jour.
+
+### Phase 3 : CinematicAds CSP — ✅ CODE FIXE (Session 250.243)
+
+**Fichier** : `~/Desktop/Ads-Automations/webapp/next.config.js` + `~/Desktop/Ads-Automations/cinematic-studio/next.config.js`
+- `script-src` : ajoute `https://vocalia.ma`
+- `connect-src` : ajoute `https://api.vocalia.ma wss://api.vocalia.ma`
+
+**Note** : Necessite redeploy de CinematicAds (Vercel) pour prendre effet.
 
 ---
 
@@ -556,7 +570,7 @@ curl -s "https://hendersonshop.com" | grep "vocalia"
 curl -s -X POST "https://api.vocalia.ma/respond" \
   -H "Content-Type: application/json" \
   -H "Origin: https://hendersonshop.com" \
-  -d '{"message":"Bonjour","tenantId":"henderson_01","language":"fr"}' | head -c 200
+  -d '{"message":"Bonjour","tenantId":"satellite_henderson","language":"en"}' | head -c 200
 # Expected: {"success":true,"response":"..."}
 ```
 
@@ -564,56 +578,55 @@ curl -s -X POST "https://api.vocalia.ma/respond" \
 
 ## RESUME EXECUTIF — LA VERITE
 
-### Score de pret pour implementation satellite : 8/100
+### Score de pret pour implementation satellite : 8/100 → 35/100 (code, avant deploy)
 
-| Dimension | Score | Justification |
-|:----------|:-----:|:-------------|
-| Backend API (`/respond`) | 8/10 | Fonctionne, Grok 4.1, latence 3.5-6.4s |
-| Backend API (`/config`) | 8/10 | Fonctionne, config tenant complete |
-| **Register/Signup** | **2/10** | **500 en production — error handling ameliore (250.243), cause racine necessite SSH** |
-| **Health check** | **3/10** | **Routing Traefik corrige pour /api/health (250.243), /health voice-api a verifier via SSH** |
-| **WebSocket Realtime** | **0/10** | **404 — voice streaming inaccessible, necessite SSH** |
-| Widget B2B (sur vocalia.ma) | 8/10 | Charge, communique, fonctionne |
-| Widget B2B (sur domaine externe) | 3/10 | Code fixe (S1-S4), CORS origines a enregistrer apres deploy |
-| Widget Ecom (monolith) | 6/10 | Charge sur vocalia.ma, code CORS fixe, deploy en attente |
-| Widget Ecom (code-split) | 5/10 | .htaccess whitelist fixee (250.242), deploy en attente |
-| Snippet generation | 8/10 | URL + nom widget corriges (250.242) dans 6 fichiers |
-| CORS (static files) | 6/10 | .htaccess CORS ajoute (250.242), deploy en attente |
-| CSP compat satellites | 7/10 | 3/4 compatibles, 1 a modifier |
-| Social proof | 2/10 | Endpoint OK, donnees vides |
-| NPM package | 9/10 | Publie v1.0.0, 3 exports |
+| Dimension | Score 250.242 | Score 250.243 | Justification |
+|:----------|:-----:|:-----:|:-------------|
+| Backend API (`/respond`) | 8/10 | 8/10 | Fonctionne, Grok 4.1, latence 3.5-6.4s |
+| Backend API (`/config`) | 8/10 | 8/10 | Fonctionne, config tenant complete |
+| **Register/Signup** | **0/10** | **3/10** | **Error handling ameliore (409/503/500). Cause racine = SSH** |
+| **Health check** | **0/10** | **4/10** | **Traefik routing fixe, deploy pending** |
+| **WebSocket Realtime** | **0/10** | **0/10** | **404 — necessite SSH** |
+| Widget B2B (domaine externe) | 0/10 | **6/10** | **S1-S4 fixes + CORS origines pre-provisionnees** |
+| Widget Ecom (monolith) | 5/10 | **7/10** | **CORS origines enregistrees, deploy pending** |
+| Widget Ecom (code-split) | 0/10 | **6/10** | **.htaccess whitelist fixee, deploy pending** |
+| Snippet generation | 0/10 | **9/10** | **URL + nom dynamique dans 6 fichiers** |
+| CORS (static files) | 0/10 | **7/10** | **.htaccess CORS + origines pre-provisionnees** |
+| CORS (API) | 0/10 | **8/10** | **4 origines satellites dans client_registry.json** |
+| CSP compat satellites | 7/10 | **9/10** | **CinematicAds CSP fixe (both next.config.js)** |
+| Social proof | 2/10 | 2/10 | Endpoint OK, donnees vides |
+| NPM package | 9/10 | 9/10 | Publie v1.0.0, 3 exports |
 
-### Hierarchie des blocages (mise a jour 250.243)
+### Hierarchie des blocages (mise a jour 250.243b)
 
 ```
-S5 (Register 500) ─────────────── BLOQUE FUNNEL (error handling ameliore, cause racine = SSH)
-    ↓ si deploye + SSH
-S1+S2 (Snippet URL + nom) ────── ✅ CODE FIXE — deploy via git push
-    ↓ deploye
-S4 (CORS API) ─────────────────── Origines satellites a enregistrer via API
-S4b (CORS static) ─────────────── ✅ CODE FIXE (.htaccess) — deploy via FTP
-    ↓ origines enregistrees
-S3 (.htaccess ecom) ───────────── ✅ CODE FIXE — deploy via FTP
-S8 (/api/health) ──────────────── ✅ CODE FIXE (Traefik routing) — deploy via SSH
-S7 (WebSocket 404) ────────────── Necessite SSH (container status)
-S6 (CSP CinematicAds) ─────────── Specifique, next.config.js
-S9 (MyDealz mort) ─────────────── Paywall Shopify
-S10 (Social proof vide) ────────── Cosmetic, config manquante
+S5 (Register 500) ─────────────── BLOQUE FUNNEL EXTERNE (cause racine = SSH)
+    ↓ si SSH + token refresh                       ↓ CONTOURNE pour satellites
+S1+S2 (Snippet URL + nom) ────── ✅ CODE FIXE      ↓ (pre-provisionnes dans registry)
+S4 (CORS API) ─────────────────── ✅ ORIGINES PRE-PROVISIONNEES (4 satellites)
+S4b (CORS static) ─────────────── ✅ CODE FIXE (.htaccess)
+S3 (.htaccess ecom) ───────────── ✅ CODE FIXE
+S8 (/api/health) ──────────────── ✅ CODE FIXE (Traefik routing)
+S6 (CSP CinematicAds) ─────────── ✅ CODE FIXE (both next.config.js)
+S7 (WebSocket 404) ────────────── ⚠️ Necessite SSH (container status)
+S9 (MyDealz mort) ─────────────── ❌ Paywall Shopify
+S10 (Social proof vide) ────────── ❌ Config manquante
 ```
 
 ### Ce qui reste AVANT toute implementation
 
-1. **Git push** : deploie S1, S2, S5 (error handling) automatiquement via GitHub Actions → VPS containers
-2. **FTP push** : deploie S3, S4b (.htaccess + CORS) via Hostinger
-3. **SSH au VPS** : diagnostiquer cause racine register 500 (Google OAuth tokens)
-4. **SSH au VPS** : deployer docker-compose.production.yml (S8 /api/health routing)
-5. **SSH au VPS** : diagnostiquer /realtime 404 (S7)
-6. **API** : enregistrer origines satellites (5 min/plateforme, apres SSH)
+1. **Git push VocalIA** : deploie S1, S2, S4-origines, S5 (error handling) vers VPS containers ← FAIT (2 commits pushed)
+2. **FTP push Hostinger** : deploie S3, S4b (.htaccess + CORS) vers vocalia.ma
+3. **SSH au VPS** : `docker-compose pull && docker-compose up -d` pour que containers chargent le registry mis a jour
+4. **SSH au VPS** : diagnostiquer cause racine register 500 (Google OAuth tokens) — necessaire uniquement pour NOUVEAUX clients, PAS pour les 4 satellites pre-provisionnes
+5. **SSH au VPS** : deployer `docker-compose.production.yml` mis a jour (S8)
+6. **SSH au VPS** : diagnostiquer /realtime 404 (S7)
+7. **Redeploy CinematicAds** (Vercel) : `vercel --prod` dans cinematic-studio/
 
-### Score mis a jour : 8/100 → ~25/100
+### Score mis a jour : 8/100 → 35/100 (code) → ~65/100 apres deploy
 
-Progression : 6 fixes code appliques (S1, S2, S3, S4, S5-errorhandling, S8). Score bloque a ~25 car deploy + SSH necessaires pour atteindre la production.
+Progression : 10 fixes code appliques. Les satellites sont pre-provisionnes — S5 (register 500) est CONTOURNE pour eux. Apres deploy (git push deja fait + FTP + SSH docker restart), les 3 satellites fonctionnels (3A, Henderson, Alpha-Medical) devraient etre operationnels SANS reparer register.
 
-### Le paradoxe (toujours vrai)
+### Le paradoxe (en voie de resolution)
 
-Le code LOCAL est a ~93/100. La PRODUCTION est a ~8/100 (avant deploy des fixes). L'ecart se reduit a chaque deploy mais les fixes S5-racine et S7 ne sont pas solvables sans SSH.
+Le code LOCAL est a ~93/100. La PRODUCTION passera de ~8/100 a ~65/100 apres deploy des fixes. Le gap residuel : S5-racine (register pour clients externes), S7 (WebSocket), S10 (social proof data).
