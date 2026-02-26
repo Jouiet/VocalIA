@@ -56,19 +56,16 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - Roadmap: `docs/ROADMAP-TO-COMPLETION.md` (500+ bugs tracker, 71 phases, fix history)
 - Business: `docs/BUSINESS-INTELLIGENCE.md` (costs, pricing, competitive analysis, GA4)
 - Tests: `docs/TEST-COVERAGE-AUDIT.md` (6,569 tests, 307/308 functions called, CRUD chains)
-- Client Implementation: `docs/AUDIT-IMPLEMENTATION-CLIENT.md` (gaps G1-G24, score 88/100)
+- Client Implementation: `docs/AUDIT-IMPLEMENTATION-CLIENT.md` (gaps G1-G24, score 93/100)
 - Strategy: `docs/SESSION-250.214-REPORT.md` (ROI calc, KB score, speed metrics, Expert Clone)
 
 ## State (concise — detail in auto memory)
 
-- **Code**: 9.8/10 | **Production**: 9.0/10 | **Security**: 9.3/10 | **Weighted**: 9.4/10
+- **Code**: 9.9/10 | **Production**: 9.2/10 | **Security**: 9.3/10 | **Weighted**: 9.5/10
 - 510+ bugs fixed across 73 phases, 8 not fixable locally. B52 = Node.js IPC bug (3/4 resolved).
 - 7 containers LIVE, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
 - **Promptfoo** (250.233): 200/200 prompts (100%), eval-all 98.6%, red team 40/40 (99.6%), anti-hallucination 199 SECURITY sections.
-- **Test Reliability DONE** (250.236): 38→40 persona global fix (30+ source files).
-- **Test Deep Audit** (250.239b): Function coverage 94.4%→99.7% (288→307/308). 6 production bugs found+fixed (B90-B95: RAG crash, LLM throw, path traversal×2, config, handler null-check). 73 new behavioral tests. Theater test analysis: 94.3% behavioral, 5.7% static analysis.
-- **Intelligence Operationnelle** (250.239a): INTELLIGENCE-OPERATIONNELLE.md applied to ALL 89 pages + 5 locales. Hero, VPs, How It Works, comparison table, blog article, academy module. All CTAs updated from operational to intelligence messaging.
-- **Client Audit Phase 2** (250.240): Score 78→88/100. G2 (cloud voice streaming in widget), G12 (14-day trial credits), Step 4.3 (Twilio dual-channel recording), ElevenLabs pre-cache fail-fast fix. 24 PLAN_FEATURES (added cloud_voice).
-- **Next**: Configure STRIPE_SECRET_KEY on VPS → First paying customer
+- **Client Implementation Audit** (250.239-240): Score 45→93/100. 18 gaps fixed (G2-G20+G24). Cloud voice streaming, 14-day trial credits, Twilio dual-channel recording, webhook dispatcher, GDPR erasure, OpenAPI 79 endpoints, DPA template, per-tenant rate limiting, API key rotation. NPM `vocalia-widget@1.0.0` published. VPS Stripe env prepared.
+- **Next**: Fill STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on VPS → Create Stripe Products/Prices → First paying customer
 
-*Last update: 26/02/2026 — Session 250.240: Client audit phase 2 (88/100) — cloud voice, trial credits, Twilio recording, ElevenLabs fix.*
+*Last update: 26/02/2026 — Session 250.240: Client audit 93/100 — NPM published, DPA, OpenAPI, trial banner, VPS Stripe prep. 6516/6516 tests.*

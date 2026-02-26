@@ -1,8 +1,8 @@
-> **Date:** 2026-02-25 | **Session:** 250.236 (Test Reliability + 38→40 Persona Global Fix)
-> **Code Completeness:** 9.8/10 | **Production Readiness:** 9.0/10 | **Security:** 9.2/10 | **Weighted:** 9.4/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **Test Reliability** (250.236): 6474/6474 pass, 0 fail, 0 cancelled. B52 fixes (3/4 timeouts resolved), STT test env-fix, validator 23/23 ✅ 0 errors, health-check 45/45 ✅ 100%. **38→40 global fix**: 30+ source files corrected. Missing: STRIPE_SECRET_KEY on VPS, 0 paying customers.
+> **Date:** 2026-02-26 | **Session:** 250.240 (Client Implementation Audit — 93/100)
+> **Code Completeness:** 9.9/10 | **Production Readiness:** 9.2/10 | **Security:** 9.3/10 | **Weighted:** 9.5/10
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **6,516 tests** (99 .mjs, 0 fail, 0 skip). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. Cloud voice streaming, 14-day trial credits, Twilio dual-channel recording, webhook dispatcher, GDPR erasure, OpenAPI 79 endpoints, DPA template, per-tenant rate limiting, API key rotation. VPS Stripe env prepared. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.236. Latest: **250.236** Test reliability + 38→40 persona global fix.
+> **Source:** 60+ audit phases across sessions 250.105-250.240. Latest: **250.240** Client implementation audit (93/100).
 
 ---
 
@@ -92,7 +92,7 @@
 
 ### Feature Gating System (250.143-146)
 
-`checkFeature(tenantId, feature)` in voice-api-resilient.cjs — 14 features × 4 plans.
+`checkFeature(tenantId, feature)` in voice-api-resilient.cjs — 24 features × 5 plans.
 `/config` returns `plan_features` for widget init-time gating.
 `/respond` returns `features` for per-request gating.
 Export restriction: 403 for Starter plan.
@@ -114,7 +114,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Widget | Lines | Deployment |
 |:-------|------:|:-----------|
 | voice-widget-b2b.js | 1,573 | 49 pages |
-| voice-widget-v3.js (ECOM) | 3,684 | 1 page (e-commerce.html) |
+| voice-widget-v3.js (ECOM) | 4,021 | 1 page (e-commerce.html) + cloud voice streaming (Pro+) |
 | abandoned-cart-recovery.js | 1,446 | ECOM bundle (lazy) |
 | spin-wheel.js | 1,248 | ECOM bundle (lazy) |
 | voice-quiz.js | 1,163 | ECOM bundle (lazy) |
@@ -161,7 +161,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Non-deployed servers (1) | MCP 3015 → docker-compose profile available but not activated |
 | Distribution platforms | 5 (npm, shopify, wordpress, wix, zapier) |
 | CI/CD | ✅ Active (unit + exhaustive + i18n + coverage + tsc + Playwright) |
-| OpenAPI spec | ✅ 25 methods / 24 paths (validated 250.158) |
+| OpenAPI spec | ✅ 79 endpoints / 7 domains (auto-extracted 250.240, documented in `website/docs/api.html`) |
 
 ---
 
