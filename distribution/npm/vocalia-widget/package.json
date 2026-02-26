@@ -2,8 +2,16 @@
     "name": "vocalia-widget",
     "version": "1.0.0",
     "description": "AI-powered voice assistant widget for websites. 40 industry personas, 5 languages (FR/EN/ES/AR/Darija), BANT lead qualification, RTL support. Zero API cost via Web Speech API.",
+    "type": "module",
     "main": "index.js",
+    "module": "index.js",
     "types": "index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./index.js",
+            "types": "./index.d.ts"
+        }
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
