@@ -1082,7 +1082,12 @@
     "feature_multi_tenant": "Gestión multi-cuentas",
     "feature_unlimited_agents": "Agentes Ilimitados",
     "feature_sla": "SLA 99.99%",
-    "feature_onprem": "On-Premise / Hybrid Cloud"
+    "feature_onprem": "On-Premise / Hybrid Cloud",
+    "trial_active": "Período de prueba activo",
+    "trial_ends": "Finaliza el {{date}}",
+    "trial_credit_remaining": "Crédito restante: {{amount}}",
+    "days_remaining": "días restantes",
+    "cloud_voice": "Voz cloud IA"
   },
   "architecture": {
     "badge": "Motor de IA Vocal",

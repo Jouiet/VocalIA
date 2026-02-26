@@ -1082,7 +1082,12 @@
     "feature_multi_tenant": "Multi-Account Manager",
     "feature_unlimited_agents": "Unlimited Agents",
     "feature_sla": "SLA 99.99%",
-    "feature_onprem": "On-Premise / Hybrid Cloud"
+    "feature_onprem": "On-Premise / Hybrid Cloud",
+    "trial_active": "Free trial active",
+    "trial_ends": "Ends on {{date}}",
+    "trial_credit_remaining": "Credit remaining: {{amount}}",
+    "days_remaining": "days remaining",
+    "cloud_voice": "Cloud AI voice"
   },
   "architecture": {
     "badge": "Voice AI Engine",

@@ -1082,7 +1082,12 @@
     "feature_multi_tenant": "إدارة متعددة الحسابات",
     "feature_unlimited_agents": "أجونات بلا حدود",
     "feature_sla": "SLA 99.99%",
-    "feature_onprem": "On-Premise / Hybrid Cloud"
+    "feature_onprem": "On-Premise / Hybrid Cloud",
+    "trial_active": "فترة التجربة خدّامة",
+    "trial_ends": "كتسالي ف {{date}}",
+    "trial_credit_remaining": "الرصيد اللي باقي: {{amount}}",
+    "days_remaining": "يام باقيين",
+    "cloud_voice": "صوت سحابي ذكي"
   },
   "architecture": {
     "badge": "محرك الذكاء الصوتي",

@@ -47,6 +47,27 @@
       </header>
 
       <div class="px-6 py-6 space-y-6">
+        <!-- Trial Status Banner (hidden by default, shown when trial active) -->
+        <div id="trial-banner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-5 text-white">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <i data-lucide="clock" class="w-6 h-6"></i>
+              <div>
+                <p class="font-semibold text-lg" data-i18n="billing.trial_active">Période d'essai active</p>
+                <p id="trial-details" class="text-amber-100 text-sm mt-0.5">--</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p id="trial-days" class="text-3xl font-bold">--</p>
+              <p class="text-amber-100 text-sm" data-i18n="billing.days_remaining">jours restants</p>
+            </div>
+          </div>
+          <div class="mt-4 bg-white/20 rounded-full h-2 overflow-hidden">
+            <div id="trial-progress-bar" class="h-full bg-white rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
+          </div>
+          <p id="trial-credit-info" class="text-amber-100 text-xs mt-2">--</p>
+        </div>
+
         <!-- Current Plan -->
         <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
           <div class="flex items-start justify-between">
@@ -382,7 +403,7 @@
       telephony:    'price_PLACEHOLDER_TELEPHONY'
     };
 
-    // Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (identical to db-api + voice-api)
+    // Session 250.240: Canonical PLAN_FEATURES — 24 features, 5 plans (identical to db-api + voice-api)
     const PLAN_FEATURES = {
       starter: {
         voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false,
@@ -390,35 +411,35 @@
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
         ecom_recommendations: false, export: false, custom_branding: false,
-        api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false      },
+        api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, cloud_voice: false      },
       pro: {
         voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
         ecom_recommendations: false, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false      },
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true      },
       ecommerce: {
         voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false,
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
         ecom_recommendations: true, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false      },
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true      },
       expert_clone: {
         voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
         whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
         ecom_recommendations: false, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true      },
+        api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, cloud_voice: true      },
       telephony: {
         voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true,
         crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true,
         whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
         ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
         ecom_recommendations: true, export: true, custom_branding: true,
-        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false      }
+        api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true      }
     };
 
     // Session 250.220: All 23 feature labels (D9: bant_crm_push renamed to Qualification CRM)
@@ -433,7 +454,8 @@
       ecom_gamification: 'Gamification', ecom_recommendations: 'Recommandations IA',
       export: 'Export données', custom_branding: 'Branding personnalisé',
       api_access: 'Connexions externes', webhooks: 'Notifications automatiques',
-      voice_cloning: 'Clonage vocal', expert_dashboard: 'Tableau expert'
+      voice_cloning: 'Clonage vocal', expert_dashboard: 'Tableau expert',
+      cloud_voice: 'Voix cloud IA'
     };
     const FEATURE_LABELS = new Proxy(FEATURE_LABELS_FR, {
       get(target, key) {
@@ -465,8 +487,44 @@
       lucide.createIcons();
     }
 
+    // Load trial status
+    async function loadTrialStatus() {
+      try {
+        const trialRes = await api.get(`/tenants/${tenantId}/trial`);
+        if (!trialRes || !trialRes.active) return;
+
+        const banner = document.getElementById('trial-banner');
+        if (!banner) return;
+        banner.classList.remove('hidden');
+
+        const daysLeft = trialRes.days_remaining || 0;
+        const totalDays = 14;
+        const progressPct = Math.max(0, Math.min(100, Math.round(((totalDays - daysLeft) / totalDays) * 100)));
+
+        document.getElementById('trial-days').textContent = daysLeft;
+        document.getElementById('trial-progress-bar').style.width = `${progressPct}%`;
+
+        // Trial end date
+        const endDate = trialRes.trial_end ? new Date(trialRes.trial_end).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }) : '--';
+        document.getElementById('trial-details').textContent = VocaliaI18n.t('billing.trial_ends').replace('{{date}}', endDate);
+
+        // Credit info
+        const creditRemaining = trialRes.credit_remaining != null ? (Math.abs(trialRes.credit_remaining) / 100).toFixed(0) : '--';
+        const sym = (VocaliaI18n.getCurrencyInfo ? VocaliaI18n.getCurrencyInfo() : { symbol: '€' }).symbol || '€';
+        document.getElementById('trial-credit-info').textContent = VocaliaI18n.t('billing.trial_credit_remaining').replace('{{amount}}', `${creditRemaining}${sym}`);
+
+        // Change plan banner gradient when trial expiring soon
+        if (daysLeft <= 3) {
+          banner.className = banner.className.replace('from-amber-500 to-orange-500', 'from-red-500 to-rose-500');
+        }
+      } catch (_e) {
+        // Trial endpoint not available or no trial — hide banner silently
+      }
+    }
+
     // Initialize
     loadBillingData();
+    loadTrialStatus();
 
     // Handle Stripe Checkout return
     const billingParams = new URLSearchParams(window.location.search);

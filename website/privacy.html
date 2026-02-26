@@ -211,6 +211,26 @@
             <p>
               <strong>Important :</strong> Les enregistrements vocaux traités par nos agents IA ne sont pas stockés de manière permanente. Ils sont traités en temps réel pour générer des réponses et sont supprimés immédiatement après le traitement, sauf si vous avez explicitement consenti à leur conservation à des fins d'amélioration du service.
             </p>
+
+            <h3>2.5 Enregistrement des appels téléphoniques</h3>
+            <p>
+              Pour les appels passant par notre service de téléphonie (plans Telephony), les appels peuvent être enregistrés <strong>uniquement si la fonctionnalité est activée par le client</strong> (via la configuration <code>features.call_recording</code>). Lorsque l'enregistrement est activé :
+            </p>
+            <ul>
+              <li>Un <strong>message de consentement</strong> est diffusé au début de chaque appel dans la langue de l'appelant (FR, EN, ES, AR, Darija)</li>
+              <li>Les enregistrements sont stockés chez <strong>Twilio</strong> (sous-traitant certifié) en format dual-channel</li>
+              <li>Les métadonnées (URL, durée, identifiant) sont sauvegardées dans le dossier tenant</li>
+              <li>Les enregistrements sont conservés <strong>90 jours maximum</strong> sauf obligation légale contraire</li>
+            </ul>
+
+            <h3>2.6 Durées de conservation</h3>
+            <ul>
+              <li><strong>Conversations textuelles :</strong> 12 mois glissants, puis anonymisation automatique</li>
+              <li><strong>Enregistrements vocaux :</strong> 90 jours maximum</li>
+              <li><strong>Données de facturation :</strong> 10 ans (obligation légale)</li>
+              <li><strong>Journaux d'audit :</strong> 24 mois (archivage mensuel, chaîne de hachage SHA-256)</li>
+              <li><strong>Profils client unifiés (UCP) :</strong> durée de la relation contractuelle + 3 ans</li>
+            </ul>
           </section>
 
           <section id="utilisation">
@@ -266,7 +286,7 @@
             <ul>
               <li><strong>Droit d'accès :</strong> Obtenir une copie de vos données personnelles</li>
               <li><strong>Droit de rectification :</strong> Corriger des données inexactes</li>
-              <li><strong>Droit à l'effacement :</strong> Demander la suppression de vos données ("droit à l'oubli")</li>
+              <li><strong>Droit à l'effacement :</strong> Demander la suppression de vos données ("droit à l'oubli"). Nous fournissons un endpoint API dédié (<code>DELETE /api/tenants/:id/data</code>) qui supprime toutes vos conversations, base de connaissances, profils clients et anonymise votre configuration.</li>
               <li><strong>Droit à la portabilité :</strong> Recevoir vos données dans un format structuré</li>
               <li><strong>Droit d'opposition :</strong> Vous opposer au traitement de vos données</li>
               <li><strong>Droit de limitation :</strong> Restreindre le traitement de vos données</li>

@@ -204,6 +204,17 @@
           <a href="#webhooks-security" class="sidebar-link"><span data-i18n="docs_api.scurit_155">Sécurité</span></a>
         </div>
 
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4">REST API</h3>
+        <div class="space-y-1">
+          <a href="#rest-auth" class="sidebar-link">Authentication</a>
+          <a href="#rest-tenants" class="sidebar-link">Tenants</a>
+          <a href="#rest-billing" class="sidebar-link">Billing</a>
+          <a href="#rest-kb" class="sidebar-link">Knowledge Base</a>
+          <a href="#rest-catalog" class="sidebar-link">Catalog</a>
+          <a href="#rest-conversations" class="sidebar-link">Conversations</a>
+          <a href="#rest-admin" class="sidebar-link">Admin</a>
+        </div>
+
         <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.rfrences_154">Références</span></h3>
         <div class="space-y-1">
           <a href="#errors" class="sidebar-link"><span data-i18n="docs_api.codes_derreur_30"><span data-i18n="docs_api.codes_derreur_153">Codes d'erreur</span></span></a>
@@ -815,6 +826,353 @@ ws.onmessage = (event) => {
   );
 }</pre>
             </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- REST API — 79 endpoints auto-documented (Session 250.240)   -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+
+        <section id="rest-auth" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge method-post">AUTH</span> Authentication Endpoints
+          </h2>
+          <p class="text-zinc-400 mb-6">User registration, login, JWT management, and password flows.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-post">POST</span>
+                <code class="text-white font-mono text-sm">/api/auth/register</code>
+              </div>
+              <p class="text-zinc-400 text-sm mb-3">Register a new user + auto-provision tenant with API key and trial credits.</p>
+              <div class="code-content rounded-lg p-3 bg-black/40 text-sm">
+                <pre><span class="token-comment">// Request</span>
+{ <span class="token-key">"email"</span>: <span class="token-string">"user@example.com"</span>,
+  <span class="token-key">"password"</span>: <span class="token-string">"secure123"</span>,
+  <span class="token-key">"name"</span>: <span class="token-string">"John Doe"</span>,
+  <span class="token-key">"company"</span>: <span class="token-string">"Acme Corp"</span>,
+  <span class="token-key">"plan"</span>: <span class="token-string">"pro"</span> }
+
+<span class="token-comment">// Response 201</span>
+{ <span class="token-key">"success"</span>: <span class="token-boolean">true</span>,
+  <span class="token-key">"tenant"</span>: { <span class="token-key">"id"</span>: <span class="token-string">"acme_corp_k7m2"</span>, <span class="token-key">"api_key"</span>: <span class="token-string">"vk_a1b2c3..."</span> },
+  <span class="token-key">"trial"</span>: { <span class="token-key">"credit_amount"</span>: <span class="token-number">99</span>, <span class="token-key">"trial_end"</span>: <span class="token-string">"2026-03-12T..."</span> } }</pre>
+              </div>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-post">POST</span>
+                <code class="text-white font-mono text-sm">/api/auth/login</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Login with email/password. Returns JWT access + refresh tokens.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-post">POST</span>
+                <code class="text-white font-mono text-sm">/api/auth/refresh</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Refresh JWT token using refresh_token.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span>
+                <code class="text-white font-mono text-sm">/api/auth/me</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Get current user profile. Requires Bearer token.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3">
+                <span class="method-badge method-put">PUT</span>
+                <code class="text-white font-mono text-sm">/api/auth/me</code>
+              </div>
+              <p class="text-zinc-400 text-sm mt-2">Update user profile (name, company, language).</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-500">
+                <span><span class="method-badge method-post">POST</span> /api/auth/logout</span>
+                <span><span class="method-badge method-post">POST</span> /api/auth/forgot</span>
+                <span><span class="method-badge method-post">POST</span> /api/auth/reset</span>
+                <span><span class="method-badge method-post">POST</span> /api/auth/verify-email</span>
+                <span><span class="method-badge method-put">PUT</span> /api/auth/password</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="rest-tenants" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge" style="background:rgba(168,85,247,0.2);color:#a855f7">TENANT</span> Tenant Management
+          </h2>
+          <p class="text-zinc-400 mb-6">Multi-tenant configuration: origins, API keys, webhooks, usage, trials, and GDPR compliance.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/usage</code>
+              </div>
+              <p class="text-zinc-400 text-sm mb-3">Unified usage dashboard: plan, quotas (calls/sessions/KB), conversation count, features.</p>
+              <div class="code-content rounded-lg p-3 bg-black/40 text-sm">
+                <pre><span class="token-comment">// Response</span>
+{ <span class="token-key">"plan"</span>: <span class="token-string">"pro"</span>,
+  <span class="token-key">"quotas"</span>: {
+    <span class="token-key">"calls"</span>: { <span class="token-key">"used"</span>: <span class="token-number">42</span>, <span class="token-key">"limit"</span>: <span class="token-number">500</span>, <span class="token-key">"pct"</span>: <span class="token-number">8</span> },
+    <span class="token-key">"sessions"</span>: { <span class="token-key">"used"</span>: <span class="token-number">156</span>, <span class="token-key">"limit"</span>: <span class="token-number">2000</span>, <span class="token-key">"pct"</span>: <span class="token-number">8</span> }
+  },
+  <span class="token-key">"features_enabled"</span>: [<span class="token-string">"voice_widget"</span>, <span class="token-string">"cloud_voice"</span>, <span class="token-string">"webhooks"</span>] }</pre>
+              </div>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/trial</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Get trial status: active, days remaining, credit remaining, plan.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span> <span class="method-badge method-put">PUT</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/allowed-origins</code>
+              </div>
+              <p class="text-zinc-400 text-sm">CORS domain management for widget embed. Max 10 origins per tenant.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/api-key</code>
+                <span class="method-badge method-post">POST</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/api-key/rotate</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Read and rotate API keys (<code>vk_</code> format). Rotation is audit-logged.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span> <span class="method-badge method-put">PUT</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/webhooks</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Configure outbound webhook endpoints with HMAC-SHA256 signing. 8 event types. Pro+ plans only.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span> <span class="method-badge method-put">PUT</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/widget-config</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Widget display configuration: branding, position, features, persona.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span> <span class="method-badge method-put">PUT</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/actions</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Tenant automation actions (booking, CRM, email, SMS triggers).</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-delete">DELETE</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/data</code>
+              </div>
+              <p class="text-zinc-400 text-sm">GDPR right-to-erasure. Erases conversations, KB, UCP. Requires confirmation: <code>"DELETE_ALL_DATA_{tenantId}"</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="rest-billing" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge" style="background:rgba(245,158,11,0.2);color:#f59e0b">BILLING</span> Billing & Subscriptions
+          </h2>
+          <p class="text-zinc-400 mb-6">Stripe-powered billing: checkout sessions, subscriptions, portal, and usage-based metering.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-get">GET</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/billing</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Get invoices and billing history for tenant.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-post">POST</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/billing/checkout</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Create Stripe Checkout session. Returns redirect URL. Body: <code>{ priceId, successUrl, cancelUrl }</code>.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex items-center gap-3 mb-2">
+                <span class="method-badge method-post">POST</span>
+                <code class="text-white font-mono text-sm">/api/tenants/:id/billing/portal</code>
+              </div>
+              <p class="text-zinc-400 text-sm">Stripe Customer Portal link for self-service subscription management.</p>
+            </div>
+
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-500">
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/billing/subscription</span>
+                <span><span class="method-badge method-post">POST</span> /api/tenants/:id/billing/cancel</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="rest-kb" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge" style="background:rgba(16,185,129,0.2);color:#10b981">KB</span> Knowledge Base
+          </h2>
+          <p class="text-zinc-400 mb-6">Hybrid RAG (vector + graph) knowledge base with tenant isolation.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-3 text-sm">
+                <span><span class="method-badge method-get">GET</span> <code class="text-zinc-300">/api/tenants/:id/kb</code> — List entries</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-3 text-sm">
+                <span><span class="method-badge method-post">POST</span> <code class="text-zinc-300">/api/tenants/:id/kb/import</code> — Import documents</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-3 text-sm">
+                <span><span class="method-badge method-post">POST</span> <code class="text-zinc-300">/api/tenants/:id/kb/crawl</code> — Web crawler</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-3 text-sm">
+                <span><span class="method-badge method-get">GET</span> <code class="text-zinc-300">/api/tenants/:id/kb/search</code> — Semantic search</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-500">
+                <span><span class="method-badge method-delete">DELETE</span> /api/tenants/:id/kb/:entryId</span>
+                <span><span class="method-badge method-post">POST</span> /api/tenants/:id/kb/rebuild-index</span>
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/kb/diagnostics</span>
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/kb/quota</span>
+                <span><span class="method-badge method-get">GET</span> /api/kb/stats</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="rest-catalog" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge" style="background:rgba(59,130,246,0.2);color:#3b82f6">ECOM</span> E-Commerce Catalog
+          </h2>
+          <p class="text-zinc-400 mb-6">WooCommerce/Shopify connector, product search, recommendations, and cart recovery.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-400">
+                <span><span class="method-badge method-get">GET</span> <code>/api/tenants/:id/catalog</code> — List products</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-400">
+                <span><span class="method-badge method-post">POST</span> <code>/api/tenants/:id/catalog/search</code> — Search products</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-400">
+                <span><span class="method-badge method-post">POST</span> <code>/api/tenants/:id/catalog/recommendations</code> — AI recommendations</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-500">
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/catalog/:productId</span>
+                <span><span class="method-badge method-post">POST</span> /api/tenants/:id/catalog/browse</span>
+                <span><span class="method-badge method-post">POST</span> /api/tenants/:id/catalog/import</span>
+                <span><span class="method-badge method-post">POST</span> /api/tenants/:id/catalog/sync</span>
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/catalog/connector</span>
+                <span><span class="method-badge method-get">GET</span> /api/catalog/connectors</span>
+                <span><span class="method-badge method-post">POST</span> /api/recommendations</span>
+                <span><span class="method-badge method-post">POST</span> /api/leads</span>
+                <span><span class="method-badge method-post">POST</span> /api/cart-recovery</span>
+                <span><span class="method-badge method-get">GET</span> /api/cart-recovery</span>
+                <span><span class="method-badge method-post">POST</span> /api/promo/generate</span>
+                <span><span class="method-badge method-post">POST</span> /api/promo/validate</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="rest-conversations" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge" style="background:rgba(236,72,153,0.2);color:#ec4899">DATA</span> Conversations & UCP
+          </h2>
+          <p class="text-zinc-400 mb-6">Conversation history, call recordings, unified customer profiles, and data export.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-400">
+                <span><span class="method-badge method-get">GET</span> <code>/api/tenants/:id/conversations</code> — List all</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-400">
+                <span><span class="method-badge method-get">GET</span> <code>/api/tenants/:id/calls</code> — Paginated call list with duration & transcripts</span>
+              </div>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-500">
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/conversations/:sessionId</span>
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/conversations/export</span>
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/ucp/profiles</span>
+                <span><span class="method-badge method-get">GET</span> /api/tenants/:id/widget/interactions</span>
+                <span><span class="method-badge method-post">POST</span> /api/ucp/sync</span>
+                <span><span class="method-badge method-post">POST</span> /api/ucp/interaction</span>
+                <span><span class="method-badge method-post">POST</span> /api/ucp/event</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="rest-admin" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge" style="background:rgba(239,68,68,0.2);color:#ef4444">ADMIN</span> Admin & Operations
+          </h2>
+          <p class="text-zinc-400 mb-6">System health, HITL moderation, telephony stats, NLP operator, and export.</p>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <div class="flex flex-wrap gap-4 text-sm text-zinc-500">
+                <span><span class="method-badge method-get">GET</span> /api/health</span>
+                <span><span class="method-badge method-get">GET</span> /api/db/health</span>
+                <span><span class="method-badge method-get">GET</span> /api/admin/engine-stats</span>
+                <span><span class="method-badge method-get">GET</span> /api/hitl/pending</span>
+                <span><span class="method-badge method-get">GET</span> /api/hitl/history</span>
+                <span><span class="method-badge method-get">GET</span> /api/hitl/stats</span>
+                <span><span class="method-badge method-post">POST</span> /api/hitl/approve/:id</span>
+                <span><span class="method-badge method-post">POST</span> /api/hitl/reject/:id</span>
+                <span><span class="method-badge method-get">GET</span> /api/telephony/stats</span>
+                <span><span class="method-badge method-get">GET</span> /api/telephony/cdrs</span>
+                <span><span class="method-badge method-post">POST</span> /api/nlp-operator</span>
+                <span><span class="method-badge method-post">POST</span> /api/quota/sync</span>
+                <span><span class="method-badge method-get">GET</span> /api/logs</span>
+                <span><span class="method-badge method-get">GET</span> /api/exports/:id</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 glass rounded-xl p-6 border border-vocalia-500/20">
+            <p class="text-sm text-zinc-400">
+              <strong class="text-white">79 endpoints</strong> across 7 domains.
+              All endpoints require JWT Bearer authentication (except <code>/api/health</code> and <code>/api/auth/register</code>).
+              Tenant-scoped endpoints enforce ownership check: you can only access your own tenant's data.
+            </p>
           </div>
         </section>
 

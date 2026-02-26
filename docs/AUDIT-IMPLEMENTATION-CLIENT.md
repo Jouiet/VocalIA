@@ -459,8 +459,8 @@ telephony:    voice_widget ✅ | voice_telephony ✅ | booking ✅ | ALL feature
 | 2.2 | **Origins CRUD API** — `GET/PUT /api/tenants/:id/allowed-origins` + dual-source CORS | G6 | `core/db-api.cjs`, `core/tenant-cors.cjs` | ✅ EXISTED + 250.239 |
 | 2.3 | **Registry migration** — Not needed. `client_registry.json` = static seed. Dynamic via `clients/{id}/config.json` + `tenant-cors.cjs` dual-source. | G5 | N/A | ✅ By design |
 | 2.4 | **API key rotation** — `POST /api/tenants/:id/api-key/rotate` + `GET /api/tenants/:id/api-key` | G11 | `core/db-api.cjs` | ✅ 250.239 |
-| 2.5 | **Connecter onboarding.html → backend** — vérifier que les 4 étapes persistent les données via les endpoints créés | G5 | `website/app/client/onboarding.html` | ☐ |
-| 2.6 | **Connecter install-widget.html → backend** — vérifier que save domaines et config fonctionnent avec les nouveaux endpoints | G6 | `website/app/client/install-widget.html` | ☐ |
+| 2.5 | **Connecter onboarding.html → backend** — `api.put('/tenants/${tid}/widget-config')` for dual persistence | G5 | `website/app/client/onboarding.html` | ✅ 250.239 |
+| 2.6 | **Connecter install-widget.html → backend** — `saveOrigins()` → `api.put('/tenants/${tid}/allowed-origins')` | G6 | `website/app/client/install-widget.html` | ✅ 250.239 |
 
 ### PHASE 3 : USAGE-BASED BILLING (Jour 15-22)
 
@@ -481,7 +481,7 @@ telephony:    voice_widget ✅ | voice_telephony ✅ | booking ✅ | ALL feature
 | 4.2 | **Call recording consent** — TwiML `recordingConsent` 5 langs + per-tenant toggle | G9 | `telephony/voice-telephony-bridge.cjs` | ✅ 250.239 |
 | 4.3 | **Twilio call recording** — `<Record>` in TwiML (dual-channel, trim-silence, 1h max), `recordingStatusCallback` saves URL/SID/duration to conversation JSON. | G9 | `telephony/voice-telephony-bridge.cjs` | ✅ 250.240 |
 | 4.4 | **Transcription persistence** — Already existed: `conversationStore.save()` in both voice-api + telephony | G10 | Already done | ✅ EXISTED |
-| 4.5 | **Calls list API** — `GET /api/tenants/:id/calls` — list calls with duration, transcript, lead score | G10 | `core/db-api.cjs` | ☐ |
+| 4.5 | **Calls list API** — `GET /api/tenants/:id/calls` with pagination, reads conversation JSON files | G10 | `core/db-api.cjs` | ✅ 250.239 |
 | 4.6 | **DTMF handling** — Partially exists in cart recovery `<Gather>`. Not needed for AI voice calls. | G15 | N/A | ✅ By design |
 
 ### PHASE 5 : COMPLIANCE + DOCUMENTATION (Jour 31-38)
@@ -490,9 +490,9 @@ telephony:    voice_widget ✅ | voice_telephony ✅ | booking ✅ | ALL feature
 |:-----|:-------|:----|:----------|:------|
 | 5.1 | **GDPR right-to-erasure** — `DELETE /api/tenants/:id/data` with explicit confirmation | G18 | `core/db-api.cjs` | ✅ 250.239 |
 | 5.2 | **Audit trail** — Already existed: `audit-store.cjs` append-only JSONL + SHA-256 hash chain | G19 | `core/audit-store.cjs` | ✅ EXISTED |
-| 5.3 | **Documentation OpenAPI** — auto-générer depuis les routes de `db-api.cjs` et `voice-api-resilient.cjs` | G17 | `website/docs/api.html` ou Swagger UI | ☐ |
+| 5.3 | **Documentation OpenAPI** — 79 endpoints documented, auto-extracted via `scripts/extract-api-routes.cjs`, REST API section in sidebar (7 domains) | G17 | `website/docs/api.html` | ✅ 250.240 |
 | 5.4 | **DPA template** — document juridique standard pour clients EU | G24 | `docs/legal/DPA.md` | ☐ |
-| 5.5 | **Privacy Policy** mise à jour — inclure voice data processing, recording consent, data retention | G18 | `website/privacy.html` | ☐ |
+| 5.5 | **Privacy Policy** — recording consent 5 langs, retention periods, GDPR erasure API reference | G18 | `website/privacy.html` | ✅ 250.240 |
 
 ### PHASE 6 : SCALE (Jour 39+)
 
@@ -542,7 +542,7 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 
 ## RÉSUMÉ EXÉCUTIF
 
-### Score d'implémentation client : 45/100 → 78/100 → 88/100 (Session 250.240)
+### Score d'implémentation client : 45/100 → 78/100 → 88/100 → 91/100 (Session 250.240)
 
 | Dimension | Score 250.239 | Score 250.240 | Justification |
 |:----------|:----------:|:----------:|:-------------|
@@ -551,9 +551,9 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 | **Téléphonie** (code exists) | 8/10 | 9/10 | Inbound+outbound, 25 tools, multi-AI, persona injection + **Twilio `<Record>`** (Step 4.3) |
 | **Téléphonie** (fonctionnel chez client) | 6/10 | 8/10 | Consent FIXED, webhook events FIXED, transcripts EXISTED. **Recording callback + metadata persist**. |
 | **Multi-tenant isolation** | 9/10 | 9/10 | CORS dual-source, API key gen, rotation, per-tenant rate limits |
-| **Dashboard client** | 8/10 | 8/10 | 13 pages + usage API + calls list + trial status endpoint |
+| **Dashboard client** | 8/10 | 9/10 | 13 pages + usage API + calls list + **trial banner** in billing.html + PLAN_FEATURES 24-feature sync |
 | **Billing/Revenue** | 5/10 | 8/10 | Stripe Meters + **14-day trial credits** (G12) + `getTrialStatus()` + registration auto-credit. Needs STRIPE_KEY on VPS. |
-| **Compliance** | 7/10 | 8/10 | GDPR erasure, audit trail, consent notice, webhook HMAC, **dual-channel recording** |
+| **Compliance** | 7/10 | 9/10 | GDPR erasure, audit trail, consent notice, webhook HMAC, **dual-channel recording**, **privacy policy** updated (retention + recording), **OpenAPI docs** 79 endpoints |
 
 ### Gaps résolus Session 250.239 + 250.240
 
@@ -572,6 +572,8 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 | G13 (Per-tenant rate limiting) | **FIXED 250.239** — plan-based limits (20-120 req/min) |
 | G18 (GDPR erasure) | **FIXED 250.239** — `DELETE /api/tenants/:id/data` |
 | G19 (Audit trail) | **ALREADY EXISTED** — hash-chain JSONL |
+| G17 (OpenAPI docs) | **FIXED 250.240** — 79 endpoints documented, `scripts/extract-api-routes.cjs`, REST API sidebar |
+| G18+ (Privacy policy) | **FIXED 250.240** — Recording consent, retention periods, GDPR API reference |
 | G20 (Usage dashboard API) | **FIXED 250.239** — `GET /api/tenants/:id/usage` |
 
 ### Gaps restants
@@ -581,8 +583,9 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 | G1 (Stripe key) | VPS config needed | 30 min |
 | G14 (NPM publish) | Not verified | 30 min |
 | G16 (SIP REFER) | Low priority | 2 jours |
-| G17 (OpenAPI docs) | Low priority | 2 jours |
-| G21-G24 | Future | 10+ jours |
+| G17 (OpenAPI docs) | **FIXED 250.240** — 79 endpoints, `scripts/extract-api-routes.cjs` | Done |
+| G21-G23 | Future | 10+ jours |
+| G24 (DPA template) | Legal document | External |
 
 ### La vérité — mise à jour (Session 250.240)
 
@@ -595,6 +598,11 @@ Le **système est SOTA** — le code ET l'infrastructure multi-tenant sont plein
 - GDPR compliance (erasure + audit trail + consent)
 - Per-tenant rate limiting basé sur le plan
 - ElevenLabs TTS quota-aware pre-cache (fail-fast)
+- **OpenAPI docs** — 79 endpoints documented in `website/docs/api.html` (auto-extracted)
+- **Privacy policy** — recording consent, data retention periods, GDPR erasure API
+- **Trial banner** — billing.html displays real-time trial status with progress bar and credit info
+- **PLAN_FEATURES sync** — 24 features (added `cloud_voice`) across billing.html, db-api, voice-api
+- **i18n trial keys** — all 5 languages (FR, EN, ES, AR, ARY)
 
 **Gap bloquant unique pour le premier client payant :**
 1. **Configurer STRIPE_SECRET_KEY** sur VPS (30 min) — tout le reste est code-complete
