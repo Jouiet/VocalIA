@@ -319,8 +319,8 @@
     // ─── Snippet Generation ──────────────────────────────────────
 
     function buildSnippetAttrs() {
-      // Only data-tenant-id needed — color/position are loaded dynamically from server config
-      return `data-tenant-id="${tenantId}"`;
+      // data-vocalia-tenant is the canonical attribute expected by all widgets
+      return `data-vocalia-tenant="${tenantId}"`;
     }
 
     function getWidgetFilename() {
@@ -344,7 +344,7 @@
           instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA WordPress.'
         },
         react: {
-          code: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${API_BASE}/voice-assistant/${widgetFile}';\n    script.defer = true;\n    script.dataset.tenantId = '${tenantId}';\n${widgetConfig.primary_color !== '#4FBAF1' ? `    script.dataset.color = '${widgetConfig.primary_color}';\n` : ''}${widgetConfig.position !== 'bottom-right' ? `    script.dataset.position = '${widgetConfig.position}';\n` : ''}    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> in your layout`,
+          code: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${API_BASE}/voice-assistant/${widgetFile}';\n    script.defer = true;\n    script.dataset.vocaliaTenant = '${tenantId}';\n${widgetConfig.primary_color !== '#4FBAF1' ? `    script.dataset.color = '${widgetConfig.primary_color}';\n` : ''}${widgetConfig.position !== 'bottom-right' ? `    script.dataset.position = '${widgetConfig.position}';\n` : ''}    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> in your layout`,
           instructions: 'Ajoutez le composant VocalIAWidget dans votre layout (App.jsx ou layout.tsx).'
         },
         wix: {

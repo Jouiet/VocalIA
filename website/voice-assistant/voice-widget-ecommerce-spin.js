@@ -648,8 +648,8 @@
 
     detectTenantId() {
       if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
-      const widget = document.querySelector('[data-vocalia-tenant]');
-      return widget?.dataset.vocaliaTenant || 'default';
+      const widget = document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]');
+      return widget?.dataset.vocaliaTenant || widget?.dataset.tenantId || 'default';
     }
 
     detectLanguage() {

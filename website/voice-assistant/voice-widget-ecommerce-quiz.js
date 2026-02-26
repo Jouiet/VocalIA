@@ -513,8 +513,8 @@
             if (typeof window !== 'undefined' && window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) {
                 return window.VOCALIA_CONFIG.tenant_id;
             }
-            const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
-            return widget ? widget.dataset.vocaliaTenant : null;
+            const widget = typeof document !== 'undefined' && (document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]'));
+            return widget ? (widget.dataset.vocaliaTenant || widget.dataset.tenantId) : null;
         }
 
         /**

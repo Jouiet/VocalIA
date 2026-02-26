@@ -1823,9 +1823,10 @@
             const lang = detectLanguage();
             await loadLanguage(lang);
 
-            // Detect tenant ID
-            const scriptTag = document.querySelector('script[data-vocalia-tenant]');
-            if (scriptTag) state.tenantId = scriptTag.dataset.vocaliaTenant;
+            // Detect tenant ID (support both canonical and legacy attribute)
+            const scriptTag = document.querySelector('script[data-vocalia-tenant]') ||
+                document.querySelector('script[data-tenant-id]');
+            if (scriptTag) state.tenantId = scriptTag.dataset.vocaliaTenant || scriptTag.dataset.tenantId;
             else if (CONFIG.tenantId) state.tenantId = CONFIG.tenantId;
 
             captureAttribution();

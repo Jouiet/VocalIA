@@ -4697,8 +4697,8 @@
 
         detectTenantId() {
             if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
-            const widget = document.querySelector('[data-vocalia-tenant]');
-            if (widget) return widget.dataset.vocaliaTenant;
+            const widget = document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]');
+            if (widget) return widget.dataset.vocaliaTenant || widget.dataset.tenantId;
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('tenant') || 'default';
         }
@@ -5988,8 +5988,8 @@
             if (typeof window !== 'undefined' && window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) {
                 return window.VOCALIA_CONFIG.tenant_id;
             }
-            const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
-            return widget ? widget.dataset.vocaliaTenant : null;
+            const widget = typeof document !== 'undefined' && (document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]'));
+            return widget ? (widget.dataset.vocaliaTenant || widget.dataset.tenantId) : null;
         }
 
         /**
@@ -7284,8 +7284,8 @@
 
     detectTenantId() {
       if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
-      const widget = document.querySelector('[data-vocalia-tenant]');
-      return widget?.dataset.vocaliaTenant || 'default';
+      const widget = document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]');
+      return widget?.dataset.vocaliaTenant || widget?.dataset.tenantId || 'default';
     }
 
     detectLanguage() {
@@ -8280,8 +8280,8 @@
 
     detectTenantId() {
       if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
-      const widget = document.querySelector('[data-vocalia-tenant]');
-      if (widget) return widget.dataset.vocaliaTenant;
+      const widget = document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]');
+      if (widget) return widget.dataset.vocaliaTenant || widget.dataset.tenantId;
       return 'default';
     }
 
@@ -9033,8 +9033,8 @@
 
     _detectTenantId() {
       if (global.VOCALIA_CONFIG && global.VOCALIA_CONFIG.tenant_id) return global.VOCALIA_CONFIG.tenant_id;
-      const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
-      return widget ? widget.dataset.vocaliaTenant : 'default';
+      const widget = typeof document !== 'undefined' && (document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]'));
+      return widget ? (widget.dataset.vocaliaTenant || widget.dataset.tenantId) : 'default';
     }
 
     /**

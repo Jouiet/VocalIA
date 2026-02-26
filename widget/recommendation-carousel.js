@@ -279,8 +279,8 @@
 
     _detectTenantId() {
       if (global.VOCALIA_CONFIG && global.VOCALIA_CONFIG.tenant_id) return global.VOCALIA_CONFIG.tenant_id;
-      const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
-      return widget ? widget.dataset.vocaliaTenant : 'default';
+      const widget = typeof document !== 'undefined' && (document.querySelector('[data-vocalia-tenant]') || document.querySelector('[data-tenant-id]'));
+      return widget ? (widget.dataset.vocaliaTenant || widget.dataset.tenantId) : 'default';
     }
 
     /**
