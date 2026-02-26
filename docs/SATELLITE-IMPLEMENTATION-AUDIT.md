@@ -578,54 +578,54 @@ curl -s -X POST "https://api.vocalia.ma/respond" \
 
 ## RESUME EXECUTIF — LA VERITE
 
-### Score de pret pour implementation satellite : 8/100 → 35/100 (code, avant deploy)
+### Score de pret pour implementation satellite : 8/100 → 35/100 → 82/100
 
-| Dimension | Score 250.242 | Score 250.243 | Justification |
-|:----------|:-----:|:-----:|:-------------|
-| Backend API (`/respond`) | 8/10 | 8/10 | Fonctionne, Grok 4.1, latence 3.5-6.4s |
-| Backend API (`/config`) | 8/10 | 8/10 | Fonctionne, config tenant complete |
-| **Register/Signup** | **0/10** | **3/10** | **Error handling ameliore (409/503/500). Cause racine = SSH** |
-| **Health check** | **0/10** | **4/10** | **Traefik routing fixe, deploy pending** |
-| **WebSocket Realtime** | **0/10** | **0/10** | **404 — necessite SSH** |
-| Widget B2B (domaine externe) | 0/10 | **6/10** | **S1-S4 fixes + CORS origines pre-provisionnees** |
-| Widget Ecom (monolith) | 5/10 | **7/10** | **CORS origines enregistrees, deploy pending** |
-| Widget Ecom (code-split) | 0/10 | **6/10** | **.htaccess whitelist fixee, deploy pending** |
-| Snippet generation | 0/10 | **9/10** | **URL + nom dynamique dans 6 fichiers** |
-| CORS (static files) | 0/10 | **7/10** | **.htaccess CORS + origines pre-provisionnees** |
-| CORS (API) | 0/10 | **8/10** | **4 origines satellites dans client_registry.json** |
-| CSP compat satellites | 7/10 | **9/10** | **CinematicAds CSP fixe (both next.config.js)** |
-| Social proof | 2/10 | 2/10 | Endpoint OK, donnees vides |
-| NPM package | 9/10 | 9/10 | Publie v1.0.0, 3 exports |
+| Dimension | Score 250.242 | Score 250.243 | Score 250.244 | Justification |
+|:----------|:-----:|:-----:|:-----:|:-------------|
+| Backend API (`/respond`) | 8/10 | 8/10 | **9/10** | Fonctionne, Grok 4.1, verifie curl 200 |
+| Backend API (`/config`) | 8/10 | 8/10 | **9/10** | Fonctionne, verifie `curl config?tenantId=` → 200 |
+| **Register/Signup** | **0/10** | **3/10** | **9/10** | **FONCTIONNE en production (201). Google OAuth OK.** |
+| **Health check** | **0/10** | **4/10** | **10/10** | **Traefik routing deploye, `curl /api/health` → 200** |
+| **WebSocket Realtime** | **0/10** | **0/10** | **10/10** | **FONCTIONNE (curl /realtime/health → 200, 7 voices)** |
+| Widget B2B (domaine externe) | 0/10 | **6/10** | **9/10** | **data-vocalia-tenant fix + fallback + deploy VPS** |
+| Widget Ecom (monolith) | 5/10 | **7/10** | **8/10** | **CORS + attribut fallback, deploy Hostinger pending** |
+| Widget Ecom (code-split) | 0/10 | **6/10** | **7/10** | **.htaccess fix, deploy Hostinger pending** |
+| Snippet generation | 0/10 | **9/10** | **10/10** | **data-vocalia-tenant canonique (install + onboarding)** |
+| CORS (static files) | 0/10 | **7/10** | **7/10** | **.htaccess fix, deploy Hostinger pending** |
+| CORS (API) | 0/10 | **8/10** | **9/10** | **26 tenants + dynamic origins, deploye VPS** |
+| CSP compat satellites | 7/10 | **9/10** | **9/10** | **CinematicAds CSP fixe** |
+| Social proof | 2/10 | 2/10 | **4/10** | **dashboardMetrics passe, metrics vides (0 trafic reel)** |
+| NPM package | 9/10 | 9/10 | 9/10 | Publie v1.0.0, 3 exports |
+| **Installation UX** | **N/A** | **N/A** | **7/10** | **WordPress plugin + GTM + Shopify guide (NEW)** |
+| **Plan-based limits** | **N/A** | **N/A** | **8/10** | **Origines par plan (2/5/10), quotas sessions** |
 
-### Hierarchie des blocages (mise a jour 250.243b)
+### Hierarchie des blocages (mise a jour 250.244)
 
 ```
-S5 (Register 500) ─────────────── BLOQUE FUNNEL EXTERNE (cause racine = SSH)
-    ↓ si SSH + token refresh                       ↓ CONTOURNE pour satellites
-S1+S2 (Snippet URL + nom) ────── ✅ CODE FIXE      ↓ (pre-provisionnes dans registry)
-S4 (CORS API) ─────────────────── ✅ ORIGINES PRE-PROVISIONNEES (4 satellites)
-S4b (CORS static) ─────────────── ✅ CODE FIXE (.htaccess)
-S3 (.htaccess ecom) ───────────── ✅ CODE FIXE
-S8 (/api/health) ──────────────── ✅ CODE FIXE (Traefik routing)
-S6 (CSP CinematicAds) ─────────── ✅ CODE FIXE (both next.config.js)
-S7 (WebSocket 404) ────────────── ⚠️ Necessite SSH (container status)
-S9 (MyDealz mort) ─────────────── ❌ Paywall Shopify
-S10 (Social proof vide) ────────── ❌ Config manquante
+S5 (Register 500) ─────────────── ✅ FONCTIONNE (curl 201 en production)
+S1+S2 (Snippet URL + nom) ────── ✅ CODE FIXE + DEPLOYE VPS
+S4 (CORS API) ─────────────────── ✅ DEPLOYE (26 tenants, origines dynamiques)
+S4b (CORS static) ─────────────── ⚠️ Code fixe, deploy Hostinger FTP pending
+S3 (.htaccess ecom) ───────────── ⚠️ Code fixe, deploy Hostinger FTP pending
+S8 (/api/health) ──────────────── ✅ DEPLOYE (Traefik route + VPS docker-compose)
+S6 (CSP CinematicAds) ─────────── ✅ Code fixe, Vercel redeploy pending
+S7 (WebSocket /realtime) ──────── ✅ FONCTIONNE (curl 200, 7 voices)
+S9 (MyDealz mort) ─────────────── ❌ Paywall Shopify (hors scope)
+S10 (Social proof vide) ────────── ✅ Code fixe (metrics passees), vide car 0 trafic
+S11 (Widget attribut mismatch) ── ✅ FIXE + DEPLOYE (data-vocalia-tenant canonical)
+S12 (Installation non-technique)─ ✅ WordPress plugin + GTM + guides
+S13 (Origin limits par plan) ──── ✅ FIXE + DEPLOYE (Starter=2, Pro=5, Expert=10)
 ```
 
-### Ce qui reste AVANT toute implementation
+### Ce qui reste
 
-1. **Git push VocalIA** : deploie S1, S2, S4-origines, S5 (error handling) vers VPS containers ← FAIT (2 commits pushed)
-2. **FTP push Hostinger** : deploie S3, S4b (.htaccess + CORS) vers vocalia.ma
-3. **SSH au VPS** : `docker-compose pull && docker-compose up -d` pour que containers chargent le registry mis a jour
-4. **SSH au VPS** : diagnostiquer cause racine register 500 (Google OAuth tokens) — necessaire uniquement pour NOUVEAUX clients, PAS pour les 4 satellites pre-provisionnes
-5. **SSH au VPS** : deployer `docker-compose.production.yml` mis a jour (S8)
-6. **SSH au VPS** : diagnostiquer /realtime 404 (S7)
-7. **Redeploy CinematicAds** (Vercel) : `vercel --prod` dans cinematic-studio/
+1. **FTP Hostinger** : deployer .htaccess + widgets mis a jour sur vocalia.ma (pas d'acces SSH/API Hostinger disponible — necessite hPanel)
+2. **Vercel CinematicAds** : `vercel --prod` dans cinematic-studio/ pour deployer le CSP mis a jour
+3. **Plugin WordPress** : publier sur WordPress.org (optionnel, le .zip est deja disponible)
 
-### Score mis a jour : 8/100 → 35/100 (code) → ~65/100 apres deploy
+### Score mis a jour : 8/100 → 35/100 → 82/100
 
-Progression : 10 fixes code appliques. Les satellites sont pre-provisionnes — S5 (register 500) est CONTOURNE pour eux. Apres deploy (git push deja fait + FTP + SSH docker restart), les 3 satellites fonctionnels (3A, Henderson, Alpha-Medical) devraient etre operationnels SANS reparer register.
+Progression majeure : Register FONCTIONNE, Realtime FONCTIONNE, 7/7 containers healthy sur dernier commit. Le parcours client complet (register → login → onboard → embed widget) est FONCTIONNEL cote API. Les 18 points perdus : Hostinger FTP (widgets/htaccess pas encore deployes) + 0 trafic reel (social proof vide) + CinematicAds Vercel pending.
 
 ### Le paradoxe (en voie de resolution)
 
