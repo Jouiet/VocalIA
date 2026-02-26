@@ -6209,7 +6209,22 @@
     "url_too_long": "URL demasiado larga (máx. 200 caracteres).",
     "url_invalid": "Formato de URL inválido. Ejemplo: https://misitio.com",
     "domain_duplicate": "Este dominio ya está añadido.",
-    "domain_max": "Máximo 10 dominios autorizados."
+    "domain_max": "Máximo 10 dominios autorizados.",
+    "oneclick_title": "Instalación simplificada",
+    "oneclick_desc": "Sin conocimientos técnicos. Elige tu plataforma:",
+    "recommended": "Recomendado",
+    "zero_code": "Sin código",
+    "guided": "Guiado",
+    "wp_step1": "1. Plugins > Añadir > Subir",
+    "wp_step2": "2. Activa el plugin",
+    "wp_step3": "3. Ajustes > VocalIA > pega tu Tenant ID",
+    "download_plugin": "Descargar plugin",
+    "gtm_step1": "1. Nueva etiqueta > HTML personalizado",
+    "gtm_step2": "2. Pega el snippet",
+    "gtm_step3": "3. Activador: Todas las páginas > Publicar",
+    "copy_snippet": "Copiar snippet",
+    "ecom_desc": "Instrucciones paso a paso para tu plataforma. Selecciona tu plataforma en la sección \"Código\" más abajo.",
+    "see_instructions": "Ver instrucciones"
   },
   "roi": {
     "title": "Calcule su ROI",

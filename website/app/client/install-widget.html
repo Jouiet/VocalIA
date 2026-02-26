@@ -43,8 +43,82 @@
 
     <div class="px-6 py-6 max-w-4xl space-y-8">
 
-      <!-- Section 1: Snippet Embed -->
+      <!-- Section 0: 1-Click Installation Methods -->
       <section class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="zap" class="w-5 h-5 text-amber-500 dark:text-amber-400"></i>
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="install_widget.oneclick_title">Installation simplifiée</h2>
+          <span class="ml-auto px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-xs font-medium rounded-full" data-i18n="install_widget.recommended">Recommandé</span>
+        </div>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-5" data-i18n="install_widget.oneclick_desc">Aucune connaissance technique requise. Choisissez votre plateforme :</p>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <!-- WordPress Plugin -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM3.01 12c0-1.42.34-2.76.93-3.95L8.09 19.5C5.04 18.15 3.01 15.29 3.01 12zM12 20.99c-.88 0-1.73-.13-2.54-.37l2.7-7.84 2.76 7.57c.02.04.04.09.06.12-.93.33-1.93.52-2.98.52zM13.43 7.53c.54-.03 1.03-.09 1.03-.09.49-.06.43-.77-.06-.74 0 0-1.46.11-2.4.11-.88 0-2.37-.11-2.37-.11-.48-.03-.54.72-.06.77 0 0 .46.06.94.09l1.4 3.84-1.97 5.91-3.28-9.75c.54-.03 1.03-.09 1.03-.09.48-.06.43-.77-.06-.74 0 0-1.46.11-2.4.11-.17 0-.37 0-.58-.01C6.37 4.53 9 3.01 12 3.01c2.24 0 4.28.86 5.81 2.26-.04 0-.07-.01-.11-.01-.88 0-1.51.77-1.51 1.6 0 .74.43 1.37.88 2.11.34.6.74 1.37.74 2.48 0 .77-.3 1.66-.69 2.91l-.9 3.02-3.79-11.85z"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">WordPress</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.wp_step1">1. Plugins &gt; Ajouter &gt; Téléverser</li>
+              <li data-i18n="install_widget.wp_step2">2. Activez le plugin</li>
+              <li data-i18n="install_widget.wp_step3">3. Réglages &gt; VocalIA &gt; collez votre Tenant ID</li>
+            </ol>
+            <a id="download-wp-plugin" href="https://vocalia.ma/downloads/vocalia-voice-assistant.zip" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.download_plugin">Télécharger le plugin</span>
+            </a>
+          </div>
+
+          <!-- Google Tag Manager -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-sky-100 dark:bg-sky-900/30 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-sky-600" viewBox="0 0 24 24" fill="currentColor"><path d="M12.003 2L4 7.5v9L12.003 22 20 16.5v-9L12.003 2zM12 18.5L6 14.8V9.2L12 5.5l6 3.7v5.6L12 18.5z"/></svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Google Tag Manager</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.gtm_step1">1. Nouvelle balise &gt; HTML personnalisé</li>
+              <li data-i18n="install_widget.gtm_step2">2. Collez le snippet ci-dessous</li>
+              <li data-i18n="install_widget.gtm_step3">3. Déclencheur : Toutes les pages &gt; Publier</li>
+            </ol>
+            <button id="copy-gtm-snippet" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.copy_snippet">Copier le snippet</span>
+            </button>
+          </div>
+
+          <!-- Shopify / WooCommerce -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-green-600"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Shopify / Wix</h3>
+                <span class="text-xs text-zinc-500 dark:text-zinc-400" data-i18n="install_widget.guided">Guidé</span>
+              </div>
+            </div>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 mb-4" data-i18n="install_widget.ecom_desc">Instructions pas-à-pas pour votre plateforme. Sélectionnez votre plateforme dans la section "Code" ci-dessous.</p>
+            <a href="#snippet-section" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 1: Snippet Embed -->
+      <section id="snippet-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
         <div class="flex items-center gap-2 mb-4">
           <i data-lucide="code-2" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
           <h2 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="install_widget.snippet_title">Votre code d'installation</h2>
@@ -391,6 +465,20 @@
 
     // Initialize snippet
     updateSnippet('html');
+
+    // ─── GTM Copy Button ──────────────────────────────────────────
+    const gtmBtn = document.getElementById('copy-gtm-snippet');
+    if (gtmBtn) {
+      gtmBtn.addEventListener('click', () => {
+        const snippets = getSnippets();
+        navigator.clipboard.writeText(snippets.html.code).then(() => {
+          const origHTML = gtmBtn.innerHTML;
+          gtmBtn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i><span>OK</span>';
+          lucide.createIcons();
+          setTimeout(() => { gtmBtn.innerHTML = origHTML; lucide.createIcons(); }, 2000);
+        });
+      });
+    }
 
     // ─── Allowed Domains ──────────────────────────────────────────
 

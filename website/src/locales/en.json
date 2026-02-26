@@ -6209,7 +6209,22 @@
     "url_too_long": "URL too long (max 200 characters).",
     "url_invalid": "Invalid URL format. Example: https://mysite.com",
     "domain_duplicate": "This domain is already added.",
-    "domain_max": "Maximum 10 allowed domains."
+    "domain_max": "Maximum 10 allowed domains.",
+    "oneclick_title": "Easy Installation",
+    "oneclick_desc": "No technical knowledge required. Choose your platform:",
+    "recommended": "Recommended",
+    "zero_code": "No code",
+    "guided": "Guided",
+    "wp_step1": "1. Plugins > Add New > Upload",
+    "wp_step2": "2. Activate the plugin",
+    "wp_step3": "3. Settings > VocalIA > paste your Tenant ID",
+    "download_plugin": "Download plugin",
+    "gtm_step1": "1. New Tag > Custom HTML",
+    "gtm_step2": "2. Paste the snippet below",
+    "gtm_step3": "3. Trigger: All Pages > Publish",
+    "copy_snippet": "Copy snippet",
+    "ecom_desc": "Step-by-step instructions for your platform. Select your platform in the Code section below.",
+    "see_instructions": "See instructions"
   },
   "roi": {
     "title": "Calculate your ROI",

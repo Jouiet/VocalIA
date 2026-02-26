@@ -68,11 +68,11 @@ const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'sta
 
 // Session 250.222: Aligned with pricing.html — Pro/E-com = Illimitées, Expert Clone = 5000, Telephony = 100 min included
 const PLAN_QUOTAS = {
-  starter: { calls_monthly: 500, sessions_monthly: 1000, kb_entries: 100, conversation_history_days: 30, users_max: 3 },
-  pro: { calls_monthly: 999999, sessions_monthly: 999999, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
-  ecommerce: { calls_monthly: 999999, sessions_monthly: 999999, kb_entries: 500, conversation_history_days: 90, users_max: 10 },
-  expert_clone: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 2000, conversation_history_days: 180, users_max: 50 },
-  telephony: { calls_monthly: 100, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
+  starter: { calls_monthly: 500, sessions_monthly: 1000, kb_entries: 100, conversation_history_days: 30, users_max: 3, max_origins: 2 },
+  pro: { calls_monthly: 999999, sessions_monthly: 999999, kb_entries: 500, conversation_history_days: 90, users_max: 10, max_origins: 5 },
+  ecommerce: { calls_monthly: 999999, sessions_monthly: 999999, kb_entries: 500, conversation_history_days: 90, users_max: 10, max_origins: 5 },
+  expert_clone: { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 2000, conversation_history_days: 180, users_max: 50, max_origins: 10 },
+  telephony: { calls_monthly: 100, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25, max_origins: 10 }
 };
 
 // Session 250.240: Canonical PLAN_FEATURES — 23 features, 5 plans (added cloud_voice for G2)
@@ -1640,8 +1640,21 @@ async function handleRequest(req, res) {
         sendError(res, 400, 'origins must be an array of URLs');
         return;
       }
-      if (origins.length > 10) {
-        sendError(res, 400, 'Maximum 10 domains allowed');
+
+      // Plan-based origin limits (Starter=2, Pro/Ecom=5, Expert/Telephony=10)
+      const nodePath2 = require('path');
+      const tenantConfigPath = nodePath2.join(__dirname, '..', 'clients', tenantId, 'config.json');
+      let maxOrigins = 2; // default (starter)
+      try {
+        if (await fileExists(tenantConfigPath)) {
+          const tc = JSON.parse(await fsp.readFile(tenantConfigPath, 'utf8'));
+          const planQuotas = PLAN_QUOTAS[tc.plan] || PLAN_QUOTAS.starter;
+          maxOrigins = planQuotas.max_origins || 2;
+        }
+      } catch (_e) { /* use default */ }
+
+      if (origins.length > maxOrigins) {
+        sendError(res, 400, `Your plan allows maximum ${maxOrigins} domains. Upgrade for more.`);
         return;
       }
 
