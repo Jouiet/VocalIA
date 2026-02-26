@@ -97,7 +97,8 @@ ErrorDocument 500 /500.html
 # Session 250.75: Added api-client, auth-client, charts, data-table, modal, toast
 # Session 250.90: Added voice-widget-b2b, voice-widget-ecommerce, intelligent-fallback
 # Session 250.197: Added app-components for admin dashboard sidebar
-<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|voice-widget-b2b|voice-widget-ecommerce|intelligent-fallback|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast|app-components)\.js$">
+# Session 250.242: Added voice-widget-ecommerce sub-bundles (core, cart, quiz, spin, shipping, carousel)
+<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|voice-widget-b2b|voice-widget-ecommerce|voice-widget-ecommerce-core|voice-widget-ecommerce-cart|voice-widget-ecommerce-quiz|voice-widget-ecommerce-spin|voice-widget-ecommerce-shipping|voice-widget-ecommerce-carousel|intelligent-fallback|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast|app-components)\.js$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>
@@ -109,6 +110,16 @@ ErrorDocument 500 /500.html
         Require all granted
     </IfModule>
 </FilesMatch>
+
+# Session 250.242: CORS for widget voice-locale JSON files
+# These are public UI translations loaded via fetch() from external domains embedding the widget.
+# Access-Control-Allow-Origin: * is safe here — no sensitive data, only i18n strings.
+<IfModule mod_headers.c>
+    <FilesMatch "^voice-(fr|en|es|ar|ary)\.json$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET"
+    </FilesMatch>
+</IfModule>
 
 # Allow PWA manifest
 <FilesMatch "^manifest\.json$">

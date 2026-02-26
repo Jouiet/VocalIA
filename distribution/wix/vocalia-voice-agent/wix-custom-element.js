@@ -40,8 +40,8 @@ class VocaliaVoiceWidget extends HTMLElement {
         // Create Script Tag
         const script = document.createElement('script');
         // Wix is predominantly e-commerce, but we load the split kernel
-        const kernel = 'voice-widget-v3.js';
-        script.src = `https://api.vocalia.ma/voice-assistant/${kernel}`;
+        const kernel = 'voice-widget-ecommerce.js';
+        script.src = `https://vocalia.ma/voice-assistant/${kernel}`;
         script.async = true;
 
         // Shadow DOM is tricky with external widget side-effects (like fixed positioning on body).

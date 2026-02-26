@@ -421,11 +421,35 @@ async function handleAuthRequest(req, res, path, method) {
       const safeTenantId = sanitizeTenantId(tenantId);
 
       // Register user in Google Sheets (with tenant link)
-      const result = await authService.register({ email, password, name: userName, tenantId: safeTenantId });
+      let result;
+      try {
+        result = await authService.register({ email, password, name: userName, tenantId: safeTenantId });
+      } catch (regErr) {
+        // Session 250.243: Specific error handling instead of bubbling to global catch
+        const msg = regErr.message || String(regErr);
+        console.error(`❌ [Register] authService.register failed for ${email}: ${msg}`);
+        if (msg.includes('already exists') || msg.includes('duplicate')) {
+          sendError(res, 409, 'An account with this email already exists');
+        } else if (msg.includes('token') || msg.includes('auth') || msg.includes('OAuth') || msg.includes('UNAUTHENTICATED')) {
+          sendError(res, 503, 'Registration service temporarily unavailable. Please try again later.');
+        } else if (msg.includes('quota') || msg.includes('rate') || msg.includes('RESOURCE_EXHAUSTED')) {
+          sendError(res, 503, 'Registration service temporarily unavailable (quota). Please try again later.');
+        } else {
+          sendError(res, 500, `Registration failed: ${msg}`);
+        }
+        return true;
+      }
 
       // Session 250.198: Provision tenant directory + config.json
       const normalizedPlan = PLAN_NAME_MAP[plan] || 'starter';
-      const provision = await provisionTenant(safeTenantId, { plan: normalizedPlan, company: company || '', email });
+      let provision;
+      try {
+        provision = await provisionTenant(safeTenantId, { plan: normalizedPlan, company: company || '', email });
+      } catch (provErr) {
+        console.error(`❌ [Register] provisionTenant failed for ${safeTenantId}: ${provErr.message || provErr}`);
+        // User is already registered — return success with provisioning failure noted
+        provision = { success: false, apiKey: null };
+      }
 
       if (provision.success) {
         console.log(`✅ [Register] User ${email} + Tenant ${safeTenantId} (plan: ${normalizedPlan})`);

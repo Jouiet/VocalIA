@@ -27,7 +27,7 @@ export function initVocalia(config) {
     if (!document.getElementById('vocalia-script')) {
         const script = document.createElement('script');
         script.id = 'vocalia-script';
-        script.src = `https://api.vocalia.ma/voice-assistant/voice-widget-v3.js`;
+        script.src = `https://vocalia.ma/voice-assistant/voice-widget-b2b.js`;
         script.defer = true;
         // Pass tenantId via data attribute — widget detectTenantId() reads this (line 3704)
         if (config.tenantId) script.dataset.vocaliaTenant = config.tenantId;

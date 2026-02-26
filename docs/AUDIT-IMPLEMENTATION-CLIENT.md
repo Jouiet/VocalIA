@@ -542,7 +542,7 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 
 ## RÉSUMÉ EXÉCUTIF
 
-### Score d'implémentation client : 45/100 → 78/100 → 88/100 → 93/100 → 95/100 (Session 250.241)
+### Score d'implémentation client : 45/100 → 78/100 → 88/100 → 93/100 (code) | 8/100 (production externe) (Session 250.242b)
 
 | Dimension | Score 250.239 | Score 250.240 | Justification |
 |:----------|:----------:|:----------:|:-------------|
@@ -589,26 +589,51 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 | G21-G23 | Future | 10+ jours |
 | G24 (DPA template) | **FIXED 250.240** — `docs/legal/DPA.md` 10 sections, sub-processors, GDPR-compliant | Done |
 
-### La vérité — mise à jour (Session 250.241)
+### La vérité — mise à jour (Session 250.242b — audit satellite)
 
-**VPS DÉPLOYÉ** — 7/7 containers healthy, code synchronisé avec commit `fc1d786`.
+> **ATTENTION** : Cette section corrige des claims antérieures qui étaient factuellement incorrectes ou non vérifiées en production. La Session 250.241 affirmait "système SOTA pleinement opérationnel" — l'audit satellite 250.242 a révélé que cette affirmation était prématurée.
 
-Le **système est SOTA** — le code ET l'infrastructure multi-tenant sont pleinement opérationnels :
-- **Cloud voice streaming** dans le widget (Grok Realtime WebSocket, PCM16, plan-gated)
-- Provisioning auto avec API key, CORS, quotas, features
-- **14-day trial** avec crédits plan-based (Stripe customer balance)
-- Webhooks outbound HMAC signing + retry + 8 event types
-- **Twilio dual-channel recording** + consent 5 langs + callback metadata persist
-- GDPR compliance (erasure + audit trail + consent)
-- Per-tenant rate limiting basé sur le plan
-- ElevenLabs TTS quota-aware pre-cache (fail-fast)
-- **OpenAPI docs** — 79 endpoints documented in `website/docs/api.html` (auto-extracted)
-- **Privacy policy** — recording consent, data retention periods, GDPR erasure API
-- **Trial banner** — billing.html displays real-time trial status with progress bar and credit info
-- **PLAN_FEATURES sync** — 23 features (added `cloud_voice`) across billing.html, db-api, voice-api
-- **i18n trial keys** — all 5 languages (FR, EN, ES, AR, ARY)
-- **NPM `vocalia-widget@1.0.0`** — published on npmjs.com, ESM, TypeScript types
-- **DPA template** — GDPR-compliant, 10 sections, sub-processors table
+**VPS** — Code déployé, mais 3 endpoints critiques CASSÉS (vérifiés le 26/02/2026) :
+
+#### Ce qui FONCTIONNE en production (vérifié par curl) :
+
+| Composant | Preuve | Statut |
+|:----------|:-------|:-------|
+| `/respond` (API IA) | Réponse Grok 4.1 Fast Reasoning, latence 3.5-6.4s | ✅ |
+| `/config` (config tenant) | Retourne config complète (branding, features, plan) | ✅ |
+| `/social-proof` | Endpoint fonctionne mais `{"messages":[]}` (données vides) | ⚠️ |
+| Widget B2B sur vocalia.ma | Charge (200, 88964 bytes), communique avec API | ✅ |
+| Widget Ecom monolith sur vocalia.ma | Charge (200) | ✅ |
+| Login endpoint | `{"error":"Invalid email or password"}` (répond correctement) | ✅ |
+| Routes tenant (webhooks, usage, rotation) | `{"error":"Authorization required"}` (routes existent, auth fonctionne) | ✅ |
+| GDPR erasure route | `{"error":"Authorization required"}` | ✅ |
+| NPM `vocalia-widget@1.0.0` | `npm info vocalia-widget` → v1.0.0 | ✅ |
+
+#### Ce qui NE FONCTIONNE PAS en production (vérifié par curl) :
+
+| Composant | Preuve | Impact |
+|:----------|:-------|:-------|
+| **Register** (`POST /api/auth/register`) | **500 "Internal server error"** (avec email frais) | **AUCUN signup possible** |
+| **Health** (`/health`, `/api/health`) | **404** | Monitoring externe impossible |
+| **WebSocket** (`/realtime/`) | **404** | Cloud voice streaming inaccessible |
+| Widget depuis domaine externe | **403 "Origin not allowed"** | Widget inutilisable hors vocalia.ma |
+| Widget ecom sub-bundles | **403** (6/8 fichiers bloqués par .htaccess) | Code-split ecom inutilisable |
+| Snippet onboarding | URL `api.vocalia.ma` (404) + fichier `v3.js` (inexistant) | Installation widget impossible |
+
+#### Fonctionnalités "FIXED" en code mais NON VÉRIFIÉES en production :
+
+Les items suivants ont du code ajouté (sessions 250.239-250.240) et les routes existent (pas 404), mais leur LOGIQUE n'a pas été testée end-to-end en production car ils nécessitent un JWT valide (impossible sans register fonctionnel) ou des services externes (Stripe, Twilio) :
+
+- Cloud voice streaming (G2) — code existe, mais WebSocket `/realtime` retourne 404
+- Webhook dispatcher (G8) — route existe, dispatch non testé
+- Call recording (G9) — code existe, non testable sans Twilio
+- API key rotation (G11) — route existe, logique non testée
+- Credit grant (G12) — code existe, non testable sans Stripe
+- GDPR erasure (G18) — route existe, logique non testée
+- Per-tenant rate limiting (G13) — code existe, non testé empiriquement
+- Usage dashboard (G20) — route existe, données non vérifiées
+
+**En résumé** : le CODE est complet (93/100), mais la PRODUCTION FONCTIONNELLE pour un client externe est à ~8/100.
 
 ### Vérification VPS (250.241) — Delta avant/après déploiement
 
@@ -621,13 +646,115 @@ Le **système est SOTA** — le code ET l'infrastructure multi-tenant sont plein
 | telephony-bridge.cjs | 4,843 | 5,503 | +660 |
 | voice-widget-v3.js | 3,737 | 4,021 | +284 |
 
-### Seul blocage restant : Stripe Configuration (action utilisateur)
+### Blocages restants (Session 250.242 — Audit Satellite)
+
+#### A. Stripe Configuration (action utilisateur — INCHANGÉ)
 
 1. `STRIPE_SECRET_KEY` → vide dans `/docker/vocalia/.env`
 2. `STRIPE_WEBHOOK_SECRET` → vide dans `/docker/vocalia/.env`
 3. 5 `price_PLACEHOLDER_*` → nécessite création Products/Prices dans Stripe Dashboard
-- **VPS Stripe prep** — `.env` keys placeholders + `docker-compose.yml` wired (`STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`)
 
-**Gap bloquant unique pour le premier client payant :**
-1. **Remplir `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET`** sur VPS (les champs existent, il manque les valeurs depuis Stripe Dashboard)
-2. **Créer les Products + Prices dans Stripe Dashboard** (5 plans: 49€/99€/99€/149€/199€)
+#### B. Widget Embed — Blocages découverts 250.242 (empêchent TOUT déploiement externe)
+
+| # | Blocage | Sévérité | Cause racine | Fichier(s) |
+|:--|:--------|:---------|:-------------|:-----------|
+| S1 | **Snippet URL pointe vers `api.vocalia.ma` → 404** | 🔴 CRITIQUE | `API_BASE = 'https://api.vocalia.ma'` (L255). Traefik proxy vers Node.js, pas de fichiers statiques. | `website/app/client/install-widget.html:255`, `website/app/client/onboarding.html:382` |
+| S2 | **Snippet référence `voice-widget-v3.js` — n'existe pas comme bundle** | 🔴 CRITIQUE | Build produit `voice-widget-b2b.js`, `voice-widget-ecommerce-core.js`, etc. `voice-widget-v3.js` = source, pas livrable. | `scripts/build-widgets.cjs` BUNDLES config |
+| S3 | **.htaccess bloque 6/8 sous-bundles e-commerce (403)** | 🔴 CRITIQUE | Whitelist `.htaccess:100` : seulement `voice-widget\|voice-widget-b2b\|voice-widget-ecommerce`. Manquent `-core`, `-cart`, `-quiz`, `-spin`, `-shipping`, `-carousel`. | `website/.htaccess:100` |
+| S4 | **CORS sur vocalia.ma bloque les fichiers lang depuis domaines externes** | 🟠 HAUTE | Pas de `Access-Control-Allow-Origin` sur Hostinger LiteSpeed pour `.json`. Widget fait `fetch(vocalia.ma/voice-assistant/lang/voice-fr.json)` → CORS error. | `website/.htaccess` (pas de header CORS) |
+| S5 | **CORS sur api.vocalia.ma bloque les appels API depuis domaines satellites** | 🟠 HAUTE | `tenant-cors.cjs:108-116` : seules les origines dans `allowed_origins` passent. 22/22 tenants statiques = `["https://vocalia.ma"]`. Les tenants dynamiques doivent enregistrer explicitement leurs origines. | `core/tenant-cors.cjs`, `personas/client_registry.json` |
+| S6 | **CSP stricte sur CinematicAds bloque script + fetch** | 🟠 HAUTE (spécifique) | `script-src` et `connect-src` n'incluent ni `vocalia.ma` ni `api.vocalia.ma`. | CSP header `cinematicads.studio` |
+
+#### C. Serveur — Blocages découverts 250.242b (vérification empirique post-satellite)
+
+| # | Blocage | Sévérité | Preuve curl | Fichier(s) |
+|:--|:--------|:---------|:------------|:-----------|
+| S7 | **Register retourne 500** | 🔴 BLOQUANT | `curl -s -X POST api.vocalia.ma/api/auth/register -d '{email,password,company}'` → `{"error":"Internal server error"}` | `core/db-api.cjs:424` (pas de try-catch autour `authService.register()`) |
+| S8 | **/health retourne 404 depuis l'extérieur** | 🟠 HAUTE | `curl -sI api.vocalia.ma/health` → 404. `/api/health` pas dans PathPrefix Traefik du db-api. | `docker-compose.production.yml:99` |
+| S9 | **/realtime WebSocket retourne 404** | 🟠 HAUTE | `curl -sI api.vocalia.ma/realtime/ -H "Upgrade: websocket"` → 404 | Container `vocalia-realtime` ou routing Traefik |
+| S10 | **Social proof = données vides** | 🟡 BASSE | `curl -s api.vocalia.ma/social-proof?lang=fr` → `{"messages":[]}` | Aucune donnée social proof configurée |
+
+**Preuve empirique (26/02/2026) :**
+
+```bash
+# S1: Widget URL 404 sur api.vocalia.ma
+curl -sI "https://api.vocalia.ma/voice-assistant/voice-widget-v3.js" | head -1
+# → HTTP/2 404
+
+# S2: Fichier v3 absent du build
+ls website/voice-assistant/*.js | grep -v '.min.js'
+# → 8 bundles, AUCUN voice-widget-v3.js
+
+# S3: Sous-bundles bloqués
+curl -sI "https://vocalia.ma/voice-assistant/voice-widget-ecommerce-core.js" | head -1
+# → HTTP/2 403
+
+# S4: Pas de CORS pour fichiers lang
+curl -sI -H "Origin: https://3a-automation.com" \
+  "https://vocalia.ma/voice-assistant/lang/voice-fr.json" | grep -i access-control
+# → (rien)
+
+# S5: CORS = rejet actif 403 (PAS juste un header manquant)
+curl -s -X POST "https://api.vocalia.ma/respond" \
+  -H "Origin: https://hendersonshop.com" -H "Content-Type: application/json" \
+  -d '{"message":"test","tenantId":"agency_internal","language":"fr"}'
+# → {"error":"Origin not allowed"}
+
+# S7: Register cassé
+curl -s -X POST "https://api.vocalia.ma/api/auth/register" \
+  -H "Content-Type: application/json" -H "Origin: https://vocalia.ma" \
+  -d '{"email":"test-'$(date +%s)'@proton.me","password":"Test2026!!","company":"Test"}'
+# → {"error":"Internal server error"}  (HTTP 500)
+
+# S8: Health inaccessible
+curl -sI "https://api.vocalia.ma/health" | head -1
+# → HTTP/2 404
+
+# S9: WebSocket inaccessible
+curl -sI "https://api.vocalia.ma/realtime/" | head -1
+# → HTTP/2 404
+
+# S10: Social proof vide
+curl -s "https://api.vocalia.ma/social-proof?lang=fr" -H "Origin: https://vocalia.ma"
+# → {"success":true,"messages":[]}
+```
+
+#### D. Latence réelle (mesurée, pas théorique)
+
+Le benchmark (section 8) mentionne "~50ms bridge". C'est le temps de traitement interne Node.js uniquement. La latence **réelle** ressentie par le client :
+
+| Appel | Latence end-to-end |
+|:------|:-------------------|
+| 1 | 3,531 ms |
+| 2 | 6,338 ms |
+| 3 | 6,361 ms |
+| 4 | 3,701 ms |
+| 5 | 5,142 ms |
+| **Moyenne** | **5,015 ms** |
+
+Provider : Grok 4.1 Fast Reasoning. La latence est dominée par l'appel IA externe (~95% du temps).
+
+#### Hiérarchie des blocages
+
+```
+S7 (Register 500)      ── BLOQUE TOUT (aucun signup possible)
+  ↓ si réparé
+S1+S2 (Snippet)        ── Widget ne charge PAS (URL fausse + fichier inexistant)
+  ↓ si corrigé
+S5+S4 (CORS)           ── Widget charge mais ne communique PAS (403 "Origin not allowed")
+  ↓ si origines enregistrées
+A (Stripe)             ── Facturation impossible (clés manquantes)
+S3 (.htaccess)         ── E-commerce code-split bloqué (monolith contourne)
+S9 (WebSocket)         ── Voice streaming indisponible (fallback Web Speech)
+S8 (/health)           ── Monitoring externe impossible
+S6 (CSP CinematicAds)  ── Spécifique 1 plateforme
+```
+
+**Conclusion 250.242b** : Le code LOCAL est complet (~93/100). La PRODUCTION ACCESSIBLE DEPUIS L'EXTÉRIEUR est à ~8/100. L'écart vient de 3 catégories :
+1. **Bug serveur** (register 500) qui bloque tout le funnel
+2. **Erreurs de configuration** (URL snippet, .htaccess, CORS) jamais testées end-to-end depuis un domaine externe
+3. **Endpoints inaccessibles** (health, realtime) depuis l'extérieur via Traefik
+
+**Aucune de ces défaillances n'est visible en testant depuis vocalia.ma uniquement.** Le widget fonctionne parfaitement sur vocalia.ma (origin whitelistée, snippet non utilisé, script en dur).
+
+**Voir** : `docs/SATELLITE-IMPLEMENTATION-AUDIT.md` pour le plan de correction détaillé par plateforme.

@@ -17,7 +17,7 @@
     const mode = isEcommerce ? 'ecommerce' : 'b2b';
 
     // Determine base URL (default to production API)
-    const baseUrl = config.assetsUrl || 'https://api.vocalia.ma/voice-assistant/';
+    const baseUrl = config.assetsUrl || 'https://vocalia.ma/voice-assistant/';
 
     console.log(`[VocalIA] Initializing ${mode} widget...`);
 

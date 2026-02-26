@@ -272,6 +272,8 @@ async function testMultiLanguageComplete() {
   for (const tenant of allTenants) {
     if (!tenant.id || !tenant.sector) continue;
     const sector = tenant.sector;
+    // Skip non-persona values (e.g. business hours like "Lun-Vie 9h-18h" stored in sector field)
+    if (!sector.match(/^[A-Z_]+$/)) continue;
     if (testedArchetypes.has(sector)) continue;
     testedArchetypes.add(sector);
 
@@ -439,6 +441,8 @@ async function testSectorArchetypeMapping() {
 
   for (const sector of sectors) {
     if (!sector) continue;
+    // Skip non-persona values (e.g. business hours stored in sector field)
+    if (!sector.match(/^[A-Z_]+$/)) continue;
     // Check if sector exists in PERSONAS
     const hasPersona = PERSONAS[sector] !== undefined;
     // Check if sector has SYSTEM_PROMPTS
