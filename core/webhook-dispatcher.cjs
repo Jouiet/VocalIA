@@ -42,7 +42,9 @@ function getWebhookConfig(tenantId) {
   if (!tenantId || tenantId === 'default') return null;
 
   try {
-    const configPath = path.join(__dirname, '..', 'clients', tenantId, 'config.json');
+    // Sanitize tenantId to prevent path traversal (e.g., '../../../etc/passwd')
+    const safeTenantId = (tenantId || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
+    const configPath = path.join(__dirname, '..', 'clients', safeTenantId, 'config.json');
     if (fs.existsSync(configPath)) {
       const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
       if (config.webhook_url) {

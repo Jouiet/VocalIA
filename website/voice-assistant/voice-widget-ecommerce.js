@@ -2113,6 +2113,14 @@
     function speak(text) {
         const lang = state.langData?.meta?.code || state.currentLang || 'fr';
 
+        // G2: Cloud voice streaming (SOTA — Session 250.240)
+        // When enabled, bypasses Web Speech API for all languages
+        if (cloudVoice.isEnabled() && cloudVoice.connected) {
+            cloudVoice.sendText(text);
+            showVisualizer('speaking');
+            return;
+        }
+
         // For Darija (ary), use ElevenLabs TTS via Voice API
         // Web Speech API doesn't support ar-MA in most browsers
         if (lang === 'ary') {
@@ -2292,7 +2300,97 @@
         state.isListening = false;
     }
 
+    // G2: Cloud voice recording — captures PCM16 audio and streams to Grok Realtime
+    let cloudAudioCtx = null;
+    let cloudAudioStream = null;
+    let cloudAudioProcessor = null;
+
+    async function startCloudRecording() {
+        try {
+            cloudAudioStream = await navigator.mediaDevices.getUserMedia({
+                audio: { sampleRate: 24000, channelCount: 1, echoCancellation: true, noiseSuppression: true }
+            });
+
+            cloudAudioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+            const source = cloudAudioCtx.createMediaStreamSource(cloudAudioStream);
+
+            // ScriptProcessor for PCM extraction (createScriptProcessor = legacy but universal)
+            cloudAudioProcessor = cloudAudioCtx.createScriptProcessor(4096, 1, 1);
+            cloudAudioProcessor.onaudioprocess = (e) => {
+                if (!state.isListening || !cloudVoice.connected) return;
+                const float32 = e.inputBuffer.getChannelData(0);
+                // Convert Float32 → PCM16 LE → base64
+                const pcm16 = new Int16Array(float32.length);
+                for (let i = 0; i < float32.length; i++) {
+                    const s = Math.max(-1, Math.min(1, float32[i]));
+                    pcm16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                }
+                const bytes = new Uint8Array(pcm16.buffer);
+                let binary = '';
+                for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+                const base64 = btoa(binary);
+                cloudVoice.sendAudio(base64);
+            };
+
+            source.connect(cloudAudioProcessor);
+            cloudAudioProcessor.connect(cloudAudioCtx.destination);
+            state.isListening = true;
+
+            // Auto-stop after 15 seconds
+            state.cloudRecordingTimeout = setTimeout(() => {
+                if (state.isListening) {
+                    stopCloudRecording();
+                    $id('va-mic')?.classList.remove('listening');
+                    $id('va-trigger')?.classList.remove('listening');
+                    hideVisualizer();
+                }
+            }, 15000);
+        } catch (err) {
+            console.error('[VocalIA] Cloud mic access denied:', err.message);
+            state.isListening = false;
+        }
+    }
+
+    function stopCloudRecording() {
+        if (state.cloudRecordingTimeout) clearTimeout(state.cloudRecordingTimeout);
+        state.isListening = false;
+
+        // Commit audio buffer to Grok for processing
+        cloudVoice.commitAudio();
+
+        // Clean up audio resources
+        if (cloudAudioProcessor) {
+            cloudAudioProcessor.disconnect();
+            cloudAudioProcessor = null;
+        }
+        if (cloudAudioStream) {
+            cloudAudioStream.getTracks().forEach(t => t.stop());
+            cloudAudioStream = null;
+        }
+        if (cloudAudioCtx) {
+            cloudAudioCtx.close().catch(() => {});
+            cloudAudioCtx = null;
+        }
+    }
+
     function toggleListening() {
+        // G2: Cloud voice STT mode — stream audio via WebSocket
+        if (cloudVoice.isEnabled() && cloudVoice.connected) {
+            if (state.isListening) {
+                // Stop recording and commit audio buffer
+                stopCloudRecording();
+                $id('va-mic')?.classList.remove('listening');
+                $id('va-trigger')?.classList.remove('listening');
+                hideVisualizer();
+            } else {
+                startCloudRecording();
+                $id('va-mic')?.classList.add('listening');
+                $id('va-trigger')?.classList.add('listening');
+                showVisualizer('listening');
+                trackEvent('voice_mic_activated', { mode: 'cloud' });
+            }
+            return;
+        }
         if (state.sttMode === 'native' && state.recognition) {
             if (state.isListening) {
                 state.recognition.stop();
@@ -2320,6 +2418,177 @@
             }
         }
     }
+
+    // ============================================================
+    // CLOUD VOICE STREAMING (G2 — Session 250.240)
+    // Real WebSocket voice streaming via Grok Realtime proxy
+    // Replaces Web Speech API when tenant has cloud_voice enabled
+    // ============================================================
+
+    const cloudVoice = {
+      ws: null,
+      audioCtx: null,
+      audioQueue: [],
+      isPlaying: false,
+      connected: false,
+      sessionId: null,
+
+      getWsUrl() {
+        const base = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+          ? 'ws://localhost:3007'
+          : 'wss://api.vocalia.ma:3007';
+        const voice = state.currentLang === 'ary' ? 'ara' : (state.currentLang === 'ar' ? 'ara' : 'alloy');
+        return `${base}?voice=${voice}&tenant_id=${encodeURIComponent(state.tenantId || 'default')}`;
+      },
+
+      isEnabled() {
+        return state.tenantConfig?.features?.cloud_voice === true
+          || state.tenantConfig?.plan_features?.cloud_voice === true;
+      },
+
+      async connect() {
+        if (this.ws && this.ws.readyState <= 1) return;
+
+        try {
+          this.ws = new WebSocket(this.getWsUrl());
+
+          this.ws.onopen = () => {
+            console.log('[VocalIA] Cloud voice connected');
+            this.connected = true;
+            trackEvent('cloud_voice_connected', { tenantId: state.tenantId });
+          };
+
+          this.ws.onmessage = (event) => {
+            try {
+              const msg = JSON.parse(event.data);
+
+              if (msg.type === 'proxy.connected') {
+                this.sessionId = msg.sessionId;
+              }
+
+              // Handle audio response from Grok
+              if (msg.type === 'response.audio.delta' && msg.delta) {
+                this.queueAudio(msg.delta);
+              }
+
+              // Handle transcript (text) response
+              if (msg.type === 'response.audio_transcript.delta' && msg.delta) {
+                // Could display streaming text if needed
+              }
+
+              if (msg.type === 'response.audio.done') {
+                this.flushAudioQueue();
+              }
+
+              // Handle text response from conversation
+              if (msg.type === 'conversation.item.created' && msg.item?.content) {
+                const textContent = msg.item.content.find(c => c.type === 'text');
+                if (textContent) {
+                  appendBotMessage(textContent.text);
+                }
+              }
+            } catch (_e) { /* non-JSON or parse error */ }
+          };
+
+          this.ws.onclose = () => {
+            this.connected = false;
+            this.sessionId = null;
+            console.log('[VocalIA] Cloud voice disconnected');
+          };
+
+          this.ws.onerror = () => {
+            this.connected = false;
+            console.warn('[VocalIA] Cloud voice error, falling back to Web Speech');
+          };
+        } catch (e) {
+          console.warn('[VocalIA] Cloud voice init failed:', e.message);
+        }
+      },
+
+      disconnect() {
+        if (this.ws) {
+          this.ws.close();
+          this.ws = null;
+        }
+        this.connected = false;
+        this.sessionId = null;
+      },
+
+      sendText(text) {
+        if (!this.connected || !this.ws) return false;
+
+        this.ws.send(JSON.stringify({
+          type: 'conversation.item.create',
+          item: {
+            type: 'message',
+            role: 'user',
+            content: [{ type: 'input_text', text }]
+          }
+        }));
+        this.ws.send(JSON.stringify({ type: 'response.create' }));
+        return true;
+      },
+
+      sendAudio(base64Audio) {
+        if (!this.connected || !this.ws) return false;
+        this.ws.send(JSON.stringify({ type: 'input_audio_buffer.append', audio: base64Audio }));
+        return true;
+      },
+
+      commitAudio() {
+        if (!this.connected || !this.ws) return false;
+        this.ws.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
+        this.ws.send(JSON.stringify({ type: 'response.create' }));
+        return true;
+      },
+
+      queueAudio(base64Chunk) {
+        this.audioQueue.push(base64Chunk);
+        if (!this.isPlaying) this.playNextChunk();
+      },
+
+      async playNextChunk() {
+        if (this.audioQueue.length === 0) {
+          this.isPlaying = false;
+          hideVisualizer();
+          return;
+        }
+        this.isPlaying = true;
+        showVisualizer('speaking');
+
+        if (!this.audioCtx) {
+          this.audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+        }
+
+        const chunk = this.audioQueue.shift();
+        try {
+          const binaryStr = atob(chunk);
+          const bytes = new Uint8Array(binaryStr.length);
+          for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+          // PCM16 LE → Float32 for Web Audio API
+          const pcm16 = new Int16Array(bytes.buffer);
+          const audioBuffer = this.audioCtx.createBuffer(1, pcm16.length, 24000);
+          const channelData = audioBuffer.getChannelData(0);
+          for (let i = 0; i < pcm16.length; i++) channelData[i] = pcm16[i] / 32768;
+
+          const source = this.audioCtx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(this.audioCtx.destination);
+          source.onended = () => this.playNextChunk();
+          source.start();
+        } catch (_e) {
+          this.playNextChunk();
+        }
+      },
+
+      flushAudioQueue() {
+        // Play remaining audio
+        if (!this.isPlaying && this.audioQueue.length > 0) {
+          this.playNextChunk();
+        }
+      }
+    };
 
     // ============================================================
     // VOICE WAVEFORM VISUALIZER (SOTA 2026)
@@ -3667,6 +3936,10 @@
                 await loadTenantConfig();
                 if (CONFIG.ECOMMERCE_MODE) {
                     UCP.syncPreference().catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
+                }
+                // G2: Connect cloud voice if enabled for this tenant
+                if (cloudVoice.isEnabled()) {
+                    cloudVoice.connect().catch(e => console.warn('[VocalIA] Cloud voice init failed:', e.message));
                 }
             }
 

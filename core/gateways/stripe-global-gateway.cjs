@@ -330,6 +330,66 @@ class StripeGlobalGateway {
         });
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // USAGE-BASED BILLING — Stripe Billing Meters (G7 — Session 250.239)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Report a meter event (usage-based billing)
+     * Stripe Billing Meters API: POST /v1/billing/meter_events
+     *
+     * @param {string} eventName - Meter event name (e.g., 'voice_minutes', 'api_calls')
+     * @param {string} stripeCustomerId - Stripe customer ID
+     * @param {number} value - Usage value (e.g., minutes, calls)
+     * @param {number} [timestamp] - Unix timestamp (defaults to now)
+     */
+    async reportMeterEvent(eventName, stripeCustomerId, value, timestamp) {
+      return this.request('/billing/meter_events', 'POST', {
+        event_name: eventName,
+        payload: {
+          stripe_customer_id: stripeCustomerId,
+          value: String(value)
+        },
+        timestamp: timestamp || Math.floor(Date.now() / 1000)
+      });
+    }
+
+    /**
+     * Create a Stripe Billing Meter
+     * @param {string} displayName - Human-readable name
+     * @param {string} eventName - Machine name for events
+     * @param {string} aggregation - 'sum' or 'last_during_period'
+     */
+    async createMeter(displayName, eventName, aggregation = 'sum') {
+      return this.request('/billing/meters', 'POST', {
+        display_name: displayName,
+        event_name: eventName,
+        default_aggregation: { formula: aggregation }
+      });
+    }
+
+    /**
+     * List existing meters
+     */
+    async listMeters() {
+      return this.request('/billing/meters', 'GET', { limit: 20 });
+    }
+
+    /**
+     * Get meter event summaries for a customer
+     * @param {string} meterId - Stripe Meter ID
+     * @param {string} customerId - Stripe Customer ID
+     * @param {number} startTime - Unix timestamp (period start)
+     * @param {number} endTime - Unix timestamp (period end)
+     */
+    async getMeterEventSummary(meterId, customerId, startTime, endTime) {
+      return this.request(`/billing/meters/${meterId}/event_summaries`, 'GET', {
+        customer: customerId,
+        start_time: startTime,
+        end_time: endTime
+      });
+    }
+
     /**
      * Health check
      */

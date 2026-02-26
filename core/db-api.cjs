@@ -75,13 +75,13 @@ const PLAN_QUOTAS = {
   telephony: { calls_monthly: 100, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
 };
 
-// Session 250.220: Canonical PLAN_FEATURES — 23 features, 5 plans (union of db-api + voice-api schemas)
+// Session 250.240: Canonical PLAN_FEATURES — 24 features, 5 plans (added cloud_voice for G2)
 const PLAN_FEATURES = {
-  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false },
-  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false },
-  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false },
-  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true },
-  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false }
+  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, cloud_voice: false },
+  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true },
+  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true },
+  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, cloud_voice: true },
+  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true }
 };
 
 /**
@@ -448,11 +448,20 @@ async function handleAuthRequest(req, res, path, method) {
       const slackNotifier = require('./slack-notifier.cjs');
       slackNotifier.notifySignup({ email, name: userName, plan: normalizedPlan, tenantId: safeTenantId });
 
+      // Grant trial credits (non-blocking — Stripe may not be configured)
+      let trialInfo = null;
+      try {
+        const stripeService = require('./StripeService.cjs');
+        const trial = await stripeService.grantTrialCredits(safeTenantId, normalizedPlan);
+        if (trial.success) trialInfo = trial;
+      } catch (_e) { /* Stripe not configured — skip trial credit */ }
+
       sendJson(res, 201, {
         success: true,
         message: 'Registration successful. Please verify your email.',
         user: { ...result, tenant_id: safeTenantId },
-        tenant: { id: safeTenantId, plan: normalizedPlan, provisioned: provision.success, api_key: provision.apiKey || null }
+        tenant: { id: safeTenantId, plan: normalizedPlan, provisioned: provision.success, api_key: provision.apiKey || null },
+        trial: trialInfo
       });
       return true;
     }
@@ -4594,6 +4603,88 @@ ${JSON.stringify(contextData)}`;
         created_at: config.created_at || null,
         widget_config: config.widget_config || {}
       });
+    } catch (e) {
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/trial - Trial status (G12 — Session 250.240)
+  const trialStatusMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/trial$/i);
+  if (trialStatusMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(trialStatusMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const stripeService = require('./StripeService.cjs');
+      const status = await stripeService.getTrialStatus(tenantId);
+      sendJson(res, 200, { success: true, tenantId, trial: status });
+    } catch (e) {
+      sendJson(res, 200, { success: true, tenantId, trial: { active: false, error: 'Stripe not configured' } });
+    }
+    return;
+  }
+
+  // GET /api/tenants/:id/calls - List conversations/calls with metadata (Step 4.5)
+  const callsListMatch = path.match(/^\/api\/tenants\/([a-z0-9_-]+)\/calls$/i);
+  if (callsListMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(callsListMatch[1]);
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const nodePath = require('path');
+      const convDir = nodePath.join(__dirname, '..', 'clients', tenantId, 'conversations');
+
+      if (!await fileExists(convDir)) {
+        sendJson(res, 200, { success: true, tenantId, calls: [], total: 0 });
+        return;
+      }
+
+      const files = await fsp.readdir(convDir);
+      const calls = [];
+
+      // Parse URL for pagination
+      const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+      const limit = Math.min(parseInt(parsedUrl.searchParams.get('limit') || '50'), 200);
+      const offset = parseInt(parsedUrl.searchParams.get('offset') || '0');
+
+      // Read conversation metadata (sorted by newest first)
+      const convFiles = files.filter(f => f.endsWith('.json')).sort().reverse();
+
+      for (let i = offset; i < Math.min(offset + limit, convFiles.length); i++) {
+        try {
+          const filePath = nodePath.join(convDir, convFiles[i]);
+          const conv = JSON.parse(await fsp.readFile(filePath, 'utf8'));
+          calls.push({
+            session_id: conv.sessionId || convFiles[i].replace('.json', ''),
+            source: conv.metadata?.source || 'widget',
+            language: conv.metadata?.language || 'fr',
+            persona: conv.metadata?.persona || null,
+            duration_sec: conv.metadata?.duration_sec || null,
+            lead_score: conv.metadata?.lead_score || null,
+            call_sid: conv.metadata?.call_sid || null,
+            messages: conv.messages?.length || 0,
+            started_at: conv.metadata?.started_at || conv.messages?.[0]?.timestamp || null,
+            ended_at: conv.metadata?.ended_at || conv.messages?.[conv.messages?.length - 1]?.timestamp || null
+          });
+        } catch (_e) {
+          // Skip malformed conversation files
+        }
+      }
+
+      sendJson(res, 200, { success: true, tenantId, calls, total: convFiles.length, limit, offset });
     } catch (e) {
       sendError(res, 500, 'Internal server error');
     }

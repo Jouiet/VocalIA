@@ -644,6 +644,14 @@ function cleanupSession(sessionId) {
           language: session.metadata?.language,
           call_sid: session.callSid
         });
+
+        // G7: Report voice minutes to Stripe Billing Meter (non-blocking)
+        if (tenantId && tenantId !== 'default' && callDuration > 0) {
+          try {
+            const stripeService = require('../core/StripeService.cjs');
+            stripeService.reportVoiceMinutes(tenantId, callDuration / 60);
+          } catch (_e) { /* Stripe not configured — silent */ }
+        }
       }
     } catch (convErr) {
       console.warn('[ConversationStore] Save warning:', convErr.message);
@@ -4097,14 +4105,20 @@ function logConversionEvent(session, eventType, data) {
  * @param {string} lang - Language code (fr, en, es, ar, ary)
  * @returns {string} TwiML XML
  */
-function generateTwiML(streamUrl, lang = CONFIG.defaultLanguage, { recording = false } = {}) {
+function generateTwiML(streamUrl, lang = CONFIG.defaultLanguage, { recording = false, callbackUrl = '' } = {}) {
   const twimlLang = getTwiMLLanguage(lang);
   const consentMsg = getTwiMLMessage('recordingConsent', lang);
 
-  // G9: Recording consent + optional call recording
-  const recordingXml = recording
-    ? `\n  <Say voice="alice" language="${twimlLang}">${consentMsg}</Say>`
-    : '';
+  // G9: Recording consent + Twilio call recording (Step 4.3 — Session 250.240)
+  let recordingXml = '';
+  if (recording) {
+    recordingXml = `\n  <Say voice="alice" language="${twimlLang}">${consentMsg}</Say>`;
+    // Twilio <Record> with dual-channel: records both legs of the call
+    // recordingStatusCallback receives the recording URL when complete
+    const cbUrl = callbackUrl || '';
+    const cbAttr = cbUrl ? ` recordingStatusCallback="${cbUrl}" recordingStatusCallbackMethod="POST"` : '';
+    recordingXml += `\n  <Record recordingChannels="dual" trim="trim-silence" maxLength="3600"${cbAttr} transcribe="false" playBeep="false"/>`;
+  }
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <Response>${recordingXml}
@@ -4183,7 +4197,9 @@ async function handleInboundCall(req, res, body) {
     const streamUrl = `wss://${host}/stream/${session.id}`;
 
     // G9: Check if tenant has recording enabled
-    const tenantConfigPath = path.join(__dirname, '..', 'clients', tenantId, 'config.json');
+    // Sanitize tenantId to prevent path traversal
+    const safeTenantId = (tenantId || '').replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
+    const tenantConfigPath = path.join(__dirname, '..', 'clients', safeTenantId, 'config.json');
     let recordingEnabled = false;
     try {
       if (fs.existsSync(tenantConfigPath)) {
@@ -4192,8 +4208,13 @@ async function handleInboundCall(req, res, body) {
       }
     } catch (_e) { /* default to false */ }
 
+    // Step 4.3: Build recording callback URL for storing recording metadata
+    const recordingCallbackUrl = recordingEnabled
+      ? `https://${host}/recording-status?tenantId=${safeTenantId}&sessionId=${session.id}`
+      : '';
+
     // Respond with TwiML (multilingual - Session 166sexies)
-    const twiml = generateTwiML(streamUrl, sessionLang, { recording: recordingEnabled });
+    const twiml = generateTwiML(streamUrl, sessionLang, { recording: recordingEnabled, callbackUrl: recordingCallbackUrl });
 
     res.writeHead(200, {
       'Content-Type': 'text/xml',
@@ -4857,6 +4878,39 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/voice/status' && req.method === 'POST') {
       const body = await parseBody(req);
       console.log(`[Twilio] Call status: ${body.CallStatus} for ${body.CallSid}`);
+      res.writeHead(200);
+      res.end();
+      return;
+    }
+
+    // Step 4.3: Twilio recording status callback (Session 250.240)
+    if (pathname === '/recording-status' && req.method === 'POST') {
+      const body = await parseBody(req);
+      const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+      const tenantId = (parsedUrl.searchParams.get('tenantId') || '').replace(/[^a-zA-Z0-9_-]/g, '');
+      const sessionId = (parsedUrl.searchParams.get('sessionId') || '').replace(/[^a-zA-Z0-9_-]/g, '');
+
+      if (body.RecordingUrl && tenantId && sessionId) {
+        console.log(`[Recording] ${body.RecordingStatus}: ${body.RecordingUrl} (${body.RecordingDuration}s) for ${tenantId}/${sessionId}`);
+
+        // Save recording metadata to conversation file
+        try {
+          const convPath = path.join(__dirname, '..', 'clients', tenantId, 'conversations', `${sessionId}.json`);
+          if (fs.existsSync(convPath)) {
+            const conv = JSON.parse(fs.readFileSync(convPath, 'utf8'));
+            conv.recording = {
+              url: body.RecordingUrl,
+              sid: body.RecordingSid,
+              duration: parseInt(body.RecordingDuration || '0', 10),
+              status: body.RecordingStatus,
+              timestamp: new Date().toISOString()
+            };
+            fs.writeFileSync(convPath, JSON.stringify(conv, null, 2));
+          }
+        } catch (e) {
+          console.error(`[Recording] Failed to save metadata: ${e.message}`);
+        }
+      }
       res.writeHead(200);
       res.end();
       return;

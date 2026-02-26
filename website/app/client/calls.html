@@ -280,12 +280,32 @@
       onRowClick: (row) => showCallDetail(row.id)
     });
 
-    // Load calls
+    // Load calls (Session 250.239: dual source — DB sessions + config.json conversations)
     async function loadCalls() {
       callsTable.setLoading(true);
       try {
-        const sessions = await api.sessions.list({ limit: 500 });
-        callsTable.setData(sessions.data || sessions || []);
+        // Primary: Google Sheets DB sessions
+        let sessions = await api.sessions.list({ limit: 500 }).catch(() => ({ data: [] }));
+        let data = sessions.data || sessions || [];
+
+        // Fallback/merge: local conversation files via new calls API
+        if (data.length === 0) {
+          const localCalls = await api.get(`/tenants/${tenantId}/calls?limit=200`).catch(() => null);
+          if (localCalls?.calls?.length > 0) {
+            data = localCalls.calls.map(c => ({
+              id: c.session_id,
+              status: c.duration_sec > 0 ? 'completed' : 'active',
+              duration: c.duration_sec || 0,
+              lead_score: c.lead_score || 0,
+              language: c.language,
+              source: c.source,
+              created_at: c.started_at,
+              messages: c.messages
+            }));
+          }
+        }
+
+        callsTable.setData(data);
 
         // Update stats
         const data = sessions.data || sessions || [];

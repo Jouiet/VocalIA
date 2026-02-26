@@ -13,7 +13,7 @@
 | Widgets | `ls widget/*.js \| wc -l` | 7 |
 | Languages | `ls website/src/locales/*.json \| wc -l` | 5 |
 | Tests | `ls test/*.mjs \| wc -l` | 99 |
-| HTML pages | `find website -name "*.html" \| wc -l` | 85 |
+| HTML pages | `find website -name "*.html" \| wc -l` | 89 |
 | Registry | `node -e "const r=require('./personas/client_registry.json'); console.log(Object.keys(r.clients).length)"` | 22 |
 
 ## Deployment Reality (7 containers deployed, 0 revenue)

@@ -627,6 +627,29 @@ class ElevenLabsClient {
 
     console.log(`[ElevenLabs] Pre-caching phrases for: ${languages.join(', ')}`);
 
+    // Fail-fast: check quota before wasting 15 API calls
+    try {
+      const sub = await this.getSubscription();
+      const remaining = (sub.character_limit || 0) - (sub.character_count || 0);
+      const totalChars = languages.reduce((sum, lang) => {
+        const phrases = COMMON_PHRASES[lang];
+        return sum + (phrases ? phrases.reduce((s, p) => s + p.length, 0) : 0);
+      }, 0);
+      if (remaining < totalChars) {
+        console.warn(`[ElevenLabs] ⚠️ Quota insufficient for pre-cache: ${remaining} chars remaining, ${totalChars} needed. Skipping.`);
+        return {
+          success: false,
+          cached: 0,
+          reason: 'quota_insufficient',
+          remaining,
+          needed: totalChars
+        };
+      }
+      console.log(`[ElevenLabs] Quota OK: ${remaining} chars remaining (need ${totalChars})`);
+    } catch (e) {
+      console.warn(`[ElevenLabs] ⚠️ Cannot check quota: ${e.message}. Attempting pre-cache anyway.`);
+    }
+
     for (const lang of languages) {
       const phrases = COMMON_PHRASES[lang];
       if (!phrases) continue;
@@ -640,12 +663,27 @@ class ElevenLabsClient {
           });
           cached++;
         } catch (e) {
+          const isQuota = e.message.includes('quota_exceeded') || e.message.includes('429');
           errors.push({ lang, phrase: phrase.substring(0, 20), error: e.message });
+          // Fail-fast on quota/rate errors — no point trying remaining phrases
+          if (isQuota) {
+            console.error(`[ElevenLabs] ❌ Quota exceeded — aborting pre-cache. ${cached} cached, ${errors.length} failed.`);
+            return {
+              success: false,
+              cached,
+              errors,
+              reason: 'quota_exceeded'
+            };
+          }
         }
       }
     }
 
-    console.log(`[ElevenLabs] Pre-cached ${cached} phrases (${errors.length} errors)`);
+    if (errors.length > 0) {
+      console.warn(`[ElevenLabs] ⚠️ Pre-cached ${cached}/${cached + errors.length} phrases. Errors: ${errors.map(e => e.error.substring(0, 60)).join('; ')}`);
+    } else {
+      console.log(`[ElevenLabs] ✅ Pre-cached ${cached} phrases successfully`);
+    }
 
     return {
       success: errors.length === 0,

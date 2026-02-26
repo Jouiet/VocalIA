@@ -470,10 +470,20 @@ describe('retention-sensor — fetchShopifyOrders', () => {
     assert.strictEqual(typeof fetchShopifyOrders, 'function');
   });
 
-  it('returns empty array when no Shopify credentials configured', async () => {
-    const result = await fetchShopifyOrders('nonexistent_tenant');
-    assert.ok(Array.isArray(result) || result === null || result?.orders?.length === 0,
-      'should return empty/null without credentials');
+  it('throws when called without shop and token (requires credentials)', async () => {
+    await assert.rejects(
+      () => fetchShopifyOrders(undefined, undefined),
+      /Shopify Shop and Access Token required/,
+      'should throw when no credentials provided'
+    );
+  });
+
+  it('throws when called with shop but no token', async () => {
+    await assert.rejects(
+      () => fetchShopifyOrders('test-shop.myshopify.com', undefined),
+      /Shopify Shop and Access Token required/,
+      'should throw when token missing'
+    );
   });
 });
 

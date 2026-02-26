@@ -234,13 +234,14 @@
     // Load billing data
     async function loadBillingData() {
       try {
-        // Load tenant info
+        // Load tenant info + real usage from config.json (Session 250.239)
         const tenant = await api.tenants.get(tenantId).catch(() => null);
+        const usageData = await api.get(`/tenants/${tenantId}/usage`).catch(() => null);
         const sessions = await api.sessions.getByTenant(tenantId).catch(() => ({ data: [] }));
         const sessionsData = sessions.data || [];
 
-        // Plan info
-        const plan = tenant?.plan || 'starter';
+        // Plan info — prefer usageData (from config.json) over Google Sheets
+        const plan = usageData?.plan || tenant?.plan || 'starter';
         const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', expert_clone: 'Expert Clone', telephony: 'Telephony' };
         const currInfo = VocaliaI18n.getCurrencyInfo ? VocaliaI18n.getCurrencyInfo() : { symbol: '€' };
         const sym = currInfo.symbol || '€';
@@ -254,15 +255,18 @@
         const renewalDate = new Date(now.getFullYear(), now.getMonth() + 1, 15);
         document.getElementById('plan-renewal').textContent = VocaliaI18n.t('dashboard.billing_page.renewal').replace('{{date}}', renewalDate.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }));
 
-        // Usage stats from real session data
+        // Usage stats — prefer real quota data from config.json (Session 250.239)
         const thisMonth = sessionsData.filter(s => {
           const d = new Date(s.created_at || s.timestamp);
           return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
         });
 
-        const totalMinutes = Math.round(thisMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60);
-        const quotaMinutes = tenant?.quotas?.minutes_monthly || 5000;
-        const usagePct = Math.min(Math.round((totalMinutes / quotaMinutes) * 100), 100);
+        // Use real quota data if available, fallback to session calculations
+        const totalMinutes = usageData?.quotas?.sessions?.used
+          ? Math.round(usageData.quotas.sessions.used / 60)
+          : Math.round(thisMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60);
+        const quotaMinutes = usageData?.quotas?.calls?.limit || tenant?.quotas?.minutes_monthly || 5000;
+        const usagePct = usageData?.quotas?.calls?.pct || Math.min(Math.round((totalMinutes / quotaMinutes) * 100), 100);
 
         document.getElementById('usage-minutes').textContent = `${totalMinutes.toLocaleString()} / ${quotaMinutes.toLocaleString()}`;
         document.getElementById('usage-minutes-bar').style.width = `${usagePct}%`;

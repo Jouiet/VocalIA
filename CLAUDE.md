@@ -1,14 +1,14 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 85 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | 6,516 tests (99 .mjs, 0 skip, 0 fail)
+> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~86k lines | 6,569 tests (99 .mjs, 0 skip, 1 B52-IPC)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 40 personas | 25 function tools | 7 widgets
 
 ## Architecture
 
 core/ (58 modules, 38.0k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (11.0k, 7 files)
 mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (860) | integrations/ (2.3k)
-clients/ = 1,248 dirs (ALL test data) | website/ = 85 pages + locales (28.0k)
+clients/ = 1,248 dirs (ALL test data) | website/ = 89 pages + locales (28.0k)
 
 ## Services (8 HTTP servers)
 
@@ -55,20 +55,20 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - Architecture: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md` (8 services, ports, data layer, AI providers)
 - Roadmap: `docs/ROADMAP-TO-COMPLETION.md` (500+ bugs tracker, 71 phases, fix history)
 - Business: `docs/BUSINESS-INTELLIGENCE.md` (costs, pricing, competitive analysis, GA4)
-- Tests: `docs/TEST-COVERAGE-AUDIT.md` (6,516 tests, 221/221 functions, CRUD chains)
-- Client Implementation: `docs/AUDIT-IMPLEMENTATION-CLIENT.md` (gaps G1-G24, score 68/100)
+- Tests: `docs/TEST-COVERAGE-AUDIT.md` (6,569 tests, 307/308 functions called, CRUD chains)
+- Client Implementation: `docs/AUDIT-IMPLEMENTATION-CLIENT.md` (gaps G1-G24, score 88/100)
 - Strategy: `docs/SESSION-250.214-REPORT.md` (ROI calc, KB score, speed metrics, Expert Clone)
 
 ## State (concise — detail in auto memory)
 
-- **Code**: 9.8/10 | **Production**: 9.0/10 | **Security**: 9.2/10 | **Weighted**: 9.4/10
-- 500+ bugs fixed across 72 phases, 8 not fixable locally. B52 = Node.js IPC bug (3/4 resolved).
+- **Code**: 9.8/10 | **Production**: 9.0/10 | **Security**: 9.3/10 | **Weighted**: 9.4/10
+- 510+ bugs fixed across 73 phases, 8 not fixable locally. B52 = Node.js IPC bug (3/4 resolved).
 - 7 containers LIVE, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
-- **SOTA Deep Surgery DONE** (250.221): 8 bugs fixed (B75-B82), 240MB deps removed, ProactiveScheduler file-based, TenantMemory singleton + flywheel, WhatsApp status tracking, QuotaAlertSkill
 - **Promptfoo** (250.233): 200/200 prompts (100%), eval-all 98.6%, red team 40/40 (99.6%), anti-hallucination 199 SECURITY sections.
-- **Mobile Optimization DONE** (250.235): Playwright 73/73 standalone pages PASS (0 overflow at 375×812). 15 non-pages verified manually (7 fragments, 7 redirects, 1 Google). 88/88 total. 87 pricing checkmarks `<a>`→`<span>`. CSS foundation + 12 files responsive padding.
-- **Test Reliability DONE** (250.236): 6474/6474 pass, 0 fail, 0 cancelled. Validator 23/23 ✅ 0 errors. Health-check 45/45 ✅ 100%. 38→40 persona global fix (30+ source files).
-- **Client Implementation Audit** (250.239): Score 45→68/100. 10 gaps fixed (G3,G5,G6,G8,G9,G10,G11,G13,G18,G19,G20). New: webhook-dispatcher.cjs, GDPR erasure, per-tenant rate limiting, API key rotation, usage dashboard API, recording consent. 6516 tests (99 .mjs).
-- **Next**: Stripe setup → First paying customer
+- **Test Reliability DONE** (250.236): 38→40 persona global fix (30+ source files).
+- **Test Deep Audit** (250.239b): Function coverage 94.4%→99.7% (288→307/308). 6 production bugs found+fixed (B90-B95: RAG crash, LLM throw, path traversal×2, config, handler null-check). 73 new behavioral tests. Theater test analysis: 94.3% behavioral, 5.7% static analysis.
+- **Intelligence Operationnelle** (250.239a): INTELLIGENCE-OPERATIONNELLE.md applied to ALL 89 pages + 5 locales. Hero, VPs, How It Works, comparison table, blog article, academy module. All CTAs updated from operational to intelligence messaging.
+- **Client Audit Phase 2** (250.240): Score 78→88/100. G2 (cloud voice streaming in widget), G12 (14-day trial credits), Step 4.3 (Twilio dual-channel recording), ElevenLabs pre-cache fail-fast fix. 24 PLAN_FEATURES (added cloud_voice).
+- **Next**: Configure STRIPE_SECRET_KEY on VPS → First paying customer
 
-*Last update: 25/02/2026 — Session 250.239: Client implementation audit + 10 gaps fixed (45→68/100) — 6516/6516 tests, validator 23/23, health-check 45/45.*
+*Last update: 26/02/2026 — Session 250.240: Client audit phase 2 (88/100) — cloud voice, trial credits, Twilio recording, ElevenLabs fix.*

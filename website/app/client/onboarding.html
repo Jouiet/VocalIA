@@ -335,7 +335,15 @@
       };
 
       try {
+        // Save to Google Sheets DB
         await api.put(`/db/tenants/${tid}`, data);
+
+        // Persist widget config to config.json (dual persistence — Session 250.239)
+        await api.put(`/tenants/${tid}/widget-config`, {
+          widget_config: {
+            persona: data.active_persona
+          }
+        }).catch(() => {}); // Non-critical if config.json not yet provisioned
       } catch (e) {
         console.error('Onboarding save error:', e);
       }
