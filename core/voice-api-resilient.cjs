@@ -2467,7 +2467,8 @@ function startServer(port = 3004) {
       const urlParams = new URLSearchParams(req.url.split('?')[1]);
       const lang = urlParams.get('lang') || 'fr';
 
-      const messages = generateSocialProofMessages(lang);
+      // Session 250.243: Pass dashboardMetrics to generate real social proof
+      const messages = generateSocialProofMessages(lang, dashboardMetrics);
 
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ success: true, messages }));
