@@ -403,7 +403,7 @@
       telephony:    'price_PLACEHOLDER_TELEPHONY'
     };
 
-    // Session 250.240: Canonical PLAN_FEATURES — 24 features, 5 plans (identical to db-api + voice-api)
+    // Session 250.240: Canonical PLAN_FEATURES — 23 features, 5 plans (identical to db-api + voice-api)
     const PLAN_FEATURES = {
       starter: {
         voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false,
@@ -491,13 +491,14 @@
     async function loadTrialStatus() {
       try {
         const trialRes = await api.get(`/tenants/${tenantId}/trial`);
-        if (!trialRes || !trialRes.active) return;
+        const trial = trialRes?.trial;
+        if (!trial || !trial.active) return;
 
         const banner = document.getElementById('trial-banner');
         if (!banner) return;
         banner.classList.remove('hidden');
 
-        const daysLeft = trialRes.days_remaining || 0;
+        const daysLeft = trial.days_remaining || 0;
         const totalDays = 14;
         const progressPct = Math.max(0, Math.min(100, Math.round(((totalDays - daysLeft) / totalDays) * 100)));
 
@@ -505,11 +506,11 @@
         document.getElementById('trial-progress-bar').style.width = `${progressPct}%`;
 
         // Trial end date
-        const endDate = trialRes.trial_end ? new Date(trialRes.trial_end).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }) : '--';
+        const endDate = trial.trial_end ? new Date(trial.trial_end).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }) : '--';
         document.getElementById('trial-details').textContent = VocaliaI18n.t('billing.trial_ends').replace('{{date}}', endDate);
 
         // Credit info
-        const creditRemaining = trialRes.credit_remaining != null ? (Math.abs(trialRes.credit_remaining) / 100).toFixed(0) : '--';
+        const creditRemaining = trial.credit_remaining != null ? (Math.abs(trial.credit_remaining) / 100).toFixed(0) : '--';
         const sym = (VocaliaI18n.getCurrencyInfo ? VocaliaI18n.getCurrencyInfo() : { symbol: '€' }).symbol || '€';
         document.getElementById('trial-credit-info').textContent = VocaliaI18n.t('billing.trial_credit_remaining').replace('{{amount}}', `${creditRemaining}${sym}`);
 

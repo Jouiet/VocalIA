@@ -635,7 +635,7 @@ function cleanupSession(sessionId) {
         conversationStore.save(tenantId, sessionId, session.conversationLog, conversationMetadata);
         console.log(`[ConversationStore] Saved ${session.conversationLog.length} messages for ${tenantId}/${sessionId}`);
 
-        // G8: Fire outbound webhook for call.completed
+        // G8: Fire outbound webhooks for call.completed + conversation.ended
         webhookDispatcher.dispatch(tenantId, 'call.completed', {
           sessionId,
           duration_sec: callDuration,
@@ -643,6 +643,12 @@ function cleanupSession(sessionId) {
           lead_score: session.qualificationScore || null,
           language: session.metadata?.language,
           call_sid: session.callSid
+        });
+        webhookDispatcher.dispatch(tenantId, 'conversation.ended', {
+          sessionId,
+          messageCount: session.conversationLog.length,
+          duration: callDuration,
+          channel: 'telephony'
         });
 
         // G7: Report voice minutes to Stripe Billing Meter (non-blocking)
@@ -3276,6 +3282,14 @@ async function handleCreateBookingInternal(session, args) {
     qualification: session.qualification
   });
 
+  // G8: Webhook — appointment.booked event
+  webhookDispatcher.dispatch(tenantId, 'appointment.booked', {
+    sessionId: session.id, name: session.bookingData?.name,
+    phone: session.bookingData?.phone, date: session.bookingData?.date,
+    score: session.bookingData?.qualification_score,
+    tenantId, timestamp: new Date().toISOString()
+  });
+
   return {
     success: true,
     status: 'booking_created',
@@ -4442,6 +4456,12 @@ function handleTwilioStream(ws, sessionId) {
         logConversionEvent(session, 'call_started', {
           phone: session.bookingData.phone,
           callSid: session.callSid
+        });
+
+        // G8: Webhook — call.started event
+        webhookDispatcher.dispatch(tenantId, 'call.started', {
+          callSid: session.callSid, phone: session.bookingData?.phone,
+          tenantId, timestamp: new Date().toISOString()
         });
         break;
 

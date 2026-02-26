@@ -551,7 +551,7 @@ grep -ic "Record\|recording\|consent" telephony/voice-telephony-bridge.cjs  # Ex
 | **Téléphonie** (code exists) | 8/10 | 9/10 | Inbound+outbound, 25 tools, multi-AI, persona injection + **Twilio `<Record>`** (Step 4.3) |
 | **Téléphonie** (fonctionnel chez client) | 6/10 | 8/10 | Consent FIXED, webhook events FIXED, transcripts EXISTED. **Recording callback + metadata persist**. |
 | **Multi-tenant isolation** | 9/10 | 9/10 | CORS dual-source, API key gen, rotation, per-tenant rate limits |
-| **Dashboard client** | 8/10 | 9/10 | 13 pages + usage API + calls list + **trial banner** in billing.html + PLAN_FEATURES 24-feature sync |
+| **Dashboard client** | 8/10 | 9/10 | 13 pages + usage API + calls list + **trial banner** in billing.html + PLAN_FEATURES 23-feature sync |
 | **Billing/Revenue** | 5/10 | 8/10 | Stripe Meters + **14-day trial credits** (G12) + `getTrialStatus()` + registration auto-credit. Needs STRIPE_KEY on VPS. |
 | **Compliance** | 7/10 | 9/10 | GDPR erasure, audit trail, consent notice, webhook HMAC, **dual-channel recording**, **privacy policy** updated (retention + recording), **OpenAPI docs** 79 endpoints |
 
@@ -603,7 +603,7 @@ Le **système est SOTA** — le code ET l'infrastructure multi-tenant sont plein
 - **OpenAPI docs** — 79 endpoints documented in `website/docs/api.html` (auto-extracted)
 - **Privacy policy** — recording consent, data retention periods, GDPR erasure API
 - **Trial banner** — billing.html displays real-time trial status with progress bar and credit info
-- **PLAN_FEATURES sync** — 24 features (added `cloud_voice`) across billing.html, db-api, voice-api
+- **PLAN_FEATURES sync** — 23 features (added `cloud_voice`) across billing.html, db-api, voice-api
 - **i18n trial keys** — all 5 languages (FR, EN, ES, AR, ARY)
 - **NPM `vocalia-widget@1.0.0`** — published on npmjs.com, ESM, TypeScript types
 - **DPA template** — GDPR-compliant, 10 sections, sub-processors table

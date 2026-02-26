@@ -414,7 +414,7 @@ const PLAN_PRICES = { starter: 49, pro: 99, ecommerce: 99, expert_clone: 149, te
 // Session 250.220: Plan name normalization (signup sends "ecom", internal uses "ecommerce")
 const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', expert_clone: 'expert_clone', telephony: 'telephony' };
 
-// Session 250.240: Canonical PLAN_FEATURES — 24 features, 5 plans (added cloud_voice for G2)
+// Session 250.240: Canonical PLAN_FEATURES — 23 features, 5 plans (added cloud_voice for G2)
 const PLAN_FEATURES = {
   starter: {
     voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false,
@@ -2670,6 +2670,14 @@ function startServer(port = 3004) {
             return;
           }
 
+          // G8: Webhook — quota.warning at 80% and 95% thresholds
+          if (quotaCheck.limit > 0) {
+            const pct = Math.round((quotaCheck.current / quotaCheck.limit) * 100);
+            if (pct >= 80 && (pct === 80 || pct === 95)) {
+              AgencyEventBus.emit('quota.warning', { tenantId, quotaType: 'sessions', current: quotaCheck.current, limit: quotaCheck.limit, pct });
+            }
+          }
+
           // Session 250.143: Feature gating — compute allowed features for this tenant
           const tenantFeatures = {};
           const featureKeys = Object.keys(PLAN_FEATURES.starter);
@@ -3782,6 +3790,24 @@ async function main() {
       const { tenantId, sessionId, duration, summary } = event;
       if (tenantId) {
         webhookDispatcher.dispatch(tenantId, 'call.completed', { sessionId, duration, summary });
+      }
+    });
+    AgencyEventBus.subscribe('conversation.ended', async (event) => {
+      const { tenantId, sessionId, messageCount, duration } = event;
+      if (tenantId) {
+        webhookDispatcher.dispatch(tenantId, 'conversation.ended', { sessionId, messageCount, duration });
+      }
+    });
+    AgencyEventBus.subscribe('cart.abandoned', async (event) => {
+      const { tenantId, sessionId, cartValue, items } = event;
+      if (tenantId) {
+        webhookDispatcher.dispatch(tenantId, 'cart.abandoned', { sessionId, cartValue, items });
+      }
+    });
+    AgencyEventBus.subscribe('quota.warning', async (event) => {
+      const { tenantId, quotaType, current, limit, pct } = event;
+      if (tenantId) {
+        webhookDispatcher.dispatch(tenantId, 'quota.warning', { quotaType, current, limit, pct });
       }
     });
 
