@@ -695,28 +695,28 @@ describe('PUT /api/tenants/:id/allowed-origins', () => {
     assert.ok(data.error.includes('array'));
   });
 
-  it('returns 400 when origins exceeds max 10', async () => {
+  it('returns 400 when origins exceeds plan limit (starter=2)', async () => {
     const tenantId = `_test_aop_max_${Date.now()}`;
-    createTestTenant(tenantId);
+    createTestTenant(tenantId); // default plan = starter → max_origins = 2
     const user = createUserDirect('aop-max@test.com', { tenantId });
 
-    const origins = Array.from({ length: 11 }, (_, i) => `https://site${i}.com`);
+    const origins = Array.from({ length: 3 }, (_, i) => `https://site${i}.com`);
     const res = await put(`/api/tenants/${tenantId}/allowed-origins`, { origins }, authHeader(user.token));
     assert.equal(res.status, 400);
     const data = await res.json();
-    assert.ok(data.error.includes('10'));
+    assert.ok(data.error.includes('maximum'));
   });
 
-  it('accepts exactly 10 origins', async () => {
-    const tenantId = `_test_aop_ten_${Date.now()}`;
+  it('accepts origins within plan limit (starter=2)', async () => {
+    const tenantId = `_test_aop_two_${Date.now()}`;
     createTestTenant(tenantId);
-    const user = createUserDirect('aop-ten@test.com', { tenantId });
+    const user = createUserDirect('aop-two@test.com', { tenantId });
 
-    const origins = Array.from({ length: 10 }, (_, i) => `https://site${i}.com`);
+    const origins = ['https://site1.com', 'https://site2.com'];
     const res = await put(`/api/tenants/${tenantId}/allowed-origins`, { origins }, authHeader(user.token));
     assert.equal(res.status, 200);
     const data = await res.json();
-    assert.equal(data.origins.length, 10);
+    assert.equal(data.origins.length, 2);
   });
 
   it('returns 400 for invalid URL format', async () => {
@@ -757,12 +757,12 @@ describe('PUT /api/tenants/:id/allowed-origins', () => {
     assert.equal(res.status, 400);
   });
 
-  it('accepts valid https origins', async () => {
+  it('accepts valid https origins within plan limit (starter=2)', async () => {
     const tenantId = `_test_aop_valid_${Date.now()}`;
     createTestTenant(tenantId);
     const user = createUserDirect('aop-valid@test.com', { tenantId });
 
-    const origins = ['https://example.com', 'https://www.myshop.fr', 'http://staging.example.com'];
+    const origins = ['https://example.com', 'https://www.myshop.fr'];
     const res = await put(`/api/tenants/${tenantId}/allowed-origins`, { origins }, authHeader(user.token));
     assert.equal(res.status, 200);
     const data = await res.json();
@@ -928,7 +928,7 @@ describe('GET /api/widget/embed-code', () => {
     const data = await res.json();
     assert.equal(data.platform, 'html');
     assert.equal(data.tenantId, 'test_tenant_123');
-    assert.ok(data.snippet.includes('data-tenant-id="test_tenant_123"'));
+    assert.ok(data.snippet.includes('data-vocalia-tenant="test_tenant_123"'));
     assert.ok(data.snippet.includes('voice-widget-v3.js'));
     assert.ok(data.snippet.includes('defer'));
     assert.ok(data.instructions);
@@ -939,7 +939,7 @@ describe('GET /api/widget/embed-code', () => {
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.platform, 'shopify');
-    assert.ok(data.snippet.includes('data-tenant-id="my_shop"'));
+    assert.ok(data.snippet.includes('data-vocalia-tenant="my_shop"'));
     assert.ok(data.instructions.toLowerCase().includes('shopify'));
   });
 
@@ -948,7 +948,7 @@ describe('GET /api/widget/embed-code', () => {
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.platform, 'wordpress');
-    assert.ok(data.snippet.includes('data-tenant-id="wp_site"'));
+    assert.ok(data.snippet.includes('data-vocalia-tenant="wp_site"'));
   });
 
   it('returns React component snippet', async () => {
@@ -966,7 +966,7 @@ describe('GET /api/widget/embed-code', () => {
     assert.equal(res.status, 200);
     const data = await res.json();
     assert.equal(data.platform, 'wix');
-    assert.ok(data.snippet.includes('data-tenant-id="wix_site"'));
+    assert.ok(data.snippet.includes('data-vocalia-tenant="wix_site"'));
     assert.ok(data.instructions.toLowerCase().includes('wix'));
   });
 

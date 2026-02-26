@@ -1828,9 +1828,9 @@ function startServer(port = 3004) {
         if (filePath) {
           const corsHeaders = tenantCors.getCorsHeaders(req.headers.origin);
           res.writeHead(200, {
+            ...corsHeaders,
             'Content-Type': 'application/javascript; charset=utf-8',
-            'Cache-Control': 'public, max-age=3600',
-            ...corsHeaders
+            'Cache-Control': 'public, max-age=3600'
           });
           fs.createReadStream(filePath).pipe(res);
           return;

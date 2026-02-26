@@ -430,6 +430,8 @@ async function handleAuthRequest(req, res, path, method) {
         console.error(`❌ [Register] authService.register failed for ${email}: ${msg}`);
         if (msg.includes('already exists') || msg.includes('duplicate')) {
           sendError(res, 409, 'An account with this email already exists');
+        } else if (msg.includes('Password must') || msg.includes('password') || msg.includes('Invalid email') || msg.includes('validation')) {
+          sendError(res, 400, msg);
         } else if (msg.includes('token') || msg.includes('auth') || msg.includes('OAuth') || msg.includes('UNAUTHENTICATED')) {
           sendError(res, 503, 'Registration service temporarily unavailable. Please try again later.');
         } else if (msg.includes('quota') || msg.includes('rate') || msg.includes('RESOURCE_EXHAUSTED')) {
