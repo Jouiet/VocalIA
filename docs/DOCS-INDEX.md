@@ -49,6 +49,7 @@
 | **USE-CASES-BUSINESS-VALUE-ANALYSIS.md** | Analyse business | ✅ |
 | **USE-CASES-STRATEGIC-ANALYSIS.md** | Analyse strategique | ✅ |
 | **DISTRIBUTION-STRATEGY.md** | Distribution & Go-to-Market (28+ canaux) | ✅ v1.0.0 |
+| **PERPLEXITY-COMPUTER-ANALYSIS.md** | Analyse Perplexity Computer + plan d'action orchestration intelligente (7 taches) | ✅ v1.0.0 (250.245) |
 
 ### Design & Branding
 

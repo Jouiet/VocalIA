@@ -474,6 +474,77 @@ class ContextBox {
   }
 
   /**
+   * Session 250.245: T5 — Client Profile (Perplexity persistent memory pattern)
+   * Aggregates all known facts about a client into a structured profile
+   * for cross-session personalization.
+   */
+  async getClientProfile(tenantId, clientId) {
+    if (!tenantId || !clientId) return null;
+
+    // Get tenant-level facts for this client
+    let facts = [];
+    try {
+      facts = await this.tenantMemory.getFacts(tenantId, { limit: 50 });
+    } catch (e) {
+      // Graceful degradation
+    }
+
+    // Filter facts that relate to this client (by sessionId or direct match)
+    const clientFacts = facts.filter(f =>
+      f.sessionId === clientId || f.clientId === clientId
+    );
+
+    // Get session context if available
+    const sessionCtx = this.get(clientId);
+    const history = sessionCtx?.pillars?.history || [];
+    const keyFacts = sessionCtx?.pillars?.keyFacts || [];
+
+    // Aggregate all facts
+    const allFacts = [...clientFacts, ...keyFacts];
+
+    const budget = allFacts.find(f => f.type === 'budget')?.value || null;
+    const timeline = allFacts.find(f => f.type === 'timeline')?.value || null;
+    const productsInterested = allFacts
+      .filter(f => f.type === 'product_interest' || f.type === 'product')
+      .map(f => f.value);
+    const objections = allFacts
+      .filter(f => f.type === 'objection')
+      .map(f => f.value);
+    const objectives = allFacts
+      .filter(f => f.type === 'objective' || f.type === 'goal')
+      .map(f => f.value);
+
+    const totalConversations = history.filter(h => h.event === 'session_end' || h.event === 'HANDOFF').length + 1;
+    const lastInteraction = history.length > 0 ? history[history.length - 1] : null;
+
+    // Infer recommended action
+    const leadScore = sessionCtx?.pillars?.qualification?.score || 0;
+    const daysSinceLast = lastInteraction?.timestamp
+      ? (Date.now() - new Date(lastInteraction.timestamp).getTime()) / 86400000
+      : Infinity;
+
+    let recommendedAction = 'monitor';
+    if (leadScore >= 70 && daysSinceLast > 2) recommendedAction = 'relance_whatsapp';
+    else if (leadScore >= 40 && daysSinceLast > 7) recommendedAction = 'relance_email';
+    else if (leadScore < 40 && totalConversations > 1) recommendedAction = 'nurturing';
+
+    return {
+      clientId,
+      tenantId,
+      totalConversations,
+      firstSeen: history[0]?.timestamp || sessionCtx?.created_at || null,
+      lastSeen: lastInteraction?.timestamp || sessionCtx?.updated_at || null,
+      knownBudget: budget,
+      knownTimeline: timeline,
+      productsInterested: [...new Set(productsInterested)],
+      objectionsRaised: [...new Set(objections)],
+      objectives: [...new Set(objectives)],
+      leadScore,
+      recommendedAction,
+    };
+  }
+
+  /**
    * v3.0: Suggest actions based on context
    */
   _suggestActions(context) {

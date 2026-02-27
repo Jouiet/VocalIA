@@ -190,7 +190,7 @@ class HybridRAG {
             // However, to keep it working, we should check if we have embeddings in the store.
 
             // Perform vector search in SQLite
-            const results = engine.store.search(queryVector, limit * 2);
+            const results = await engine.store.search(queryVector, limit * 2);
 
             // Map to format expected by Fusion
             denseResults = results.map(r => ({

@@ -373,9 +373,9 @@ describe('DB API getCorsHeaders', () => {
     assert.ok(headers['Access-Control-Allow-Headers'].includes('Content-Type'));
   });
 
-  test('Content-Type is application/json', () => {
+  test('Content-Type is NOT set (callers set their own)', () => {
     const headers = getCorsHeaders({ headers: {} });
-    assert.strictEqual(headers['Content-Type'], 'application/json');
+    assert.strictEqual(headers['Content-Type'], undefined);
   });
 });
 

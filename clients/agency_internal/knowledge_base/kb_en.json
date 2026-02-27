@@ -14,7 +14,7 @@
   },
   "pricing": {
     "question": "What are your plans and pricing?",
-    "response": "Our plans: Starter at 49EUR/month (voice widget, 500 calls/month, 2 languages), Pro at 99EUR/month (5 languages, CRM, calendar, 2000 calls/month), E-commerce at 99EUR/month (Shopify/WooCommerce integrations, order tracking, inventory), Telephony at 199EUR/month + 0.10EUR/minute (dedicated phone number, PSTN, call transfer). All plans include a free 14-day trial with no commitment.",
+    "response": "Our plans: Starter at 49EUR/month (voice widget, 500 calls/month, 2 languages), Pro at 99EUR/month (5 languages, CRM, calendar, 2000 calls/month), E-commerce at 99EUR/month (Shopify/WooCommerce integrations, order tracking, inventory), Expert Clone at 149EUR/month (voice clone, full branding, API access), Telephony at 199EUR/month + 0.24EUR/minute (dedicated phone number, PSTN, call transfer). All plans include a free 14-day trial with no commitment.",
     "keywords": ["price", "pricing", "cost", "plan", "subscription", "starter", "pro", "ecommerce", "telephony", "trial"]
   },
   "trial": {
@@ -24,8 +24,8 @@
   },
   "personas": {
     "question": "What types of personas do you offer?",
-    "response": "VocalIA offers 38 pre-built personas tailored to different industries: dental clinics, medical practices, real estate, notaries, e-commerce (fashion, electronics, food...), hospitality, restaurants, recruitment, consulting, insurance, logistics, events, legal, wellness, coaching, concierge, hairdressing. Each persona is optimized for the vocabulary and scenarios of its sector.",
-    "keywords": ["persona", "industry", "sector", "specialized", "tailored", "38"]
+    "response": "VocalIA offers 40 pre-built personas tailored to different industries: dental clinics, medical practices, real estate, notaries, e-commerce (fashion, electronics, food...), hospitality, restaurants, recruitment, consulting, insurance, logistics, events, legal, wellness, coaching, concierge, hairdressing. Each persona is optimized for the vocabulary and scenarios of its sector.",
+    "keywords": ["persona", "industry", "sector", "specialized", "tailored", "40"]
   },
   "languages": {
     "question": "What languages are supported?",

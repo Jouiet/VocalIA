@@ -14,7 +14,7 @@
   },
   "pricing": {
     "question": "Cuales son sus tarifas?",
-    "response": "Nuestros planes: Starter a 49EUR/mes (widget vocal, 500 llamadas/mes, 2 idiomas), Pro a 99EUR/mes (5 idiomas, CRM, calendario, 2000 llamadas/mes), E-commerce a 99EUR/mes (integraciones Shopify/WooCommerce, seguimiento de pedidos, inventario), Telephony a 199EUR/mes + 0.10EUR/minuto (numero dedicado, PSTN, transferencia de llamadas). Todos los planes incluyen una prueba gratuita de 14 dias sin compromiso.",
+    "response": "Nuestros planes: Starter a 49EUR/mes (widget vocal, 500 llamadas/mes, 2 idiomas), Pro a 99EUR/mes (5 idiomas, CRM, calendario, 2000 llamadas/mes), E-commerce a 99EUR/mes (integraciones Shopify/WooCommerce, seguimiento de pedidos, inventario), Expert Clone a 149EUR/mes (clon vocal, marca completa, acceso API), Telephony a 199EUR/mes + 0,24EUR/minuto (numero dedicado, PSTN, transferencia de llamadas). Todos los planes incluyen una prueba gratuita de 14 dias sin compromiso.",
     "keywords": ["precio", "tarifa", "costo", "plan", "suscripcion", "starter", "pro", "ecommerce", "telephony", "prueba"]
   },
   "trial": {
@@ -25,7 +25,7 @@
   "personas": {
     "question": "Que tipos de personas ofrecen?",
     "response": "VocalIA ofrece 40 personas preconstruidos adaptados a diferentes sectores: clinicas dentales, consultorios medicos, inmobiliarias, notarias, e-commerce (moda, electronica, alimentacion...), hosteleria, restaurantes, reclutamiento, consultoria, seguros, logistica, eventos, juridico, bienestar, coaching, conserjeria, peluqueria. Cada persona esta optimizado para el vocabulario y los escenarios de su sector.",
-    "keywords": ["persona", "sector", "industria", "especializado", "adaptado", "38"]
+    "keywords": ["persona", "sector", "industria", "especializado", "adaptado", "40"]
   },
   "languages": {
     "question": "Que idiomas soporta VocalIA?",

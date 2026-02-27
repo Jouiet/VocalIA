@@ -50,10 +50,11 @@ class KnowledgeEmbeddingService {
     _debounceSave() {
         if (this._savePending) return;
         this._savePending = true;
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             this._saveCache();
             this._savePending = false;
         }, 30_000);
+        if (timer.unref) timer.unref(); // Don't hold event loop open
     }
 
     /**

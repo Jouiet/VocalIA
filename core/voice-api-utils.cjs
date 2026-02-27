@@ -225,8 +225,13 @@ function extractEmail(text) {
 }
 
 function extractPhone(text) {
-  const phoneMatch = text.match(/(?:\+33|0)[\s.-]?[1-9](?:[\s.-]?\d{2}){4}/);
-  return phoneMatch ? phoneMatch[0].replace(/[\s.-]/g, '') : null;
+  // International format: +XX(X) followed by 7-12 digits (with optional separators)
+  const intlMatch = text.match(/\+\d{1,3}[\s.-]?\d(?:[\s.-]?\d){6,11}/);
+  if (intlMatch) return intlMatch[0].replace(/[\s.-]/g, '');
+  // French local format: 0X XX XX XX XX
+  const frMatch = text.match(/0[\s.-]?[1-9](?:[\s.-]?\d{2}){4}/);
+  if (frMatch) return frMatch[0].replace(/[\s.-]/g, '');
+  return null;
 }
 
 function extractName(text) {

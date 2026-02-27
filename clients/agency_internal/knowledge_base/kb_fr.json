@@ -14,7 +14,7 @@
   },
   "pricing": {
     "question": "Quels sont vos tarifs ?",
-    "response": "Nos plans : Starter à 49€/mois (widget vocal, 500 appels/mois, 2 langues), Pro à 99€/mois (5 langues, CRM, calendrier, 2000 appels/mois), E-commerce à 99€/mois (intégrations Shopify/WooCommerce, suivi commandes, stock), Telephony à 199€/mois + 0.10€/minute (numéro dédié, PSTN, transfert d'appels). Tous les plans incluent un essai gratuit de 14 jours sans engagement.",
+    "response": "Nos plans : Starter à 49€/mois (widget vocal, 500 appels/mois, 2 langues), Pro à 99€/mois (5 langues, CRM, calendrier, 2000 appels/mois), E-commerce à 99€/mois (intégrations Shopify/WooCommerce, suivi commandes, stock), Expert Clone à 149€/mois (clone vocal, branding complet, accès API), Telephony à 199€/mois + 0,24€/minute (numéro dédié, PSTN, transfert d'appels). Tous les plans incluent un essai gratuit de 14 jours sans engagement.",
     "keywords": ["prix", "tarif", "coût", "combien", "plan", "abonnement", "starter", "pro", "ecommerce", "telephony", "essai"]
   },
   "trial": {
@@ -25,7 +25,7 @@
   "personas": {
     "question": "Quels types de personas proposez-vous ?",
     "response": "VocalIA propose 40 personas pré-construits adaptés à différents secteurs : cabinets dentaires, cabinets médicaux, immobilier, notaires, e-commerce (mode, électronique, alimentation...), hôtellerie, restauration, recrutement, consulting, assurance, logistique, événementiel, juridique, bien-être, coaching, conciergerie, coiffure. Chaque persona est optimisé pour le vocabulaire et les scénarios de son secteur.",
-    "keywords": ["persona", "secteur", "industrie", "métier", "adapté", "spécialisé", "38"]
+    "keywords": ["persona", "secteur", "industrie", "métier", "adapté", "spécialisé", "40"]
   },
   "languages": {
     "question": "Quelles langues sont supportées ?",

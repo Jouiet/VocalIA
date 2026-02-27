@@ -348,10 +348,10 @@ describe('getCorsHeaders()', () => {
     assert.equal(headers['Referrer-Policy'], 'strict-origin-when-cross-origin');
   });
 
-  it('sets Content-Type to application/json', () => {
+  it('does NOT set Content-Type (callers set their own)', () => {
     const req = { headers: { origin: 'https://vocalia.ma' } };
     const headers = getCorsHeaders(req);
-    assert.equal(headers['Content-Type'], 'application/json');
+    assert.strictEqual(headers['Content-Type'], undefined);
   });
 
   it('handles null req gracefully', () => {

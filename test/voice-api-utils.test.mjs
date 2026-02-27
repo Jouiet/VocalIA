@@ -457,6 +457,26 @@ describe('extractPhone', () => {
   test('returns null for incomplete number', () => {
     assert.strictEqual(extractPhone('06 12 34'), null);
   });
+
+  test('extracts Moroccan number (+212)', () => {
+    const result = extractPhone('Mon numéro +212 6 12 34 56 78');
+    assert.strictEqual(result, '+212612345678');
+  });
+
+  test('extracts Spanish number (+34)', () => {
+    const result = extractPhone('Mi teléfono es +34 612 345 678');
+    assert.strictEqual(result, '+34612345678');
+  });
+
+  test('extracts US number (+1)', () => {
+    const result = extractPhone('Call me at +1 555 123 4567');
+    assert.strictEqual(result, '+15551234567');
+  });
+
+  test('extracts UK number (+44)', () => {
+    const result = extractPhone('Ring me at +44 20 1234 5678');
+    assert.strictEqual(result, '+442012345678');
+  });
 });
 
 // ─── extractName ────────────────────────────────────────────────────────────
