@@ -28,7 +28,9 @@ const B52_FILES = new Set([
 // Files that must run individually (fail in batch due to API rate limits or IPC)
 const SOLO_FILES = new Set([
   'provision-tenant.test.mjs',
-  'grok-voice-realtime.test.mjs'
+  'grok-voice-realtime.test.mjs',
+  'whatsapp-webhook.test.mjs',
+  'voice-api-http.test.mjs'
 ]);
 
 const TEST_DIR = path.join(__dirname, '..', 'test');

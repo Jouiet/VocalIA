@@ -613,7 +613,7 @@ S7 (WebSocket /realtime) ──────── ✅ FONCTIONNE (curl 200, 7 vo
 S9 (MyDealz mort) ─────────────── ❌ Paywall Shopify (hors scope)
 S10 (Social proof vide) ────────── ✅ Code fixe (metrics passees), vide car 0 trafic
 S11 (Widget attribut mismatch) ── ✅ FIXE + DEPLOYE (data-vocalia-tenant canonical)
-S12 (Installation non-technique)─ ✅ 10 integrations (WP/Shopify/Wix/Squarespace/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM)
+S12 (Installation non-technique)─ ✅ 12 integrations (WP/Shopify/Wix/Squarespace/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/Joomla/Drupal/GTM)
 S13 (Origin limits par plan) ──── ✅ FIXE + DEPLOYE (Starter=2, Pro=5, Expert=10)
 S14 (Widget 404 depuis VPS) ───── ✅ Dockerfile + voice-api widget serving, verifie curl 200
 ```
@@ -627,7 +627,7 @@ S14 (Widget 404 depuis VPS) ───── ✅ Dockerfile + voice-api widget se
 
 ### Score mis a jour : 8/100 → 35/100 → 82/100 → 91/100
 
-Progression : Widgets maintenant servis depuis api.vocalia.ma (VPS auto-deploy via git), elimine la dependance NindoHost FTP. 10 integrations plateforme couvrent >85% du marche CMS (WordPress/WooCommerce 43% + Shopify 4.4% + Wix 3.4% + Squarespace 2% + Magento 1% + PrestaShop 1% + BigCommerce 0.5% + OpenCart 0.3% + Webflow 0.5% + GTM universel). 11 plateformes de snippet generation. Tous les blocages critiques sont resolus.
+Progression : Widgets maintenant servis depuis api.vocalia.ma (VPS auto-deploy via git), elimine la dependance NindoHost FTP. 12 integrations plateforme couvrent >82% du marche CMS (WordPress 62.8% + Shopify 6.1% + Wix 3.4% + Squarespace 2.9% + Joomla 2.4% + Drupal 1.8% + Webflow 0.9% + Magento 0.5% + PrestaShop 0.5% + BigCommerce 0.3% + OpenCart 0.3% + GTM universel). 13 plateformes de snippet generation (incl. OpenCart tab). Tous les blocages critiques sont resolus. Market share source: W3Techs mars 2026.
 
 ### Le paradoxe : RESOLU
 

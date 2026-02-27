@@ -1,108 +1,127 @@
 /**
- * VocalIA Component Loader
- * Loads reusable HTML components dynamically
+ * VocalIA Unified Component Loader
+ * Loads reusable HTML components dynamically for ALL pages.
+ *
+ * Components are registered in two scopes:
+ * - Public (marketing pages): header, footer, newsletter-cta
+ * - App (authenticated pages): sidebar, admin-sidebar, nlp-operator
  *
  * Usage:
- * <div data-component="newsletter-cta"></div>
- * <script src="/src/lib/components.js" defer></script>
+ *   <div data-component="header"></div>
+ *   <div data-component="sidebar"></div>
+ *   <script src="/src/lib/components.js" defer></script>
+ *
+ * Both data-component and data-app-component are supported (backwards compat).
  */
 
 (function() {
   'use strict';
 
-  const COMPONENTS = {
-    'newsletter-cta': '/components/newsletter-cta.html',
+  var COMPONENTS = {
+    // Public (marketing)
+    'header': '/components/header.html',
     'footer': '/components/footer.html',
-    'header': '/components/header.html'
+    'newsletter-cta': '/components/newsletter-cta.html',
+    // App (authenticated)
+    'sidebar': '/app/components/sidebar.html',
+    'admin-sidebar': '/app/components/admin-sidebar.html',
+    'nlp-operator': '/app/components/nlp-operator.html'
   };
 
-  // Cache for loaded components
-  const cache = new Map();
+  var cache = {};
 
-  /**
-   * Load a component HTML
-   */
-  async function loadComponent(name) {
-    if (cache.has(name)) {
-      return cache.get(name);
-    }
+  function loadComponent(name) {
+    if (cache[name]) return Promise.resolve(cache[name]);
 
-    const url = COMPONENTS[name];
+    var url = COMPONENTS[name];
     if (!url) {
-      console.warn(`[Components] Unknown component: ${name}`);
-      return '';
+      console.warn('[Components] Unknown component: ' + name);
+      return Promise.resolve('');
     }
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const html = await response.text();
-      cache.set(name, html);
+    return fetch(url).then(function(response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.text();
+    }).then(function(html) {
+      cache[name] = html;
       return html;
-    } catch (error) {
-      console.error(`[Components] Failed to load ${name}:`, error.message);
+    }).catch(function(error) {
+      console.error('[Components] Failed to load ' + name + ':', error.message);
       return '';
-    }
+    });
   }
 
-  /**
-   * Initialize all components on the page
-   */
-  async function initComponents() {
-    const elements = document.querySelectorAll('[data-component]');
+  function injectHTML(el, html) {
+    var temp = document.createElement('div');
+    temp.innerHTML = html;
 
-    if (elements.length === 0) return;
+    var scripts = Array.from(temp.querySelectorAll('script'));
+    scripts.forEach(function(s) { s.remove(); });
 
-    const loadPromises = Array.from(elements).map(async (el) => {
-      const componentName = el.dataset.component;
-      const html = await loadComponent(componentName);
+    el.outerHTML = temp.innerHTML;
 
-      if (html) {
-        // Create a temporary container to parse the HTML
-        const temp = document.createElement('div');
-        temp.innerHTML = html;
-
-        // Extract script tags before DOM insertion (innerHTML won't execute them)
-        const scripts = Array.from(temp.querySelectorAll('script'));
-        scripts.forEach(s => s.remove());
-
-        // Replace placeholder with component HTML (without scripts)
-        el.outerHTML = temp.innerHTML;
-
-        // Execute scripts by creating fresh script elements
-        scripts.forEach(oldScript => {
-          const newScript = document.createElement('script');
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
-          }
-          document.body.appendChild(newScript);
-        });
+    scripts.forEach(function(oldScript) {
+      var newScript = document.createElement('script');
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+      } else {
+        newScript.textContent = oldScript.textContent;
       }
+      document.body.appendChild(newScript);
+    });
+  }
+
+  function initComponents() {
+    // Support both data-component and data-app-component (backwards compat)
+    var elements = Array.from(document.querySelectorAll('[data-component], [data-app-component]'));
+    if (elements.length === 0) return Promise.resolve();
+
+    var promises = elements.map(function(el) {
+      var name = el.dataset.component || el.dataset.appComponent;
+      return loadComponent(name).then(function(html) {
+        if (html) injectHTML(el, html);
+      });
     });
 
-    await Promise.all(loadPromises);
+    return Promise.all(promises).then(function() {
+      // Auto-inject NLP Operator on app pages (sidebar = app page indicator)
+      var isAppPage = document.getElementById('sidebar') !== null;
 
-    // Re-initialize Lucide icons if available
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
+      if (isAppPage && !document.getElementById('nlp-operator-container')) {
+        return loadComponent('nlp-operator').then(function(nlpHtml) {
+          if (!nlpHtml) return;
+          var container = document.createElement('div');
+          container.id = 'nlp-operator-container';
+          container.innerHTML = nlpHtml;
+          var nlpScripts = Array.from(container.querySelectorAll('script'));
+          nlpScripts.forEach(function(s) { s.remove(); });
+          document.body.appendChild(container);
+          nlpScripts.forEach(function(oldScript) {
+            var newScript = document.createElement('script');
+            newScript.textContent = oldScript.textContent;
+            document.body.appendChild(newScript);
+          });
+        }).catch(function(e) {
+          console.warn('[Components] NLP Operator load skipped:', e.message);
+        });
+      }
+    }).then(function() {
+      if (window.lucide) window.lucide.createIcons();
+      if (window.applyTranslations) window.applyTranslations();
 
-    // Dispatch event for other scripts
-    document.dispatchEvent(new CustomEvent('components:loaded'));
+      document.dispatchEvent(new CustomEvent('components:loaded'));
+      document.dispatchEvent(new CustomEvent('app-components:loaded'));
+    });
   }
 
-  // Auto-init on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initComponents);
   } else {
     initComponents();
   }
 
-  // Expose for manual use
-  window.VocalIAComponents = {
-    load: loadComponent,
-    init: initComponents
-  };
+  // Unified API (expose both names for backwards compat)
+  var api = { load: loadComponent, init: initComponents };
+  window.VocalIAComponents = api;
+  window.VocalIAAppComponents = api;
 })();

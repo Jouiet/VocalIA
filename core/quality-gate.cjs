@@ -8,9 +8,9 @@
  * Checks:
  *   1. Minimum response length
  *   2. Price/number hallucination detection (invents data not in RAG)
- *   3. Off-topic detection (no overlap with query keywords)
- *   4. Language mismatch (basic — A2A handles full verification)
- *   5. Refusal detection (model refuses to answer instead of using KB data)
+ *   3. Off-topic detection (synonym-aware keyword overlap with query)
+ *   4. Refusal detection (model refuses to answer despite RAG context)
+ *   5. Repetition detection (duplicate sentences in response)
  */
 
 'use strict';
