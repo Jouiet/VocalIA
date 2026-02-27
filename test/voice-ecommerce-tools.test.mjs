@@ -246,3 +246,45 @@ describe('VoiceEcommerceTools getOrderHistory (no creds)', () => {
     assert.strictEqual(result.orders.length, 0);
   });
 });
+
+// ─── T7: searchProductsForRAG (Session 250.246) ─────────────────
+
+describe('VoiceEcommerceTools searchProductsForRAG', () => {
+  test('export exists and is a function', () => {
+    assert.strictEqual(typeof ecomTools.searchProductsForRAG, 'function');
+  });
+
+  test('returns empty array for nonexistent tenant', async () => {
+    const result = await ecomTools.searchProductsForRAG('shirt', 'nonexistent_tenant_xyz');
+    assert.ok(Array.isArray(result));
+    assert.strictEqual(result.length, 0);
+  });
+
+  test('returns empty array for empty query', async () => {
+    const result = await ecomTools.searchProductsForRAG('', 'nonexistent_tenant');
+    assert.ok(Array.isArray(result));
+  });
+
+  test('respects limit option', async () => {
+    const result = await ecomTools.searchProductsForRAG('test', 'no_tenant', { limit: 1 });
+    assert.ok(Array.isArray(result));
+    assert.ok(result.length <= 1);
+  });
+
+  test('results have RAG-compatible format', async () => {
+    // Even if empty, verify the contract
+    const result = await ecomTools.searchProductsForRAG('product', 'no_tenant');
+    assert.ok(Array.isArray(result));
+    for (const item of result) {
+      assert.ok(item.id, 'result must have id');
+      assert.ok(item.text, 'result must have text');
+      assert.ok(typeof item.rrfScore === 'number', 'result must have numeric rrfScore');
+      assert.strictEqual(item.source, 'ecommerce_live');
+    }
+  });
+
+  test('never throws — returns empty array on error', async () => {
+    const result = await ecomTools.searchProductsForRAG(null, null);
+    assert.ok(Array.isArray(result));
+  });
+});

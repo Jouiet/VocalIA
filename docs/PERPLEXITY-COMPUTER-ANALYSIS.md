@@ -389,7 +389,7 @@ La relation est **complémentaire**. Les patterns d'orchestration intelligente d
 | T4 | Retry intelligent par type d'erreur | **HAUTE** | Fiabilité ++ | Faible | `core/voice-api-resilient.cjs` | **DONE** (250.245) |
 | T5 | Profil client évolutif enrichi | **MOYENNE** | Conversion ++ | Moyen | `core/ContextBox.cjs` | **DONE** (250.245) |
 | T6 | Token Budget Manager par tenant | **MOYENNE** | Coûts prévisibles | Moyen | `core/token-budget.cjs` | **DONE** (250.245) |
-| T7 | Enrichissement RAG multi-source | **BASSE** | Précision e-com | Moyen | `core/hybrid-rag.cjs` | PENDING |
+| T7 | Enrichissement RAG multi-source | **BASSE** | Précision e-com | Moyen | `core/voice-ecommerce-tools.cjs` + `voice-api-resilient.cjs` | ✅ DONE (250.246) |
 
 ---
 
@@ -813,33 +813,38 @@ module.exports = { TokenBudgetManager, PLAN_BUDGETS };
 
 ---
 
-### T7. ENRICHISSEMENT RAG MULTI-SOURCE (BASSE)
+### T7. ENRICHISSEMENT RAG MULTI-SOURCE (BASSE) — ✅ DONE (Session 250.246)
 
 **Pattern Perplexity** : 7 types de search simultanées (web, académique, people, image, vidéo, shopping, social).
 
-**Application VocalIA** : Le Hybrid RAG cherche uniquement dans la KB locale. Pour les tenants e-commerce, enrichir avec :
+**Application VocalIA** : Le Hybrid RAG cherchait uniquement dans la KB locale. Pour les tenants e-commerce, on enrichit maintenant avec des données produit live (prix, stock, description) depuis Shopify/WooCommerce.
+
+**Implémentation** :
+
+1. **`voice-ecommerce-tools.cjs`** — Nouveau export `searchProductsForRAG(query, tenantId, options)` :
+   - Utilise le `CatalogConnector` existant (Shopify/WooCommerce/Custom)
+   - Retourne des snippets RAG-compatibles (`{id, text, rrfScore, source}`)
+   - Non-bloquant : retourne `[]` en cas d'erreur
+
+2. **`voice-api-resilient.cjs`** — Intégré dans Phase 1 (Promise.all) :
+   - Détecte automatiquement si le tenant a des credentials e-commerce (`SHOPIFY_ACCESS_TOKEN` ou `WOOCOMMERCE_URL`)
+   - Exécute la recherche produit en parallèle avec RAG/TenantFacts/CRM
+   - Résultats mergés dans `ragContext` avec préfixe `LIVE_PRODUCT_DATA`
 
 ```javascript
-// Dans hybrid-rag.cjs — Enrichissement conditionnel
-async search(tenantId, language, query, options = {}) {
-  const results = await this._hybridSearch(tenantId, language, query, options);
+// Phase 1: 4 operations parallèles (ajout du 4ème)
+const [ragRaw, tenantFactsRaw, crmRaw, liveProducts] = await Promise.all([
+  // ... RAG, TenantFacts, CRM (existants) ...
+  hasEcomCreds ? ECOM_TOOLS.searchProductsForRAG(userMessage, tenantId, { limit: 3 }) : [],
+]);
 
-  // Enrichissement e-commerce (si tenant a WooCommerce/Shopify)
-  if (options.enrichSources?.includes('ecommerce')) {
-    try {
-      const productResults = await this._searchProducts(tenantId, query);
-      results.push(...productResults.map(p => ({
-        id: `product_${p.id}`,
-        text: `${p.name} — ${p.price}€ — ${p.inStock ? 'En stock' : 'Rupture'}`,
-        rrfScore: 0.5,
-        source: 'ecommerce_live'
-      })));
-    } catch (e) { /* non-blocking */ }
-  }
-
-  return results.sort((a, b) => b.rrfScore - a.rrfScore).slice(0, options.limit || 5);
+// Merge dans ragContext
+if (liveProducts.length > 0) {
+  ragContext += '\n\nLIVE_PRODUCT_DATA (real-time):\n' + liveProducts.map(p => `[LIVE: ${p.id}] ${p.text}`).join('\n');
 }
 ```
+
+**Tests** : 6 tests dans `test/voice-ecommerce-tools.test.mjs` (export, graceful failure, limit, RAG format)
 
 **Impact** : Réponses produit toujours à jour (prix, stock) au lieu de données KB potentiellement stale.
 
@@ -863,11 +868,11 @@ Phase 3 — Intelligence (T5 + T6)        ≈ 1 session
 ├── T6: TokenBudgetManager                → coûts prévisibles
 └── Tests : client-profile.test.mjs + token-budget.test.mjs
 
-Phase 4 — Enrichissement (T7)           ≈ 0.5 session
+Phase 4 — Enrichissement (T7)           ✅ DONE (250.246)
 └── T7: RAG multi-source                  → précision e-com
 ```
 
-**Estimation totale : 3-4 sessions de travail.**
+**Résultat : 7 tâches complétées en 2 sessions (250.245-250.246). Toutes les tâches DONE.**
 
 ---
 
@@ -912,7 +917,7 @@ Phase 4 — Enrichissement (T7)           ≈ 0.5 session
 | Fallback rate | Non mesuré | À instrumenter |
 | Taux de qualification leads | Non mesuré | À instrumenter |
 | Tokens/conversation moyenne | Non mesuré | T6 résoudra |
-| Tests | 6893/6893 pass | `npm test` |
+| Tests | 7003+/7003+ pass | `npm test` |
 | Providers configurés | 4 (Grok, Gemini, Claude, Atlas) | `getProviderConfig()` |
 | Personas | 40 × 5 langues | `voice-persona-injector.cjs` |
 

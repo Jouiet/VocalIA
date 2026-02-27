@@ -426,5 +426,48 @@ module.exports = {
       console.error('[VoiceEcom] Order history failed:', error);
       return { found: false, orders: [], error: error.message };
     }
+  },
+
+  /**
+   * Search products and return RAG-compatible snippets (Session 250.246: T7)
+   * Used to enrich RAG context with live e-commerce data (price, stock, description)
+   * so AI responses contain up-to-date product information instead of stale KB data.
+   *
+   * @param {string} query - User's search query
+   * @param {string} tenantId - Tenant identifier
+   * @param {object} [options] - Search options
+   * @param {number} [options.limit=3] - Max results
+   * @returns {Promise<Array<{id: string, text: string, rrfScore: number, source: string}>>}
+   */
+  searchProductsForRAG: async (query, tenantId, options = {}) => {
+    const limit = options.limit || 3;
+    try {
+      const connector = await getConnector(tenantId);
+      const products = await connector.search(query, { limit });
+
+      if (!products || products.length === 0) return [];
+
+      return products.map(p => {
+        const price = p.price ? `${p.price}${p.currency || '€'}` : '';
+        const stock = p.in_stock !== false ? 'En stock' : 'Rupture';
+        const desc = (p.voice_description || p.description || '').slice(0, 200);
+        const text = [
+          p.name,
+          price ? `Prix: ${price}` : '',
+          `Stock: ${stock}`,
+          desc,
+        ].filter(Boolean).join(' — ');
+
+        return {
+          id: `product_live_${p.id || p.name?.replace(/\s+/g, '_').slice(0, 30)}`,
+          text,
+          rrfScore: 0.5,
+          source: 'ecommerce_live',
+        };
+      });
+    } catch (e) {
+      console.warn(`[VoiceEcom] RAG product search failed for ${tenantId}:`, e.message);
+      return [];
+    }
   }
 };

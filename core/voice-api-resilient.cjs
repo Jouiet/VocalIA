@@ -1536,8 +1536,9 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   const lower = userMessage.toLowerCase();
 
-  // Phase 1: RAG + GraphRAG + TenantFacts + CRM — all independent
-  const [ragRaw, tenantFactsRaw, crmRaw] = await Promise.all([
+  // Phase 1: RAG + GraphRAG + TenantFacts + CRM + Live Products — all independent
+  const hasEcomCreds = !!(tenantSecrets.SHOPIFY_ACCESS_TOKEN || tenantSecrets.WOOCOMMERCE_URL);
+  const [ragRaw, tenantFactsRaw, crmRaw, liveProducts] = await Promise.all([
     // 1. Hybrid RAG search
     (async () => {
       try {
@@ -1569,6 +1570,17 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
         return null;
       }
     })(),
+    // 4. Session 250.246: T7 — Live e-commerce product search (Perplexity multi-source pattern)
+    // Enriches RAG with real-time price/stock data from Shopify/WooCommerce
+    (async () => {
+      if (!hasEcomCreds || !tenantId) return [];
+      try {
+        return await ECOM_TOOLS.searchProductsForRAG(userMessage, tenantId, { limit: 3 });
+      } catch (e) {
+        console.warn('[Voice API] Live product search failed:', e.message);
+        return [];
+      }
+    })(),
   ]);
 
   // Process Phase 1 results
@@ -1578,6 +1590,14 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     ragContext = ragresults.map(r => `[ID: ${r.id}] ${r.text}`).join('\n');
   } else if (Array.isArray(ragresults)) {
     ragContext = KB.formatForVoice(ragresults, language);
+  }
+
+  // T7: Merge live e-commerce products into RAG context (real-time price/stock)
+  if (liveProducts.length > 0) {
+    const liveContext = liveProducts.map(p => `[LIVE: ${p.id}] ${p.text}`).join('\n');
+    ragContext = ragContext
+      ? `${ragContext}\n\nLIVE_PRODUCT_DATA (real-time):\n${liveContext}`
+      : `LIVE_PRODUCT_DATA (real-time):\n${liveContext}`;
   }
 
   // 1.1 Relational Graph Context (sync — no await needed)

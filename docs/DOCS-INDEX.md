@@ -1,8 +1,8 @@
 # VocalIA - Documentation Index
 
-> **Version**: 6.3.0 | **Date**: 14/02/2026 | **Session**: 250.209c
+> **Version**: 6.4.0 | **Date**: 27/02/2026 | **Session**: 250.246
 > **Production**: https://vocalia.ma
-> **Verified:** ~86k lines source | 85 pages | 203 MCP tools (0 connected) | 40 Personas | 25 Function Tools | 7 Widgets
+> **Verified:** ~90k lines source | 89 pages | 203 MCP tools (0 connected) | 40 Personas | 25 Function Tools | 7 Widgets
 
 ---
 
@@ -49,7 +49,7 @@
 | **USE-CASES-BUSINESS-VALUE-ANALYSIS.md** | Analyse business | ✅ |
 | **USE-CASES-STRATEGIC-ANALYSIS.md** | Analyse strategique | ✅ |
 | **DISTRIBUTION-STRATEGY.md** | Distribution & Go-to-Market (28+ canaux) | ✅ v1.0.0 |
-| **PERPLEXITY-COMPUTER-ANALYSIS.md** | Analyse Perplexity Computer + plan d'action orchestration intelligente (7 taches) | ✅ v1.0.0 (250.245) |
+| **PERPLEXITY-COMPUTER-ANALYSIS.md** | Analyse Perplexity Computer + plan d'action orchestration intelligente (7/7 taches DONE) | ✅ v1.1.0 (250.246) |
 
 ### Design & Branding
 
