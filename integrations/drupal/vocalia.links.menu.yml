@@ -1,0 +1,6 @@
+vocalia.settings:
+  title: 'VocalIA Voice Assistant'
+  route_name: vocalia.settings
+  description: 'Configure the VocalIA AI voice assistant widget.'
+  parent: system.admin_config
+  weight: 99

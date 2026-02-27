@@ -6271,7 +6271,13 @@
     "sq_step3": "3. الصق الكود > Save",
     "mag_step1": "1. Magento: وحدة أو قالب",
     "mag_step2": "2. BigCommerce: مدير السكريبت",
-    "mag_step3": "3. الصق الكود > Save"
+    "mag_step3": "3. الصق الكود > Save",
+    "joomla_step1": "1. System > Install > Upload Package",
+    "joomla_step2": "2. فعّل الإضافة في Plugins",
+    "joomla_step3": "3. انقر VocalIA > الصق Tenant ID",
+    "drupal_step1": "1. Extend > Install new module",
+    "drupal_step2": "2. فعّل VocalIA Voice Assistant",
+    "drupal_step3": "3. Configuration > VocalIA > Tenant ID"
   },
   "roi": {
     "title": "احسب العائد على الاستثمار",

@@ -6271,7 +6271,13 @@
     "sq_step3": "3. كولّي الكود > Save",
     "mag_step1": "1. Magento: موديل ولا قالب",
     "mag_step2": "2. BigCommerce: مدير السكريبت",
-    "mag_step3": "3. كولّي الكود > Save"
+    "mag_step3": "3. كولّي الكود > Save",
+    "joomla_step1": "1. System > Install > Upload Package",
+    "joomla_step2": "2. شعّل الإضافة ف Plugins",
+    "joomla_step3": "3. كليكي على VocalIA > كولّي Tenant ID ديالك",
+    "drupal_step1": "1. Extend > Install new module",
+    "drupal_step2": "2. شعّل VocalIA Voice Assistant",
+    "drupal_step3": "3. Configuration > VocalIA > Tenant ID"
   },
   "roi": {
     "title": "حسب العائد ديالك",

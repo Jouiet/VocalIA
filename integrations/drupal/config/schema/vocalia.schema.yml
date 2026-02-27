@@ -1,0 +1,13 @@
+vocalia.settings:
+  type: config_object
+  label: 'VocalIA settings'
+  mapping:
+    enabled:
+      type: boolean
+      label: 'Enable widget'
+    tenant_id:
+      type: string
+      label: 'Tenant ID'
+    widget_type:
+      type: string
+      label: 'Widget type'

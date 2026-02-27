@@ -6271,7 +6271,13 @@
     "sq_step3": "3. Pega el snippet > Save",
     "mag_step1": "1. Magento: Módulo o plantilla",
     "mag_step2": "2. BigCommerce: Script Manager",
-    "mag_step3": "3. Pega el snippet > Save"
+    "mag_step3": "3. Pega el snippet > Save",
+    "joomla_step1": "1. System > Install > Upload Package",
+    "joomla_step2": "2. Active el plugin en Plugins",
+    "joomla_step3": "3. Haga clic en VocalIA > pegue su Tenant ID",
+    "drupal_step1": "1. Extend > Install new module",
+    "drupal_step2": "2. Active VocalIA Voice Assistant",
+    "drupal_step3": "3. Configuration > VocalIA > Tenant ID"
   },
   "roi": {
     "title": "Calcule su ROI",

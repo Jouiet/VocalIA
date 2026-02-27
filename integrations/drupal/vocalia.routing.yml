@@ -1,0 +1,7 @@
+vocalia.settings:
+  path: '/admin/config/vocalia'
+  defaults:
+    _form: '\Drupal\vocalia\Form\VocaliaSettingsForm'
+    _title: 'VocalIA Voice Assistant'
+  requirements:
+    _permission: 'administer site configuration'

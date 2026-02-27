@@ -1,0 +1,16 @@
+# VocalIA Voice Assistant — Drupal Module
+# =========================================
+# INSTALLATION:
+# 1. Copy this entire 'vocalia' directory to: modules/custom/vocalia/
+# 2. In Drupal Admin → Extend → Search "VocalIA" → Check → Install
+# 3. Configuration → VocalIA Voice Assistant → Enter Tenant ID → Save
+# 4. Add your Drupal domain to Allowed Origins in VocalIA dashboard
+#
+# Compatible: Drupal 9.x / 10.x / 11.x
+
+name: 'VocalIA Voice Assistant'
+type: module
+description: 'Add the VocalIA AI voice assistant to your Drupal site. Speaks 5 languages, qualifies leads, remembers clients.'
+core_version_requirement: ^9.4 || ^10 || ^11
+package: 'VocalIA'
+configure: vocalia.settings

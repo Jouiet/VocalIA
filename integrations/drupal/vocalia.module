@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * VocalIA Voice Assistant — Drupal Module
+ *
+ * Injects the VocalIA voice widget on all frontend pages.
+ * Compatible: Drupal 9.x / 10.x / 11.x
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_page_attachments().
+ *
+ * Injects the VocalIA widget script on all non-admin pages.
+ */
+function vocalia_page_attachments(array &$attachments) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+
+  $config = \Drupal::config('vocalia.settings');
+
+  if (!$config->get('enabled')) {
+    return;
+  }
+
+  $tenant_id = trim($config->get('tenant_id') ?? '');
+  if (empty($tenant_id) || !preg_match('/^[a-z0-9_-]+$/i', $tenant_id)) {
+    return;
+  }
+
+  $widget_type = $config->get('widget_type') ?? 'ecommerce';
+  $files = [
+    'ecommerce' => 'voice-widget-ecommerce.js',
+    'b2b'       => 'voice-widget-b2b.js',
+    'standard'  => 'voice-widget.js',
+  ];
+  $file = $files[$widget_type] ?? $files['ecommerce'];
+
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type'       => 'html_tag',
+      '#tag'        => 'script',
+      '#attributes' => [
+        'src'                  => 'https://api.vocalia.ma/voice-assistant/' . $file,
+        'data-vocalia-tenant'  => $tenant_id,
+        'defer'                => TRUE,
+      ],
+    ],
+    'vocalia_widget',
+  ];
+}
+
+/**
+ * Implements hook_help().
+ */
+function vocalia_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.vocalia') {
+    return '<p>' . t('VocalIA adds an AI voice assistant to your site. Configure it at <a href=":url">VocalIA settings</a>.', [
+      ':url' => \Drupal\Core\Url::fromRoute('vocalia.settings')->toString(),
+    ]) . '</p>';
+  }
+}

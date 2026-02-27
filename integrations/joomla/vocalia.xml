@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VocalIA Voice Assistant — Joomla Plugin
+  ========================================
+  INSTALLATION:
+  1. Zip this entire directory as plg_vocalia.zip
+  2. In Joomla Admin → System → Install → Extensions → Upload Package File
+  3. Upload plg_vocalia.zip
+  4. System → Manage → Plugins → Search "VocalIA" → Enable
+  5. Click "VocalIA Voice Assistant" → Enter your Tenant ID → Save
+  6. Add your Joomla domain to Allowed Origins in VocalIA dashboard
+
+  Compatible: Joomla 4.x / 5.x
+-->
+<extension type="plugin" group="system" method="upgrade">
+  <name>VocalIA Voice Assistant</name>
+  <author>VocalIA</author>
+  <creationDate>2026-02-27</creationDate>
+  <copyright>Copyright (C) 2026 VocalIA. All rights reserved.</copyright>
+  <license>GNU General Public License version 2</license>
+  <authorEmail>support@vocalia.ma</authorEmail>
+  <authorUrl>https://vocalia.ma</authorUrl>
+  <version>1.0.0</version>
+  <description>Add the VocalIA AI voice assistant to your Joomla site. Speaks 5 languages, qualifies leads, remembers clients. No coding required.</description>
+  <namespace path="src">VocalIA\Plugin\System\Vocalia</namespace>
+  <files>
+    <folder plugin="vocalia">src</folder>
+  </files>
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+        <field
+          name="enabled"
+          type="radio"
+          label="Enable Widget"
+          default="1"
+          class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+        </field>
+        <field
+          name="tenant_id"
+          type="text"
+          label="Tenant ID"
+          description="Your VocalIA Tenant ID from vocalia.ma dashboard → Settings."
+          filter="alnum"
+          required="true"
+        />
+        <field
+          name="widget_type"
+          type="list"
+          label="Widget Type"
+          default="ecommerce">
+          <option value="ecommerce">E-commerce</option>
+          <option value="b2b">B2B / Service Business</option>
+          <option value="standard">Standard (General Purpose)</option>
+        </field>
+      </fieldset>
+    </fields>
+  </config>
+</extension>
