@@ -42,7 +42,7 @@ add_action('admin_menu', 'vocalia_add_settings_page');
 function vocalia_register_settings() {
     register_setting('vocalia_settings', 'vocalia_tenant_id', [
         'type' => 'string',
-        'sanitize_callback' => 'sanitize_text_field',
+        'sanitize_callback' => 'vocalia_sanitize_tenant_id',
         'default' => '',
     ]);
     register_setting('vocalia_settings', 'vocalia_widget_type', [
@@ -62,6 +62,18 @@ function vocalia_register_settings() {
     ]);
 }
 add_action('admin_init', 'vocalia_register_settings');
+
+/**
+ * Sanitize tenant ID — only allow alphanumeric, hyphens, underscores
+ */
+function vocalia_sanitize_tenant_id($value) {
+    $value = sanitize_text_field($value);
+    if (!empty($value) && !preg_match('/^[a-z0-9_-]+$/i', $value)) {
+        add_settings_error('vocalia_tenant_id', 'invalid_format', __('Tenant ID must contain only letters, numbers, hyphens, and underscores.', 'vocalia-voice-assistant'));
+        return get_option('vocalia_tenant_id', '');
+    }
+    return $value;
+}
 
 /**
  * Render settings page

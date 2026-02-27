@@ -7,7 +7,7 @@
 ## Architecture
 
 core/ (58 modules, 38.0k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (11.0k, 7 files)
-mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (860) | integrations/ (3.5k, 12 platform dirs + 7 CRM/ecom .cjs)
+mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (860) | integrations/ (3.8k, 12 platform dirs + 7 CRM/ecom .cjs, 4 downloadable ZIPs)
 clients/ = 1,248 dirs (ALL test data) | website/ = 89 pages + locales (28.0k)
 
 ## Services (8 HTTP servers)
@@ -70,8 +70,9 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE — TaskRouter, parallel context, QualityGate v2 (synonym groups + injection detection + penalty recalibration), intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment.
 - **WhatsApp Inbound** (250.247): deriveTenantFromWhatsApp was UNDEFINED (production crash). Fixed: function + ClientRegistry.getTenantIdByWhatsAppNumberId(). Gemini TTS: preflight quota detection (4 false fails → 4 clean skips). asyncSearchHybrid: 0→7 tests.
 - **Satellite Audit** (250.242-245): Score 8→91/100. All critical blockers resolved. 4 satellites pre-provisioned.
-- **Plugin 1-Click** (250.250): 12 platform integrations (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM) + React/NPM + HTML = **83% CMS market** (W3Techs March 2026). Joomla (2.4%) and Drupal (1.8%) added this session.
+- **Plugin 1-Click** (250.250-251): 12 platform integrations + React/NPM + HTML = **83% CMS market** (W3Techs March 2026). 4 downloadable ZIPs (WordPress/PrestaShop/Joomla/Drupal). Dead download links fixed.
 - **SOTA Dashboards** (250.249-250): T1-T7 pipeline visualization in admin + client dashboards, engine-stats API, engine metrics per tenant.
+- **Unified Component Loader** (250.251): Two loaders merged into one. 19 app pages migrated. NLP Operator auto-injection bug fixed (checked nonexistent class).
 - **Next**: Fill STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on VPS → Create Stripe Products/Prices → First paying customer
 
-*Last update: 27/02/2026 — Session 250.250: Plugin 1-click 83% CMS market (Joomla+Drupal added), SOTA dashboards client+admin. 113 files, 6949/6949 pass, 0 fail, 4 skip.*
+*Last update: 27/02/2026 — Session 250.251: Unified component loader, 4 plugin ZIPs, 3 dead links fixed, NLP Operator bug fixed, test SOLO_FILES expanded. 113 files, 6949/6949 pass, 0 fail, 4 skip.*

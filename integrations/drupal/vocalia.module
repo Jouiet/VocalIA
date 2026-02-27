@@ -35,7 +35,6 @@ function vocalia_page_attachments(array &$attachments) {
   $files = [
     'ecommerce' => 'voice-widget-ecommerce.js',
     'b2b'       => 'voice-widget-b2b.js',
-    'standard'  => 'voice-widget.js',
   ];
   $file = $files[$widget_type] ?? $files['ecommerce'];
 

@@ -25,7 +25,6 @@ final class Vocalia extends CMSPlugin implements SubscriberInterface
     private const WIDGET_FILES = [
         'ecommerce' => 'voice-widget-ecommerce.js',
         'b2b'       => 'voice-widget-b2b.js',
-        'standard'  => 'voice-widget.js',
     ];
 
     public static function getSubscribedEvents(): array

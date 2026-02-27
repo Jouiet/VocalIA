@@ -2295,6 +2295,7 @@ function startServer(port = 3004) {
       const embedUrl = new URL(req.url, 'http://localhost');
       const tenantId = embedUrl.searchParams.get('tenantId');
       const platform = embedUrl.searchParams.get('platform') || 'html';
+      const widgetType = embedUrl.searchParams.get('widgetType') || 'b2b';
 
       if (!tenantId || !/^[a-z0-9_-]+$/i.test(tenantId)) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -2309,42 +2310,43 @@ function startServer(port = 3004) {
         return;
       }
 
+      const widgetFile = widgetType === 'ecommerce' ? 'voice-widget-ecommerce.js' : 'voice-widget-b2b.js';
       const baseUrl = 'https://api.vocalia.ma';
       const snippets = {
         html: {
-          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Collez ce code juste avant </body> dans votre page HTML.'
         },
         shopify: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Dans Shopify Admin : Online Store > Themes > Edit Code > layout/theme.liquid > collez avant </body>.'
         },
         wordpress: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA WordPress.'
         },
         react: {
-          snippet: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${baseUrl}/voice-assistant/voice-widget-v3.js';\n    script.defer = true;\n    script.dataset.vocaliaTenant = '${tenantId}';\n    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> dans votre layout`,
+          snippet: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${baseUrl}/voice-assistant/${widgetFile}';\n    script.defer = true;\n    script.dataset.vocaliaTenant = '${tenantId}';\n    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> dans votre layout`,
           instructions: 'Ajoutez le composant VocalIAWidget dans votre layout principal (App.jsx ou layout.tsx).'
         },
         wix: {
-          snippet: `<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
         },
         squarespace: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Squarespace : Settings > Advanced > Code Injection > Footer > collez le snippet.'
         },
         webflow: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'Webflow : Project Settings > Custom Code > Footer Code > collez et publiez.'
         },
         prestashop: {
-          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/voice-widget-v3.js" data-vocalia-tenant="${tenantId}" defer></script>`,
+          snippet: `<!-- VocalIA Widget -->\n<script src="${baseUrl}/voice-assistant/${widgetFile}" data-vocalia-tenant="${tenantId}" defer></script>`,
           instructions: 'PrestaShop : Modules > Module Manager > uploadez vocalia.zip, ou collez dans Design > Theme & Logo > footer.'
         },
         gtm: {
-          snippet: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${baseUrl}/voice-assistant/voice-widget-v3.js';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n</script>`,
+          snippet: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${baseUrl}/voice-assistant/${widgetFile}';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n</script>`,
           instructions: 'Google Tag Manager : Tags > New > Custom HTML > collez ce code > Trigger : All Pages > Submit.'
         }
       };

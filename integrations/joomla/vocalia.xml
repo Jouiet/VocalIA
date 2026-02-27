@@ -43,7 +43,7 @@
           type="text"
           label="Tenant ID"
           description="Your VocalIA Tenant ID from vocalia.ma dashboard → Settings."
-          filter="alnum"
+          filter="raw"
           required="true"
         />
         <field
@@ -53,7 +53,6 @@
           default="ecommerce">
           <option value="ecommerce">E-commerce</option>
           <option value="b2b">B2B / Service Business</option>
-          <option value="standard">Standard (General Purpose)</option>
         </field>
       </fieldset>
     </fields>

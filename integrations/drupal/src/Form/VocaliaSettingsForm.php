@@ -53,7 +53,6 @@ class VocaliaSettingsForm extends ConfigFormBase {
       '#options'       => [
         'ecommerce' => $this->t('E-commerce'),
         'b2b'       => $this->t('B2B / Service Business'),
-        'standard'  => $this->t('Standard (General Purpose)'),
       ],
       '#description' => $this->t('Choose the widget type that best fits your site.'),
     ];

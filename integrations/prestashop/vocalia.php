@@ -136,13 +136,24 @@ class Vocalia extends Module
         return $helper->generateForm([$fields_form]);
     }
 
+    private $widgetRendered = false;
+
     public function hookDisplayBeforeBodyClosingTag($params)
     {
-        return $this->renderWidget();
+        return $this->renderWidgetOnce();
     }
 
     public function hookDisplayFooter($params)
     {
+        return $this->renderWidgetOnce();
+    }
+
+    protected function renderWidgetOnce()
+    {
+        if ($this->widgetRendered) {
+            return '';
+        }
+        $this->widgetRendered = true;
         return $this->renderWidget();
     }
 

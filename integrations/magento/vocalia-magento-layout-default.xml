@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+  VocalIA Voice Assistant — Magento 2 Layout
+  Place at: app/code/VocalIA/VoiceAssistant/view/frontend/layout/default.xml
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="VocalIA\VoiceAssistant\Block\Widget"
+                   name="vocalia.voice.widget"
+                   template="VocalIA_VoiceAssistant::widget.phtml" />
+        </referenceContainer>
+    </body>
+</page>
