@@ -1,12 +1,14 @@
 # VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.236 (25/02/2026)
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.247 (27/02/2026)
 > **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
-> **Tests**: 6,474 pass, 0 fail, 0 cancelled (97 .mjs) | **Timeout**: 180s | **40 personas**
+> **Tests**: 6,949 pass, 0 fail, 4 skip (108 .mjs) | **Timeout**: 180s | **40 personas**
 > **250.233**: Promptfoo full coverage — 200/200 prompts, eval-all 1193/1210 PASS (98.6%), red team 40/40 personas 558/560 (99.6%). Anti-hallucination rule injected (199 SECURITY sections). Anthropic blocked ($0).
 > **250.234**: Deep Surgery Test Audit — +47 behavioral tests (B103-B110), B123 real bug found & fixed (voice-clone audit trail wrong API signature).
 > **250.235**: Mobile Optimization Forensic Audit — ALL 88 HTML pages audited, 33 files modified, CSS foundation (touch targets, iOS zoom, overflow, responsive padding/gaps/grids/tables), 5 CSS bugs self-caught & fixed. 833/833 tests pass.
 > **250.236**: Test Reliability + 38→40 Global Fix — B52 test timeouts resolved (3/4), STT test env-fix, validator 23/23 ✅ 0 errors (was 332), health-check 45/45 ✅ 100%, 30+ source files 38→40 corrected. 6474/6474 tests pass.
+> **250.245-246**: Perplexity Computer Patterns T1-T7 ALL DONE. TaskRouter, QualityGate, TokenBudget, ClientProfile, RAG multi-source enrichment.
+> **250.247**: Deep surgery — deriveTenantFromWhatsApp production CRASH fixed, QualityGate v2 (synonym groups + injection detection + penalty recalibration), E2E chain verification with real API calls (4/4 pass). 6949/6949 pass, 0 fail.
 
 ---
 

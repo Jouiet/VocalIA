@@ -146,6 +146,73 @@ describe('ClientRegistry getTenantIdByTwilioSid', () => {
   });
 });
 
+// ─── getTenantIdByWhatsAppNumberId ────────────────────────────────
+
+describe('ClientRegistry getTenantIdByWhatsAppNumberId', () => {
+  test('returns null for null phoneNumberId', () => {
+    const result = ClientRegistry.getTenantIdByWhatsAppNumberId(null);
+    assert.strictEqual(result, null);
+  });
+
+  test('returns null for undefined phoneNumberId', () => {
+    const result = ClientRegistry.getTenantIdByWhatsAppNumberId(undefined);
+    assert.strictEqual(result, null);
+  });
+
+  test('returns null for empty string', () => {
+    const result = ClientRegistry.getTenantIdByWhatsAppNumberId('');
+    assert.strictEqual(result, null);
+  });
+
+  test('returns null for unknown phoneNumberId', () => {
+    const result = ClientRegistry.getTenantIdByWhatsAppNumberId('999999999999');
+    assert.strictEqual(result, null);
+  });
+
+  test('scans all clients without error', () => {
+    // Verifies the function doesn't crash on real client data
+    // Even with 1000+ clients, it should complete without error
+    const result = ClientRegistry.getTenantIdByWhatsAppNumberId('test_nonexistent_12345');
+    assert.strictEqual(result, null);
+  });
+
+  test('matches client with whatsapp.phone_number_id in integration_configs', async () => {
+    // Prepare: write a temp config with whatsapp integration
+    const { default: fs } = await import('fs');
+    const { default: path } = await import('path');
+    const testTenantId = 'wa_test_' + Date.now();
+    const dir = path.join(process.cwd(), 'clients', testTenantId);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'config.json'), JSON.stringify({
+      tenant_id: testTenantId,
+      name: 'WhatsApp Test Tenant',
+      type: 'client',
+      integrations: {
+        whatsapp: {
+          enabled: true,
+          phone_number_id: 'WA_TEST_PHONE_12345'
+        }
+      }
+    }));
+
+    try {
+      ClientRegistry.clearCache();
+      const result = ClientRegistry.getTenantIdByWhatsAppNumberId('WA_TEST_PHONE_12345');
+      assert.strictEqual(result, testTenantId, 'Should match tenant by whatsapp phone_number_id');
+    } finally {
+      // Cleanup
+      fs.rmSync(dir, { recursive: true, force: true });
+      ClientRegistry.clearCache();
+    }
+  });
+
+  test('does NOT match client without whatsapp integration', () => {
+    // agency_internal has no whatsapp config
+    const result = ClientRegistry.getTenantIdByWhatsAppNumberId('12345');
+    assert.strictEqual(result, null);
+  });
+});
+
 // ─── Integration structure ─────────────────────────────────────────
 
 describe('ClientRegistry integration structure', () => {

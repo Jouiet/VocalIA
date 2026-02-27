@@ -1,8 +1,8 @@
-> **Date:** 2026-02-27 | **Session:** 250.246 (Perplexity Computer Patterns T1-T7 + Satellite Audit 91/100)
+> **Date:** 2026-02-27 | **Session:** 250.247 (Deep Surgery — QualityGate fix + WhatsApp production bug + E2E chain verification)
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 9.4/10 | **Security:** 9.5/10 | **Weighted:** 9.6/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional READY** (Webhook+Signature+Status Tracking). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **7,012 tests** (108 .mjs, 5 fail pre-existing external API, 0 skip). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-246): T1-T7 ALL DONE — TaskRouter, parallel context retrieval, QualityGate, intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment. **Satellite Audit** (250.242-245): Score 8→91/100. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **6,949 tests** (108 .mjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.246. Latest: **250.245-246** Perplexity Computer orchestration patterns (7 tasks). See `docs/PERPLEXITY-COMPUTER-ANALYSIS.md`.
+> **Source:** 60+ audit phases across sessions 250.105-250.247. Latest: **250.247** Deep surgery — production bug fix + QualityGate + E2E chain verification.
 
 ---
 
@@ -300,11 +300,11 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 7,012 tests | 7,007 pass | 5 fail (pre-existing: Gemini TTS quota + WhatsApp external API) | 0 cancelled | ALL ESM (.mjs)** (Verified 250.246 — 27/02/2026)
+**TOTAL: 6,949 tests | 6,945 pass | 0 fail | 4 skip (Gemini TTS quota) | 0 cancelled | ALL ESM (.mjs)** (Verified 250.247 — 27/02/2026)
 
-**Function coverage: 458/487 exported functions (94%)** — 0 CRITICAL gaps (verified by `scripts/coverage-audit.cjs`).
+**Function coverage: 462/491 exported functions (94%)** — 0 CRITICAL gaps (verified by `scripts/coverage-audit.cjs`).
 
-Test classification (verified empirically — 250.210b, test counts updated 250.231):
+Test classification (verified empirically — 250.210b, test counts updated 250.247):
 
 | Type | Files | Tests | % | Executes production code? |
 |:-----|:-----:|:-----:|:-:|:------------------------:|
@@ -316,8 +316,10 @@ Test classification (verified empirically — 250.210b, test counts updated 250.
 | HTTP_E2E | 6 | 382 | 6.3% | YES |
 | **Execute real code** | **66** | **3,849** | **63.7%** | — |
 
-108 test files (was 97 at 250.236; +11 since: Perplexity Computer patterns T1-T7 + B124-B129 regression + coverage audit). Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
-Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (**178** — +11 voice-clone E2E, 250.234), catalog-connector (164), elevenlabs-client (**81** — +30 behavioral, 250.234), context-box (**46** — +6, 250.234).
+108 test files. Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
+Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (**178** — +11 voice-clone E2E, 250.234), catalog-connector (164), elevenlabs-client (**81** — +30 behavioral, 250.234), context-box (**57** — +11 getClientProfile, 250.247), knowledge-base (**47** — +7 asyncSearchHybrid, 250.247), client-registry (**27** — +7 WhatsApp mapping, 250.247).
+
+**250.247 Changes**: QualityGate off_topic fix (synonym groups + injection detection), deriveTenantFromWhatsApp production bug fix, Gemini TTS preflight quota detection (4 false fails → 4 skips), asyncSearchHybrid tests (tenant isolation verified), getTenantIdByWhatsAppNumberId tests.
 
 ### 5.3 The 25 Function Tools
 

@@ -399,6 +399,125 @@ describe('ServiceKnowledgeBase.graphSearch()', () => {
   });
 });
 
+// ─── asyncSearchHybrid (Sparse path — no API key needed) ─────────────────────
+
+describe('ServiceKnowledgeBase.asyncSearchHybrid()', () => {
+  test('returns empty array when no chunks exist for tenant', async () => {
+    const kb = new ServiceKnowledgeBase();
+    // Manually set isLoaded with empty chunks
+    kb.isLoaded = true;
+    kb.chunks = [];
+    kb.index = new TFIDFIndex();
+    kb.index.build([]);
+
+    const results = await kb.asyncSearchHybrid('test query', 5, { tenantId: 'nonexistent' });
+    assert.ok(Array.isArray(results));
+    assert.strictEqual(results.length, 0);
+  });
+
+  test('finds tenant-specific chunks via BM25 sparse search', async () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.chunks = [
+      { id: 'c1', text: 'Widget vocal intelligent pour site web', tenant_id: 'tenant_a' },
+      { id: 'c2', text: 'Telephonie automatisée pour entreprises', tenant_id: 'tenant_a' },
+      { id: 'c3', text: 'Widget pour restaurant gastronomique', tenant_id: 'tenant_b' },
+      { id: 'c4', text: 'Documentation API universelle', tenant_id: 'shared' },
+    ];
+    kb.index = new TFIDFIndex();
+    kb.index.build(kb.chunks);
+
+    const results = await kb.asyncSearchHybrid('widget vocal', 5, { tenantId: 'tenant_a' });
+    assert.ok(results.length > 0, 'Should find at least one result');
+    // Should prioritize tenant_a or shared docs, not tenant_b
+    const ids = results.map(r => r.id);
+    assert.ok(!ids.includes('c3'), 'Should NOT include tenant_b chunks');
+  });
+
+  test('includes shared/universal chunks alongside tenant chunks', async () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.chunks = [
+      { id: 'c1', text: 'Widget documentation pour intégration API', tenant_id: 'tenant_x' },
+      { id: 'c2', text: 'Documentation API universelle pour développeurs', tenant_id: 'shared' },
+      { id: 'c3', text: 'Guide universal intégration widget', tenant_id: 'universal' },
+    ];
+    kb.index = new TFIDFIndex();
+    kb.index.build(kb.chunks);
+
+    const results = await kb.asyncSearchHybrid('documentation API', 5, { tenantId: 'tenant_x' });
+    assert.ok(results.length > 0);
+    // Should include shared and universal docs
+    const ids = results.map(r => r.id);
+    assert.ok(ids.includes('c2') || ids.includes('c3'), 'Should include shared/universal chunks');
+  });
+
+  test('results have rrfScore property', async () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.chunks = [
+      { id: 'c1', text: 'VocalIA service client automatisé', tenant_id: 'test_tenant' },
+    ];
+    kb.index = new TFIDFIndex();
+    kb.index.build(kb.chunks);
+
+    const results = await kb.asyncSearchHybrid('service client', 5, { tenantId: 'test_tenant' });
+    assert.ok(results.length > 0);
+    assert.ok(typeof results[0].rrfScore === 'number', 'Results should have rrfScore');
+    assert.ok(results[0].rrfScore > 0, 'rrfScore should be positive');
+  });
+
+  test('policy boost applied when query matches policy key', async () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.chunks = [
+      { id: 'policy_pricing', text: 'Pricing information for all plans', tenant_id: 'shared' },
+      { id: 'regular_doc', text: 'Pricing details for starter plan', tenant_id: 'shared' },
+    ];
+    kb.index = new TFIDFIndex();
+    kb.index.build(kb.chunks);
+
+    const results = await kb.asyncSearchHybrid('pricing', 5, { tenantId: 'shared' });
+    assert.ok(results.length > 0);
+    // Policy doc should get boosted
+    if (results.length >= 2) {
+      const policyResult = results.find(r => r.id === 'policy_pricing');
+      assert.ok(policyResult, 'Policy doc should be in results');
+      assert.ok(policyResult.rrfScore > 0, 'Policy should have positive score');
+    }
+  });
+
+  test('respects limit parameter', async () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.chunks = Array.from({ length: 20 }, (_, i) => ({
+      id: `doc_${i}`, text: `VocalIA widget vocal intelligent ${i}`, tenant_id: 'test_tenant'
+    }));
+    kb.index = new TFIDFIndex();
+    kb.index.build(kb.chunks);
+
+    const results = await kb.asyncSearchHybrid('widget vocal', 3, { tenantId: 'test_tenant' });
+    assert.ok(results.length <= 3, `Should respect limit=3, got ${results.length}`);
+  });
+
+  test('strict tenant isolation — no cross-tenant leakage', async () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.chunks = [
+      { id: 'secret_a', text: 'Confidential pricing for tenant alpha: 500 EUR per month', tenant_id: 'alpha' },
+      { id: 'secret_b', text: 'Confidential pricing for tenant beta: 200 EUR per month', tenant_id: 'beta' },
+      { id: 'public', text: 'Public pricing information available', tenant_id: 'shared' },
+    ];
+    kb.index = new TFIDFIndex();
+    kb.index.build(kb.chunks);
+
+    // Search as tenant beta — should NOT see alpha's data
+    const results = await kb.asyncSearchHybrid('pricing', 5, { tenantId: 'beta' });
+    const ids = results.map(r => r.id);
+    assert.ok(!ids.includes('secret_a'), 'Tenant beta must NOT see tenant alpha data');
+  });
+});
+
 // ─── BM25 parameters ────────────────────────────────────────────────────────
 
 describe('TFIDFIndex BM25 parameters', () => {

@@ -385,7 +385,7 @@ La relation est **complémentaire**. Les patterns d'orchestration intelligente d
 |:--|:------|:---------|:-------|:-------|:-----------------|:-------|
 | T1 | Routage dynamique par compétence | **CRITIQUE** | Qualité ++ | Moyen | `core/task-router.cjs` | **DONE** (250.245) |
 | T2 | Parallélisation des sous-tâches | **HAUTE** | Latence -53% | Faible | `core/voice-api-resilient.cjs` | **DONE** (250.245) |
-| T3 | Quality Gate post-réponse | **HAUTE** | Pertinence ++ | Moyen | `core/quality-gate.cjs` | **DONE** (250.245) |
+| T3 | Quality Gate post-réponse | **HAUTE** | Pertinence ++ | Moyen | `core/quality-gate.cjs` | **DONE** (250.245) + **v2 FIX** (250.247) — synonym groups, injection detection, penalty recalibrated |
 | T4 | Retry intelligent par type d'erreur | **HAUTE** | Fiabilité ++ | Faible | `core/voice-api-resilient.cjs` | **DONE** (250.245) |
 | T5 | Profil client évolutif enrichi | **MOYENNE** | Conversion ++ | Moyen | `core/ContextBox.cjs` | **DONE** (250.245) |
 | T6 | Token Budget Manager par tenant | **MOYENNE** | Coûts prévisibles | Moyen | `core/token-budget.cjs` | **DONE** (250.245) |
@@ -912,14 +912,30 @@ Phase 4 — Enrichissement (T7)           ✅ DONE (250.246)
 |:---------|:-------|:-------|
 | Latence moyenne Grok | ~800ms | `recordLatency()` production |
 | Latence moyenne Gemini | ~1200ms | `recordLatency()` production |
-| Fallback rate | Non mesuré | À instrumenter |
-| Taux de qualification leads | Non mesuré | À instrumenter |
-| Tokens/conversation moyenne | Non mesuré | T6 résoudra |
-| Tests | 7003+/7003+ pass | `npm test` |
+| Fallback rate | Mesuré via T4 intelligent retry | `voice-api-resilient.cjs:fallbacksUsed` |
+| Taux de qualification leads | Mesuré via T5 ClientProfile | `ContextBox.getClientProfile()` |
+| Tokens/conversation moyenne | Mesuré via T6 TokenBudget | `token-budget.cjs:getUsage()` |
+| Tests | 6,949 pass, 0 fail, 4 skip | `npm test` (250.247) |
 | Providers configurés | 4 (Grok, Gemini, Claude, Atlas) | `getProviderConfig()` |
 | Personas | 40 × 5 langues | `voice-persona-injector.cjs` |
 
 ---
 
-*Document généré le 27/02/2026 — Session 250.245*
+*Document généré le 27/02/2026 — Session 250.245, dernière MAJ 250.247*
 *Basé sur des données factuelles vérifiées. Les 12 modèles non identifiés de Perplexity Computer ne sont pas spéculés.*
+
+### D. Session 250.247 — E2E Verification & Bug Fixes
+
+| Correction | Impact | Fichier |
+|:-----------|:-------|:--------|
+| **deriveTenantFromWhatsApp JAMAIS DÉFINIE** — ReferenceError sur chaque message WhatsApp entrant | PRODUCTION CRASH | `telephony/voice-telephony-bridge.cjs` + `core/client-registry.cjs` |
+| **QualityGate off_topic faux positifs** — "budget → tarifs" flaggé off-topic (stop words FR manquants + pas de synonymes business) | QG rejetait des réponses correctes | `core/quality-gate.cjs` |
+| **QualityGate penalty insuffisant** — Réponse vraiment off-topic scorait 75/100 > seuil 60 → passait | QG laissait passer des non-sens | `core/quality-gate.cjs` (25→45) |
+| **QualityGate injection bypass** — Messages XSS sanitisés contenaient keywords non-pertinents → false off_topic | Cascade de fallback inutile | `core/quality-gate.cjs` |
+| **Gemini TTS tests false fails** — API key existe mais quota épuisé → 4 tests échouaient en permanence | 4 faux fails → 4 skips propres | `test/grok-voice-realtime.test.mjs` |
+
+**Verification E2E réelle** (4 appels API Grok/Gemini) :
+- QUALIFICATION (FR): score 100, provider Gemini (fallback Anthropic credit exhausted) ✅
+- CONVERSATION (FR): score 100, provider Grok (direct) ✅
+- SUPPORT (EN): score 100, provider Gemini ✅
+- RECOMMENDATION (FR): score 100, provider Gemini ✅

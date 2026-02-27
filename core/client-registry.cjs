@@ -207,6 +207,29 @@ class ClientRegistry {
     }
     return null;
   }
+
+  /**
+   * Find Tenant ID by WhatsApp Business phone_number_id (Reverse Lookup)
+   * Used by WhatsApp inbound webhook to route messages to the correct tenant.
+   * @param {string} phoneNumberId - Meta WhatsApp Business phone_number_id
+   * @returns {string|null} tenantId
+   */
+  static getTenantIdByWhatsAppNumberId(phoneNumberId) {
+    if (!phoneNumberId) return null;
+
+    const allClients = this.getAllClients();
+    for (const [tenantId, config] of Object.entries(allClients)) {
+      // Check nested integration config (whatsapp.phone_number_id)
+      if (config.integration_configs?.whatsapp?.phone_number_id === phoneNumberId) {
+        return tenantId;
+      }
+      // Check root level (defensive)
+      if (config.whatsapp_phone_number_id === phoneNumberId) {
+        return tenantId;
+      }
+    }
+    return null;
+  }
 }
 
 module.exports = ClientRegistry;

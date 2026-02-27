@@ -623,6 +623,7 @@ S14 (Widget 404 depuis VPS) ───── ✅ Dockerfile + voice-api widget se
 1. **CinematicAds Docker rebuild** : rebuild container sur VPS pour le CSP mis a jour (`docker compose down cinematicads-webapp && docker compose up -d cinematicads-webapp`)
 2. **Social proof** : vide car 0 trafic reel — se resoudra naturellement avec les premiers clients
 3. **Stripe** : configuration pour activer les paiements
+4. **WhatsApp inbound bug FIXE** (250.247) : `deriveTenantFromWhatsApp` n'etait JAMAIS definie — chaque message WhatsApp entrant causait un ReferenceError. Corrige : fonction ecrite + `getTenantIdByWhatsAppNumberId()` dans ClientRegistry. Verifie par tests (27/27 pass).
 
 ### Score mis a jour : 8/100 → 35/100 → 82/100 → 91/100
 

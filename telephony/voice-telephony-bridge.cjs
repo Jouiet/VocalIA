@@ -5239,6 +5239,31 @@ async function callAtlasChat(messages) {
 // ============================================
 
 // ============================================
+// WHATSAPP TENANT MAPPING
+// ============================================
+
+/**
+ * Derive tenant ID from WhatsApp Business phone_number_id.
+ * Checks ClientRegistry for a tenant with matching whatsapp.phone_number_id.
+ * Falls back to 'agency_internal' if no match found.
+ * @param {string} phoneNumberId - Meta WhatsApp Business phone_number_id
+ * @param {string} senderPhone - Sender's phone number (for logging)
+ * @returns {Promise<string>} tenantId
+ */
+async function deriveTenantFromWhatsApp(phoneNumberId, senderPhone) {
+  // 1. Try exact match by WhatsApp Business phone_number_id
+  const tenantId = ClientRegistry.getTenantIdByWhatsAppNumberId(phoneNumberId);
+  if (tenantId) {
+    console.log(`[WhatsApp] Tenant mapped: ${phoneNumberId} → ${tenantId}`);
+    return tenantId;
+  }
+
+  // 2. No match — fall back to agency_internal (same pattern as Twilio unmapped calls)
+  console.warn(`[WhatsApp] No tenant found for phone_number_id=${phoneNumberId}, sender=${senderPhone}. Using agency_internal.`);
+  return 'agency_internal';
+}
+
+// ============================================
 // WHATSAPP INBOUND LOGIC (SOTA Pattern #2)
 // ============================================
 async function handleInboundWhatsApp(body) {

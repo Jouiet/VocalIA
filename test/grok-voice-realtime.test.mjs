@@ -781,7 +781,28 @@ describe('Real Grok WebSocket connection', { skip: !process.env.XAI_API_KEY }, (
 // ─── Real Gemini TTS Fallback (requires GEMINI_API_KEY) ──────────────────────
 
 describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () => {
-  test('synthesize generates real audio from text', async () => {
+  // Pre-flight: detect quota exhaustion before running real API tests
+  let quotaAvailable = true;
+  let preflightError = null;
+
+  test('preflight: Gemini TTS API is reachable and has quota', async () => {
+    const tts = new GeminiTTSFallback({ voice: 'Kore' });
+    try {
+      const result = await tts.synthesize('Test.');
+      assert.ok(result.audio, 'Preflight audio should exist');
+    } catch (err) {
+      if (/quota|rate.limit|429|billing/i.test(err.message)) {
+        quotaAvailable = false;
+        preflightError = err.message;
+        console.warn(`[GeminiTTS] Quota exhausted — skipping real API tests: ${err.message}`);
+      } else {
+        throw err; // Real code bug — let it fail
+      }
+    }
+  });
+
+  test('synthesize generates real audio from text', { skip: false }, async (t) => {
+    if (!quotaAvailable) return t.skip(`Gemini quota exhausted: ${preflightError}`);
     const tts = new GeminiTTSFallback({ voice: 'Kore' });
 
     const result = await tts.synthesize('Bonjour, bienvenue chez VocalIA.');
@@ -801,7 +822,8 @@ describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () =
     console.log(`[GeminiTTS] Generated ${stats.totalAudioKB} KB audio, MIME: ${result.mimeType}`);
   });
 
-  test('synthesize in English works', async () => {
+  test('synthesize in English works', { skip: false }, async (t) => {
+    if (!quotaAvailable) return t.skip(`Gemini quota exhausted: ${preflightError}`);
     const tts = new GeminiTTSFallback({ voice: 'Puck' });
 
     const result = await tts.synthesize('Hello, welcome to VocalIA.');
@@ -810,13 +832,15 @@ describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () =
     assert.ok(result.audio.length > 100);
   });
 
-  test('healthCheck returns true when API is working', async () => {
+  test('healthCheck returns true when API is working', { skip: false }, async (t) => {
+    if (!quotaAvailable) return t.skip(`Gemini quota exhausted: ${preflightError}`);
     const tts = new GeminiTTSFallback({ voice: 'Kore' });
     const healthy = await tts.healthCheck();
     assert.strictEqual(healthy, true);
   });
 
-  test('stats accumulate across multiple calls', async () => {
+  test('stats accumulate across multiple calls', { skip: false }, async (t) => {
+    if (!quotaAvailable) return t.skip(`Gemini quota exhausted: ${preflightError}`);
     const tts = new GeminiTTSFallback({ voice: 'Zephyr' });
 
     await tts.synthesize('Première phrase.');
