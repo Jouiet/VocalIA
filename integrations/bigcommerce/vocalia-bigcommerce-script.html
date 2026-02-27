@@ -1,0 +1,39 @@
+<!--
+  VocalIA Voice Assistant — BigCommerce Integration
+  ==================================================
+  Version: 1.0.0
+
+  INSTALLATION:
+
+  METHOD 1 — Script Manager (recommended, zero code):
+  1. In BigCommerce Admin → Storefront → Script Manager
+  2. Click "Create a Script"
+  3. Settings:
+     - Name: VocalIA Voice Assistant
+     - Location: Footer
+     - Pages: All Pages (or select specific pages)
+     - Script Type: Script
+     - Script Category: Essential
+  4. Paste the script content below
+  5. Save
+
+  METHOD 2 — Theme Files (advanced):
+  1. Storefront → Themes → Current Theme → Advanced → Edit Theme Files
+  2. Open templates/layout/base.html
+  3. Before {{/partial}} at the end, add the script
+  4. Save and apply
+
+  WIDGET TYPES:
+  - voice-widget-ecommerce.js → recommended for BigCommerce stores
+  - voice-widget-b2b.js → for B2B/service sections
+
+  IMPORTANT: Add your BigCommerce domain to Allowed Origins in VocalIA dashboard.
+  Add BOTH your-store.mybigcommerce.com AND your custom domain.
+-->
+
+<!-- VocalIA Voice Assistant — BigCommerce -->
+<script
+  src="https://api.vocalia.ma/voice-assistant/voice-widget-ecommerce.js"
+  data-vocalia-tenant="YOUR_TENANT_ID"
+  defer>
+</script>

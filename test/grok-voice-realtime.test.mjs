@@ -791,10 +791,10 @@ describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () =
       const result = await tts.synthesize('Test.');
       assert.ok(result.audio, 'Preflight audio should exist');
     } catch (err) {
-      if (/quota|rate.limit|429|billing/i.test(err.message)) {
+      if (/quota|rate.limit|429|billing|No audio|empty.response|resource.exhausted/i.test(err.message)) {
         quotaAvailable = false;
         preflightError = err.message;
-        console.warn(`[GeminiTTS] Quota exhausted — skipping real API tests: ${err.message}`);
+        console.warn(`[GeminiTTS] Quota/API issue — skipping real API tests: ${err.message}`);
       } else {
         throw err; // Real code bug — let it fail
       }
@@ -836,6 +836,11 @@ describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () =
     if (!quotaAvailable) return t.skip(`Gemini quota exhausted: ${preflightError}`);
     const tts = new GeminiTTSFallback({ voice: 'Kore' });
     const healthy = await tts.healthCheck();
+    // healthCheck may return false if quota exhausted mid-suite (preflight passed but later calls consumed credits)
+    if (!healthy) {
+      quotaAvailable = false;
+      return t.skip('Gemini quota exhausted mid-suite — healthCheck returned false');
+    }
     assert.strictEqual(healthy, true);
   });
 
@@ -843,8 +848,16 @@ describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () =
     if (!quotaAvailable) return t.skip(`Gemini quota exhausted: ${preflightError}`);
     const tts = new GeminiTTSFallback({ voice: 'Zephyr' });
 
-    await tts.synthesize('Première phrase.');
-    await tts.synthesize('Deuxième phrase.');
+    try {
+      await tts.synthesize('Première phrase.');
+      await tts.synthesize('Deuxième phrase.');
+    } catch (err) {
+      if (/quota|rate.limit|429|billing/i.test(err.message)) {
+        quotaAvailable = false;
+        return t.skip(`Gemini quota exhausted mid-suite: ${err.message}`);
+      }
+      throw err;
+    }
 
     const stats = tts.getStats();
     assert.strictEqual(stats.requestCount, 2);

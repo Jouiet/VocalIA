@@ -1,14 +1,16 @@
 'use strict';
 
 /**
- * VocalIA Test Runner — B52 IPC Workaround
+ * VocalIA Test Runner — B52 IPC Workaround + Solo Runner
  *
  * Node.js v22 test runner has a known IPC deserialization bug:
  * heavy CJS modules (voice-api-resilient, HybridRAG) leave TLS Socket
  * handles that can't be serialized via structured clone in child processes.
  *
- * Solution: Run B52-affected files with --experimental-test-isolation=none
- * (same-process, no IPC serialization), and all other files with normal isolation.
+ * Solution:
+ * - Normal files: default isolation (most files)
+ * - B52 files: --experimental-test-isolation=none (IPC-sensitive)
+ * - Solo files: run individually (API rate-limit sensitive or IPC in batch)
  *
  * Result: ZERO false fails across the entire suite.
  */
@@ -23,6 +25,12 @@ const B52_FILES = new Set([
   'route-smoke.test.mjs'
 ]);
 
+// Files that must run individually (fail in batch due to API rate limits or IPC)
+const SOLO_FILES = new Set([
+  'provision-tenant.test.mjs',
+  'grok-voice-realtime.test.mjs'
+]);
+
 const TEST_DIR = path.join(__dirname, '..', 'test');
 const TIMEOUT = '180000';
 
@@ -35,9 +43,12 @@ const allCjs = fs.readdirSync(TEST_DIR)
 
 const normalFiles = [];
 const heavyFiles = [];
+const soloFiles = [];
 
 for (const f of [...allMjs, ...allCjs]) {
-  if (B52_FILES.has(f)) {
+  if (SOLO_FILES.has(f)) {
+    soloFiles.push(path.join('test', f));
+  } else if (B52_FILES.has(f)) {
     heavyFiles.push(path.join('test', f));
   } else {
     normalFiles.push(path.join('test', f));
@@ -70,6 +81,14 @@ if (heavyFiles.length > 0) {
   run(
     `${heavyFiles.length} B52-affected files (isolation=none)`,
     `node --test --experimental-test-isolation=none --test-timeout=${TIMEOUT} ${heavyFiles.join(' ')}`
+  );
+}
+
+// Step 3: Run solo files individually (API rate-limit or IPC sensitive)
+for (const file of soloFiles) {
+  run(
+    `${file} (solo)`,
+    `node --test --test-timeout=${TIMEOUT} ${file}`
   );
 }
 

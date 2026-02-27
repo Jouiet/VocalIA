@@ -159,7 +159,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Video Studio HITL | ✅ E2E verified (250.197-199). **Veo 3.1 FUNCTIONAL** (GCP ADC). Kling = external 500 (crédits). |
 | Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
 | Non-deployed servers (1) | MCP 3015 → docker-compose profile available but not activated |
-| Distribution platforms | 5 (npm, shopify, wordpress, wix, zapier) |
+| Distribution platforms | 12 (npm, shopify, wordpress, wix, squarespace, webflow, prestashop, magento, bigcommerce, opencart, zapier, gtm) |
 | CI/CD | ✅ Active (unit + exhaustive + i18n + coverage + tsc + Playwright) |
 | OpenAPI spec | ✅ 79 endpoints / 7 domains (auto-extracted 250.240, documented in `website/docs/api.html`) |
 

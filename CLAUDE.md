@@ -7,7 +7,7 @@
 ## Architecture
 
 core/ (58 modules, 38.0k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (11.0k, 7 files)
-mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (860) | integrations/ (2.3k)
+mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (860) | integrations/ (3.3k, 12 platforms)
 clients/ = 1,248 dirs (ALL test data) | website/ = 89 pages + locales (28.0k)
 
 ## Services (8 HTTP servers)

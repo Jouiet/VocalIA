@@ -6238,7 +6238,10 @@
     "wix_step3": "3. كولّي الكود > Publish",
     "sq_step1": "1. Settings > Code Injection",
     "sq_step2": "2. قسم Footer",
-    "sq_step3": "3. كولّي الكود > Save"
+    "sq_step3": "3. كولّي الكود > Save",
+    "mag_step1": "1. Magento: موديل ولا قالب",
+    "mag_step2": "2. BigCommerce: مدير السكريبت",
+    "mag_step3": "3. كولّي الكود > Save"
   },
   "roi": {
     "title": "حسب العائد ديالك",

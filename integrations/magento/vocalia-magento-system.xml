@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+  VocalIA Voice Assistant — Magento 2 System Configuration
+  Stores → Configuration → VocalIA → Voice Assistant
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="vocalia" translate="label" sortOrder="900">
+            <label>VocalIA</label>
+        </tab>
+        <section id="vocalia_voice" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Voice Assistant</label>
+            <tab>vocalia</tab>
+            <resource>VocalIA_VoiceAssistant::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Widget</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show the VocalIA voice assistant on your store.</comment>
+                </field>
+                <field id="tenant_id" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Tenant ID</label>
+                    <comment>Your VocalIA Tenant ID from vocalia.ma dashboard → Settings.</comment>
+                    <validate>validate-no-html-tags</validate>
+                </field>
+                <field id="widget_type" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Widget Type</label>
+                    <comment>E-commerce recommended for Magento stores.</comment>
+                    <source_model>VocalIA\VoiceAssistant\Model\Config\Source\WidgetType</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

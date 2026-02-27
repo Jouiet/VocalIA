@@ -163,6 +163,28 @@
             </a>
           </div>
 
+          <!-- Magento / BigCommerce -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-orange-600 dark:text-orange-400"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Magento / BigCommerce</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.guided">Guidé</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.mag_step1">1. Magento: Module ou template</li>
+              <li data-i18n="install_widget.mag_step2">2. BigCommerce: Script Manager</li>
+              <li data-i18n="install_widget.mag_step3">3. Collez le snippet &gt; Save</li>
+            </ol>
+            <a href="#snippet-section" data-platform-link="magento" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-medium rounded-lg transition-colors">
+              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+              <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
+            </a>
+          </div>
+
           <!-- Google Tag Manager -->
           <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
             <div class="flex items-center gap-3 mb-3">
@@ -204,6 +226,8 @@
           <button role="tab" aria-selected="false" data-platform="squarespace" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Squarespace</button>
           <button role="tab" aria-selected="false" data-platform="webflow" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Webflow</button>
           <button role="tab" aria-selected="false" data-platform="prestashop" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">PrestaShop</button>
+          <button role="tab" aria-selected="false" data-platform="magento" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Magento</button>
+          <button role="tab" aria-selected="false" data-platform="bigcommerce" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">BigCommerce</button>
           <button role="tab" aria-selected="false" data-platform="gtm" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">GTM</button>
         </div>
 
@@ -510,6 +534,14 @@
         prestashop: {
           code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
           instructions: 'PrestaShop : Modules > Module Manager > uploadez vocalia.zip. Ou collez dans Design > Theme & Logo > Advanced > footer.'
+        },
+        magento: {
+          code: `<!-- VocalIA Voice Widget (Magento 2) -->\n<!-- Add to: app/design/frontend/YOUR_THEME/default/Magento_Theme/templates/root.phtml before </body> -->\n<!-- Or use our Magento module: VocalIA_VoiceAssistant -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          instructions: 'Magento 2 : installez le module VocalIA_VoiceAssistant dans app/code/, ou ajoutez le snippet dans votre template root.phtml avant </body>.'
+        },
+        bigcommerce: {
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          instructions: 'BigCommerce : Storefront > Script Manager > Create a Script > Location: Footer > Pages: All Pages > collez le snippet.'
         },
         gtm: {
           code: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${API_BASE}/voice-assistant/${widgetFile}';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n<\/script>`,

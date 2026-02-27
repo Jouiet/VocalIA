@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+  VocalIA Voice Assistant — Magento 2 Module
+  ===========================================
+  Version: 1.0.0
+
+  INSTALLATION (Magento 2.4+):
+
+  METHOD 1 — Manual (recommended):
+  1. Create app/code/VocalIA/VoiceAssistant/
+  2. Copy all files from this module into that directory
+  3. Run: php bin/magento module:enable VocalIA_VoiceAssistant
+  4. Run: php bin/magento setup:upgrade
+  5. Run: php bin/magento cache:flush
+  6. Go to Stores → Configuration → VocalIA → Voice Assistant
+  7. Enter your Tenant ID and save
+
+  METHOD 2 — Composer (future):
+  composer require vocalia/magento2-voice-assistant
+  php bin/magento setup:upgrade
+
+  IMPORTANT: Add your Magento domain to Allowed Origins in VocalIA dashboard.
+-->
+
+<!-- module.xml — Registration -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="VocalIA_VoiceAssistant" setup_version="1.0.0">
+        <sequence>
+            <module name="Magento_Store"/>
+        </sequence>
+    </module>
+</config>
