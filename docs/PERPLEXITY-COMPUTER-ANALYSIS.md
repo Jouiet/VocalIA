@@ -822,31 +822,29 @@ module.exports = { TokenBudgetManager, PLAN_BUDGETS };
 **Implémentation** :
 
 1. **`voice-ecommerce-tools.cjs`** — Nouveau export `searchProductsForRAG(query, tenantId, options)` :
-   - Utilise le `CatalogConnector` existant (Shopify/WooCommerce/Custom)
-   - Retourne des snippets RAG-compatibles (`{id, text, rrfScore, source}`)
+   - Utilise le VRAI connecteur Shopify/WooCommerce quand les credentials API existent
+   - Fallback vers le JSON catalogue local quand pas de credentials
+   - Le champ `source` dans les résultats indique l'origine réelle : `shopify_live`, `woocommerce_live`, ou `catalog_local`
    - Non-bloquant : retourne `[]` en cas d'erreur
 
 2. **`voice-api-resilient.cjs`** — Intégré dans Phase 1 (Promise.all) :
-   - Détecte automatiquement si le tenant a des credentials e-commerce (`SHOPIFY_ACCESS_TOKEN` ou `WOOCOMMERCE_URL`)
+   - Passe les `tenantSecrets` (credentials) à la fonction pour qu'elle puisse choisir le bon connecteur
    - Exécute la recherche produit en parallèle avec RAG/TenantFacts/CRM
-   - Résultats mergés dans `ragContext` avec préfixe `LIVE_PRODUCT_DATA`
+   - Résultats mergés dans `ragContext` avec label indiquant la source réelle
 
 ```javascript
-// Phase 1: 4 operations parallèles (ajout du 4ème)
+// Phase 1: 4 operations parallèles
 const [ragRaw, tenantFactsRaw, crmRaw, liveProducts] = await Promise.all([
   // ... RAG, TenantFacts, CRM (existants) ...
-  hasEcomCreds ? ECOM_TOOLS.searchProductsForRAG(userMessage, tenantId, { limit: 3 }) : [],
+  hasEcomCreds ? ECOM_TOOLS.searchProductsForRAG(userMessage, tenantId, {
+    limit: 3, credentials: tenantSecrets
+  }) : [],
 ]);
-
-// Merge dans ragContext
-if (liveProducts.length > 0) {
-  ragContext += '\n\nLIVE_PRODUCT_DATA (real-time):\n' + liveProducts.map(p => `[LIVE: ${p.id}] ${p.text}`).join('\n');
-}
 ```
 
 **Tests** : 6 tests dans `test/voice-ecommerce-tools.test.mjs` (export, graceful failure, limit, RAG format)
 
-**Impact** : Réponses produit toujours à jour (prix, stock) au lieu de données KB potentiellement stale.
+**Limitation honnête** : Pour les tenants SANS credentials Shopify/WooCommerce, la recherche utilise le fichier JSON local (`data/catalogs/{tenantId}/products.json`). Les données ne sont fraîches que si le catalogue a été synchronisé récemment. Seuls les tenants avec credentials API obtiennent des données véritablement live.
 
 ---
 

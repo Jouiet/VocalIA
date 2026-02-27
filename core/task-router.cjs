@@ -26,12 +26,13 @@ const TASK_TYPES = {
 // ─────────────────────────────────────────────────────────────────────────────
 // ROUTING TABLE — optimal provider order per task type
 // ─────────────────────────────────────────────────────────────────────────────
-// Rationale:
-//   - CONVERSATION: Grok first (lowest latency for fluid chat)
-//   - QUALIFICATION: Anthropic first (best structured reasoning for BANT extraction)
-//   - RECOMMENDATION: Gemini first (best at data analysis, product matching)
-//   - SUPPORT: Gemini first (best at KB search, long context for troubleshooting)
-//   - DARIJA: Grok first (fast), then atlasChat (specialized Darija), then gemini
+// Rationale (heuristic — NOT benchmarked per provider on VocalIA data):
+//   - CONVERSATION: Grok first (lowest latency ~800ms for fluid chat)
+//   - QUALIFICATION: Anthropic first (structured output for BANT — ASSUMED, not measured)
+//   - RECOMMENDATION: Gemini first (long context for product data — ASSUMED, not measured)
+//   - SUPPORT: Gemini first (long context for KB troubleshooting — ASSUMED, not measured)
+//   - DARIJA: Grok first (fast), then atlasChat (specialized Darija model), then gemini
+// TODO: Validate routing with real A/B test data after first 100 paying conversations
 
 const ROUTING_TABLE = {
   [TASK_TYPES.CONVERSATION]:    ['grok', 'gemini', 'anthropic'],
@@ -46,7 +47,7 @@ const ROUTING_TABLE = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Precompiled patterns for performance (called on every request)
-const QUAL_PATTERN = /budget|prix|tarif|co[uû]t|combien|d[eé]lai|timeline|urgence|urgent|d[eé]cid|responsable|qui d[eé]cide|price|cost|how much|deadline|decision|when.*start|quand.*commencer|precio|cu[aá]nto|plazo|presupuesto|ميزاني|سعر|ثمن/i;
+const QUAL_PATTERN = /budget|prix|tarif|co[uû]t|combien|d[eé]lai|timeline|urgence|urgent|d[eé]cid|responsable|qui d[eé]cide|price|cost|how much|deadline|decision|when.*start|quand.*commencer|precio|cu[aá]nto|plazo|presupuesto|ميزاني|سعر|أسعار|ثمن|كم الثمن|بشحال/i;
 const REC_PATTERN = /recommand|suggest|propos|conseill|quoi (acheter|choisir)|quel.*(produit|service|plan|offre|formule)|meilleur.*(option|choix)|recommend|which.*plan|best.*option|قترح|شنو نشري|واش عندكم/i;
 const SUPPORT_PATTERN = /probl[eè]m|bug|erreur|marche pas|fonctionne pas|ne.*pas|aide|comment faire|help|issue|error|broken|not working|how to|can't|doesn't work|مشكل|ما خدامش/i;
 

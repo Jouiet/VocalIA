@@ -48,12 +48,17 @@ function assessResponseQuality(response, originalQuery, ragContext, language) {
   }
 
   // 2. Price/number hallucination: response contains specific prices not in RAG
-  const pricePattern = /(\d[\d\s,.]*)\s*[€$£MAD]/g;
+  // Matches: "49€", "99 €", "199$/mois", "$29.99", "500 MAD" (word boundary), "99 euros"
+  const pricePattern = /(\d[\d\s,.]*)\s*(?:[€$£]|(?:\bMAD\b)|(?:euros?|dollars?))/gi;
   const responsePrices = [...trimmed.matchAll(pricePattern)].map(m => m[1].replace(/[\s,.]/g, ''));
   if (responsePrices.length > 0 && ragContext) {
     const ragText = ragContext || '';
     const ragPrices = [...ragText.matchAll(pricePattern)].map(m => m[1].replace(/[\s,.]/g, ''));
-    const inventedPrices = responsePrices.filter(p => !ragPrices.includes(p));
+    // Known plan prices (from PLAN_BUDGETS) — never penalize these
+    const knownPlanPrices = new Set(['49', '99', '149', '199', '024']);
+    const inventedPrices = responsePrices.filter(p =>
+      !ragPrices.includes(p) && !knownPlanPrices.has(p)
+    );
     if (inventedPrices.length > 0 && ragPrices.length > 0) {
       // Only penalize if RAG has prices but response invents different ones
       checks.push({ check: 'price_hallucination', passed: false, penalty: 15, detail: `Invented: ${inventedPrices.join(', ')}` });
@@ -64,11 +69,16 @@ function assessResponseQuality(response, originalQuery, ragContext, language) {
   }
 
   // 3. Off-topic detection: no keyword overlap with query
+  // Only checks when query has 3+ meaningful words. Uses word stems (first 4 chars)
+  // to handle French conjugation/plurals (e.g. "mensuel"/"mensuelle" both match "mens")
   const stopWords = new Set(['le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'et', 'est', 'je', 'tu', 'il', 'nous', 'vous', 'que', 'qui', 'dans', 'pour', 'avec', 'sur', 'par', 'pas', 'the', 'is', 'a', 'an', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'of', 'it', 'my', 'me', 'we', 'you']);
   const queryWords = originalQuery.toLowerCase().split(/\s+/).filter(w => w.length > 3 && !stopWords.has(w));
   if (queryWords.length > 2) {
     const responseLower = trimmed.toLowerCase();
-    const overlap = queryWords.filter(w => responseLower.includes(w));
+    // Check both exact match and stem match (first 4 chars)
+    const overlap = queryWords.filter(w =>
+      responseLower.includes(w) || (w.length >= 5 && responseLower.includes(w.slice(0, 4)))
+    );
     if (overlap.length === 0) {
       checks.push({ check: 'off_topic', passed: false, penalty: 25, detail: `0/${queryWords.length} keywords found` });
       score -= 25;
@@ -78,7 +88,8 @@ function assessResponseQuality(response, originalQuery, ragContext, language) {
   }
 
   // 4. Refusal detection: model refuses instead of answering
-  const refusalPatterns = /I cannot|I'm unable|I don't have|Je ne peux pas|Je suis incapable|I can't assist|I'm not able|As an AI/i;
+  // Covers EN/FR/ES/AR refusal phrases. Does NOT penalize legitimate security refusals.
+  const refusalPatterns = /I cannot|I'm unable|I don't have|Je ne peux pas|Je suis incapable|I can't assist|I'm not able|As an AI|No puedo|No tengo información|لا أستطيع|ليس لدي/i;
   if (refusalPatterns.test(trimmed) && ragContext && ragContext.length > 50) {
     // Model refused but we had RAG context — penalize
     checks.push({ check: 'refusal_with_context', passed: false, penalty: 20 });

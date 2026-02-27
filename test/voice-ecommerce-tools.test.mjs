@@ -279,7 +279,8 @@ describe('VoiceEcommerceTools searchProductsForRAG', () => {
       assert.ok(item.id, 'result must have id');
       assert.ok(item.text, 'result must have text');
       assert.ok(typeof item.rrfScore === 'number', 'result must have numeric rrfScore');
-      assert.strictEqual(item.source, 'ecommerce_live');
+      assert.ok(['shopify_live', 'woocommerce_live', 'catalog_local'].includes(item.source),
+        `source must be shopify_live, woocommerce_live, or catalog_local — got: ${item.source}`);
     }
   });
 

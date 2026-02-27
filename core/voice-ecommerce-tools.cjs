@@ -430,21 +430,66 @@ module.exports = {
 
   /**
    * Search products and return RAG-compatible snippets (Session 250.246: T7)
-   * Used to enrich RAG context with live e-commerce data (price, stock, description)
-   * so AI responses contain up-to-date product information instead of stale KB data.
+   *
+   * Uses the REAL Shopify/WooCommerce connector when API credentials exist,
+   * falls back to local catalog JSON when no credentials are available.
+   * The source field in results indicates the actual data origin:
+   *   - 'shopify_live' / 'woocommerce_live' = real API call
+   *   - 'catalog_local' = local JSON file (data/catalogs/{tenantId}/products.json)
    *
    * @param {string} query - User's search query
    * @param {string} tenantId - Tenant identifier
    * @param {object} [options] - Search options
    * @param {number} [options.limit=3] - Max results
+   * @param {object} [options.credentials] - Tenant API credentials (from SecretVault)
    * @returns {Promise<Array<{id: string, text: string, rrfScore: number, source: string}>>}
    */
   searchProductsForRAG: async (query, tenantId, options = {}) => {
     const limit = options.limit || 3;
+    const creds = options.credentials || {};
     try {
-      const connector = await getConnector(tenantId);
-      const products = await connector.search(query, { limit });
+      let connector;
+      let source = 'catalog_local';
 
+      // Use REAL API connector when credentials exist
+      const shopifyStore = creds.SHOPIFY_STORE || creds.SHOPIFY_SHOP_NAME;
+      const shopifyToken = creds.SHOPIFY_ACCESS_TOKEN || creds.SHOPIFY_ADMIN_ACCESS_TOKEN;
+      const wooUrl = creds.WOOCOMMERCE_URL || creds.WOOCOMMERCE_STORE_URL;
+      const wooKey = creds.WOOCOMMERCE_CONSUMER_KEY;
+      const wooSecret = creds.WOOCOMMERCE_CONSUMER_SECRET;
+
+      if (shopifyStore && shopifyToken) {
+        connector = CatalogConnectorFactory.create(tenantId, {
+          source: 'shopify',
+          shop: shopifyStore.replace('.myshopify.com', ''),
+          accessToken: shopifyToken,
+        });
+        source = 'shopify_live';
+      } else if (wooUrl && wooKey && wooSecret) {
+        connector = CatalogConnectorFactory.create(tenantId, {
+          source: 'woocommerce',
+          storeUrl: wooUrl,
+          consumerKey: wooKey,
+          consumerSecret: wooSecret,
+        });
+        source = 'woocommerce_live';
+      } else {
+        // Fallback: local catalog JSON (no live API)
+        connector = await getConnector(tenantId);
+        source = 'catalog_local';
+      }
+
+      if (source !== 'catalog_local') {
+        const connected = await connector.connect();
+        if (!connected) {
+          // API connection failed — fallback to local
+          console.warn(`[VoiceEcom] ${source} connection failed for ${tenantId}, falling back to local catalog`);
+          connector = await getConnector(tenantId);
+          source = 'catalog_local';
+        }
+      }
+
+      const products = await connector.search(query, { limit });
       if (!products || products.length === 0) return [];
 
       return products.map(p => {
@@ -459,10 +504,10 @@ module.exports = {
         ].filter(Boolean).join(' — ');
 
         return {
-          id: `product_live_${p.id || p.name?.replace(/\s+/g, '_').slice(0, 30)}`,
+          id: `product_${source}_${p.id || p.name?.replace(/\s+/g, '_').slice(0, 30)}`,
           text,
           rrfScore: 0.5,
-          source: 'ecommerce_live',
+          source,
         };
       });
     } catch (e) {

@@ -1570,14 +1570,17 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
         return null;
       }
     })(),
-    // 4. Session 250.246: T7 — Live e-commerce product search (Perplexity multi-source pattern)
-    // Enriches RAG with real-time price/stock data from Shopify/WooCommerce
+    // 4. Session 250.246: T7 — E-commerce product search (Perplexity multi-source pattern)
+    // Uses REAL Shopify/WooCommerce API when credentials exist, else local catalog JSON
     (async () => {
       if (!hasEcomCreds || !tenantId) return [];
       try {
-        return await ECOM_TOOLS.searchProductsForRAG(userMessage, tenantId, { limit: 3 });
+        return await ECOM_TOOLS.searchProductsForRAG(userMessage, tenantId, {
+          limit: 3,
+          credentials: tenantSecrets,
+        });
       } catch (e) {
-        console.warn('[Voice API] Live product search failed:', e.message);
+        console.warn('[Voice API] Product search failed:', e.message);
         return [];
       }
     })(),
@@ -1592,12 +1595,15 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     ragContext = KB.formatForVoice(ragresults, language);
   }
 
-  // T7: Merge live e-commerce products into RAG context (real-time price/stock)
+  // T7: Merge e-commerce product data into RAG context
+  // Source depends on tenant credentials: shopify_live/woocommerce_live (API) or catalog_local (JSON)
   if (liveProducts.length > 0) {
-    const liveContext = liveProducts.map(p => `[LIVE: ${p.id}] ${p.text}`).join('\n');
+    const actualSource = liveProducts[0]?.source || 'unknown';
+    const sourceLabel = actualSource.includes('_live') ? 'live API' : 'local catalog';
+    const productContext = liveProducts.map(p => `[${p.source}: ${p.id}] ${p.text}`).join('\n');
     ragContext = ragContext
-      ? `${ragContext}\n\nLIVE_PRODUCT_DATA (real-time):\n${liveContext}`
-      : `LIVE_PRODUCT_DATA (real-time):\n${liveContext}`;
+      ? `${ragContext}\n\nPRODUCT_DATA (${sourceLabel}):\n${productContext}`
+      : `PRODUCT_DATA (${sourceLabel}):\n${productContext}`;
   }
 
   // 1.1 Relational Graph Context (sync — no await needed)
