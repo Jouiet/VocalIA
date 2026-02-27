@@ -274,6 +274,7 @@
           <button role="tab" aria-selected="false" data-platform="bigcommerce" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">BigCommerce</button>
           <button role="tab" aria-selected="false" data-platform="joomla" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Joomla</button>
           <button role="tab" aria-selected="false" data-platform="drupal" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">Drupal</button>
+          <button role="tab" aria-selected="false" data-platform="opencart" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">OpenCart</button>
           <button role="tab" aria-selected="false" data-platform="gtm" class="platform-tab px-4 py-2 rounded-lg text-sm font-medium bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-white/[0.1] transition-colors">GTM</button>
         </div>
 
@@ -596,6 +597,10 @@
         drupal: {
           code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
           instructions: 'Drupal : Copiez le dossier vocalia dans modules/custom/. Extend > VocalIA > Install. Configuration > VocalIA > Tenant ID > Save.'
+        },
+        opencart: {
+          code: `<!-- VocalIA Voice Widget (OpenCart) -->\n<!-- Upload vocalia module: catalog/controller/extension/module/vocalia.php -->\n<!-- Extensions > Modules > VocalIA > Install > Edit > Tenant ID -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          instructions: 'OpenCart 3.x : Upload le module dans catalog/controller/extension/module/. Extensions > Modules > VocalIA > Install > Edit > Tenant ID. OpenCart 4.x : Upload via Extensions > Installer (OCMOD zip).'
         },
         gtm: {
           code: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${API_BASE}/voice-assistant/${widgetFile}';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n<\/script>`,
