@@ -4343,6 +4343,18 @@
       "proactive": "Proactive Tasks",
       "scheduled": "Scheduled"
     },
+    "orchestration": {
+      "title": "Orchestration Pipeline",
+      "routing": "Dynamic routing by intent",
+      "token_budget": "Token Budget (this month)",
+      "quality_gate": "QualityGate v2",
+      "threshold": "Pass threshold",
+      "check_length": "Minimum length",
+      "check_hallucination": "Price anti-hallucination",
+      "check_topic": "Off-topic detection",
+      "check_injection": "Injection detection",
+      "check_lang": "Language verification"
+    },
     "latency_normal": "Normal",
     "latency_moderate": "Moderate",
     "latency_high": "High",

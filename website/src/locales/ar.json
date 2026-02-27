@@ -4343,6 +4343,18 @@
       "proactive": "مهام استباقية",
       "scheduled": "مجدولة"
     },
+    "orchestration": {
+      "title": "خط أنابيب التنسيق",
+      "routing": "التوجيه الديناميكي حسب النية",
+      "token_budget": "ميزانية الرموز (هذا الشهر)",
+      "quality_gate": "بوابة الجودة v2",
+      "threshold": "عتبة النجاح",
+      "check_length": "الحد الأدنى للطول",
+      "check_hallucination": "مكافحة هلوسة الأسعار",
+      "check_topic": "كشف خارج الموضوع",
+      "check_injection": "كشف الحقن",
+      "check_lang": "التحقق من اللغة"
+    },
     "latency_normal": "عادي",
     "latency_moderate": "متوسط",
     "latency_high": "مرتفع",

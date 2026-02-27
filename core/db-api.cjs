@@ -1225,11 +1225,49 @@ async function handleRequest(req, res) {
         }
       }
 
+      // Token Budget usage (T6 pattern)
+      let tokenBudget = {};
+      try {
+        const budgetManager = require('./token-budget.cjs');
+        tokenBudget = budgetManager.getAllUsage();
+      } catch { /* module may not be loaded */ }
+
+      // Aggregate token stats across tenants
+      let totalInputTokens = 0;
+      let totalOutputTokens = 0;
+      let totalApiCalls = 0;
+      for (const usage of Object.values(tokenBudget)) {
+        totalInputTokens += usage.inputTokens || 0;
+        totalOutputTokens += usage.outputTokens || 0;
+        totalApiCalls += usage.calls || 0;
+      }
+
+      // TaskRouter routing table (T1 pattern)
+      let routingTable = {};
+      try {
+        const { ROUTING_TABLE, TASK_TYPES } = require('./task-router.cjs');
+        routingTable = { types: Object.values(TASK_TYPES), table: ROUTING_TABLE };
+      } catch { /* module may not be loaded */ }
+
+      // QualityGate threshold (T2 pattern)
+      let qualityGateThreshold = 60;
+      try {
+        qualityGateThreshold = require('./quality-gate.cjs').SCORE_THRESHOLD || 60;
+      } catch { /* module may not be loaded */ }
+
       sendJson(res, 200, {
         memory_facts: memoryFacts,
         kb_enrichments: kbEnrichments,
         flywheel_cycles: flywheelCycles,
-        proactive_tasks: proactiveTasks
+        proactive_tasks: proactiveTasks,
+        token_budget: {
+          tenants_tracked: Object.keys(tokenBudget).length,
+          total_input_tokens: totalInputTokens,
+          total_output_tokens: totalOutputTokens,
+          total_api_calls: totalApiCalls,
+        },
+        task_router: routingTable,
+        quality_gate_threshold: qualityGateThreshold,
       });
     } catch (e) {
       console.error('❌ Engine stats error:', e.message);

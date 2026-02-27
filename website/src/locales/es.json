@@ -4343,6 +4343,18 @@
       "proactive": "Tareas Proactivas",
       "scheduled": "Programadas"
     },
+    "orchestration": {
+      "title": "Pipeline de Orquestación",
+      "routing": "Enrutamiento dinámico por intención",
+      "token_budget": "Presupuesto Tokens (este mes)",
+      "quality_gate": "QualityGate v2",
+      "threshold": "Umbral de aprobación",
+      "check_length": "Longitud mínima",
+      "check_hallucination": "Anti-alucinación de precios",
+      "check_topic": "Detección fuera de tema",
+      "check_injection": "Detección de inyección",
+      "check_lang": "Verificación de idioma"
+    },
     "latency_normal": "Normal",
     "latency_moderate": "Moderada",
     "latency_high": "Alta",

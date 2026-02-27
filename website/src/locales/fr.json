@@ -4343,6 +4343,18 @@
       "proactive": "Tâches Proactives",
       "scheduled": "Planifiées"
     },
+    "orchestration": {
+      "title": "Pipeline d'Orchestration",
+      "routing": "Routage dynamique par intention",
+      "token_budget": "Budget Tokens (ce mois)",
+      "quality_gate": "QualityGate v2",
+      "threshold": "Seuil de passage",
+      "check_length": "Longueur minimum",
+      "check_hallucination": "Anti-hallucination prix",
+      "check_topic": "Détection hors-sujet",
+      "check_injection": "Détection injection",
+      "check_lang": "Vérification langue"
+    },
     "latency_normal": "Normal",
     "latency_moderate": "Modéré",
     "latency_high": "Élevé",
