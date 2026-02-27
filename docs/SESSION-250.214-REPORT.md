@@ -9,6 +9,7 @@
 > **250.236**: Test Reliability + 38→40 Global Fix — B52 test timeouts resolved (3/4), STT test env-fix, validator 23/23 ✅ 0 errors (was 332), health-check 45/45 ✅ 100%, 30+ source files 38→40 corrected. 6474/6474 tests pass.
 > **250.245-246**: Perplexity Computer Patterns T1-T7 ALL DONE. TaskRouter, QualityGate, TokenBudget, ClientProfile, RAG multi-source enrichment.
 > **250.247**: Deep surgery — deriveTenantFromWhatsApp production CRASH fixed, QualityGate v2 (synonym groups + injection detection + penalty recalibration), E2E chain verification with real API calls (4/4 pass). 6949/6949 pass, 0 fail.
+> **250.249-250**: SOTA Engine dashboards — T1-T7 orchestration pipeline in admin, engine metrics (providers/quality/latency/tokens) in client, engine-stats API extended, i18n 5 locales. Data-driven dashboards reflecting SOTA capabilities.
 
 ---
 
