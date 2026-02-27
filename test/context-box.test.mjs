@@ -534,6 +534,178 @@ describe('ContextBox getWithPrediction', () => {
   });
 });
 
+// ─── getClientProfile (T5 — Session 250.246: was ZERO test calls) ─────────────
+
+describe('ContextBox getClientProfile', () => {
+  test('returns null for null tenantId', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.getClientProfile(null, 'client@test.com');
+    assert.strictEqual(result, null);
+    cleanup(tmpDir);
+  });
+
+  test('returns null for null clientId', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.getClientProfile('tenant_1', null);
+    assert.strictEqual(result, null);
+    cleanup(tmpDir);
+  });
+
+  test('returns null for both null', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.getClientProfile(null, null);
+    assert.strictEqual(result, null);
+    cleanup(tmpDir);
+  });
+
+  test('returns profile structure for new client (no prior data)', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.getClientProfile('tenant_x', 'new@client.com');
+    assert.ok(result, 'should return a profile object');
+    assert.strictEqual(result.clientId, 'new@client.com');
+    assert.strictEqual(result.tenantId, 'tenant_x');
+    assert.strictEqual(typeof result.totalConversations, 'number');
+    assert.strictEqual(typeof result.leadScore, 'number');
+    assert.ok(Array.isArray(result.productsInterested));
+    assert.ok(Array.isArray(result.objectionsRaised));
+    assert.ok(Array.isArray(result.objectives));
+    assert.ok(['monitor', 'relance_whatsapp', 'relance_email', 'nurturing'].includes(result.recommendedAction));
+    cleanup(tmpDir);
+  });
+
+  test('returns profile with session data when client has context', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Simulate a returning client with known facts
+    box.set('returning@client.com', {
+      pillars: {
+        qualification: { score: 75 },
+        keyFacts: [
+          { type: 'budget', value: '500€' },
+          { type: 'product_interest', value: 'Plan Pro' },
+          { type: 'objection', value: 'trop cher' },
+          { type: 'objective', value: 'automatiser le support' },
+        ],
+        history: [
+          { event: 'session_end', timestamp: new Date(Date.now() - 86400000 * 3).toISOString() },
+        ],
+      }
+    });
+
+    const result = await box.getClientProfile('tenant_y', 'returning@client.com');
+    assert.ok(result, 'should return profile');
+    assert.strictEqual(result.clientId, 'returning@client.com');
+    assert.strictEqual(result.knownBudget, '500€');
+    assert.ok(result.productsInterested.includes('Plan Pro'));
+    assert.ok(result.objectionsRaised.includes('trop cher'));
+    assert.ok(result.objectives.includes('automatiser le support'));
+    assert.strictEqual(result.leadScore, 75);
+    cleanup(tmpDir);
+  });
+
+  test('recommendedAction is relance_whatsapp for hot lead not seen recently', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Hot lead (score >= 70) last seen 5 days ago
+    box.set('hot@lead.com', {
+      pillars: {
+        qualification: { score: 80 },
+        keyFacts: [],
+        history: [
+          { event: 'session_end', timestamp: new Date(Date.now() - 86400000 * 5).toISOString() },
+        ],
+      }
+    });
+
+    const result = await box.getClientProfile('tenant_z', 'hot@lead.com');
+    assert.strictEqual(result.recommendedAction, 'relance_whatsapp');
+    cleanup(tmpDir);
+  });
+
+  test('recommendedAction is relance_email for warm lead not seen in a week+', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Warm lead (score >= 40) last seen 10 days ago
+    box.set('warm@lead.com', {
+      pillars: {
+        qualification: { score: 50 },
+        keyFacts: [],
+        history: [
+          { event: 'session_end', timestamp: new Date(Date.now() - 86400000 * 10).toISOString() },
+        ],
+      }
+    });
+
+    const result = await box.getClientProfile('tenant_z', 'warm@lead.com');
+    assert.strictEqual(result.recommendedAction, 'relance_email');
+    cleanup(tmpDir);
+  });
+
+  test('recommendedAction is nurturing for low-score returning client', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Low score (< 40) but multiple conversations
+    box.set('cold@lead.com', {
+      pillars: {
+        qualification: { score: 20 },
+        keyFacts: [],
+        history: [
+          { event: 'session_end', timestamp: new Date().toISOString() },
+          { event: 'session_end', timestamp: new Date().toISOString() },
+        ],
+      }
+    });
+
+    const result = await box.getClientProfile('tenant_z', 'cold@lead.com');
+    assert.strictEqual(result.recommendedAction, 'nurturing');
+    cleanup(tmpDir);
+  });
+
+  test('recommendedAction is monitor for fresh client', async () => {
+    const { box, tmpDir } = createTestBox();
+    const result = await box.getClientProfile('tenant_z', 'fresh@client.com');
+    assert.strictEqual(result.recommendedAction, 'monitor');
+    cleanup(tmpDir);
+  });
+
+  test('deduplicates productsInterested', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    box.set('dedup@client.com', {
+      pillars: {
+        qualification: {},
+        keyFacts: [
+          { type: 'product_interest', value: 'Widget Premium' },
+          { type: 'product_interest', value: 'Widget Premium' },
+          { type: 'product', value: 'Widget Premium' },
+        ],
+        history: [],
+      }
+    });
+
+    const result = await box.getClientProfile('tenant_z', 'dedup@client.com');
+    assert.strictEqual(result.productsInterested.length, 1);
+    assert.strictEqual(result.productsInterested[0], 'Widget Premium');
+    cleanup(tmpDir);
+  });
+
+  test('never throws — gracefully handles missing tenantMemory data', async () => {
+    const { box, tmpDir } = createTestBox();
+
+    // Spy on tenantMemory.getFacts to force an error
+    const origGetFacts = box.tenantMemory.getFacts;
+    box.tenantMemory.getFacts = async () => { throw new Error('DB unavailable'); };
+
+    // Should NOT throw — graceful degradation
+    const result = await box.getClientProfile('tenant_broken', 'any@client.com');
+    assert.ok(result, 'should return profile even when tenantMemory fails');
+    assert.strictEqual(result.clientId, 'any@client.com');
+
+    box.tenantMemory.getFacts = origGetFacts;
+    cleanup(tmpDir);
+  });
+});
+
 // ─── B110: getTenantFacts + promoteFact chain ────────────────────────────────
 
 describe('ContextBox getTenantFacts + promoteFact (B110)', () => {

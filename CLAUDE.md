@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~88k lines | 7,012 tests (108 .mjs, 0 skip, 5 fail pre-existing external API)
+> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~88k lines | 7,034+ tests (113 .mjs, 0 skip, 4 fail pre-existing external API)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 40 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -55,7 +55,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - Architecture: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md` (8 services, ports, data layer, AI providers)
 - Roadmap: `docs/ROADMAP-TO-COMPLETION.md` (500+ bugs tracker, 71 phases, fix history)
 - Business: `docs/BUSINESS-INTELLIGENCE.md` (costs, pricing, competitive analysis, GA4)
-- Tests: `docs/TEST-COVERAGE-AUDIT.md` (7,012 tests, 458/487 functions tested, 0 CRITICAL gaps)
+- Tests: `docs/TEST-COVERAGE-AUDIT.md` (7,034+ tests, 462/491 functions tested, 0 CRITICAL gaps)
 - Client Implementation: `docs/AUDIT-IMPLEMENTATION-CLIENT.md` (gaps G1-G24, score 93/100)
 - Strategy: `docs/SESSION-250.214-REPORT.md` (ROI calc, KB score, speed metrics, Expert Clone)
 - Perplexity: `docs/PERPLEXITY-COMPUTER-ANALYSIS.md` (T1-T7 patterns, comparison, all DONE)
@@ -66,9 +66,9 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - 529+ bugs fixed across 79 phases, 8 not fixable locally. **B52 RESOLVED** via test-runner.cjs (isolation=none for heavy files).
 - 7 containers LIVE + DEPLOYED, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
 - **Promptfoo** (250.233): 200/200 prompts (100%), eval-all 98.6%, red team 40/40 (99.6%), anti-hallucination 199 SECURITY sections.
-- **Coverage Audit** (250.241): 458/487 functions tested (94%), 0 CRITICAL gaps. 108 test files, 7012 tests.
+- **Coverage Audit** (250.241→246): 462/491 functions tested (94%), 0 CRITICAL gaps. 113 test files, 7034+ tests.
 - **Perplexity Computer Patterns** (250.245-246): T1-T7 ALL DONE — TaskRouter, parallel context retrieval (~53% latency reduction), QualityGate, intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment.
 - **Satellite Audit** (250.242-245): Score 8→91/100. All critical blockers resolved. 4 satellites pre-provisioned.
 - **Next**: Fill STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on VPS → Create Stripe Products/Prices → First paying customer
 
-*Last update: 27/02/2026 — Session 250.246: Perplexity Computer T1-T7 complete. 108 test files, 7012 tests.*
+*Last update: 27/02/2026 — Session 250.246: getClientProfile 0→coverage, T1-T7 integration chain tests, 113 files, 7034+ tests.*
