@@ -62,7 +62,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State (concise — detail in auto memory)
 
-- **Code**: 9.9/10 | **Production**: 9.4/10 | **Security**: 9.5/10 | **Weighted**: 9.6/10
+- **Code**: 9.9/10 | **Production**: 4.0/10 | **Revenue Readiness**: 1.5/10 | **Security**: 9.5/10
 - 543+ bugs fixed across 83 phases, 8 not fixable locally. **B52 RESOLVED** via test-runner.cjs (isolation=none for heavy files).
 - 7 containers LIVE + DEPLOYED, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
 - **Promptfoo** (250.233): 200/200 prompts (100%), eval-all 98.6%, red team 40/40 (99.6%), anti-hallucination 199 SECURITY sections.
@@ -75,6 +75,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Plugin 1-Click** (250.250-253): 12 CMS dirs (2 full PHP plugins with PHPUnit: WP 266L + PS 182L, 4 untested PHP modules: Joomla/Drupal/Magento/OpenCart, 6 HTML/Liquid/JS snippets: Shopify/BigC/Wix/Squarespace/Webflow/GTM). 7 CRM/ecom .cjs backends (2,275L). 4 downloadable ZIPs (WP 4.4KB, PS 2.1KB, Joomla 2.6KB, Drupal 4.7KB). ZIP bloat fix: excluded vendor/tests/composer (WP was 16MB). 0 real CMS installations.
 - **SOTA Dashboards** (250.249-250): T1-T7 pipeline visualization in admin + client dashboards, engine-stats API, engine metrics per tenant.
 - **Unified Component Loader** (250.251): Two loaders merged into one. 19 app pages migrated. NLP Operator auto-injection bug fixed (checked nonexistent class).
-- **Next**: Fill STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on VPS → Create Stripe Products/Prices → First paying customer
+- **Revenue Path Audit** (250.254b): FATAL — Register/Login = 500 on VPS (GoogleSheetsDB OAuth expired), Stripe prices = PLACEHOLDER, STRIPE_SECRET_KEY missing, no Stripe webhook receiver, WebSocket 3007 unreachable, new tenant quota = 0. Revenue readiness: 1.5/10.
+- **Next (CRITICAL PATH)**: 1) SSH VPS → refresh Google OAuth tokens 2) Create Stripe Products/Prices 3) Set STRIPE_SECRET_KEY on VPS 4) Write Stripe webhook receiver 5) Fix default tenant quota 6) First paying customer
 
-*Last update: 28/02/2026 — Session 250.254: Audit findings fix (design tokens 0 errors, token logging, cache-bust, S1/S2/S3 satellite URLs), CDN URL fix (api.vocalia.ma→vocalia.ma across all 6 CMS plugins+snippets), client folder cleanup (5643→528), http-utils tests (19), PHPUnit 4 CMS modules (54: Joomla 14+Drupal 13+Magento 14+OpenCart 13), E2E test scaffold, .htaccess voice-assistant whitelist. 131 files, ~7,400+ pass, 0 fail, 4 skip.*
+*Last update: 01/03/2026 — Session 250.254b: 3 code bugs fixed (kb-parser delimiter, cost-tracking array corruption, token-budget race condition), 76 test fixes, B52 solo isolation fix. Revenue path audit: Register=500 (OAuth expired), Stripe=PLACEHOLDER, WebSocket=unreachable. Revenue readiness 1.5/10. 131 files, ~7,400+ pass, 0 code fail, 4 skip.*
