@@ -12,6 +12,7 @@
 > **250.249-250**: SOTA Engine dashboards — T1-T7 orchestration pipeline in admin, engine metrics (providers/quality/latency/tokens) in client, engine-stats API extended, i18n 5 locales. Data-driven dashboards reflecting SOTA capabilities.
 > **250.251**: Unified component loader (19 pages migrated), 4 plugin ZIPs (WP/PS/Joomla/Drupal), 3 dead download links fixed, NLP Operator bug fixed, 13 plugin bugs (B1-B13) forensic audit.
 > **250.252**: Cross-system bug audit — 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). c8 coverage root cause identified: node:test child processes break V8 tracking. cov-runner.cjs workaround. 14 new test files (+~450 tests). test-runner.cjs Step 4 added.
+> **250.253**: Maturity audit factuel — PHPUnit WP (25 tests) + PS (25 tests), plugin ZIP distribution fixee (4 archives, bloat vendor/ exclu: WP 16MB→4.4KB). Plugin audit: 12 CMS integrations (2 avec tests PHP, 4 modules PHP sans tests, 6 snippets <50L). Dashboard visual polish (gradient mesh, ambient glow, skeleton states). Readiness score 35%→48%. 0 installation CMS reelle.
 
 ---
 

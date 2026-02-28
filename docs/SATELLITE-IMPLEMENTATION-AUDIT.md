@@ -7,6 +7,7 @@
 > **Scope** : 5 plateformes satellites (3A Automation, Henderson, Alpha-Medical, CinematicAds, MyDealz)
 > **Principe** : Chaque claim est accompagnee de sa commande de verification. Aucune supposition.
 > **250.252** : WebhookRouter.cjs hardcoded localhost:3004 FIXE → utilise VOCALIA_API_URL env var (impacte le routing webhook en production pour les satellites). EventBus payload envelope mismatch FIXE (5 subscribe handlers). Doit etre deploye (git push + restart containers).
+> **250.253** : Plugin distribution corrigee — ZIP bloat fix (WP 16MB→4.4KB, PS 1.4MB→2.1KB, excluait vendor/tests). Maturity audit: WP+PS a 40% (P1+P2), systeme global 65%. Dashboard visual polish deploye. Aucune installation reelle sur satellite — Henderson/Alpha-Medical (Shopify) utilisent snippet Liquid, 3A (Hostinger) utilise snippet HTML. Pas de plugin PHP necessaire pour les satellites.
 
 ---
 

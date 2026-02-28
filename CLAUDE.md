@@ -72,9 +72,9 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE — TaskRouter, parallel context, QualityGate v2 (synonym groups + injection detection + penalty recalibration), intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment.
 - **WhatsApp Inbound** (250.247): deriveTenantFromWhatsApp was UNDEFINED (production crash). Fixed: function + ClientRegistry.getTenantIdByWhatsAppNumberId(). Gemini TTS: preflight quota detection (4 false fails → 4 clean skips). asyncSearchHybrid: 0→7 tests.
 - **Satellite Audit** (250.242-245): Score 8→91/100. All critical blockers resolved. 4 satellites pre-provisioned.
-- **Plugin 1-Click** (250.250-251): 12 platform integrations + React/NPM + HTML = **83% CMS market** (W3Techs March 2026). 4 downloadable ZIPs (WordPress/PrestaShop/Joomla/Drupal). Dead download links fixed.
+- **Plugin 1-Click** (250.250-253): 12 CMS dirs (2 full PHP plugins with PHPUnit: WP 266L + PS 182L, 4 untested PHP modules: Joomla/Drupal/Magento/OpenCart, 6 HTML/Liquid/JS snippets: Shopify/BigC/Wix/Squarespace/Webflow/GTM). 7 CRM/ecom .cjs backends (2,275L). 4 downloadable ZIPs (WP 4.4KB, PS 2.1KB, Joomla 2.6KB, Drupal 4.7KB). ZIP bloat fix: excluded vendor/tests/composer (WP was 16MB). 0 real CMS installations.
 - **SOTA Dashboards** (250.249-250): T1-T7 pipeline visualization in admin + client dashboards, engine-stats API, engine metrics per tenant.
 - **Unified Component Loader** (250.251): Two loaders merged into one. 19 app pages migrated. NLP Operator auto-injection bug fixed (checked nonexistent class).
 - **Next**: Fill STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on VPS → Create Stripe Products/Prices → First paying customer
 
-*Last update: 28/02/2026 — Session 250.252: Cross-system bug audit (6 bugs fixed), c8 coverage architecture (cov-runner.cjs workaround), 14 new test files. 122 files, ~7,400+/~7,400+ pass, 0 fail, 4 skip.*
+*Last update: 28/02/2026 — Session 250.253: Maturity audit (readiness 35%→48%), PHPUnit PHP tests (50: WP 25 + PS 25), ZIP distribution fix (bloat: WP 16MB→4.4KB), dashboard visual polish (gradient mesh, ambient glow, skeleton states), plugin audit (12 dirs factual state), 6 docs updated. 122 files, ~7,400+ pass, 0 fail, 4 skip.*

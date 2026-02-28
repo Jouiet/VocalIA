@@ -43,6 +43,7 @@
 
 3. **Plugin ZIPs distribués** — 4 archives build automatique
    - `scripts/build-plugin-zips.cjs` — WordPress (4.4 KB), PrestaShop (2.1 KB), Joomla (2.6 KB), Drupal (4.7 KB)
+   - **BUG CORRIGÉ (250.253b)** : ZIPs incluaient `vendor/` + `tests/` + `composer.lock` (WP=16MB, PS=1.4MB). Fix: exclusions ajoutées dans zip command. Résultat: WP=4.4KB (readme.txt + .php), PS=2.1KB (.php seul).
    - Endpoint: `GET /api/plugins/download/:platform` (wordpress|prestashop|joomla|drupal)
    - Endpoint: `GET /api/plugins` (liste les plugins disponibles)
 

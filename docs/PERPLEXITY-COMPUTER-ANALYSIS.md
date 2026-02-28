@@ -1,6 +1,7 @@
 # Perplexity Computer — Analyse Technique & Business + Plan d'Action VocalIA
 
-> Document de référence factuel | 28/02/2026 (MAJ 250.252) | Sources: blog officiel, docs Perplexity, Fortune, Heise, reviews indépendantes
+> Document de référence factuel | 28/02/2026 (MAJ 250.253) | Sources: blog officiel, docs Perplexity, Fortune, Heise, reviews indépendantes
+> **250.253** : Plugin audit factuel — 12 integrations CMS (2 plugins PHP testés, 4 modules PHP sans tests, 6 snippets HTML <50L). ZIP bloat fixé (WP 16MB→4.4KB, PS 1.4MB→2.1KB). Dashboard visual polish (gradient mesh, ambient glow, skeleton states). Readiness 35%→48%.
 > Objectif: Comprendre l'architecture de Perplexity Computer et extraire les patterns applicables à VocalIA
 
 ---

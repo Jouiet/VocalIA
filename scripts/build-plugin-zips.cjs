@@ -87,7 +87,7 @@ function buildZip(name, config) {
   }
 
   try {
-    execSync(`cd "${parentDir}" && zip -r "${zipPath}" "${zipTarget}" -x "*.DS_Store" -x "__MACOSX/*"`, {
+    execSync(`cd "${parentDir}" && zip -r "${zipPath}" "${zipTarget}" -x "*.DS_Store" -x "__MACOSX/*" -x "*/vendor/*" -x "*/tests/*" -x "*/composer.lock" -x "*/phpunit.xml" -x "*/composer.json" -x "*/.phpunit.result.cache"`, {
       stdio: 'pipe'
     });
   } finally {
