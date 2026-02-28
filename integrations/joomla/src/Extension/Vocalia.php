@@ -20,7 +20,7 @@ use Joomla\Event\SubscriberInterface;
 
 final class Vocalia extends CMSPlugin implements SubscriberInterface
 {
-    private const CDN_BASE = 'https://api.vocalia.ma/voice-assistant';
+    private const CDN_BASE = 'https://vocalia.ma/voice-assistant';
 
     private const WIDGET_FILES = [
         'ecommerce' => 'voice-widget-ecommerce.js',

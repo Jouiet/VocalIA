@@ -55,31 +55,35 @@ describe('Lead Velocity Sensor', () => {
       assert.equal(leadSensor.calculatePressure(undefined), 90);
     });
 
-    it('returns 90 for < 2 recent leads (CRITICAL)', () => {
+    it('returns 86 for 1 recent lead (continuous formula)', () => {
       const leads = [{ timestamp: new Date().toISOString() }];
-      assert.equal(leadSensor.calculatePressure(leads), 90);
+      // Formula: max(10, round(90 - count*4)) → 90-4=86
+      assert.equal(leadSensor.calculatePressure(leads), 86);
     });
 
-    it('returns 75 for 2-4 recent leads (HIGH)', () => {
+    it('returns 78 for 3 recent leads (continuous formula)', () => {
       const now = new Date();
       const leads = [
         { timestamp: now.toISOString() },
         { timestamp: now.toISOString() },
         { timestamp: now.toISOString() }
       ];
-      assert.equal(leadSensor.calculatePressure(leads), 75);
+      // Formula: 90-12=78
+      assert.equal(leadSensor.calculatePressure(leads), 78);
     });
 
-    it('returns 40 for 5-9 recent leads (NEUTRAL)', () => {
+    it('returns 62 for 7 recent leads (continuous formula)', () => {
       const now = new Date();
       const leads = Array.from({ length: 7 }, () => ({ timestamp: now.toISOString() }));
-      assert.equal(leadSensor.calculatePressure(leads), 40);
+      // Formula: 90-28=62
+      assert.equal(leadSensor.calculatePressure(leads), 62);
     });
 
-    it('returns 10 for >= 10 recent leads (LOW)', () => {
+    it('returns 42 for 12 recent leads (continuous formula)', () => {
       const now = new Date();
       const leads = Array.from({ length: 12 }, () => ({ timestamp: now.toISOString() }));
-      assert.equal(leadSensor.calculatePressure(leads), 10);
+      // Formula: 90-48=42
+      assert.equal(leadSensor.calculatePressure(leads), 42);
     });
 
     it('ignores old leads (>24h)', () => {
@@ -97,14 +101,14 @@ describe('Lead Velocity Sensor', () => {
         { timestamp: now }, { timestamp: now }, { timestamp: now },
         { timestamp: old }, { timestamp: old }, { timestamp: old }
       ];
-      // 6 recent leads → 40 (neutral)
-      assert.equal(leadSensor.calculatePressure(leads), 40);
+      // 6 recent leads → max(10, 90-24) = 66
+      assert.equal(leadSensor.calculatePressure(leads), 66);
     });
 
     it('handles leads without timestamp (defaults to now)', () => {
       const leads = Array.from({ length: 15 }, () => ({}));
-      // No timestamp defaults to now → all recent → 10 pressure
-      assert.equal(leadSensor.calculatePressure(leads), 10);
+      // No timestamp defaults to now → 15 recent → max(10, 90-60) = 30
+      assert.equal(leadSensor.calculatePressure(leads), 30);
     });
   });
 

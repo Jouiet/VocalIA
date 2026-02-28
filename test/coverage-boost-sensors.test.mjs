@@ -38,33 +38,37 @@ describe('LeadVelocitySensor', () => {
     assert.strictEqual(calculatePressure(null), 90);
   });
 
-  test('calculatePressure with <2 recent leads returns 90', () => {
+  test('calculatePressure with 1 recent lead returns 86 (continuous)', () => {
     const leads = [{ timestamp: new Date().toISOString() }];
-    assert.strictEqual(calculatePressure(leads), 90);
+    // Formula: max(10, round(90 - count*4)) → 86
+    assert.strictEqual(calculatePressure(leads), 86);
   });
 
-  test('calculatePressure with 3 recent leads returns 75', () => {
+  test('calculatePressure with 3 recent leads returns 78 (continuous)', () => {
     const now = new Date();
     const leads = Array.from({ length: 3 }, (_, i) => ({
       timestamp: new Date(now.getTime() - i * 1000).toISOString()
     }));
-    assert.strictEqual(calculatePressure(leads), 75);
+    // Formula: 90-12=78
+    assert.strictEqual(calculatePressure(leads), 78);
   });
 
-  test('calculatePressure with 7 recent leads returns 40', () => {
+  test('calculatePressure with 7 recent leads returns 62 (continuous)', () => {
     const now = new Date();
     const leads = Array.from({ length: 7 }, (_, i) => ({
       timestamp: new Date(now.getTime() - i * 1000).toISOString()
     }));
-    assert.strictEqual(calculatePressure(leads), 40);
+    // Formula: 90-28=62
+    assert.strictEqual(calculatePressure(leads), 62);
   });
 
-  test('calculatePressure with 15 recent leads returns 10', () => {
+  test('calculatePressure with 15 recent leads returns 30 (continuous)', () => {
     const now = new Date();
     const leads = Array.from({ length: 15 }, (_, i) => ({
       timestamp: new Date(now.getTime() - i * 1000).toISOString()
     }));
-    assert.strictEqual(calculatePressure(leads), 10);
+    // Formula: max(10, 90-60)=30
+    assert.strictEqual(calculatePressure(leads), 30);
   });
 
   test('calculatePressure ignores old leads', () => {
@@ -464,8 +468,8 @@ describe('RAGDiagnostics coverage boost', () => {
 describe('KlingService coverage boost', () => {
   const klingService = require('../core/kling-service.cjs');
 
-  test('queueAdVideo creates HITL item', () => {
-    const item = klingService.queueAdVideo('Test video for VocalIA coverage', {
+  test('queueAdVideo creates HITL item', async () => {
+    const item = await klingService.queueAdVideo('Test video for VocalIA coverage', {
       language: 'fr',
       requestedBy: 'coverage-test',
       duration: 5,
@@ -488,8 +492,8 @@ describe('KlingService coverage boost', () => {
 describe('VeoService coverage boost', () => {
   const veoService = require('../core/veo-service.cjs');
 
-  test('queueAdVideo creates HITL item', () => {
-    const item = veoService.queueAdVideo('Test Veo video for coverage', {
+  test('queueAdVideo creates HITL item', async () => {
+    const item = await veoService.queueAdVideo('Test Veo video for coverage', {
       language: 'en',
       requestedBy: 'coverage-test',
       aspectRatio: '16:9',

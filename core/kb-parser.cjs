@@ -176,7 +176,7 @@ class KBParser {
   /**
    * Parse a single CSV line handling quotes
    */
-  parseCSVLine(line, delimiter) {
+  parseCSVLine(line, delimiter = ',') {
     const result = [];
     let current = '';
     let inQuotes = false;

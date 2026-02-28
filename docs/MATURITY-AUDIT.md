@@ -69,9 +69,15 @@
 |:-------|:-------:|:--------:|:-----------:|:-------:|:---------------:|:---------:|
 | **WooCommerce** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
 | **PrestaShop** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
+| **Joomla** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
+| **Drupal** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
+| **Magento** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
+| **OpenCart** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
 | **Système Global** | 20% ✅ | 20% ✅ | 10% ⚠️ | 15% ⚠️ | 0% ❌ | **65%** |
 
 **Moyenne pondérée après: ~48%** (+13 points)
+
+> *Session 250.254*: 4 CMS modules (Joomla/Drupal/Magento/OpenCart) passent P1→P2 avec PHPUnit (54 tests: 14+13+14+13). CDN URL fix api.vocalia.ma→vocalia.ma dans les 6 plugins. Satellite S1/S2/S3 re-verified. Client folders cleanup (5643→528). http-utils tests (19). Design token validator 0 errors.
 
 ---
 

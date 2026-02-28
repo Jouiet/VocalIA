@@ -266,7 +266,7 @@ async function main() {
     case '--health':
       console.log('✅ Stitch API wrapper ready (MCP Protocol)');
       const token = getAccessToken();
-      console.log(`   Token: ${token.substring(0, 20)}...`);
+      console.log(`   Token: ${token ? '✅ configured (hidden)' : '❌ missing'}`);
       console.log(`   Endpoint: https://${BASE_URL}${MCP_PATH}`);
       console.log(`   Quota Project: ${QUOTA_PROJECT}`);
       break;

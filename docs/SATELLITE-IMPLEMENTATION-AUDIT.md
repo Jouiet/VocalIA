@@ -427,6 +427,8 @@ Meme si le signup etait repare :
 ```
 Egalement corrige dans : `onboarding.html`, `distribution/npm/`, `distribution/wix/`, `distribution/shopify/`, `distribution/wordpress/`
 
+**Session 250.254** : CDN URL `api.vocalia.ma` → `vocalia.ma` corrige dans les 6 plugins CMS (WP, PS, Joomla, Drupal, Magento, OpenCart) + tests PHPUnit associes. `.htaccess` voice-assistant/ avec Require all granted pour les widgets JS.
+
 #### Fix S2 — Nom widget dynamique ✅ DONE
 
 Ajout de `getWidgetFilename()` dans `install-widget.html` — retourne `voice-widget-b2b.js` ou `voice-widget-ecommerce.js` selon la config.

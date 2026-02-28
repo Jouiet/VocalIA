@@ -43,7 +43,7 @@ function vocalia_page_attachments(array &$attachments) {
       '#type'       => 'html_tag',
       '#tag'        => 'script',
       '#attributes' => [
-        'src'                  => 'https://api.vocalia.ma/voice-assistant/' . $file,
+        'src'                  => 'https://vocalia.ma/voice-assistant/' . $file,
         'data-vocalia-tenant'  => $tenant_id,
         'defer'                => TRUE,
       ],

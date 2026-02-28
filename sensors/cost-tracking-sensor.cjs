@@ -104,7 +104,10 @@ async function getAnthropicUsage(apiKey) {
 function loadLocalCostLog() {
     try {
         if (fs.existsSync(COST_LOG_PATH)) {
-            return JSON.parse(fs.readFileSync(COST_LOG_PATH, 'utf8'));
+            const data = JSON.parse(fs.readFileSync(COST_LOG_PATH, 'utf8'));
+            if (data && typeof data === 'object' && !Array.isArray(data) && 'totalThisMonth' in data) {
+                return data;
+            }
         }
     } catch (e) {
         console.error(`Failed to load cost log: ${e.message}`);
@@ -171,7 +174,10 @@ function updateGPM(pressure, costs, costLog) {
     }
 
     const previousPressure = gpm.sectors?.finance?.api_costs?.pressure;
-    const monthlyEstimate = estimateMonthlyCost(costLog);
+    const safeCostLog = costLog && typeof costLog.totalThisMonth === 'number'
+      ? costLog
+      : { totalThisMonth: 0, entries: [], lastUpdated: new Date().toISOString() };
+    const monthlyEstimate = estimateMonthlyCost(safeCostLog);
 
     gpm.sectors = gpm.sectors || {};
     gpm.sectors.finance = gpm.sectors.finance || {};

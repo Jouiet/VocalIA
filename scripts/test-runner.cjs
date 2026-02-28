@@ -105,9 +105,12 @@ if (heavyFiles.length > 0) {
 
 // Step 3: Run solo files individually (API rate-limit or IPC sensitive)
 for (const file of soloFiles) {
+  const basename = path.basename(file);
+  const needsNoIsolation = B52_FILES.has(basename);
+  const isolationFlag = needsNoIsolation ? ' --experimental-test-isolation=none' : '';
   run(
-    `${file} (solo)`,
-    `node --test --test-timeout=${TIMEOUT} ${file}`
+    `${file} (solo${needsNoIsolation ? '+isolation=none' : ''})`,
+    `node --test${isolationFlag} --test-timeout=${TIMEOUT} ${file}`
   );
 }
 

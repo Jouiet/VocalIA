@@ -1,0 +1,15 @@
+# Voice Assistant widgets — publicly accessible
+# These JS files are embedded on external client websites via <script> tags.
+# They MUST be accessible without authentication (CORS + public).
+
+<IfModule mod_authz_core.c>
+  Require all granted
+</IfModule>
+
+# CORS: widgets are loaded cross-origin from client domains
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|min\.js)$">
+    Header set Access-Control-Allow-Origin "*"
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+</IfModule>

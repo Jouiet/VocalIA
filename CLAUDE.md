@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~92k lines | ~7,400+ tests (122 files: 120 .mjs + 2 .cjs, 0 fail, 4 skip Gemini TTS quota)
+> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~92k lines | ~7,400+ tests (131 files: 122 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 40 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -48,7 +48,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **i18n**: 5 langs. Geo-detect: MA→FR+MAD, EU→FR+EUR, Other→EN+USD
 - **Fallback**: Dynamic TaskRouter (250.245): classifies task → routes to optimal provider. Default: grok → gemini → anthropic → atlas. WhatsApp inbound: deriveTenantFromWhatsApp → ClientRegistry reverse lookup.
 - **Pricing**: Starter 49€ | Pro 99€ | E-commerce 99€ | Expert Clone 149€ | Telephony 199€ + 0.24€/min. No Free Tier, 14-day trial.
-- **Multi-Tenant**: 26 registered (22 test + 4 satellites, 0 paying) | 1,248 client folders = test data | 40 personas × 5 langs
+- **Multi-Tenant**: 26 registered (22 test + 4 satellites, 0 paying) | 528 client folders (b2b/b2c/ecom/satellite test data) | 40 personas × 5 langs
 
 ## Key Docs (read with Read tool ONLY when needed — NOT auto-loaded)
 
@@ -66,7 +66,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - 543+ bugs fixed across 83 phases, 8 not fixable locally. **B52 RESOLVED** via test-runner.cjs (isolation=none for heavy files).
 - 7 containers LIVE + DEPLOYED, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
 - **Promptfoo** (250.233): 200/200 prompts (100%), eval-all 98.6%, red team 40/40 (99.6%), anti-hallucination 199 SECURITY sections.
-- **Coverage Audit** (250.241→252): 462/491 functions tested (94%), 0 CRITICAL gaps. 122 test files, ~7,400+ tests.
+- **Coverage Audit** (250.241→254): 462/491 functions tested (94%), 0 CRITICAL gaps. 131 test files, ~7,400+ tests.
 - **Cross-system Bug Audit** (250.252): 6 bugs found+fixed — EventBus .emit→.publish, payload envelope mismatch (5 subscribers), hardcoded localhost in WebhookRouter, missing await stripeService, sync-to-3a process.exit guard. Regression tests: regression-bug-audit-248.test.mjs (15 tests).
 - **c8 Coverage Architecture** (250.252): ROOT CAUSE — c8 cannot track V8 coverage through node:test child processes. WORKAROUND: cov-runner.cjs (direct function calls). test-runner.cjs Step 4 auto-runs cov-*.cjs runners. Coverage push in progress (76 files below 88% threshold).
 - **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE — TaskRouter, parallel context, QualityGate v2 (synonym groups + injection detection + penalty recalibration), intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment.
@@ -77,4 +77,4 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Unified Component Loader** (250.251): Two loaders merged into one. 19 app pages migrated. NLP Operator auto-injection bug fixed (checked nonexistent class).
 - **Next**: Fill STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on VPS → Create Stripe Products/Prices → First paying customer
 
-*Last update: 28/02/2026 — Session 250.253: Maturity audit (readiness 35%→48%), PHPUnit PHP tests (50: WP 25 + PS 25), ZIP distribution fix (bloat: WP 16MB→4.4KB), dashboard visual polish (gradient mesh, ambient glow, skeleton states), plugin audit (12 dirs factual state), 6 docs updated. 122 files, ~7,400+ pass, 0 fail, 4 skip.*
+*Last update: 28/02/2026 — Session 250.254: Audit findings fix (design tokens 0 errors, token logging, cache-bust, S1/S2/S3 satellite URLs), CDN URL fix (api.vocalia.ma→vocalia.ma across all 6 CMS plugins+snippets), client folder cleanup (5643→528), http-utils tests (19), PHPUnit 4 CMS modules (54: Joomla 14+Drupal 13+Magento 14+OpenCart 13), E2E test scaffold, .htaccess voice-assistant whitelist. 131 files, ~7,400+ pass, 0 fail, 4 skip.*

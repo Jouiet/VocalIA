@@ -34,7 +34,7 @@ class Widget extends Template
     const XML_PATH_ENABLED = 'vocalia_voice/general/enabled';
     const XML_PATH_TENANT_ID = 'vocalia_voice/general/tenant_id';
     const XML_PATH_WIDGET_TYPE = 'vocalia_voice/general/widget_type';
-    const CDN_BASE = 'https://api.vocalia.ma/voice-assistant';
+    const CDN_BASE = 'https://vocalia.ma/voice-assistant';
 
     /**
      * @var ScopeConfigInterface

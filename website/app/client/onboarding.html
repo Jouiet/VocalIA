@@ -379,7 +379,7 @@
     const tid = auth.getTenantId();
     const snippetContainer = document.getElementById('onboarding-snippet')?.closest('.bg-white, .dark\\:bg-white\\/\\[0\\.06\\]') || document.getElementById('onboarding-snippet')?.parentElement?.parentElement;
     if (tid) {
-      const snippet = `<script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js" data-vocalia-tenant="${tid}" defer><\/script>`;
+      const snippet = `<script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="${tid}" defer><\/script>`;
       const pre = document.getElementById('onboarding-snippet');
       if (pre) pre.textContent = snippet;
     } else {

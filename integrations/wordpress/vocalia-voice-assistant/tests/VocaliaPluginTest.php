@@ -32,7 +32,7 @@ class VocaliaPluginTest extends TestCase
         $this->assertTrue(defined('VOCALIA_VERSION'));
         $this->assertEquals('1.0.0', VOCALIA_VERSION);
         $this->assertTrue(defined('VOCALIA_CDN_BASE'));
-        $this->assertEquals('https://api.vocalia.ma/voice-assistant', VOCALIA_CDN_BASE);
+        $this->assertEquals('https://vocalia.ma/voice-assistant', VOCALIA_CDN_BASE);
         $this->assertTrue(defined('VOCALIA_PLUGIN_DIR'));
     }
 
@@ -164,7 +164,7 @@ class VocaliaPluginTest extends TestCase
         vocalia_enqueue_widget();
 
         $script = $GLOBALS['wp_scripts']['vocalia-widget'];
-        $this->assertStringStartsWith('https://api.vocalia.ma/voice-assistant/', $script['src']);
+        $this->assertStringStartsWith('https://vocalia.ma/voice-assistant/', $script['src']);
     }
 
     public function testWidgetFilteredOnFrontPageOnly()

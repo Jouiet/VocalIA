@@ -41,7 +41,7 @@ class ControllerExtensionModuleVocalia extends Controller
             ? 'voice-widget-ecommerce.js'
             : 'voice-widget-b2b.js';
 
-        $url = 'https://api.vocalia.ma/voice-assistant/' . $file;
+        $url = 'https://vocalia.ma/voice-assistant/' . $file;
 
         $data = [
             'widget_url' => $url,

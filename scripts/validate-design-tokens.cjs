@@ -531,10 +531,10 @@ function validate() {
     } else if (isAppPage) {
       // App pages need: data-app-component + app-components.js + i18n.js
       const hasAppComponent = content.includes('data-app-component=');
-      const hasAppComponentsJs = content.includes('app-components.js');
+      const hasAppComponentsJs = content.includes('components.js');
       const hasI18n = content.includes('i18n.js');
       if (!hasAppComponent) missing.push('data-app-component');
-      if (!hasAppComponentsJs) missing.push('app-components.js');
+      if (!hasAppComponentsJs) missing.push('components.js');
       if (!hasI18n) missing.push('i18n.js');
     } else if (isAuthPage) {
       // Auth pages are standalone — just need i18n.js

@@ -166,7 +166,8 @@ class TokenBudgetManager {
         fs.mkdirSync(this._dataDir, { recursive: true });
       }
       const filePath = path.join(this._dataDir, `${safeId}.json`);
-      fs.writeFile(filePath, JSON.stringify(this._usage[safeId], null, 2), () => {});
+      const content = JSON.stringify(this._usage[safeId], null, 2);
+      fs.writeFileSync(filePath, content);
     } catch (e) {
       // Non-blocking — persistence failure is not critical
     }

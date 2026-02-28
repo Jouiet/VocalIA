@@ -173,7 +173,7 @@ class Vocalia extends Module
             ? 'voice-widget-ecommerce.js'
             : 'voice-widget-b2b.js';
 
-        $url = 'https://api.vocalia.ma/voice-assistant/' . $file;
+        $url = 'https://vocalia.ma/voice-assistant/' . $file;
 
         return '<script src="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8')
             . '" data-vocalia-tenant="' . htmlspecialchars($tenantId, ENT_QUOTES, 'UTF-8')

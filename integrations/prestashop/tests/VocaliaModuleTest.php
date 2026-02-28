@@ -185,7 +185,7 @@ class VocaliaModuleTest extends TestCase
         $this->assertStringContainsString('<script', $output);
         $this->assertStringContainsString('data-vocalia-tenant="test_tenant"', $output);
         $this->assertStringContainsString('voice-widget-ecommerce.js', $output);
-        $this->assertStringContainsString('api.vocalia.ma', $output);
+        $this->assertStringContainsString('vocalia.ma', $output);
     }
 
     public function testWidgetRendersB2bType()
@@ -271,7 +271,7 @@ class VocaliaModuleTest extends TestCase
 
         $output = $this->module->hookDisplayBeforeBodyClosingTag([]);
 
-        $this->assertStringContainsString('https://api.vocalia.ma', $output);
+        $this->assertStringContainsString('https://vocalia.ma', $output);
         $this->assertStringNotContainsString('http://', $output);
     }
 }

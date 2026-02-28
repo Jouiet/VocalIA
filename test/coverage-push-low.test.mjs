@@ -975,28 +975,31 @@ describe('Sensors — deep uncovered paths', () => {
       assert.equal(sensor.calculatePressure([]), 90);
     });
 
-    test('calculatePressure with 10+ recent leads = 10 (low)', () => {
+    test('calculatePressure with 12 recent leads = 42', () => {
       const now = new Date();
       const leads = Array.from({ length: 12 }, (_, i) => ({
         timestamp: new Date(now - i * 3600000).toISOString()
       }));
-      assert.equal(sensor.calculatePressure(leads), 10);
+      // Continuous formula: max(10, round(90 - count*4)) = max(10, 90-48) = 42
+      assert.equal(sensor.calculatePressure(leads), 42);
     });
 
-    test('calculatePressure with 3 recent leads = 75', () => {
+    test('calculatePressure with 3 recent leads = 78', () => {
       const now = new Date();
       const leads = Array.from({ length: 3 }, (_, i) => ({
         timestamp: new Date(now - i * 3600000).toISOString()
       }));
-      assert.equal(sensor.calculatePressure(leads), 75);
+      // max(10, round(90 - 3*4)) = 78
+      assert.equal(sensor.calculatePressure(leads), 78);
     });
 
-    test('calculatePressure with 7 recent leads = 40 (neutral)', () => {
+    test('calculatePressure with 7 recent leads = 62', () => {
       const now = new Date();
       const leads = Array.from({ length: 7 }, (_, i) => ({
         timestamp: new Date(now - i * 3600000).toISOString()
       }));
-      assert.equal(sensor.calculatePressure(leads), 40);
+      // max(10, round(90 - 7*4)) = 62
+      assert.equal(sensor.calculatePressure(leads), 62);
     });
 
     test('calculatePressure with old leads (>24h) = 90', () => {
