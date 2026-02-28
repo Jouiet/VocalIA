@@ -25,16 +25,12 @@ function calculatePressure(leads) {
         return arrival >= twentyFourHoursAgo;
     });
 
-    const leadCount = recentLeads.length;
+    const count = recentLeads.length;
+    if (count === 0) return 90;
 
-    // Pressure Logic: 
-    // < 2 leads/day = CRITICAL PRESSURE (90)
-    // < 5 leads/day = HIGH PRESSURE (75)
-    // > 10 leads/day = LOW PRESSURE (10)
-    if (leadCount < 2) return 90;
-    if (leadCount < 5) return 75;
-    if (leadCount >= 10) return 10;
-    return 40; // Neutral
+    // Continuous formula: 90 at 0, ~10 at 20+, smooth linear decay
+    // 0→90, 1→86, 2→82, 5→70, 10→50, 15→30, 20→10
+    return Math.max(10, Math.round(90 - (count * 4)));
 }
 
 function updateGPM(pressure, count) {
@@ -50,9 +46,10 @@ function updateGPM(pressure, count) {
 
     gpm.sectors = gpm.sectors || {};
     gpm.sectors.sales = gpm.sectors.sales || {};
+    const prevPressure = gpm.sectors.sales.lead_velocity?.pressure ?? 0;
     gpm.sectors.sales.lead_velocity = {
         pressure: pressure,
-        trend: pressure > (gpm.sectors.sales.lead_velocity ? gpm.sectors.sales.lead_velocity.pressure : 0) ? "UP" : "DOWN",
+        trend: pressure > prevPressure ? 'UP' : pressure < prevPressure ? 'DOWN' : 'STABLE',
         last_check: new Date().toISOString(),
         sensor_data: { leads_last_24h: count }
     };

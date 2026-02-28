@@ -698,12 +698,22 @@ async function handleAuthRequest(req, res, path, method) {
 
     return false; // Not an auth route
   } catch (error) {
-    console.error(`❌ [Auth] ${method} ${path}:`, error.message);
+    console.error(`❌ [Auth] ${method} ${path}:`, error.message, error.stack?.split('\n')[1]?.trim());
     if (error instanceof authService.AuthError) {
       sendError(res, error.status, error.message);
     } else {
       errorScience.recordError({ component: 'AuthService', error, severity: 'high' });
-      sendError(res, 500, 'Internal server error');
+      // Session 250.253: Surface actionable error info instead of opaque "Internal server error"
+      const msg = error.message || '';
+      if (msg.includes('Config not found') || msg.includes('Tokens not found')) {
+        sendError(res, 503, 'Database configuration missing. Contact support.');
+      } else if (msg.includes('UNAUTHENTICATED') || msg.includes('invalid_grant') || msg.includes('Token has been expired')) {
+        sendError(res, 503, 'Database authentication expired. Contact support.');
+      } else if (msg.includes('RESOURCE_EXHAUSTED') || msg.includes('quota')) {
+        sendError(res, 503, 'Service temporarily unavailable (quota). Please try again later.');
+      } else {
+        sendError(res, 500, 'Internal server error');
+      }
     }
     return true;
   }
@@ -2925,8 +2935,10 @@ async function handleRequest(req, res) {
       const catalogStore = getCatalogStore();
       const catalogType = body.type || 'products';
 
-      // Register tenant if not exists
-      catalogStore.registerTenant(tenantId, {
+      // Register tenant if not exists — MUST await (async connector.connect() inside)
+      // BUG-3 fix: was missing await → registerTenant resolved after addItem loop,
+      // so connector was undefined → all items silently dropped
+      await catalogStore.registerTenant(tenantId, {
         name: tenantId,
         connector: {
           type: 'custom',

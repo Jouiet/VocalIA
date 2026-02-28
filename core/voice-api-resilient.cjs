@@ -1267,7 +1267,7 @@ async function callAnthropic(userMessage, conversationHistory = [], customSystem
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': apiKey,
-      'anthropic-version': '2024-01-01',
+      'anthropic-version': '2023-06-01',
     }
   }, body);
 
@@ -2362,6 +2362,43 @@ function startServer(port = 3004) {
       return;
     }
 
+    // Session 250.253: Plugin ZIP Download Endpoint
+    if (req.url.startsWith('/api/plugins/download/') && req.method === 'GET') {
+      const platform = req.url.split('/').pop().split('?')[0].toLowerCase();
+      const validPlatforms = ['wordpress', 'prestashop', 'joomla', 'drupal'];
+      if (!validPlatforms.includes(platform)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: `Invalid platform. Available: ${validPlatforms.join(', ')}` }));
+        return;
+      }
+      const { getZipPath, PLUGINS } = require('../scripts/build-plugin-zips.cjs');
+      const zipPath = getZipPath(platform);
+      if (!zipPath) {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: `Plugin ZIP not found for ${platform}. Run: node scripts/build-plugin-zips.cjs` }));
+        return;
+      }
+      const stats = fs.statSync(zipPath);
+      const zipName = PLUGINS[platform].zip;
+      res.writeHead(200, {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': `attachment; filename="${zipName}"`,
+        'Content-Length': stats.size,
+        'Cache-Control': 'public, max-age=3600'
+      });
+      fs.createReadStream(zipPath).pipe(res);
+      return;
+    }
+
+    // GET /api/plugins — list available plugins
+    if (req.url === '/api/plugins' && req.method === 'GET') {
+      const { getAvailablePlugins } = require('../scripts/build-plugin-zips.cjs');
+      const plugins = getAvailablePlugins();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ plugins }));
+      return;
+    }
+
     // Session 250.85: Internal Service Health Proxy (for Admin Dashboard)
     if (req.url === '/api/health/grok' && req.method === 'GET') {
       try {
@@ -2849,7 +2886,7 @@ function startServer(port = 3004) {
           if (quotaCheck.limit > 0) {
             const pct = Math.round((quotaCheck.current / quotaCheck.limit) * 100);
             if (pct >= 80 && (pct === 80 || pct === 95)) {
-              AgencyEventBus.emit('quota.warning', { tenantId, quotaType: 'sessions', current: quotaCheck.current, limit: quotaCheck.limit, pct });
+              AgencyEventBus.publish('quota.warning', { quotaType: 'sessions', current: quotaCheck.current, limit: quotaCheck.limit, pct }, { tenantId });
             }
           }
 
@@ -3049,12 +3086,11 @@ function startServer(port = 3004) {
             // Session 250.87bis: A2A Event - Lead Qualified (Hot)
             eventBus.publish('lead.qualified', {
               sessionId: leadSessionId,
-              tenantId,
               score: session.score,
               status: session.status,
               extractedData: session.extractedData,
               hubspotSynced: !!hubspotSync
-            });
+            }, { tenantId });
           }
 
           // Session 250: Update dashboard metrics
@@ -3960,32 +3996,37 @@ async function main() {
 
     // Session 250.239: Outbound webhook subscriptions (G8)
     AgencyEventBus.subscribe('lead.qualified', async (event) => {
-      const { tenantId, sessionId, score, status, extractedData } = event;
-      if (tenantId) {
+      const { sessionId, score, status, extractedData } = event.payload || {};
+      const tenantId = event.tenantId;
+      if (tenantId && tenantId !== 'unknown') {
         webhookDispatcher.dispatch(tenantId, 'lead.qualified', { sessionId, score, status, extractedData });
       }
     });
     AgencyEventBus.subscribe('call.completed', async (event) => {
-      const { tenantId, sessionId, duration, summary } = event;
-      if (tenantId) {
+      const { sessionId, duration, summary } = event.payload || {};
+      const tenantId = event.tenantId;
+      if (tenantId && tenantId !== 'unknown') {
         webhookDispatcher.dispatch(tenantId, 'call.completed', { sessionId, duration, summary });
       }
     });
     AgencyEventBus.subscribe('conversation.ended', async (event) => {
-      const { tenantId, sessionId, messageCount, duration } = event;
-      if (tenantId) {
+      const { sessionId, messageCount, duration } = event.payload || {};
+      const tenantId = event.tenantId;
+      if (tenantId && tenantId !== 'unknown') {
         webhookDispatcher.dispatch(tenantId, 'conversation.ended', { sessionId, messageCount, duration });
       }
     });
     AgencyEventBus.subscribe('cart.abandoned', async (event) => {
-      const { tenantId, sessionId, cartValue, items } = event;
-      if (tenantId) {
+      const { sessionId, cartValue, items } = event.payload || {};
+      const tenantId = event.tenantId;
+      if (tenantId && tenantId !== 'unknown') {
         webhookDispatcher.dispatch(tenantId, 'cart.abandoned', { sessionId, cartValue, items });
       }
     });
     AgencyEventBus.subscribe('quota.warning', async (event) => {
-      const { tenantId, quotaType, current, limit, pct } = event;
-      if (tenantId) {
+      const { quotaType, current, limit, pct } = event.payload || {};
+      const tenantId = event.tenantId;
+      if (tenantId && tenantId !== 'unknown') {
         webhookDispatcher.dispatch(tenantId, 'quota.warning', { quotaType, current, limit, pct });
       }
     });

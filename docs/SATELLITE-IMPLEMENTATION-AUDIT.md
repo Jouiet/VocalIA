@@ -1,11 +1,12 @@
 # AUDIT — Implementation VocalIA sur Plateformes Satellites
 
 > **Document de reference** | Audit pre-implementation — investigation bottom-up
-> **Date** : 26/02/2026 | **Session** : 250.242
+> **Date** : 26/02/2026 | **Session** : 250.242 | **Derniere MAJ** : 250.252 (28/02/2026)
 > **Methode** : curl production, lecture code source, verification empirique
 > **Objectif** : Valider la faisabilite d'implementer VocalIA sur nos propres plateformes satellites AVANT de proposer le produit a des clients externes
 > **Scope** : 5 plateformes satellites (3A Automation, Henderson, Alpha-Medical, CinematicAds, MyDealz)
 > **Principe** : Chaque claim est accompagnee de sa commande de verification. Aucune supposition.
+> **250.252** : WebhookRouter.cjs hardcoded localhost:3004 FIXE → utilise VOCALIA_API_URL env var (impacte le routing webhook en production pour les satellites). EventBus payload envelope mismatch FIXE (5 subscribe handlers). Doit etre deploye (git push + restart containers).
 
 ---
 

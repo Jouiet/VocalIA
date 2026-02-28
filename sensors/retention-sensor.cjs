@@ -25,7 +25,7 @@ async function fetchShopifyOrders(shop, token) {
     if (!shop || !token) {
         throw new Error('Shopify Shop and Access Token required');
     }
-    const url = `https://${shop}/admin/api/2025-10/orders.json?status=any&limit=250&fields=email,created_at,total_price,customer`;
+    const url = `https://${shop}/admin/api/2026-01/orders.json?status=any&limit=250&fields=email,created_at,total_price,customer`;
     const response = await fetch(url, {
         headers: {
             'X-Shopify-Access-Token': token,
@@ -59,6 +59,8 @@ function calculateChurnPressure(orders) {
         return { recency: daysSinceLast, frequency: c.orders.length };
     });
 
+    if (customers.length === 0) return 0;
+
     // High risk = recency > 90 days or only 1 order and recency > 60
     const highRiskCount = customers.filter(c => c.recency > 90 || (c.frequency === 1 && c.recency > 60)).length;
     const churnRate = highRiskCount / customers.length;
@@ -79,9 +81,10 @@ function updateGPM(pressure, stats) {
 
     gpm.sectors = gpm.sectors || {};
     gpm.sectors.marketing = gpm.sectors.marketing || {};
+    const prevPressure = gpm.sectors.marketing.retention?.pressure ?? 0;
     gpm.sectors.marketing.retention = {
         pressure: pressure,
-        trend: (gpm.sectors.marketing.retention && pressure > gpm.sectors.marketing.retention.pressure) ? "UP" : "DOWN",
+        trend: pressure > prevPressure ? 'UP' : pressure < prevPressure ? 'DOWN' : 'STABLE',
         last_check: new Date().toISOString(),
         sensor_data: stats
     };

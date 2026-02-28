@@ -32,8 +32,13 @@
 -->
 
 <!-- VocalIA Voice Assistant — BigCommerce -->
+<!-- PCI 4.0 §6.4.3: SRI required for externally-loaded scripts on payment pages.
+     Regenerate hash after each CDN update:
+     curl -s https://api.vocalia.ma/voice-assistant/voice-widget-ecommerce.js | openssl dgst -sha384 -binary | openssl base64 -A -->
 <script
   src="https://api.vocalia.ma/voice-assistant/voice-widget-ecommerce.js"
+  integrity="sha384-d4uqwwP3hCVzcvltT40JqlrZ8O4xAm07X5C94OKx3sCEqVXTqZUWxbF8QWFMLsre"
+  crossorigin="anonymous"
   data-vocalia-tenant="YOUR_TENANT_ID"
   defer>
 </script>

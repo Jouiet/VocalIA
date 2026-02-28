@@ -203,12 +203,12 @@ function updateGPM(pressure, endpoints, providers) {
             endpoints_total: endpoints.length,
             providers_healthy: providers.filter(p => p.status === 'HEALTHY').length,
             providers_configured: providers.filter(p => p.status !== 'NO_CREDENTIALS').length,
-            avg_latency_ms: Math.round(
-                [...endpoints, ...providers]
-                    .filter(x => x.latency > 0)
-                    .reduce((sum, x) => sum + x.latency, 0) /
-                [...endpoints, ...providers].filter(x => x.latency > 0).length || 1
-            ),
+            avg_latency_ms: (() => {
+                const positiveLatencies = [...endpoints, ...providers].filter(x => x.latency > 0);
+                return positiveLatencies.length > 0
+                    ? Math.round(positiveLatencies.reduce((sum, x) => sum + x.latency, 0) / positiveLatencies.length)
+                    : 0;
+            })(),
             endpoint_details: endpoints.map(e => ({
                 name: e.name,
                 status: e.status,

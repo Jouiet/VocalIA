@@ -415,7 +415,8 @@ class WebhookRouter {
       const language = creds?.LANGUAGE || 'fr';
 
       try {
-        const response = await fetch('http://localhost:3004/respond', {
+        const apiBase = process.env.VOCALIA_API_URL || 'http://localhost:3004';
+        const response = await fetch(`${apiBase}/respond`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

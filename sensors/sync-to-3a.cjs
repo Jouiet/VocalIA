@@ -95,13 +95,17 @@ function syncToCentral() {
     }
 }
 
-if (process.argv.includes('--health')) {
+if (require.main === module) {
+  if (process.argv.includes('--health')) {
     console.log('Sync-to-3A: OK');
     console.log(`   Local GPM: ${fs.existsSync(LOCAL_GPM_PATH) ? 'Found' : 'Missing'}`);
     console.log(`   Central GPM: ${fs.existsSync(CENTRAL_GPM_PATH) ? 'Found' : 'Missing'}`);
     console.log(`   Store ID: ${STORE_ID}`);
     process.exit(0);
+  }
+
+  const result = syncToCentral();
+  process.exit(result.success ? 0 : 1);
 }
 
-const result = syncToCentral();
-process.exit(result.success ? 0 : 1);
+module.exports = { syncToCentral };

@@ -929,7 +929,7 @@ describe('GET /api/widget/embed-code', () => {
     assert.equal(data.platform, 'html');
     assert.equal(data.tenantId, 'test_tenant_123');
     assert.ok(data.snippet.includes('data-vocalia-tenant="test_tenant_123"'));
-    assert.ok(data.snippet.includes('voice-widget-v3.js'));
+    assert.ok(data.snippet.includes('voice-widget-b2b.js'));
     assert.ok(data.snippet.includes('defer'));
     assert.ok(data.instructions);
   });

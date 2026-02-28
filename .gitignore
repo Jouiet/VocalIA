@@ -11,6 +11,9 @@ logs/
 *.log
 npm-debug.log*
 
+# Coverage
+.coverage/
+
 # OS
 .DS_Store
 Thumbs.db
@@ -110,3 +113,7 @@ CLAUDE.local.md
 # Promptfoo output (eval results, caches)
 promptfoo/output/
 promptfoo/.promptfoo/
+
+# PHP dependencies (plugin tests)
+integrations/*/vendor/
+integrations/*/composer.lock

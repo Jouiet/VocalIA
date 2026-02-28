@@ -656,7 +656,8 @@ function cleanupSession(sessionId) {
         if (tenantId && tenantId !== 'default' && callDuration > 0) {
           try {
             const stripeService = require('../core/StripeService.cjs');
-            stripeService.reportVoiceMinutes(tenantId, callDuration / 60);
+            stripeService.reportVoiceMinutes(tenantId, callDuration / 60)
+              .catch(e => console.error('[Stripe] reportVoiceMinutes failed:', e.message));
           } catch (_e) { /* Stripe not configured — silent */ }
         }
       }

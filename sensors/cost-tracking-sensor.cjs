@@ -88,28 +88,10 @@ function httpRequest(url, options = {}) {
 async function getOpenAIUsage(apiKey) {
     if (!apiKey) return null;
 
-    try {
-        // OpenAI usage endpoint (organization level)
-        const now = new Date();
-        const startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
-        const endDate = now.toISOString().split('T')[0];
-
-        const response = await httpRequest(
-            `https://api.openai.com/v1/dashboard/billing/usage?start_date=${startDate}&end_date=${endDate}`,
-            { headers: { 'Authorization': `Bearer ${apiKey}` } }
-        );
-
-        if (response.status === 200 && response.data) {
-            return {
-                provider: 'OpenAI',
-                totalCost: response.data.total_usage ? response.data.total_usage / 100 : 0, // cents to dollars
-                currency: 'USD'
-            };
-        }
-    } catch (e) {
-        console.error(`OpenAI usage fetch failed: ${e.message}`);
-    }
-
+    // NOTE: OpenAI /v1/dashboard/billing/usage endpoint deprecated since 2024.
+    // Use /v1/organization/costs (requires org admin) or local tracking instead.
+    // Returning null until a working endpoint is configured.
+    console.warn('⚠️ OpenAI billing API deprecated. Cost tracking uses local log only.');
     return null;
 }
 

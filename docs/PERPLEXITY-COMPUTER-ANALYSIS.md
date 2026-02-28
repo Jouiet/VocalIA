@@ -1,6 +1,6 @@
 # Perplexity Computer — Analyse Technique & Business + Plan d'Action VocalIA
 
-> Document de référence factuel | 27/02/2026 (MAJ 250.250) | Sources: blog officiel, docs Perplexity, Fortune, Heise, reviews indépendantes
+> Document de référence factuel | 28/02/2026 (MAJ 250.252) | Sources: blog officiel, docs Perplexity, Fortune, Heise, reviews indépendantes
 > Objectif: Comprendre l'architecture de Perplexity Computer et extraire les patterns applicables à VocalIA
 
 ---
@@ -391,6 +391,7 @@ La relation est **complémentaire**. Les patterns d'orchestration intelligente d
 | T6 | Token Budget Manager par tenant | **MOYENNE** | Coûts prévisibles | Moyen | `core/token-budget.cjs` | **DONE** (250.245) |
 | T7 | Enrichissement RAG multi-source | **BASSE** | Précision e-com | Moyen | `core/voice-ecommerce-tools.cjs` + `voice-api-resilient.cjs` | ✅ DONE (250.246) |
 | — | **Dashboard visualization** | **HAUTE** | Commercial ++ | Moyen | Admin + Client dashboards | ✅ DONE (250.249-250) — T1-T7 pipeline in admin, engine metrics in client |
+| — | **Cross-system integration audit** | **HAUTE** | Fiabilité ++ | Faible | EventBus subscribers + WebhookRouter | ✅ DONE (250.252) — 6 bugs: EventBus .emit→.publish, payload envelope, hardcoded localhost, missing await, sync-to-3a guard |
 
 ---
 

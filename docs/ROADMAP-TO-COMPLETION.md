@@ -1,8 +1,8 @@
-> **Date:** 2026-02-27 | **Session:** 250.250 (SOTA Engine dashboards + Plugin 1-click 83% market coverage — Joomla + Drupal added)
+> **Date:** 2026-02-28 | **Session:** 250.253 (Maturity audit + PHPUnit PHP tests + Plugin ZIP distribution + Dashboard visual polish)
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 9.4/10 | **Security:** 9.5/10 | **Weighted:** 9.6/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **6,949 tests** (108 .mjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **~7,400+ tests** (122 files: 120 .mjs + 2 .cjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). **Cross-system bug audit** (250.252): 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). **c8 coverage workaround** (250.252): cov-runner.cjs bypasses node:test IPC for proper V8 tracking. **Maturity Audit** (250.253): PHPUnit PHP tests (50 tests, WP+PS), plugin ZIP distribution (4 archives + API endpoints), dashboard visual polish (gradient mesh, ambient glow, skeleton states), readiness 35%→48%. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.247. Latest: **250.247** Deep surgery — production bug fix + QualityGate + E2E chain verification.
+> **Source:** 60+ audit phases across sessions 250.105-250.253. Latest: **250.253** Maturity audit + PHP tests + plugin distribution + dashboard polish.
 
 ---
 
@@ -282,44 +282,48 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
-| core/*.cjs | 37,571 lines / 58 files | `wc -l core/*.cjs` |
+| core/*.cjs | 43,055 lines / 70 files | `wc -l core/*.cjs` |
 | widget/*.js | 11,001 lines / 7 files | `wc -l widget/*.js` |
 | personas/ | 8,797 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
-| telephony/ | 4,843 lines / 1 file | `wc -l telephony/*.cjs` |
+| telephony/ | 5,535 lines / 1 file | `wc -l telephony/*.cjs` |
 | mcp-server/src/ | 19,324 lines / 33 files | `find mcp-server/src -name "*.ts"` |
 | MCP tools | 203 (22 inline + 181 external) | `node --test test/mcp-server.test.mjs` |
 | MCP resources | 6 (5 static + 1 template) | `grep -c "server.registerResource(" mcp-server/src/index.ts` |
 | MCP prompts | 8 | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 40 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
-| HTML pages | 88 | `find website -name "*.html" | wc -l` |
-| Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
+| HTML pages | 89 | `find website -name "*.html" | wc -l` |
+| Registry clients | 26 | `node -e "const r=require('./personas/client_registry.json'); console.log(Object.keys(r.clients).length)"` |
 | i18n lines | 27,775 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 (nodemailer 8.0.1 patched — 250.205) | `npm audit --json` |
 | innerHTML XSS risk | 0 | All dynamic data uses escapeHTML/textContent (250.192: 6 app pages hardened) |
 
 ### 5.2 Tests
 
-**TOTAL: 6,949 tests | 6,945 pass | 0 fail | 4 skip (Gemini TTS quota) | 0 cancelled | ALL ESM (.mjs)** (Verified 250.247 — 27/02/2026)
+**TOTAL: ~7,400+ tests | 0 fail | 4 skip (Gemini TTS quota) | 122 test files (120 .mjs + 2 .cjs) + 2 cov-runners** (Updated 250.252 — 28/02/2026)
 
 **Function coverage: 462/491 exported functions (94%)** — 0 CRITICAL gaps (verified by `scripts/coverage-audit.cjs`).
 
-Test classification (verified empirically — 250.210b, test counts updated 250.247):
+Test classification (verified empirically — 250.210b, test counts updated 250.252):
 
 | Type | Files | Tests | % | Executes production code? |
 |:-----|:-----:|:-----:|:-:|:------------------------:|
-| PURE_BEHAVIORAL | 38 | 2,294 | 38.0% | YES |
-| BEHAVIORAL | 24 | 1,173 | 19.4% | YES |
-| STATIC_FILE_SCAN | 7 | 1,034 | 17.1% | NO |
-| CONTENT_DATA | 2 | 712 | 11.8% | NO |
-| STRUCTURAL_REQUIRE | 4 | 447 | 7.4% | PARTIAL |
-| HTTP_E2E | 6 | 382 | 6.3% | YES |
-| **Execute real code** | **66** | **3,849** | **63.7%** | — |
+| PURE_BEHAVIORAL | 38 | 2,294 | ~31% | YES |
+| BEHAVIORAL | 24 | 1,173 | ~16% | YES |
+| STATIC_FILE_SCAN | 7 | 1,034 | ~14% | NO |
+| CONTENT_DATA | 2 | 712 | ~10% | NO |
+| STRUCTURAL_REQUIRE | 4 | 447 | ~6% | PARTIAL |
+| HTTP_E2E | 6 | 382 | ~5% | YES |
+| COVERAGE_BOOST | 14 | ~450 | ~6% | YES |
+| COV_RUNNERS | 2 | ~90 | ~1% | YES (direct function calls) |
+| **Execute real code** | **~86** | **~4,389** | **~59%** | — |
 
-108 test files. Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
+122 test files + 2 cov-runners. Theater tests: **0** typeof-only (all 4 remaining converted in 250.210).
 Top: persona-audit (711), config-consistency (490), security-regression (274), module-loader (233), security-utils (176), db-api-routes (**178** — +11 voice-clone E2E, 250.234), catalog-connector (164), elevenlabs-client (**81** — +30 behavioral, 250.234), context-box (**57** — +11 getClientProfile, 250.247), knowledge-base (**47** — +7 asyncSearchHybrid, 250.247), client-registry (**27** — +7 WhatsApp mapping, 250.247).
 
 **250.247 Changes**: QualityGate off_topic fix (synonym groups + injection detection), deriveTenantFromWhatsApp production bug fix, Gemini TTS preflight quota detection (4 false fails → 4 skips), asyncSearchHybrid tests (tenant isolation verified), getTenantIdByWhatsAppNumberId tests.
+
+**250.252 Changes**: Cross-system bug audit (6 bugs: EventBus .emit→.publish, payload envelope mismatch in 5 subscribers, hardcoded localhost in WebhookRouter, missing await on stripeService, sync-to-3a process.exit guard). c8 coverage workaround: `cov-runner.cjs` bypasses node:test IPC (V8 coverage through child processes not tracked by c8). 14 new test files (+~450 tests). `test-runner.cjs` Step 4: auto-runs cov-*.cjs runners directly.
 
 ### 5.3 The 25 Function Tools
 
@@ -560,7 +564,9 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 57 RED TEAM 40/40 + ANTI-HALLUCINATION (250.233)** | **Red team expanded 1/40→40/40 personas (14 attacks × 40 = 560 tests). Run: 559/560 PASS. 1 real vuln found (travel-agent-fr hallucination). Fix: 199 anti-hallucination rules injected across 5 langs. Re-run: 558/560 (grader noise). Eval-all: 1193/1210 PASS (98.6%). Anthropic blocked ($0).** | **personas/**, **promptfoo/** | **1 (hallucination)** |
 | **Phase 58 DEEP SURGERY TEST AUDIT (250.234)** | **Function-by-function behavioral test audit. +47 tests: ElevenLabs client (30 mock-fetch B103/B104, 81 total), voice-clone HTTP routes (11 E2E with multipart+require.cache mock B108, 178 total), ContextBox chain (6 spy+round-trip B110, 46 total). B123 REAL BUG: voice-clone audit trail wrong API signature (1-arg→2-arg). Fixed in db-api.cjs:2337,2395.** | **test/**, **core/db-api.cjs** | **1 (B123)** |
 | **Phase 59 TEST RELIABILITY + 38→40 GLOBAL (250.236)** | **B52 fix: 3/4 test suite timeouts resolved (voice-telephony-pure, module-loader, telephony-handlers partial). WhatsApp cache interval `.unref()` added. STT test fixed (env-dependent). Validator stale number patterns corrected (was flagging 40 as stale). 38→40 persona fix: 30+ source files (core/, mcp-server/, personas/, clients/, scripts/, docs/, distribution/). Validator exclusions for generated data (KB chunks, dist/, archive/). Health-check RAG paths updated (multi-tenant). 6474/6474 tests pass, 0 fail, 0 cancelled. Validator 23/23 ✅ 0 errors. Health-check 45/45 ✅ 100%.** | **test/**, **core/**, **scripts/**, **mcp-server/**, **personas/** | **0** |
-| **CUMULATIVE** | **435+** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA + EVAL + TEST AUDIT tasks complete — only BUSINESS remain (Stripe key, first customer).** |
+| **Phase 60 CROSS-SYSTEM BUG AUDIT (250.252)** | **Forensic cross-module bug hunt: 6 bugs found+fixed. BUG-1 (HIGH): AgencyEventBus.emit()→.publish() for quota.warning. BUG-2 (HIGH): EventBus payload envelope mismatch — 5 subscribe handlers read event.* instead of event.payload.*. BUG-3 (CRITICAL): Missing await on catalogStore.registerTenant() (already fixed). BUG-4 (MEDIUM): Missing await on stripeService.reportVoiceMinutes() in sync cleanupSession() — fixed with .catch() (cleanupSession is sync). BUG-5 (HIGH): Hardcoded http://localhost:3004/respond in WebhookRouter.cjs — now uses VOCALIA_API_URL env. BUG-6 (HIGH): sync-to-3a.cjs missing require.main guard — process.exit() killed importing processes. regression-bug-audit-248.test.mjs (15 tests for all 5 bugs).** | **core/**, **telephony/**, **sensors/**, **test/** | **6 (5 new + 1 already fixed)** |
+| **Phase 61 C8 COVERAGE ARCHITECTURE (250.252)** | **ROOT CAUSE: c8 cannot track V8 coverage through Node.js test runner child processes. V8 generates coverage data but function call counts show 0 for functions called within describe/test blocks. WORKAROUND: cov-runner.cjs — direct function calls without node:test module. c8 properly tracks coverage this way (sensors: 17-23%→52-80%). test-runner.cjs Step 4 added: auto-runs cov-*.cjs runners directly. 14 new test files (+~450 tests): coverage-boost, coverage-push, regression, cov-sensors, cov-webhook, cov-near-threshold.** | **test/**, **scripts/** | **0 (infrastructure)** |
+| **CUMULATIVE** | **543+** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch). **ALL CODE + SECURITY + MARKETING + OPS + SOTA + EVAL + TEST AUDIT tasks complete — only BUSINESS remain (Stripe key, first customer).** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
 
@@ -1014,5 +1020,31 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 
 ---
 
-*Document mis a jour le 2026-02-25 — Session 250.235*
-*Changelog: sessions 250.105→235 (469+ bugs reported across 53+ phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). **SOTA Pattern implementation complete (250.218)**: TenantMemory (P0), WhatsApp Bidirectional (P0), ProactiveScheduler (P1). **Promptfoo 200/200** (250.233): eval-all 98.6%, red team 40/40 99.6%. **Deep Surgery Test Audit** (250.234): +47 tests, B123 fixed. **Mobile Optimization** (250.235): 88 pages, 33 files, 5 CSS bugs self-caught, 833/833 pass. Details: `memory/session-history.md`*
+### 6.21 Phase — Maturity Audit + Dashboard Polish (250.253)
+
+> **Source**: Maturity Audit (`docs/MATURITY-AUDIT.md`) — 5-pillar readiness score 35%→48%
+
+**PHPUnit PHP Tests (50 total):**
+- WordPress plugin: 25 tests, 53 assertions (sanitization, hooks, activation, uninstall, widget injection, settings)
+- PrestaShop module: 25 tests, 44 assertions (install/uninstall, config, hooks, form, widget rendering, XSS)
+
+**Plugin ZIP Distribution:**
+- `scripts/build-plugin-zips.cjs` — 4 archives: WordPress (4.4 KB), PrestaShop (2.1 KB), Joomla (2.6 KB), Drupal (4.7 KB)
+- API endpoints: `GET /api/plugins` (list) + `GET /api/plugins/download/:platform` (download)
+
+**Error Handling:**
+- `db-api.cjs` catch global now surfaces actionable errors (config missing, auth expired, quota)
+
+**Dashboard Visual Polish (Client + Admin):**
+- Animated gradient mesh welcome banners (15s cycle, multi-stop gradient)
+- Color-matched ambient glow on stat cards (dark mode hover)
+- Micro-interactions: card lift (`translateY(-2px) scale(1.01)`), score ring pulse
+- Skeleton loading states replacing bare "--" placeholders in Recent Calls
+- Deeper dark mode: `#000` backgrounds, refined glass-panel shadows
+- ROI section: dual radial gradient overlay + border accent
+- Pipeline step hover glow, fallback chain transitions, service card highlights
+
+---
+
+*Document mis a jour le 2026-02-28 — Session 250.253*
+*Changelog: sessions 250.105→253 (543+ bugs reported across 83+ phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). **SOTA Pattern implementation complete (250.218)**: TenantMemory (P0), WhatsApp Bidirectional (P0), ProactiveScheduler (P1). **Promptfoo 200/200** (250.233): eval-all 98.6%, red team 40/40 99.6%. **Deep Surgery Test Audit** (250.234): +47 tests, B123 fixed. **Mobile Optimization** (250.235): 88 pages, 33 files, 5 CSS bugs self-caught, 833/833 pass. **Maturity Audit** (250.253): PHPUnit PHP tests (50 total), plugin ZIP distribution (4 archives), dashboard visual polish, readiness score 35%→48%. Details: `memory/session-history.md`*

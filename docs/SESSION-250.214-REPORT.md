@@ -1,8 +1,8 @@
 # VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.247 (27/02/2026)
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.252 (28/02/2026)
 > **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
-> **Tests**: 6,949 pass, 0 fail, 4 skip (108 .mjs) | **Timeout**: 180s | **40 personas**
+> **Tests**: ~7,400+ pass, 0 fail, 4 skip (122 files: 120 .mjs + 2 .cjs) | **Timeout**: 180s | **40 personas**
 > **250.233**: Promptfoo full coverage — 200/200 prompts, eval-all 1193/1210 PASS (98.6%), red team 40/40 personas 558/560 (99.6%). Anti-hallucination rule injected (199 SECURITY sections). Anthropic blocked ($0).
 > **250.234**: Deep Surgery Test Audit — +47 behavioral tests (B103-B110), B123 real bug found & fixed (voice-clone audit trail wrong API signature).
 > **250.235**: Mobile Optimization Forensic Audit — ALL 88 HTML pages audited, 33 files modified, CSS foundation (touch targets, iOS zoom, overflow, responsive padding/gaps/grids/tables), 5 CSS bugs self-caught & fixed. 833/833 tests pass.
@@ -10,6 +10,8 @@
 > **250.245-246**: Perplexity Computer Patterns T1-T7 ALL DONE. TaskRouter, QualityGate, TokenBudget, ClientProfile, RAG multi-source enrichment.
 > **250.247**: Deep surgery — deriveTenantFromWhatsApp production CRASH fixed, QualityGate v2 (synonym groups + injection detection + penalty recalibration), E2E chain verification with real API calls (4/4 pass). 6949/6949 pass, 0 fail.
 > **250.249-250**: SOTA Engine dashboards — T1-T7 orchestration pipeline in admin, engine metrics (providers/quality/latency/tokens) in client, engine-stats API extended, i18n 5 locales. Data-driven dashboards reflecting SOTA capabilities.
+> **250.251**: Unified component loader (19 pages migrated), 4 plugin ZIPs (WP/PS/Joomla/Drupal), 3 dead download links fixed, NLP Operator bug fixed, 13 plugin bugs (B1-B13) forensic audit.
+> **250.252**: Cross-system bug audit — 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). c8 coverage root cause identified: node:test child processes break V8 tracking. cov-runner.cjs workaround. 14 new test files (+~450 tests). test-runner.cjs Step 4 added.
 
 ---
 
