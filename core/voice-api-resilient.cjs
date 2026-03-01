@@ -424,36 +424,31 @@ const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'sta
 const PLAN_FEATURES = {
   starter: {
     voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false,
-    crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false,
-    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
+    crm_sync: false, calendar_sync: false, email_automation: false,    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: false, custom_branding: false,
     api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, cloud_voice: false  },
   pro: {
     voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
-    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
+    crm_sync: true, calendar_sync: true, email_automation: true,    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: true, custom_branding: true,
     api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true  },
   ecommerce: {
     voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false,
-    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
+    crm_sync: true, calendar_sync: false, email_automation: true,    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
     ecom_recommendations: true, export: true, custom_branding: true,
     api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true  },
   expert_clone: {
     voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false,
-    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
+    crm_sync: true, calendar_sync: true, email_automation: true,    whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
     ecom_recommendations: false, export: true, custom_branding: true,
     api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, cloud_voice: true  },
   telephony: {
     voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true,
-    crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true,
-    whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
+    crm_sync: true, calendar_sync: true, email_automation: true,    whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true,
     ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
     ecom_recommendations: true, export: true, custom_branding: true,
     api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true  }

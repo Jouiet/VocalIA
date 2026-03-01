@@ -204,10 +204,10 @@ Impact estime : +23% de questions resolues automatiquement
 | Composant | Existe | A creer |
 |:----------|:------:|:-------:|
 | Score KB | ✅ dashboard client | — |
-| Calcul score detaille | ⚠️ basique | Scoring par categorie (FAQ, produits, policies) |
-| Actions suggerees | ❌ | Algorithme de gap → suggestion |
+| Calcul score detaille | ✅ **DONE (250.255)** | `GET /api/tenants/:id/kb-score` — 4 criteres x 25pts (entries, langs, depth, categories) |
+| Actions suggerees | ✅ **DONE (250.255)** | `suggestions[]` dans la reponse API — actions concretes pour monter de niveau |
 | Estimation d'impact | ❌ | Correlation score ↔ taux resolution |
-| Niveaux (Bronze/Silver/Gold) | ❌ | Gamification front-end |
+| Niveaux (Bronze/Silver/Gold/Platinum) | ✅ **DONE (250.255)** | Bronze <40, Silver <65, Gold <85, Platinum 85+ |
 
 **Impact** : Gamification de l'onboarding. Client engage a enrichir sa KB = IA meilleure = retention.
 

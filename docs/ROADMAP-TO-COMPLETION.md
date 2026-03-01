@@ -1,4 +1,4 @@
-> **Date:** 2026-03-01 | **Session:** 250.254b (Revenue Path Audit — brutally honest)
+> **Date:** 2026-03-01 | **Session:** 250.255 (Revenue Pipeline End-to-End — B4/B6 fixed, sms_automation removed)
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 4.0/10 | **Revenue Readiness:** 1.5/10 | **Security:** 9.5/10
 > **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **~7,400+ tests** (122 files: 120 .mjs + 2 .cjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). **Cross-system bug audit** (250.252): 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). **c8 coverage workaround** (250.252): cov-runner.cjs bypasses node:test IPC for proper V8 tracking. **Maturity Audit** (250.253): PHPUnit PHP tests (50 tests, WP+PS), plugin ZIP distribution (4 archives + API endpoints), dashboard visual polish (gradient mesh, ambient glow, skeleton states), readiness 35%→48%. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
@@ -309,9 +309,9 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | B1 | GoogleSheetsDB OAuth expired on VPS | **FATAL** — 0 signups possible | SSH → refresh tokens |
 | B2 | Stripe prices = PLACEHOLDER | **FATAL** — 0 payments possible | Create Stripe Products+Prices |
 | B3 | STRIPE_SECRET_KEY missing on VPS | **FATAL** — Stripe backend dead | Add to .env |
-| B4 | No Stripe webhook receiver | **CRITICAL** — Payment taken but no subscription activated | Write endpoint |
+| B4 | ~~No Stripe webhook receiver~~ | ~~CRITICAL~~ | **FIXED (250.255)** — `stripe-subscription-handler.cjs` + 4 handlers |
 | B5 | WebSocket 3007 not routable | **MAJOR** — Voice realtime broken | Traefik WS config |
-| B6 | Default tenant quota = 0 | **MAJOR** — New tenants can't chat | Fix provisionTenant() |
+| B6 | ~~Default tenant quota = 0~~ | ~~MAJOR~~ | **NOT A BUG (250.255)** — provisionTenant writes correct quotas (starter: 1000 sessions). Issue = register 500 (B1) prevents provisioning |
 | B7 | Traefik routing masks voice-api `/api/*` endpoints | **MINOR** — Some routes 404 | Reconfigure rules |
 
 **Revenue readiness: 1.5/10** — The 3 first funnel steps are broken end-to-end.
@@ -340,11 +340,11 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | crm_sync | **DEAD** | HubSpot/Pipedrive code OK, 0 API keys |
 | ecom_recommendations | **DEAD** | T7 code OK, 0 catalogs → 0 recommendations |
 | calendar_sync | **DEAD** | Minimal code, no Google Calendar OAuth |
-| sms_automation | **FAKE** | Flag in PLAN_FEATURES, ZERO implementation |
+| ~~sms_automation~~ | **REMOVED (250.255)** | Was FAKE — removed from PLAN_FEATURES in 3 files. 22 features now |
 | expert_dashboard | **BLOCKED** | ElevenLabs quota exhausted |
 | multi_language | **WORKS** | 5 langs via code (not client-configurable UI) |
 
-**Summary**: 3 WORKS | 3 PARTIAL | 7 UNTESTED | 2 BROKEN | 4 DEAD | 1 FAKE | 1 FRAGILE | 1 BLOCKED
+**Summary (updated 250.255)**: 3 WORKS | 3 PARTIAL | 7 UNTESTED | 2 BROKEN | 4 DEAD | 0 FAKE (sms_automation removed) | 1 FRAGILE | 1 BLOCKED = 22 features
 
 ### 4.5 What NOT To Do
 

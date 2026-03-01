@@ -61,6 +61,12 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
+      - STRIPE_PRICE_STARTER=${STRIPE_PRICE_STARTER:-}
+      - STRIPE_PRICE_PRO=${STRIPE_PRICE_PRO:-}
+      - STRIPE_PRICE_ECOMMERCE=${STRIPE_PRICE_ECOMMERCE:-}
+      - STRIPE_PRICE_EXPERT_CLONE=${STRIPE_PRICE_EXPERT_CLONE:-}
+      - STRIPE_PRICE_TELEPHONY=${STRIPE_PRICE_TELEPHONY:-}
       - SMTP_HOST=${SMTP_HOST}
       - SMTP_PORT=${SMTP_PORT:-587}
       - SMTP_USER=${SMTP_USER}
@@ -96,7 +102,7 @@ services:
     labels:
       - "traefik.enable=true"
       # Route all DB API paths to this service
-      - "traefik.http.routers.vocalia-db.rule=Host(`api.vocalia.ma`) && (PathPrefix(`/api/auth`) || PathPrefix(`/api/hitl`) || PathPrefix(`/api/kb`) || PathPrefix(`/api/tenants`) || PathPrefix(`/api/logs`) || PathPrefix(`/api/catalog`) || PathPrefix(`/api/db`) || PathPrefix(`/api/telephony`) || PathPrefix(`/api/recommendations`) || PathPrefix(`/api/leads`) || PathPrefix(`/api/cart-recovery`) || PathPrefix(`/api/promo`) || PathPrefix(`/api/quota`) || PathPrefix(`/api/ucp`) || PathPrefix(`/api/health`))"
+      - "traefik.http.routers.vocalia-db.rule=Host(`api.vocalia.ma`) && (PathPrefix(`/api/auth`) || PathPrefix(`/api/hitl`) || PathPrefix(`/api/kb`) || PathPrefix(`/api/tenants`) || PathPrefix(`/api/logs`) || PathPrefix(`/api/catalog`) || PathPrefix(`/api/db`) || PathPrefix(`/api/telephony`) || PathPrefix(`/api/recommendations`) || PathPrefix(`/api/leads`) || PathPrefix(`/api/cart-recovery`) || PathPrefix(`/api/promo`) || PathPrefix(`/api/quota`) || PathPrefix(`/api/ucp`) || PathPrefix(`/api/health`) || PathPrefix(`/api/billing`))"
       - "traefik.http.routers.vocalia-db.entrypoints=websecure"
       - "traefik.http.routers.vocalia-db.tls=true"
       - "traefik.http.routers.vocalia-db.tls.certresolver=mytlschallenge"
@@ -399,6 +405,12 @@ services:
       - NODE_ENV=production
       - WEBHOOK_PORT=3011
       - SLACK_SIGNING_SECRET=${SLACK_SIGNING_SECRET:-}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-}
+      - STRIPE_PRICE_STARTER=${STRIPE_PRICE_STARTER:-}
+      - STRIPE_PRICE_PRO=${STRIPE_PRICE_PRO:-}
+      - STRIPE_PRICE_ECOMMERCE=${STRIPE_PRICE_ECOMMERCE:-}
+      - STRIPE_PRICE_EXPERT_CLONE=${STRIPE_PRICE_EXPERT_CLONE:-}
+      - STRIPE_PRICE_TELEPHONY=${STRIPE_PRICE_TELEPHONY:-}
       - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
     command: >
       sh -c "

@@ -111,7 +111,7 @@
 | bant_crm_push | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (lead scoring fonctionne, push CRM = 0 tenants configures) |
 | crm_sync | Pro+ | ✅ | ✅ | ❌ | **DEAD** (HubSpot/Pipedrive code OK, 0 cles API configures) |
 | calendar_sync | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (Google Calendar code minimal, pas d'OAuth Calendar) |
-| sms_automation | Telephony | ❌ | ❌ | ❌ | **FAKE** (flag dans PLAN_FEATURES, ZERO ligne d'implementation) |
+| ~~sms_automation~~ | ~~Telephony~~ | ❌ | ❌ | ❌ | **SUPPRIME (250.255)** — etait FAKE (0 code). Retire de PLAN_FEATURES dans 3 fichiers |
 | whatsapp | Telephony | ✅ | ✅ | ❌ | **BROKEN** (deriveTenantFromWhatsApp fixe mais 0 numero WhatsApp Business API) |
 | cloud_voice | Pro+ | ✅ | ⚠️ | ❌ | **BROKEN** (WebSocket 3007 non routable via Traefik) |
 | ecom_catalog | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (0 catalogues WooCommerce/Shopify connectes) |
@@ -253,13 +253,27 @@ npm test
 | 1 | SSH VPS → refresh Google OAuth tokens | Acces VPS | 30 min | Register + Login fonctionnent |
 | 2 | Creer 5 Stripe Products + Prices (dashboard.stripe.com) | Compte Stripe | 30 min | Vrais price_IDs |
 | 3 | Ajouter STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET au .env VPS | Step 2 | 10 min | Stripe backend fonctionnel |
-| 4 | Ecrire endpoint POST /webhook/stripe (checkout.session.completed) | Step 3 | 2h | Paiement → subscription active |
+| 4 | ~~Ecrire endpoint POST /webhook/stripe~~ | ~~Step 3~~ | ~~2h~~ | **DONE (250.255)** — `stripe-subscription-handler.cjs` + 4 handlers dans WebhookRouter |
 | 5 | Configurer Traefik WS pour port 3007 | Acces VPS | 1h | Voice realtime fonctionnel |
-| 6 | Fix provisionTenant() — quota par defaut > 0 | Code local | 30 min | Nouveaux tenants peuvent chatter |
-| 7 | Remplacer price_PLACEHOLDER_* dans billing.html | Step 2 | 15 min | Boutons paiement fonctionnels |
-| 8 | Supprimer sms_automation de PLAN_FEATURES | Code local | 5 min | Pas de feature fantome |
-| 9 | E2E test signup→pay→widget flow | Steps 1-7 | 2h | Validation complete |
+| 6 | ~~Fix provisionTenant() quota~~ | ~~Code local~~ | ~~30 min~~ | **DONE (250.255)** — trial_end 14j + stripe section. Quota etait OK (1000 sessions/starter). Seul blocker = register 500 (OAuth expired) |
+| 7 | ~~Remplacer price_PLACEHOLDER_*~~ | ~~Step 2~~ | ~~15 min~~ | **DONE (250.255)** — billing.html fetch dynamique `/api/billing/prices` + endpoint dans db-api |
+| 8 | ~~Supprimer sms_automation~~ | ~~Code local~~ | ~~5 min~~ | **DONE (250.255)** — 22 features (etait 23). 0 occurrences dans code |
+| 9 | E2E test signup→pay→widget flow | Steps 1-3 | 2h | Validation complete |
 
-**Prerequis critique**: Steps 1-3 = acces VPS SSH (root@api.vocalia.ma)
+### Session 250.255 — Implementations DONE
 
-*Derniere MAJ: 01/03/2026 — Session 250.254b (Revenue Path Audit)*
+| Module | Fichier | Description |
+|:-------|:--------|:------------|
+| Stripe Handler | `core/stripe-subscription-handler.cjs` | 4 handlers: checkout.completed, subscription.updated/deleted, invoice.paid. Maps price_id→plan, updates config.json atomique |
+| WebhookRouter Fix | `core/WebhookRouter.cjs` | extractTenantId: metadata.tenantId (etait body.account = Stripe Connect, pas applicable). 4 handlers enregistres |
+| Billing Prices API | `core/db-api.cjs` | GET /api/billing/prices — retourne Stripe price IDs depuis env vars |
+| KB Score API | `core/db-api.cjs` | GET /api/tenants/:id/kb-score — score 0-100 (4 criteres x 25pts) + suggestions |
+| Trial Provisioning | `core/db-api.cjs` | trial_end (14j) + section stripe dans provisionTenant |
+| Dynamic Billing | `website/app/client/billing.html` | fetch /api/billing/prices au chargement, null = boutons desactives |
+| sms_automation | 3 fichiers | Supprime de PLAN_FEATURES (22 features). 0 occurrences |
+| Traefik | `docker-compose.production.yml` | PathPrefix /api/billing ajoute + env vars Stripe pour db-api + webhooks |
+| Tests | `test/stripe-webhook.test.mjs` | 26 tests: handler logic, signature, extractTenantId, provisionTenant |
+
+**Prerequis restant**: Steps 1-3 = acces VPS SSH (root@api.vocalia.ma) + Stripe Dashboard
+
+*Derniere MAJ: 01/03/2026 — Session 250.255 (Revenue Pipeline End-to-End)*

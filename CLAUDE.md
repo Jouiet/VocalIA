@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~92k lines | ~7,400+ tests (131 files: 122 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota)
+> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~92k lines | ~7,400+ tests (132 files: 123 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 40 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -62,11 +62,11 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State (concise — detail in auto memory)
 
-- **Code**: 9.9/10 | **Production**: 4.0/10 | **Revenue Readiness**: 1.5/10 | **Security**: 9.5/10
+- **Code**: 9.9/10 | **Production**: 4.0/10 | **Revenue Readiness**: 2.5/10 | **Security**: 9.5/10
 - 543+ bugs fixed across 83 phases, 8 not fixable locally. **B52 RESOLVED** via test-runner.cjs (isolation=none for heavy files).
 - 7 containers LIVE + DEPLOYED, 0 paying customers. OAuth SSO + Resend SMTP + Monitoring v3.0 LIVE.
 - **Promptfoo** (250.233): 200/200 prompts (100%), eval-all 98.6%, red team 40/40 (99.6%), anti-hallucination 199 SECURITY sections.
-- **Coverage Audit** (250.241→254): 462/491 functions tested (94%), 0 CRITICAL gaps. 131 test files, ~7,400+ tests.
+- **Coverage Audit** (250.241→255): 462/491 functions tested (94%), 0 CRITICAL gaps. 132 test files, ~7,400+ tests.
 - **Cross-system Bug Audit** (250.252): 6 bugs found+fixed — EventBus .emit→.publish, payload envelope mismatch (5 subscribers), hardcoded localhost in WebhookRouter, missing await stripeService, sync-to-3a process.exit guard. Regression tests: regression-bug-audit-248.test.mjs (15 tests).
 - **c8 Coverage Architecture** (250.252): ROOT CAUSE — c8 cannot track V8 coverage through node:test child processes. WORKAROUND: cov-runner.cjs (direct function calls). test-runner.cjs Step 4 auto-runs cov-*.cjs runners. Coverage push in progress (76 files below 88% threshold).
 - **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE — TaskRouter, parallel context, QualityGate v2 (synonym groups + injection detection + penalty recalibration), intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment.
@@ -76,6 +76,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **SOTA Dashboards** (250.249-250): T1-T7 pipeline visualization in admin + client dashboards, engine-stats API, engine metrics per tenant.
 - **Unified Component Loader** (250.251): Two loaders merged into one. 19 app pages migrated. NLP Operator auto-injection bug fixed (checked nonexistent class).
 - **Revenue Path Audit** (250.254b): FATAL — Register/Login = 500 on VPS (GoogleSheetsDB OAuth expired), Stripe prices = PLACEHOLDER, STRIPE_SECRET_KEY missing, no Stripe webhook receiver, WebSocket 3007 unreachable, new tenant quota = 0. Revenue readiness: 1.5/10.
-- **Next (CRITICAL PATH)**: 1) SSH VPS → refresh Google OAuth tokens 2) Create Stripe Products/Prices 3) Set STRIPE_SECRET_KEY on VPS 4) Write Stripe webhook receiver 5) Fix default tenant quota 6) First paying customer
+- **Revenue Pipeline E2E** (250.255): B4 FIXED (`stripe-subscription-handler.cjs` + 4 WebhookRouter handlers), B2 FIXED (dynamic `/api/billing/prices`), B6 debunked (quotas were correct, issue = B1 prevents provisioning), sms_automation REMOVED (22 features), KB Score API added (F5 backend), trial_end + stripe section in provisionTenant. Revenue readiness: 1.5→2.5/10.
+- **Next (CRITICAL PATH)**: 1) SSH VPS → refresh Google OAuth tokens 2) Create Stripe Products/Prices on dashboard.stripe.com 3) Set STRIPE_SECRET_KEY + STRIPE_PRICE_* on VPS .env 4) Configure Stripe webhook URL → api.vocalia.ma/webhook/stripe 5) Traefik WS 3007 6) First paying customer
 
-*Last update: 01/03/2026 — Session 250.254b: 3 code bugs fixed (kb-parser delimiter, cost-tracking array corruption, token-budget race condition), 76 test fixes, B52 solo isolation fix. Revenue path audit: Register=500 (OAuth expired), Stripe=PLACEHOLDER, WebSocket=unreachable. Revenue readiness 1.5/10. 131 files, ~7,400+ pass, 0 code fail, 4 skip.*
+*Last update: 01/03/2026 — Session 250.255: Revenue Pipeline E2E. stripe-subscription-handler.cjs (4 handlers), WebhookRouter extractTenantId fix, /api/billing/prices, /api/tenants/:id/kb-score (F5), trial_end+stripe in provisionTenant, sms_automation removed (22 features), Traefik /api/billing. 132 files, ~7,400+ pass, 0 fail, 4 skip. Revenue readiness 2.5/10.*

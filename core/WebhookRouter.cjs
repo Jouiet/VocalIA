@@ -203,7 +203,9 @@ class WebhookRouter {
         return shopDomain ? `shopify_${shopDomain.replace('.myshopify.com', '')}` : 'unknown_webhook';
 
       case 'stripe':
-        // Stripe account ID
+        // Session 250.255: Checkout/subscription events carry tenantId in metadata
+        if (body.data?.object?.metadata?.tenantId) return body.data.object.metadata.tenantId;
+        if (body.data?.object?.subscription_details?.metadata?.tenantId) return body.data.object.subscription_details.metadata.tenantId;
         if (body.account) return `stripe_${body.account}`;
         break;
 
@@ -393,9 +395,23 @@ class WebhookRouter {
       console.log(`[Handler] New Shopify order for ${tenantId}:`, data.id);
     });
 
-    // Stripe: Payment succeeded
-    this.registerHandler('stripe', 'payment_intent.succeeded', async (tenantId, eventType, data) => {
-      console.log(`[Handler] Stripe payment for ${tenantId}:`, data.id);
+    // Session 250.255: Stripe subscription lifecycle — real business logic
+    const stripeHandler = require('./stripe-subscription-handler.cjs');
+
+    this.registerHandler('stripe', 'checkout.session.completed', async (tenantId, eventType, data) => {
+      await stripeHandler.handleCheckoutCompleted(data.data?.object || data);
+    });
+
+    this.registerHandler('stripe', 'customer.subscription.updated', async (tenantId, eventType, data) => {
+      await stripeHandler.handleSubscriptionUpdated(data.data?.object || data);
+    });
+
+    this.registerHandler('stripe', 'customer.subscription.deleted', async (tenantId, eventType, data) => {
+      await stripeHandler.handleSubscriptionDeleted(data.data?.object || data);
+    });
+
+    this.registerHandler('stripe', 'invoice.payment_succeeded', async (tenantId, eventType, data) => {
+      await stripeHandler.handleInvoicePaid(data.data?.object || data);
     });
 
     // Slack: DM messages — respond with AI via VocalIA Voice API

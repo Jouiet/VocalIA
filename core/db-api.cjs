@@ -77,11 +77,11 @@ const PLAN_QUOTAS = {
 
 // Session 250.240: Canonical PLAN_FEATURES — 23 features, 5 plans (added cloud_voice for G2)
 const PLAN_FEATURES = {
-  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, cloud_voice: false },
-  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true },
-  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true },
-  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, cloud_voice: true },
-  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, sms_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true }
+  starter: { voice_widget: true, voice_telephony: false, booking: false, bant_crm_push: false, crm_sync: false, calendar_sync: false, email_automation: false, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: false, custom_branding: false, api_access: false, webhooks: false, voice_cloning: false, expert_dashboard: false, cloud_voice: false },
+  pro: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true },
+  ecommerce: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: false, email_automation: true, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true },
+  expert_clone: { voice_widget: true, voice_telephony: false, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, whatsapp: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false, ecom_recommendations: false, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: true, expert_dashboard: true, cloud_voice: true },
+  telephony: { voice_widget: true, voice_telephony: true, booking: true, bant_crm_push: true, crm_sync: true, calendar_sync: true, email_automation: true, whatsapp: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true, ecom_recommendations: true, export: true, custom_branding: true, api_access: true, webhooks: true, voice_cloning: false, expert_dashboard: false, cloud_voice: true }
 };
 
 /**
@@ -149,6 +149,13 @@ function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' 
         logo_url: null,
         company_name: company || null
       }
+    },
+    trial_end: new Date(Date.now() + 14 * 86400000).toISOString(),
+    stripe: {
+      customer_id: null,
+      subscription_id: null,
+      subscription_status: 'trialing',
+      price_id: null
     },
     integrations: {},
     actions: { overrides: {}, custom: [] },
@@ -1437,6 +1444,22 @@ async function handleRequest(req, res) {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // Session 250.255: Billing Price IDs API (dynamic Stripe prices)
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/billing/prices - Return Stripe price IDs from env vars (public)
+  if (path === '/api/billing/prices' && method === 'GET') {
+    sendJson(res, 200, {
+      starter: process.env.STRIPE_PRICE_STARTER || null,
+      pro: process.env.STRIPE_PRICE_PRO || null,
+      ecommerce: process.env.STRIPE_PRICE_ECOMMERCE || null,
+      expert_clone: process.env.STRIPE_PRICE_EXPERT_CLONE || null,
+      telephony: process.env.STRIPE_PRICE_TELEPHONY || null
+    });
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // Session 250.206: ALLOWED ORIGINS API (Self-Service Widget Install)
   // ═══════════════════════════════════════════════════════════════
 
@@ -2362,6 +2385,101 @@ async function handleRequest(req, res) {
       sendJson(res, 200, loader.getStats());
     } catch (e) {
       console.error('❌ KB stats error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // Session 250.255: KB Score — Thinking Partner F5
+  const kbScoreMatch = path.match(/^\/api\/tenants\/(\w+)\/kb-score$/);
+  if (kbScoreMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(kbScoreMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const kbDir = path.join(__dirname, '..', 'clients', tenantId, 'knowledge-base');
+      let entries = [];
+      let langDirs = [];
+      const KEY_CATEGORIES = ['livraison', 'retour', 'paiement', 'horaires', 'faq', 'shipping', 'return', 'payment', 'hours', 'delivery'];
+
+      if (fs.existsSync(kbDir)) {
+        // Scan language subdirs
+        const items = fs.readdirSync(kbDir, { withFileTypes: true });
+        for (const item of items) {
+          if (item.isDirectory() && /^[a-z]{2,3}$/.test(item.name)) {
+            langDirs.push(item.name);
+            const langPath = path.join(kbDir, item.name);
+            const files = fs.readdirSync(langPath).filter(f => f.endsWith('.json') || f.endsWith('.txt'));
+            for (const f of files) {
+              entries.push({ lang: item.name, file: f, path: path.join(langPath, f) });
+            }
+          }
+        }
+        // Root-level files
+        const rootFiles = items.filter(i => i.isFile() && (i.name.endsWith('.json') || i.name.endsWith('.txt')));
+        for (const f of rootFiles) {
+          entries.push({ lang: 'root', file: f.name, path: path.join(kbDir, f.name) });
+        }
+      }
+
+      // Score calculation (4 criteria × 25pts)
+      // 1. Entry count: 0-25 (30+ = max)
+      const countScore = Math.min(25, Math.round((entries.length / 30) * 25));
+
+      // 2. Language coverage: check fr, en, ar, es, ary
+      const TARGET_LANGS = ['fr', 'en', 'ar', 'es', 'ary'];
+      const langCoverage = TARGET_LANGS.filter(l => langDirs.includes(l)).length;
+      const langScore = Math.round((langCoverage / TARGET_LANGS.length) * 25);
+
+      // 3. Depth: % entries with structured JSON
+      let structuredCount = 0;
+      for (const entry of entries) {
+        if (entry.file.endsWith('.json')) {
+          try {
+            const content = fs.readFileSync(entry.path, 'utf8');
+            const parsed = JSON.parse(content);
+            if (typeof parsed === 'object' && Object.keys(parsed).length > 1) structuredCount++;
+          } catch { /* skip */ }
+        }
+      }
+      const depthScore = entries.length > 0 ? Math.round((structuredCount / entries.length) * 25) : 0;
+
+      // 4. Key categories presence
+      const allFileNames = entries.map(e => e.file.toLowerCase()).join(' ');
+      const allContent = entries.slice(0, 50).map(e => {
+        try { return fs.readFileSync(e.path, 'utf8').toLowerCase().substring(0, 500); } catch { return ''; }
+      }).join(' ');
+      const searchText = allFileNames + ' ' + allContent;
+      const catHits = KEY_CATEGORIES.filter(cat => searchText.includes(cat)).length;
+      const catScore = Math.min(25, Math.round((catHits / 5) * 25));
+
+      const score = countScore + langScore + depthScore + catScore;
+      const level = score < 40 ? 'Bronze' : score < 65 ? 'Silver' : score < 85 ? 'Gold' : 'Platinum';
+
+      const suggestions = [];
+      if (countScore < 20) suggestions.push('Ajoutez plus d\'entrées KB (objectif: 30+)');
+      if (langScore < 15) suggestions.push(`Ajoutez des traductions (manque: ${TARGET_LANGS.filter(l => !langDirs.includes(l)).join(', ')})`);
+      if (depthScore < 15) suggestions.push('Convertissez les entrées texte en JSON structuré');
+      if (catScore < 15) suggestions.push('Couvrez les catégories clés: livraison, retour, paiement, horaires, FAQ');
+
+      sendJson(res, 200, {
+        score,
+        level,
+        breakdown: {
+          entries: { score: countScore, max: 25, count: entries.length },
+          languages: { score: langScore, max: 25, covered: langDirs, missing: TARGET_LANGS.filter(l => !langDirs.includes(l)) },
+          depth: { score: depthScore, max: 25, structured: structuredCount, total: entries.length },
+          categories: { score: catScore, max: 25, found: catHits }
+        },
+        suggestions
+      });
+    } catch (e) {
+      console.error('❌ KB score error:', e.message);
       sendError(res, 500, 'Internal server error');
     }
     return;
