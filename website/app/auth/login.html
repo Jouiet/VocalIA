@@ -40,18 +40,53 @@
   <script src="/src/lib/i18n.js"></script>
 
   <style>
-    .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Animated grid background */
+    .auth-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(94,106,210,0.08) 1px, transparent 0);
+      background-size: 40px 40px;
     }
+    .dark .auth-grid {
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(94,106,210,0.15) 1px, transparent 0);
+    }
+    /* Radial glow behind card */
+    .auth-glow {
+      position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%);
+      width: 600px; height: 400px; z-index: 0;
+      background: radial-gradient(ellipse, rgba(94,106,210,0.12) 0%, transparent 70%);
+      filter: blur(60px); pointer-events: none;
+    }
+    .dark .auth-glow {
+      background: radial-gradient(ellipse, rgba(94,106,210,0.18) 0%, transparent 70%);
+    }
+    /* Card entrance */
+    @keyframes authCardIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .auth-card { animation: authCardIn 0.5s ease-out both; position: relative; z-index: 1; }
+    /* Input focus glow */
     .input-focus:focus {
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      box-shadow: 0 0 0 3px rgba(94,106,210,0.2);
+      border-color: #5E6AD2;
     }
+    /* Button gradient */
+    .btn-brand {
+      background: linear-gradient(135deg, #5E6AD2 0%, #7C3AED 100%);
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn-brand:hover { opacity: 0.92; }
+    .btn-brand:active { transform: scale(0.98); }
   </style>
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505] flex items-center justify-center p-4">
+  <div class="auth-grid" aria-hidden="true"></div>
+  <div class="auth-glow" aria-hidden="true"></div>
 
   <!-- Login Card -->
-  <div class="w-full max-w-md">
+  <div class="w-full max-w-md auth-card">
     <!-- Logo -->
     <div class="text-center mb-8">
       <a href="/" class="inline-flex items-center gap-2">
@@ -152,7 +187,7 @@
         <button
           type="submit"
           id="submit-btn"
-          class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          class="w-full py-2.5 px-4 btn-brand text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5E6AD2] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           <span data-i18n="auth.login_button">Se connecter</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>

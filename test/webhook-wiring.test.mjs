@@ -113,7 +113,7 @@ describe('Webhook Event Wiring — Regression (B90-B95)', () => {
   });
 
   describe('Feature count consistency', () => {
-    it('db-api PLAN_FEATURES has exactly 23 features per plan', () => {
+    it('db-api PLAN_FEATURES has exactly 22 features per plan', () => {
       // Find PLAN_FEATURES block, then extract starter plan
       const pfIdx = dbApi.indexOf('PLAN_FEATURES');
       assert.ok(pfIdx > 0, 'PLAN_FEATURES not found');
@@ -121,11 +121,11 @@ describe('Webhook Event Wiring — Regression (B90-B95)', () => {
       const starterMatch = afterPF.match(/starter:\s*\{([^}]+)\}/);
       assert.ok(starterMatch, 'PLAN_FEATURES.starter not found');
       const featureCount = (starterMatch[1].match(/[a-z_]+:\s*(true|false)/g) || []).length;
-      assert.equal(featureCount, 23, `Expected 23 features in starter plan, got ${featureCount}`);
+      assert.equal(featureCount, 22, `Expected 22 features in starter plan, got ${featureCount}`);
     });
 
-    it('db-api comments say 23 features, not 24', () => {
-      assert.ok(!dbApi.includes('24 features'), 'Comments should say 23 features, not 24');
+    it('db-api comments say 22 features, not 23', () => {
+      assert.ok(!dbApi.includes('23 features'), 'Comments should say 22 features, not 23');
     });
   });
 

@@ -24,7 +24,6 @@
     "voice_widget": true,
     "voice_telephony": false,
     "email_automation": false,
-    "sms_automation": false,
     "whatsapp": false,
     "crm_sync": false,
     "calendar_sync": false,

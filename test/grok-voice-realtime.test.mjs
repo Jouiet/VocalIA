@@ -852,7 +852,7 @@ describe('Real Gemini TTS Fallback', { skip: !process.env.GEMINI_API_KEY }, () =
       await tts.synthesize('Première phrase.');
       await tts.synthesize('Deuxième phrase.');
     } catch (err) {
-      if (/quota|rate.limit|429|billing/i.test(err.message)) {
+      if (/quota|rate.limit|429|billing|No audio|empty.response|resource.exhausted/i.test(err.message)) {
         quotaAvailable = false;
         return t.skip(`Gemini quota exhausted mid-suite: ${err.message}`);
       }

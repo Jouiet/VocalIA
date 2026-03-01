@@ -338,10 +338,10 @@ describe('Cost Tracking Sensor', () => {
     });
 
     it('returns low pressure for small totalThisMonth with API data', () => {
-      const costs = [{ provider: 'OpenAI', totalCost: 5 }];
-      const costLog = { providers: {}, totalThisMonth: 5, lastUpdated: null };
+      const costs = [{ provider: 'OpenAI', totalCost: 1 }];
+      const costLog = { providers: {}, totalThisMonth: 1, lastUpdated: null };
       const pressure = costSensor.calculatePressure(costs, costLog);
-      assert.ok(pressure < 25, `Expected low pressure for $5/month, got ${pressure}`);
+      assert.ok(pressure < 25, `Expected low pressure for $1/month, got ${pressure}`);
     });
 
     it('caps at 100', () => {

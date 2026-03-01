@@ -65,7 +65,7 @@ describe('TokenBudget ESTIMATED_TOKENS', () => {
 // TokenBudgetManager
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe('TokenBudgetManager', () => {
+describe('TokenBudgetManager', { concurrency: false }, () => {
   let manager;
   let tmpDir;
 

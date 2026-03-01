@@ -533,7 +533,7 @@
 
     const tenantId = auth.getTenantId();
     if (!tenantId) {
-      document.querySelector('.max-w-4xl').innerHTML = `<div class="p-8 text-center text-red-500">${VocaliaI18n.t('install_widget.no_tenant')}</div>`;
+      document.querySelector('.max-w-4xl').innerHTML = `<div class="p-8 text-center text-red-500">${escapeHtml(VocaliaI18n.t('install_widget.no_tenant'))}</div>`;
       throw new Error('No tenant ID');
     }
 
@@ -934,18 +934,20 @@
         const data = await resp.json();
 
         if (data.verified) {
-          resultDiv.innerHTML = `
-            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/30 rounded-lg">
-              <div class="flex items-center gap-2 mb-2">
-                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
-                <span class="font-semibold text-emerald-700 dark:text-emerald-400">Installation vérifiée</span>
-              </div>
-              <div class="text-sm text-emerald-600 dark:text-emerald-400 space-y-1">
-                ${data.checks.widget_found ? '<div>✓ Widget détecté</div>' : ''}
-                ${data.checks.tenant_match ? '<div>✓ Tenant ID correct</div>' : ''}
-                ${data.checks.sri_present ? '<div>✓ SRI (intégrité) présent</div>' : '<div class="text-amber-600">⚠ SRI absent (recommandé pour la sécurité)</div>'}
-              </div>
-            </div>`;
+          const checks = data.checks || {};
+          const checkLines = [];
+          if (checks.widget_found) checkLines.push('<div>✓ Widget détecté</div>');
+          if (checks.tenant_match) checkLines.push('<div>✓ Tenant ID correct</div>');
+          if (checks.sri_present) checkLines.push('<div>✓ SRI (intégrité) présent</div>');
+          else checkLines.push('<div class="text-amber-600">⚠ SRI absent (recommandé pour la sécurité)</div>');
+          resultDiv.innerHTML =
+            '<div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/30 rounded-lg">' +
+            '<div class="flex items-center gap-2 mb-2">' +
+            '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>' +
+            '<span class="font-semibold text-emerald-700 dark:text-emerald-400">Installation vérifiée</span>' +
+            '</div>' +
+            '<div class="text-sm text-emerald-600 dark:text-emerald-400 space-y-1">' + checkLines.join('') + '</div>' +
+            '</div>';
         } else {
           const suggestions = (data.suggestions || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
           resultDiv.innerHTML = `
