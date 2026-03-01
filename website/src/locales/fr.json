@@ -4346,7 +4346,13 @@
       "api_response": "Réponse API",
       "uptime": "Disponibilité",
       "error_rate": "Taux d'erreur",
-      "throughput": "Débit"
+      "throughput": "Débit",
+      "tenants": "Tenants",
+      "kb_avg": "KB Moy.",
+      "conversations": "Conversations",
+      "widgets": "Widgets Actifs",
+      "kb_entries": "Entrées KB",
+      "alerts": "Alertes"
     },
     "heatmap": {
       "title": "Activité globale (7 jours)",

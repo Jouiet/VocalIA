@@ -163,6 +163,44 @@
         </div>
       </div>
 
+      <!-- Platform Health (250.261) — Data Driven cross-tenant overview -->
+      <div id="platform-health" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="activity" class="w-5 h-5 text-indigo-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="admin.health.title">Santé Plateforme</h3>
+          </div>
+          <span id="health-timestamp" class="text-xs text-zinc-400">--</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div class="text-center p-3 rounded-lg bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-500/10">
+            <p id="health-tenants" class="text-xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="admin.health.tenants">Tenants</p>
+          </div>
+          <div class="text-center p-3 rounded-lg bg-purple-50/50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-500/10">
+            <p id="health-kb-avg" class="text-xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="admin.health.kb_avg">KB Moy.</p>
+          </div>
+          <div class="text-center p-3 rounded-lg bg-emerald-50/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-500/10">
+            <p id="health-conversations" class="text-xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="admin.health.conversations">Conversations</p>
+          </div>
+          <div class="text-center p-3 rounded-lg bg-cyan-50/50 dark:bg-cyan-900/10 border border-cyan-100 dark:border-cyan-500/10">
+            <p id="health-widgets" class="text-xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="admin.health.widgets">Widgets Actifs</p>
+          </div>
+          <div class="text-center p-3 rounded-lg bg-amber-50/50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-500/10">
+            <p id="health-kb-total" class="text-xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="admin.health.kb_entries">Entrées KB</p>
+          </div>
+          <div class="text-center p-3 rounded-lg bg-rose-50/50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-500/10">
+            <p id="health-alerts-count" class="text-xl font-bold text-zinc-900 dark:text-white font-mono">--</p>
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="admin.health.alerts">Alertes</p>
+          </div>
+        </div>
+        <div id="health-alerts" class="mt-3 space-y-1.5 hidden"></div>
+      </div>
+
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- MRR -->
@@ -1058,11 +1096,59 @@
         // SOTA Engine Intelligence stats
         loadEngineStats();
 
+        // Platform Health — cross-tenant overview
+        renderPlatformHealth();
+
         // Recent activity
         updateRecentActivity(tenantsData, sessionsData, pending);
 
       } catch (error) {
         console.error('Failed to load stats:', error);
+      }
+    }
+
+    // Platform Health — cross-tenant data-driven overview (250.261)
+    async function renderPlatformHealth() {
+      try {
+        const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:3013'
+          : 'https://api.vocalia.ma';
+        const res = await fetch(`${baseUrl}/api/admin/platform-health`);
+        if (!res.ok) return;
+        const d = await res.json();
+
+        // Metric counters
+        if (d.tenants) animateStatCounter('health-tenants', d.tenants.total);
+        if (d.content) {
+          animateStatCounter('health-kb-avg', d.content.avg_kb_per_tenant);
+          animateStatCounter('health-conversations', d.content.total_conversations);
+          animateStatCounter('health-kb-total', d.content.total_kb_entries);
+        }
+        if (d.widgets) animateStatCounter('health-widgets', d.widgets.active_24h);
+
+        // Alerts
+        const alerts = d.alerts || [];
+        animateStatCounter('health-alerts-count', alerts.length);
+        const alertsEl = document.getElementById('health-alerts');
+        if (alertsEl && alerts.length > 0) {
+          alertsEl.classList.remove('hidden');
+          alertsEl.innerHTML = alerts.slice(0, 5).map(a => {
+            const icon = a.severity === 'critical' ? 'alert-triangle' : a.severity === 'warning' ? 'alert-circle' : 'info';
+            const color = a.severity === 'critical' ? 'text-red-500' : a.severity === 'warning' ? 'text-amber-500' : 'text-blue-500';
+            const bg = a.severity === 'critical' ? 'bg-red-50 dark:bg-red-900/10' : a.severity === 'warning' ? 'bg-amber-50 dark:bg-amber-900/10' : 'bg-blue-50 dark:bg-blue-900/10';
+            return `<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg ${bg} text-xs">
+              <i data-lucide="${icon}" class="w-3.5 h-3.5 ${color} flex-shrink-0"></i>
+              <span class="text-zinc-700 dark:text-zinc-300"><strong>${escapeHtml(a.tenant || '')}</strong> ${escapeHtml(a.message || '')}</span>
+            </div>`;
+          }).join('');
+          lucide.createIcons({ attrs: { 'stroke-width': 2 }, nameAttr: 'data-lucide' });
+        }
+
+        // Timestamp
+        const tsEl = document.getElementById('health-timestamp');
+        if (tsEl) tsEl.textContent = new Date().toLocaleTimeString(document.documentElement.lang || 'fr', { hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        console.error('Platform health:', e);
       }
     }
 

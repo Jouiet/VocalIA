@@ -4346,7 +4346,13 @@
       "api_response": "استجابة API",
       "uptime": "وقت التشغيل",
       "error_rate": "معدل الخطأ",
-      "throughput": "معدل النقل"
+      "throughput": "معدل النقل",
+      "tenants": "المستأجرون",
+      "kb_avg": "معدل KB",
+      "conversations": "المحادثات",
+      "widgets": "الأدوات النشطة",
+      "kb_entries": "إدخالات KB",
+      "alerts": "التنبيهات"
     },
     "heatmap": {
       "title": "النشاط العام (7 أيام)",

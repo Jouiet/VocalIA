@@ -32,7 +32,7 @@ const TASK_TYPES = {
 //   - RECOMMENDATION: Gemini first (long context for product data — ASSUMED, not measured)
 //   - SUPPORT: Gemini first (long context for KB troubleshooting — ASSUMED, not measured)
 //   - DARIJA: Grok first (fast), then atlasChat (specialized Darija model), then gemini
-// TODO: Validate routing with real A/B test data after first 100 paying conversations
+// NOTE: Routing priorities are heuristic. Validate with A/B data after first 100 paying conversations.
 
 const ROUTING_TABLE = {
   [TASK_TYPES.CONVERSATION]:    ['grok', 'gemini', 'anthropic'],

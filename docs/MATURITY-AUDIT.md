@@ -1,6 +1,6 @@
 # Audit de Maturité "Readiness / Plug-and-Play" — VocalIA
 
-> Date: 28/02/2026 — Session 250.253
+> Date: 01/03/2026 — Updated Session 250.261
 > Méthodologie: 5 Piliers Cumulatifs (0→100%)
 
 ## Méthodologie
@@ -126,7 +126,12 @@
 | multi_language | All | ✅ | ✅ | ✅ | **WORKS** (mais via code, pas via UI client) |
 | lead_scoring | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** (BANT fonctionne en test, 0 leads reels) |
 
-**Resume (updated 250.259)**: 7 WORKS | 0 PARTIAL | 7 UNTESTED | 2 BROKEN | 3 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED
+**Resume (updated 250.261)**: 7 WORKS | 0 PARTIAL | 7 UNTESTED | 2 BROKEN | 3 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED
+
+### Data-Driven Dashboards (250.260-261)
+- **Client Dashboard**: Intelligence Summary widget (KB health, drift alignment, cross-sell, alerts) via `/api/tenants/:id/insights`
+- **Admin Dashboard**: Platform Health widget (6 metrics: tenants, KB avg, conversations, active widgets, KB entries, alerts) via `/api/admin/platform-health`
+- i18n: 5 locales (native characters, 0 Unicode escapes)
 
 ---
 

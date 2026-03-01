@@ -1305,6 +1305,102 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // Session 250.261: Platform Health — Admin cross-tenant overview
+  if (path === '/api/admin/platform-health' && method === 'GET') {
+    const admin = await checkAdmin(req, res);
+    if (!admin) return;
+
+    try {
+      const nodePath = require('path');
+      const clientsDir = nodePath.join(__dirname, '..', 'clients');
+      const tenantDirs = fs.existsSync(clientsDir)
+        ? fs.readdirSync(clientsDir, { withFileTypes: true })
+          .filter(d => d.isDirectory() && !d.name.startsWith('.'))
+          .map(d => d.name)
+        : [];
+
+      let totalKB = 0, tenantsWithKB = 0, totalConversations = 0;
+      let widgetHeartbeats = 0, activeWidgets = 0;
+      const planDistribution = {};
+      const alerts = [];
+
+      for (const tid of tenantDirs) {
+        // Config
+        const configPath = nodePath.join(clientsDir, tid, 'config.json');
+        if (fs.existsSync(configPath)) {
+          try {
+            const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+            const plan = config.plan || 'starter';
+            planDistribution[plan] = (planDistribution[plan] || 0) + 1;
+          } catch { /* skip corrupt */ }
+        }
+
+        // KB entries count
+        const kbDir = nodePath.join(clientsDir, tid, 'knowledge-base');
+        if (fs.existsSync(kbDir)) {
+          let kbCount = 0;
+          const scan = (dir) => {
+            try {
+              for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+                if (item.isFile() && (item.name.endsWith('.json') || item.name.endsWith('.txt'))) kbCount++;
+                else if (item.isDirectory() && /^[a-z]{2,3}$/.test(item.name)) scan(nodePath.join(dir, item.name));
+              }
+            } catch { /* skip */ }
+          };
+          scan(kbDir);
+          if (kbCount > 0) { tenantsWithKB++; totalKB += kbCount; }
+        }
+
+        // Conversation count
+        const sessionsDir = nodePath.join(clientsDir, tid, 'sessions');
+        if (fs.existsSync(sessionsDir)) {
+          try {
+            totalConversations += fs.readdirSync(sessionsDir).filter(f => f.endsWith('.json')).length;
+          } catch { /* skip */ }
+        }
+      }
+
+      // Widget heartbeat count (from voice-api in-memory store)
+      try {
+        const heartbeatFile = nodePath.join(__dirname, '..', 'data', 'widget-heartbeats.json');
+        if (fs.existsSync(heartbeatFile)) {
+          const hb = JSON.parse(fs.readFileSync(heartbeatFile, 'utf8'));
+          widgetHeartbeats = Object.keys(hb).length;
+          const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+          activeWidgets = Object.values(hb).filter(v => new Date(v.last_seen || v.timestamp).getTime() > cutoff).length;
+        }
+      } catch { /* skip */ }
+
+      // Generate platform-level alerts
+      if (tenantDirs.length === 0) alerts.push({ severity: 'critical', message: '0 tenants enregistrés' });
+      if (totalConversations === 0) alerts.push({ severity: 'warning', message: '0 conversations totales — plateforme inactive' });
+      if (tenantsWithKB === 0) alerts.push({ severity: 'info', message: 'Aucun tenant n\'a configuré sa KB' });
+      if (activeWidgets === 0) alerts.push({ severity: 'info', message: 'Aucun widget actif (dernières 24h)' });
+
+      sendJson(res, 200, {
+        tenants: {
+          total: tenantDirs.length,
+          with_kb: tenantsWithKB,
+          plan_distribution: planDistribution
+        },
+        content: {
+          total_kb_entries: totalKB,
+          avg_kb_per_tenant: tenantsWithKB > 0 ? Math.round(totalKB / tenantsWithKB) : 0,
+          total_conversations: totalConversations
+        },
+        widgets: {
+          heartbeats_total: widgetHeartbeats,
+          active_24h: activeWidgets
+        },
+        alerts
+      });
+    } catch (e) {
+      console.error('❌ Platform health error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
   // Telephony Endpoints
   if (path.startsWith('/api/telephony/')) {
     const handled = await handleTelephonyRequest(req, res, path, method, query);

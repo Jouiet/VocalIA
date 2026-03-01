@@ -4346,7 +4346,13 @@
       "api_response": "API Response",
       "uptime": "Uptime",
       "error_rate": "Error Rate",
-      "throughput": "Throughput"
+      "throughput": "Throughput",
+      "tenants": "Tenants",
+      "kb_avg": "KB Avg.",
+      "conversations": "Conversations",
+      "widgets": "Active Widgets",
+      "kb_entries": "KB Entries",
+      "alerts": "Alerts"
     },
     "heatmap": {
       "title": "Global Activity (7 days)",
