@@ -163,26 +163,74 @@
             </a>
           </div>
 
-          <!-- Magento / BigCommerce -->
+          <!-- Magento -->
           <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
             <div class="flex items-center gap-3 mb-3">
               <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
                 <i data-lucide="shopping-bag" class="w-5 h-5 text-orange-600 dark:text-orange-400"></i>
               </div>
               <div>
-                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Magento / BigCommerce</h3>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">Magento 2</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li data-i18n="install_widget.mag_step1">1. Uploadez le module dans app/code/</li>
+              <li data-i18n="install_widget.mag_step2">2. bin/magento module:enable VocalIA_VoiceAssistant</li>
+              <li data-i18n="install_widget.mag_step3">3. Stores &gt; Config &gt; VocalIA &gt; Tenant ID</li>
+            </ol>
+            <div class="flex items-center gap-2">
+              <a href="/downloads/vocalia-magento.zip" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-medium rounded-lg transition-colors">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span data-i18n="install_widget.download_module">Télécharger le module</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- BigCommerce -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center">
+                <i data-lucide="store" class="w-5 h-5 text-violet-600 dark:text-violet-400"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">BigCommerce</h3>
                 <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.guided">Guidé</span>
               </div>
             </div>
             <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
-              <li data-i18n="install_widget.mag_step1">1. Magento: Module ou template</li>
-              <li data-i18n="install_widget.mag_step2">2. BigCommerce: Script Manager</li>
-              <li data-i18n="install_widget.mag_step3">3. Collez le snippet &gt; Save</li>
+              <li>1. Storefront &gt; Script Manager &gt; Create</li>
+              <li>2. Location: Footer, Pages: All Pages</li>
+              <li>3. Collez le snippet &gt; Save</li>
             </ol>
-            <a href="#snippet-section" data-platform-link="magento" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-600 hover:bg-orange-700 text-white text-xs font-medium rounded-lg transition-colors">
+            <a href="#snippet-section" data-platform-link="bigcommerce" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-medium rounded-lg transition-colors">
               <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
               <span data-i18n="install_widget.see_instructions">Voir les instructions</span>
             </a>
+          </div>
+
+          <!-- OpenCart -->
+          <div class="group relative bg-zinc-50 dark:bg-white/[0.03] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 bg-sky-100 dark:bg-sky-900/30 rounded-lg flex items-center justify-center">
+                <i data-lucide="shopping-cart" class="w-5 h-5 text-sky-600 dark:text-sky-400"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-zinc-900 dark:text-white text-sm">OpenCart</h3>
+                <span class="text-xs text-emerald-600 dark:text-emerald-400" data-i18n="install_widget.zero_code">0 code</span>
+              </div>
+            </div>
+            <ol class="text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 mb-4">
+              <li>1. Extensions &gt; Installer &gt; Upload</li>
+              <li>2. Extensions &gt; Modules &gt; VocalIA &gt; Install</li>
+              <li>3. Edit &gt; collez votre Tenant ID &gt; Save</li>
+            </ol>
+            <div class="flex items-center gap-2">
+              <a href="/downloads/vocalia-opencart.zip" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-medium rounded-lg transition-colors">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span data-i18n="install_widget.download_module">Télécharger le module</span>
+              </a>
+            </div>
           </div>
 
           <!-- Joomla -->
@@ -292,6 +340,24 @@
           <i data-lucide="info" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 mt-0.5 flex-shrink-0"></i>
           <p class="text-sm text-indigo-700 dark:text-indigo-300" id="instructions-text"></p>
         </div>
+      </section>
+
+      <!-- Widget Installation Verifier -->
+      <section class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="scan-search" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">Vérifier l'installation</h2>
+        </div>
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">Entrez l'URL de votre site pour vérifier que le widget VocalIA est correctement installé.</p>
+        <div class="flex gap-2 mb-4">
+          <input id="verify-url" type="url" placeholder="https://votre-site.com"
+            class="flex-1 px-3 py-2 text-sm bg-zinc-50 dark:bg-white/[0.06] border border-zinc-200 dark:border-white/[0.1] rounded-lg text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <button id="verify-btn" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
+            <i data-lucide="search" class="w-4 h-4 inline-block mr-1"></i>
+            Vérifier
+          </button>
+        </div>
+        <div id="verify-result" class="hidden"></div>
       </section>
 
       <!-- Section 2: Allowed Domains -->
@@ -837,6 +903,55 @@
         const allChecked = checks.every(cId => document.getElementById(cId).checked);
         document.getElementById('verify-success').classList.toggle('hidden', !allChecked);
       });
+    });
+
+    // ─── Widget Install Verifier ────────────────────────────────
+
+    document.getElementById('verify-btn').addEventListener('click', async () => {
+      const urlInput = document.getElementById('verify-url');
+      const resultDiv = document.getElementById('verify-result');
+      const url = urlInput.value.trim();
+      if (!url) { urlInput.focus(); return; }
+
+      resultDiv.classList.remove('hidden');
+      resultDiv.innerHTML = '<div class="flex items-center gap-2 text-sm text-zinc-500"><div class="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>Vérification en cours...</div>';
+
+      try {
+        const tid = document.getElementById('tenant-id')?.value || '';
+        const resp = await fetch(`https://api.vocalia.ma/api/widget/verify?url=${encodeURIComponent(url)}&tenant_id=${encodeURIComponent(tid)}`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('vocalia_token') || ''}` }
+        });
+        const data = await resp.json();
+
+        if (data.verified) {
+          resultDiv.innerHTML = `
+            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/30 rounded-lg">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+                <span class="font-semibold text-emerald-700 dark:text-emerald-400">Installation vérifiée</span>
+              </div>
+              <div class="text-sm text-emerald-600 dark:text-emerald-400 space-y-1">
+                ${data.checks.widget_found ? '<div>✓ Widget détecté</div>' : ''}
+                ${data.checks.tenant_match ? '<div>✓ Tenant ID correct</div>' : ''}
+                ${data.checks.sri_present ? '<div>✓ SRI (intégrité) présent</div>' : '<div class="text-amber-600">⚠ SRI absent (recommandé pour la sécurité)</div>'}
+              </div>
+            </div>`;
+        } else {
+          const suggestions = (data.suggestions || []).map(s => `<li>${escapeHtml(s)}</li>`).join('');
+          resultDiv.innerHTML = `
+            <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 rounded-lg">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="x-circle" class="w-5 h-5 text-red-600"></i>
+                <span class="font-semibold text-red-700 dark:text-red-400">Widget non détecté</span>
+              </div>
+              ${data.error ? `<p class="text-sm text-red-600 dark:text-red-400 mb-2">${escapeHtml(data.error)}</p>` : ''}
+              ${suggestions ? `<ul class="text-sm text-zinc-600 dark:text-zinc-400 list-disc list-inside space-y-1">${suggestions}</ul>` : ''}
+            </div>`;
+        }
+        lucide.createIcons();
+      } catch (e) {
+        resultDiv.innerHTML = `<div class="p-3 bg-zinc-100 dark:bg-white/[0.06] rounded-lg text-sm text-zinc-600 dark:text-zinc-400">Erreur de vérification: ${escapeHtml(e.message)}</div>`;
+      }
     });
 
     // ─── Init ────────────────────────────────────────────────────

@@ -13,7 +13,7 @@
  *   5. Save and publish
  *
  *   Snippet:
- *   <script src="https://api.vocalia.ma/voice-assistant/voice-widget-b2b.js"
+ *   <script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js"
  *     data-vocalia-tenant="YOUR_TENANT_ID" defer></script>
  *
  * METHOD 2 — Velo (advanced):
@@ -39,7 +39,7 @@ export function vocalia(tenantId, widgetType = 'b2b') {
     ? 'voice-widget-ecommerce.js'
     : 'voice-widget-b2b.js';
   const script = document.createElement('script');
-  script.src = `https://api.vocalia.ma/voice-assistant/${file}`;
+  script.src = `https://vocalia.ma/voice-assistant/${file}`;
   script.defer = true;
   script.dataset.vocaliaTenant = tenantId;
   document.body.appendChild(script);

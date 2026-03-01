@@ -41,11 +41,12 @@
    - Install/uninstall, configuration, hooks, form, widget rendering, XSS escaping
    - `integrations/prestashop/tests/VocaliaModuleTest.php`
 
-3. **Plugin ZIPs distribués** — 4 archives build automatique
-   - `scripts/build-plugin-zips.cjs` — WordPress (4.4 KB), PrestaShop (2.1 KB), Joomla (2.6 KB), Drupal (4.7 KB)
-   - **BUG CORRIGÉ (250.253b)** : ZIPs incluaient `vendor/` + `tests/` + `composer.lock` (WP=16MB, PS=1.4MB). Fix: exclusions ajoutées dans zip command. Résultat: WP=4.4KB (readme.txt + .php), PS=2.1KB (.php seul).
-   - Endpoint: `GET /api/plugins/download/:platform` (wordpress|prestashop|joomla|drupal)
-   - Endpoint: `GET /api/plugins` (liste les plugins disponibles)
+3. **Plugin ZIPs distribués** — 6 archives build automatique
+   - `scripts/build-plugin-zips.cjs` — WordPress (4.4 KB), PrestaShop (2.1 KB), Joomla (2.6 KB), Drupal (4.7 KB), Magento (4.8 KB), OpenCart (2.7 KB)
+   - **BUG CORRIGÉ (250.253b)** : ZIPs incluaient `vendor/` + `tests/` + `composer.lock` (WP=16MB, PS=1.4MB). Fix: exclusions ajoutées dans zip command.
+   - **250.257**: Auto-copie vers `website/downloads/` + Magento/OpenCart ajoutés
+   - Endpoint: `GET /api/plugins/download/:platform` (wordpress|prestashop|joomla|drupal|magento|opencart)
+   - Endpoint: `GET /api/plugins` (liste les 6 plugins disponibles)
 
 4. **Dashboard Visual Polish** — Client + Admin dashboards
    - Animated gradient mesh welcome banners (15s `background-position` cycle)
@@ -78,6 +79,8 @@
 **Moyenne pondérée après: ~48%** (+13 points)
 
 > *Session 250.254*: 4 CMS modules (Joomla/Drupal/Magento/OpenCart) passent P1→P2 avec PHPUnit (54 tests: 14+13+14+13). CDN URL fix api.vocalia.ma→vocalia.ma dans les 6 plugins. Satellite S1/S2/S3 re-verified. Client folders cleanup (5643→528). http-utils tests (19). Design token validator 0 errors.
+
+> *Session 250.257*: CDN URL fix vérifié et complété dans les 6 snippets (Shopify/BigC/Squarespace/Webflow/Wix/GTM) — grep confirme 0 références api.vocalia.ma restantes. 6 ZIPs distribués (ajout Magento 4.8KB + OpenCart 2.7KB). build-plugin-zips.cjs auto-copie vers website/downloads/. Download endpoint élargi à 6 plateformes. install-widget.html: cards séparées Magento/BigCommerce/OpenCart avec boutons ZIP. Widget install verifier (GET /api/widget/verify). Widget heartbeat (POST /api/widget/heartbeat + GET /api/widget/heartbeats). install-widget.html: section "Vérifier l'installation" avec UI inline.
 
 ---
 
@@ -217,11 +220,11 @@ cd integrations/prestashop && vendor/bin/phpunit
 
 # Build ZIPs
 node scripts/build-plugin-zips.cjs
-# Attendu: 4 built, 0 failed
+# Attendu: 6 built, 0 failed
 
 # Plugin download endpoint
 curl http://localhost:3004/api/plugins
-# Attendu: JSON avec 4 plugins
+# Attendu: JSON avec 6 plugins
 
 # Node.js tests (system global)
 npm test

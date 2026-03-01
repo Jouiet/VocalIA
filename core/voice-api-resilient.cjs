@@ -2360,7 +2360,7 @@ function startServer(port = 3004) {
     // Session 250.253: Plugin ZIP Download Endpoint
     if (req.url.startsWith('/api/plugins/download/') && req.method === 'GET') {
       const platform = req.url.split('/').pop().split('?')[0].toLowerCase();
-      const validPlatforms = ['wordpress', 'prestashop', 'joomla', 'drupal'];
+      const validPlatforms = ['wordpress', 'prestashop', 'joomla', 'drupal', 'magento', 'opencart'];
       if (!validPlatforms.includes(platform)) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: `Invalid platform. Available: ${validPlatforms.join(', ')}` }));
@@ -2391,6 +2391,44 @@ function startServer(port = 3004) {
       const plugins = getAvailablePlugins();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ plugins }));
+      return;
+    }
+
+    // Session 250.257: Widget heartbeat — tracks active installations
+    if (req.url === '/api/widget/heartbeat' && req.method === 'POST') {
+      let body = '';
+      req.on('data', chunk => body += chunk);
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const tid = sanitizeTenantId(data.tenant_id || '');
+          if (tid && tid !== 'unknown') {
+            // Store in-memory for dashboard visibility (last heartbeat per tenant+domain)
+            if (!global._widgetHeartbeats) global._widgetHeartbeats = {};
+            const key = `${tid}:${data.domain || 'unknown'}`;
+            global._widgetHeartbeats[key] = {
+              tenant_id: tid,
+              domain: (data.domain || '').slice(0, 100),
+              widget: data.widget || 'b2b',
+              last_seen: Date.now(),
+              visitor_id: (data.visitor_id || '').slice(0, 40)
+            };
+          }
+        } catch { /* ignore malformed */ }
+        res.writeHead(204);
+        res.end();
+      });
+      return;
+    }
+
+    // GET /api/widget/heartbeats — list active widget installations (admin)
+    if (req.url === '/api/widget/heartbeats' && req.method === 'GET') {
+      const heartbeats = global._widgetHeartbeats || {};
+      const active = Object.values(heartbeats)
+        .filter(h => Date.now() - h.last_seen < 24 * 60 * 60 * 1000)
+        .sort((a, b) => b.last_seen - a.last_seen);
+      res.writeHead(200, getCorsHeaders(req, { 'Content-Type': 'application/json' }));
+      res.end(JSON.stringify({ installations: active, total: active.length }));
       return;
     }
 

@@ -8,6 +8,8 @@
  * - PrestaShop: vocalia.zip
  * - Joomla: vocalia-joomla.zip
  * - Drupal: vocalia-drupal.zip
+ * - Magento: vocalia-magento.zip
+ * - OpenCart: vocalia-opencart.zip
  *
  * Output: dist/plugins/*.zip
  *
@@ -22,6 +24,7 @@ const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist', 'plugins');
+const WEB_DOWNLOADS = path.join(ROOT, 'website', 'downloads');
 
 // Plugin definitions: source dir → zip name → internal folder name
 const PLUGINS = {
@@ -43,6 +46,16 @@ const PLUGINS = {
   drupal: {
     src: 'integrations/drupal',
     zip: 'vocalia-drupal.zip',
+    folder: 'vocalia'
+  },
+  magento: {
+    src: 'integrations/magento',
+    zip: 'vocalia-magento.zip',
+    folder: 'vocalia'
+  },
+  opencart: {
+    src: 'integrations/opencart',
+    zip: 'vocalia-opencart.zip',
     folder: 'vocalia'
   }
 };
@@ -98,6 +111,12 @@ function buildZip(name, config) {
 
   const stats = fs.statSync(zipPath);
   const sizeKB = (stats.size / 1024).toFixed(1);
+
+  // Also copy to website/downloads/ for static serving
+  if (fs.existsSync(WEB_DOWNLOADS)) {
+    fs.copyFileSync(zipPath, path.join(WEB_DOWNLOADS, config.zip));
+  }
+
   console.log(`✅ [${name}] ${config.zip} (${sizeKB} KB)`);
   return true;
 }

@@ -2619,6 +2619,93 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // Widget Install Verification — GET /api/widget/verify?url=&tenant_id=
+  if (path === '/api/widget/verify' && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+
+    const params = new URL(req.url, 'http://localhost').searchParams;
+    const targetUrl = params.get('url');
+    const tenantId = params.get('tenant_id') || user.tenant_id;
+
+    if (!targetUrl) {
+      sendError(res, 400, 'Missing url parameter');
+      return;
+    }
+
+    // Basic URL validation
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(targetUrl.startsWith('http') ? targetUrl : `https://${targetUrl}`);
+    } catch {
+      sendError(res, 400, 'Invalid URL');
+      return;
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      const resp = await fetch(parsedUrl.href, {
+        signal: controller.signal,
+        headers: { 'User-Agent': 'VocalIA-WidgetVerifier/1.0' }
+      });
+      clearTimeout(timeout);
+
+      if (!resp.ok) {
+        sendJson(res, 200, {
+          verified: false,
+          url: parsedUrl.href,
+          error: `HTTP ${resp.status}`,
+          checks: { reachable: false, widget_found: false, tenant_match: false }
+        });
+        return;
+      }
+
+      const html = await resp.text();
+      const htmlLower = html.toLowerCase();
+
+      // Check 1: Widget script tag present
+      const widgetFound = htmlLower.includes('vocalia.ma/voice-assistant/') ||
+        htmlLower.includes('voice-widget-b2b') ||
+        htmlLower.includes('voice-widget-ecommerce') ||
+        htmlLower.includes('data-vocalia-tenant');
+
+      // Check 2: Tenant ID configured (not placeholder)
+      const tenantConfigured = html.includes(`data-vocalia-tenant="${tenantId}"`) ||
+        html.includes(`data-tenant-id="${tenantId}"`);
+      const hasPlaceholder = html.includes('YOUR_TENANT_ID');
+
+      // Check 3: SRI integrity attribute (security best practice)
+      const hasSRI = htmlLower.includes('integrity="sha');
+
+      sendJson(res, 200, {
+        verified: widgetFound && tenantConfigured && !hasPlaceholder,
+        url: parsedUrl.href,
+        checks: {
+          reachable: true,
+          widget_found: widgetFound,
+          tenant_match: tenantConfigured,
+          placeholder_detected: hasPlaceholder,
+          sri_present: hasSRI
+        },
+        suggestions: [
+          ...(!widgetFound ? ['Widget script tag not found. Add the VocalIA script to your page.'] : []),
+          ...(hasPlaceholder ? ['Replace YOUR_TENANT_ID with your actual tenant ID.'] : []),
+          ...(!tenantConfigured && widgetFound && !hasPlaceholder ? [`Tenant ID mismatch. Expected: ${tenantId}`] : []),
+          ...(!hasSRI && widgetFound ? ['Consider adding SRI (integrity attribute) for security.'] : [])
+        ]
+      });
+    } catch (e) {
+      sendJson(res, 200, {
+        verified: false,
+        url: parsedUrl.href,
+        error: e.name === 'AbortError' ? 'Timeout (10s)' : e.message,
+        checks: { reachable: false, widget_found: false, tenant_match: false }
+      });
+    }
+    return;
+  }
+
   // KB Quota Status - GET /api/tenants/:id/kb/quota
   const kbQuotaMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/quota$/);
   if (kbQuotaMatch && method === 'GET') {

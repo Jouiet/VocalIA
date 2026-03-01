@@ -874,6 +874,25 @@
     }
 
     // ============================================================
+    // WIDGET HEARTBEAT (Session 250.257: installation tracking)
+    // ============================================================
+
+    function sendHeartbeat() {
+        if (!state.tenantId || state.tenantId === 'unknown') return;
+        try {
+            const url = (state.apiUrl || CONFIG.apiUrl) + '/api/widget/heartbeat';
+            navigator.sendBeacon(url, JSON.stringify({
+                tenant_id: state.tenantId,
+                domain: window.location.hostname,
+                path: window.location.pathname,
+                widget: CONFIG.widgetType || 'b2b',
+                visitor_id: getOrCreateVisitorId(),
+                ts: Date.now()
+            }));
+        } catch { /* silent — non-critical */ }
+    }
+
+    // ============================================================
     // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
     // ============================================================
 
@@ -3961,6 +3980,7 @@
 
             captureAttribution();
             createWidget();
+            sendHeartbeat();
             initExitIntent();
             initSocialProof();
             initSubWidgets();
