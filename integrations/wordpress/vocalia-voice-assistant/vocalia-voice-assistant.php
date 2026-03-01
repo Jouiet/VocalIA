@@ -22,7 +22,7 @@ define('VOCALIA_VERSION', '1.0.0');
 define('VOCALIA_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VOCALIA_CDN_BASE', 'https://vocalia.ma/voice-assistant');
 define('VOCALIA_SRI_ECOMMERCE', 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn'); // Auto-updated by build-widgets.cjs
-define('VOCALIA_SRI_B2B', 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'); // Auto-updated by build-widgets.cjs
+define('VOCALIA_SRI_B2B', 'sha384-kAb/ZXzAasi/oaJ9sKFcnUt8Ott4+DWvMTGbF8OxtbWdVkPUZ6Pf6q1Vu2MGBkoB'); // Auto-updated by build-widgets.cjs
 
 /**
  * Register settings page

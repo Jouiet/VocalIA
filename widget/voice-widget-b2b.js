@@ -228,6 +228,40 @@
     }
 
     // ============================================================
+    // VISITOR MEMORY (Session 250.256/260: F3 — persistent visitor ID)
+    // ============================================================
+
+    function getOrCreateVisitorId() {
+        const key = 'vocalia_vid_' + (state.tenantId || 'default');
+        let vid = null;
+        try { vid = localStorage.getItem(key); } catch { /* private browsing */ }
+        if (!vid) {
+            vid = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+            try { localStorage.setItem(key, vid); } catch { /* private browsing */ }
+        }
+        return vid;
+    }
+
+    // ============================================================
+    // WIDGET HEARTBEAT (Session 250.257/260: installation tracking)
+    // ============================================================
+
+    function sendHeartbeat() {
+        if (!state.tenantId || state.tenantId === 'unknown') return;
+        try {
+            const url = (CONFIG.API_BASE_URL || CONFIG.VOICE_API_URL.replace('/respond', '')) + '/api/widget/heartbeat';
+            navigator.sendBeacon(url, JSON.stringify({
+                tenant_id: state.tenantId,
+                domain: window.location.hostname,
+                path: window.location.pathname,
+                widget: 'b2b',
+                visitor_id: getOrCreateVisitorId(),
+                timestamp: new Date().toISOString()
+            }));
+        } catch { /* non-critical */ }
+    }
+
+    // ============================================================
     // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
     // ============================================================
 
@@ -1066,6 +1100,7 @@
                 tenant_id: state.tenantId,
                 api_key: CONFIG.api_key || undefined,
                 widget_type: 'B2B',
+                visitor_id: getOrCreateVisitorId(),
                 history: state.conversationHistory.slice(-6)
             };
             // Session 250.147: Send page context on first message for contextual responses
@@ -1862,6 +1897,7 @@
             }
 
             initSocialProof();
+            sendHeartbeat();
 
             console.log(`[VocalIA B2B] Widget v2.7.0 initialized | Lang: ${state.currentLang} | Booking: ${state.bookingConfig.enabled} | PlanGating: ${!!state.planFeatures}`);
         } catch (error) {

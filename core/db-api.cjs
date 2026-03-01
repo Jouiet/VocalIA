@@ -504,7 +504,7 @@ async function handleAuthRequest(req, res, path, method) {
           to: email,
           subject: 'Bienvenue sur VocalIA !',
           template: 'welcome',
-          data: { name: userName, dashboardUrl: 'https://vocalia.ma/app/client/dashboard.html' },
+          data: { name: userName, dashboardUrl: 'https://vocalia.ma/app/client/' },
           language: 'fr'
         }).catch(e => console.warn('[Register] Welcome email failed:', e.message));
       } catch (_e) { /* email-service optional */ }
@@ -2414,7 +2414,8 @@ async function handleRequest(req, res) {
     }
 
     try {
-      const kbDir = path.join(__dirname, '..', 'clients', tenantId, 'knowledge-base');
+      const nodePath = require('path'); // path is shadowed by parsedUrl.pathname at L1171
+      const kbDir = nodePath.join(__dirname, '..', 'clients', tenantId, 'knowledge-base');
       let entries = [];
       let langDirs = [];
       const KEY_CATEGORIES = ['livraison', 'retour', 'paiement', 'horaires', 'faq', 'shipping', 'return', 'payment', 'hours', 'delivery'];
@@ -2425,17 +2426,17 @@ async function handleRequest(req, res) {
         for (const item of items) {
           if (item.isDirectory() && /^[a-z]{2,3}$/.test(item.name)) {
             langDirs.push(item.name);
-            const langPath = path.join(kbDir, item.name);
+            const langPath = nodePath.join(kbDir, item.name);
             const files = fs.readdirSync(langPath).filter(f => f.endsWith('.json') || f.endsWith('.txt'));
             for (const f of files) {
-              entries.push({ lang: item.name, file: f, path: path.join(langPath, f) });
+              entries.push({ lang: item.name, file: f, filePath: nodePath.join(langPath, f) });
             }
           }
         }
         // Root-level files
         const rootFiles = items.filter(i => i.isFile() && (i.name.endsWith('.json') || i.name.endsWith('.txt')));
         for (const f of rootFiles) {
-          entries.push({ lang: 'root', file: f.name, path: path.join(kbDir, f.name) });
+          entries.push({ lang: 'root', file: f.name, filePath: nodePath.join(kbDir, f.name) });
         }
       }
 
@@ -2453,7 +2454,7 @@ async function handleRequest(req, res) {
       for (const entry of entries) {
         if (entry.file.endsWith('.json')) {
           try {
-            const content = fs.readFileSync(entry.path, 'utf8');
+            const content = fs.readFileSync(entry.filePath, 'utf8');
             const parsed = JSON.parse(content);
             if (typeof parsed === 'object' && Object.keys(parsed).length > 1) structuredCount++;
           } catch { /* skip */ }
@@ -2464,7 +2465,7 @@ async function handleRequest(req, res) {
       // 4. Key categories presence
       const allFileNames = entries.map(e => e.file.toLowerCase()).join(' ');
       const allContent = entries.slice(0, 50).map(e => {
-        try { return fs.readFileSync(e.path, 'utf8').toLowerCase().substring(0, 500); } catch { return ''; }
+        try { return fs.readFileSync(e.filePath, 'utf8').toLowerCase().substring(0, 500); } catch { return ''; }
       }).join(' ');
       const searchText = allFileNames + ' ' + allContent;
       const catHits = KEY_CATEGORIES.filter(cat => searchText.includes(cat)).length;

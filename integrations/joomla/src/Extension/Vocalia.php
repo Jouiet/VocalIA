@@ -28,7 +28,7 @@ final class Vocalia extends CMSPlugin implements SubscriberInterface
     ];
 
     private const VOCALIA_SRI_ECOMMERCE = 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn'; // Auto-updated by build-widgets.cjs
-    private const VOCALIA_SRI_B2B = 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'; // Auto-updated by build-widgets.cjs
+    private const VOCALIA_SRI_B2B = 'sha384-kAb/ZXzAasi/oaJ9sKFcnUt8Ott4+DWvMTGbF8OxtbWdVkPUZ6Pf6q1Vu2MGBkoB'; // Auto-updated by build-widgets.cjs
 
     public static function getSubscribedEvents(): array
     {
