@@ -2,7 +2,7 @@
 
 > **Date**: 28/02/2026 — Session 250.254
 > **Source**: Podcast Greg Isenberg × Vin (23/02/2026) + 10 recherches web (docs officielles, GitHub, forums)
-> **Statut**: Phase 1 (slash commands) ✅ DONE | Phase 2 (produit client) ✅ F1+F2+F3+F5 DONE (250.256) | F4 = needs real ecom data
+> **Statut**: Phase 1 (slash commands) ✅ DONE | Phase 2 (produit client) ✅ ALL 5 FEATURES DONE (F1-F3+F5: 250.256, F4: 250.259)
 > **Principe**: La qualite de l'IA est proportionnelle a la qualite du contexte structure qu'elle recoit. Ce contexte doit COMPOSER dans le temps.
 
 ---
@@ -164,7 +164,7 @@ IA : "Bonjour ! La derniere fois vous vous interessiez a
 #### F4. Cross-Sell par Analyse de Co-occurrences
 
 **Backend existant** : `searchProductsForRAG` (T7), `recommendation-carousel.js`
-**Manque** : Analyse automatique des correlations dans les conversations
+**~~Manque~~** : ~~Analyse automatique des correlations dans les conversations~~ → **DONE (250.259)**
 
 ```
 KB E-commerce enrichie :
@@ -180,8 +180,8 @@ Produit: Chaussures Running X
 | Catalogue produit via API | ✅ connecteurs WooCommerce/Shopify/PS | — |
 | Widget recommendation | ✅ `recommendation-carousel.js` | — |
 | RAG enrichissement produit | ✅ T7 searchProductsForRAG | — |
-| Matrice co-occurrence conversations | ❌ | Analyse produits mentionnes ensemble |
-| UI dashboard "Cross-sell detecte" | ❌ | Section analytics |
+| Matrice co-occurrence conversations | ✅ **DONE (250.259)** | `GET /api/tenants/:id/cross-sell` — co-occurrence matrix with lift + confidence |
+| UI dashboard "Cross-sell detecte" | ✅ **DONE (250.259)** | Section "Cross-sell detecte" dans analytics.html — pair cards with lift/confidence bars |
 
 **Impact** : Augmentation AOV mesurable. Le voice assistant devient generateur de revenue, pas juste support.
 

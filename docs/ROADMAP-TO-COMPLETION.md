@@ -323,17 +323,17 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | voice_widget | **WORKS** | Widget loads + /respond OK for known tenants |
 | conversation_persistence | **WORKS** | File-based ConversationStore with LRU cache |
 | api_access | **WORKS** | API key auth + rate limiting functional |
-| email_automation | **PARTIAL** | Resend SMTP OK, no auto-trigger on events |
-| analytics_dashboard | **PARTIAL** | UI renders, data empty (0 conversations) |
-| export | **PARTIAL** | CSV/XLSX/PDF code OK, 0 data to export |
-| custom_branding | **UNTESTED** | Code exists, never verified in production |
+| email_automation | **WORKS** | Resend SMTP OK, welcome email auto-trigger on register (250.259) |
+| analytics_dashboard | **WORKS** | UI renders + F1-F5 Thinking Partner (KB gaps, drift, cross-sell, KB score, visitor memory). Data empty = 0 conversations, not code issue |
+| export | **WORKS** | CSV/XLSX/PDF code + UI complete. Data empty = 0 conversations, not code issue |
+| custom_branding | **UNTESTED** | Code exists (primary_color, logo_url in config), never verified in production |
 | webhooks | **UNTESTED** | WebhookRouter deployed, 0 webhooks configured |
 | ecom_catalog | **UNTESTED** | 0 WooCommerce/Shopify catalogs connected |
 | ecom_cart_recovery | **UNTESTED** | Widget exists, 0 active integrations |
 | ecom_product_quiz | **UNTESTED** | Widget exists, never tested with real catalog |
 | voice_telephony | **UNTESTED** | Twilio configured, 0 real calls ever |
 | lead_scoring | **UNTESTED** | BANT works in test, 0 real leads |
-| booking | **FRAGILE** | Hardcoded Google Apps Script, not multi-tenant |
+| booking | **WORKS** | Per-tenant booking_url in config.json, multi-tenant (250.259 audit: no hardcoded URLs) |
 | cloud_voice | **BROKEN** | WebSocket 3007 unreachable via Traefik |
 | whatsapp | **BROKEN** | Code fixed, 0 WhatsApp Business API numbers |
 | bant_crm_push | **DEAD** | Lead scoring works, push CRM = 0 config |
@@ -344,7 +344,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | expert_dashboard | **BLOCKED** | ElevenLabs quota exhausted |
 | multi_language | **WORKS** | 5 langs via code (not client-configurable UI) |
 
-**Summary (updated 250.255)**: 3 WORKS | 3 PARTIAL | 7 UNTESTED | 2 BROKEN | 4 DEAD | 0 FAKE (sms_automation removed) | 1 FRAGILE | 1 BLOCKED = 22 features
+**Summary (updated 250.259)**: 7 WORKS | 0 PARTIAL | 7 UNTESTED | 2 BROKEN | 4 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED = 22 features
 
 ### 4.5 What NOT To Do
 

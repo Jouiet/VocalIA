@@ -497,6 +497,18 @@ async function handleAuthRequest(req, res, path, method) {
         if (trial.success) trialInfo = trial;
       } catch (_e) { /* Stripe not configured — skip trial credit */ }
 
+      // Session 250.259: Welcome email auto-trigger (email_automation PARTIAL→WORKS)
+      try {
+        const emailService = require('./email-service.cjs');
+        emailService.sendTransactionalEmail({
+          to: email,
+          subject: 'Bienvenue sur VocalIA !',
+          template: 'welcome',
+          data: { name: userName, dashboardUrl: 'https://vocalia.ma/app/client/dashboard.html' },
+          language: 'fr'
+        }).catch(e => console.warn('[Register] Welcome email failed:', e.message));
+      } catch (_e) { /* email-service optional */ }
+
       sendJson(res, 201, {
         success: true,
         message: 'Registration successful. Please verify your email.',
@@ -2614,6 +2626,113 @@ async function handleRequest(req, res) {
       });
     } catch (e) {
       console.error('❌ Drift detection error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // Session 250.259: Cross-sell Co-occurrence — F4 Thinking Partner
+  const crossSellMatch = path.match(/^\/api\/tenants\/(\w+)\/cross-sell$/);
+  if (crossSellMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(crossSellMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      // 1. Load conversations
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const analytics = getAnalytics();
+      const conversations = analytics._loadConversations(tenantId);
+
+      // 2. Load KB keys as product/service names
+      const { getInstance: getKBLoader } = require('./tenant-kb-loader.cjs');
+      const kbLoader = getKBLoader();
+      const kbEntries = await kbLoader.getKB(tenantId, 'fr');
+      const kbKeys = Object.keys(kbEntries || {}).filter(k => k !== '__meta' && k.length > 2);
+      const kbKeysLower = kbKeys.map(k => k.toLowerCase());
+
+      if (kbKeysLower.length === 0 || conversations.length === 0) {
+        sendJson(res, 200, {
+          pairs: [],
+          total_conversations: conversations.length,
+          total_products: kbKeysLower.length,
+          message: conversations.length === 0 ? 'Pas de conversations' : 'KB vide'
+        });
+        return;
+      }
+
+      // 3. For each conversation, find which KB items are mentioned
+      const coOccurrences = {};  // "itemA|itemB" -> count
+      const itemMentions = {};   // "item" -> count of conversations mentioning it
+
+      for (const conv of conversations) {
+        const messages = conv.messages || [];
+        const convText = messages
+          .map(m => (m.content || '').toLowerCase())
+          .join(' ');
+
+        // Find which KB items are mentioned in this conversation
+        const mentionedInThisConv = new Set();
+        for (let i = 0; i < kbKeysLower.length; i++) {
+          if (convText.includes(kbKeysLower[i])) {
+            mentionedInThisConv.add(i);
+          }
+        }
+
+        // Count individual mentions
+        for (const idx of mentionedInThisConv) {
+          const key = kbKeys[idx];
+          itemMentions[key] = (itemMentions[key] || 0) + 1;
+        }
+
+        // Build co-occurrence pairs (only if 2+ items mentioned)
+        const mentionedArr = [...mentionedInThisConv];
+        if (mentionedArr.length >= 2) {
+          for (let i = 0; i < mentionedArr.length; i++) {
+            for (let j = i + 1; j < mentionedArr.length; j++) {
+              const pair = [kbKeys[mentionedArr[i]], kbKeys[mentionedArr[j]]].sort().join('|');
+              coOccurrences[pair] = (coOccurrences[pair] || 0) + 1;
+            }
+          }
+        }
+      }
+
+      // 4. Rank pairs by frequency, compute lift
+      const totalConv = conversations.length;
+      const pairs = Object.entries(coOccurrences)
+        .map(([pair, count]) => {
+          const [itemA, itemB] = pair.split('|');
+          const pA = (itemMentions[itemA] || 1) / totalConv;
+          const pB = (itemMentions[itemB] || 1) / totalConv;
+          const pAB = count / totalConv;
+          const lift = pAB / (pA * pB);
+          return {
+            item_a: itemA,
+            item_b: itemB,
+            co_occurrences: count,
+            mentions_a: itemMentions[itemA] || 0,
+            mentions_b: itemMentions[itemB] || 0,
+            lift: Math.round(lift * 100) / 100,
+            confidence: Math.round((count / Math.min(itemMentions[itemA] || 1, itemMentions[itemB] || 1)) * 100)
+          };
+        })
+        .filter(p => p.co_occurrences >= 2)
+        .sort((a, b) => b.lift - a.lift || b.co_occurrences - a.co_occurrences)
+        .slice(0, 15);
+
+      sendJson(res, 200, {
+        pairs,
+        total_conversations: totalConv,
+        total_products: kbKeys.length,
+        conversations_with_mentions: Object.values(itemMentions).filter(v => v > 0).length > 0
+          ? Object.keys(itemMentions).length : 0
+      });
+    } catch (e) {
+      console.error('❌ Cross-sell analysis error:', e.message);
       sendError(res, 500, 'Internal server error');
     }
     return;

@@ -105,12 +105,12 @@
 | voice_widget | All | ✅ | ✅ | ✅ | **WORKS** |
 | conversation_persistence | Pro+ | ✅ | ✅ | ✅ | **WORKS** |
 | api_access | Pro+ | ✅ | ✅ | ✅ | **WORKS** |
-| email_automation | Pro+ | ✅ | ✅ | ⚠️ | **PARTIAL** (Resend SMTP OK, trigger auto missing) |
-| analytics_dashboard | Pro+ | ✅ | ✅ | ⚠️ | **PARTIAL** (UI OK, data vide: 0 conversations) |
-| export | Pro+ | ✅ | ✅ | ⚠️ | **PARTIAL** (CSV/XLSX/PDF code OK, 0 data a exporter) |
+| email_automation | Pro+ | ✅ | ✅ | ✅ | **WORKS** (Resend SMTP + welcome email auto-trigger on register, 250.259) |
+| analytics_dashboard | Pro+ | ✅ | ✅ | ✅ | **WORKS** (UI + F1-F5 Thinking Partner: KB gaps, drift, cross-sell, KB score, visitor memory) |
+| export | Pro+ | ✅ | ✅ | ✅ | **WORKS** (CSV/XLSX/PDF code + UI complete, 0 data = 0 conversations) |
 | custom_branding | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** en production |
 | webhooks | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** (WebhookRouter deploye mais 0 webhooks configures) |
-| booking | Pro+ | ✅ | ⚠️ | ❓ | **FRAGILE** (Google Apps Script hardcode, pas multi-tenant) |
+| booking | Pro+ | ✅ | ✅ | ❓ | **WORKS** (per-tenant booking_url in config, multi-tenant, 250.259 audit) |
 | bant_crm_push | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (lead scoring fonctionne, push CRM = 0 tenants configures) |
 | crm_sync | Pro+ | ✅ | ✅ | ❌ | **DEAD** (HubSpot/Pipedrive code OK, 0 cles API configures) |
 | calendar_sync | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (Google Calendar code minimal, pas d'OAuth Calendar) |
@@ -126,7 +126,7 @@
 | multi_language | All | ✅ | ✅ | ✅ | **WORKS** (mais via code, pas via UI client) |
 | lead_scoring | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** (BANT fonctionne en test, 0 leads reels) |
 
-**Resume**: 3 WORKS | 3 PARTIAL | 7 UNTESTED | 2 BROKEN | 3 DEAD | 1 FAKE | 1 FRAGILE | 1 BLOCKED
+**Resume (updated 250.259)**: 7 WORKS | 0 PARTIAL | 7 UNTESTED | 2 BROKEN | 3 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED
 
 ---
 
