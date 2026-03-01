@@ -193,6 +193,13 @@
       "redundancy_levels": "5 redundancy levels",
       "status_operational": "Operational"
     },
+    "insights": {
+      "title": "Analytical Intelligence",
+      "kb_health": "KB Health",
+      "alignment": "Alignment",
+      "cross_sell": "Cross-sell",
+      "alerts": "Alerts"
+    },
     "engine": {
       "title": "SOTA AI Engine",
       "active": "7 active modules",

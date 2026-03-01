@@ -193,6 +193,13 @@
       "redundancy_levels": "5 niveles de redundancia",
       "status_operational": "Operacional"
     },
+    "insights": {
+      "title": "Inteligencia Anal\u00edtica",
+      "kb_health": "Salud KB",
+      "alignment": "Alineaci\u00f3n",
+      "cross_sell": "Venta cruzada",
+      "alerts": "Alertas"
+    },
     "engine": {
       "title": "Motor IA SOTA",
       "active": "7 módulos activos",

@@ -2738,6 +2738,122 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // Session 250.260: Aggregated Insights — Data Driven Dashboard single-call
+  const insightsMatch = path.match(/^\/api\/tenants\/(\w+)\/insights$/);
+  if (insightsMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(insightsMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const { getInstance: getKBLoader } = require('./tenant-kb-loader.cjs');
+      const analytics = getAnalytics();
+      const kbLoader = getKBLoader();
+      const analysis = analytics.analyze(tenantId);
+      const topKeywords = analysis.top_keywords || [];
+
+      // KB data
+      const kbEntries = await kbLoader.getKB(tenantId, 'fr');
+      const kbKeys = Object.keys(kbEntries || {}).filter(k => k !== '__meta');
+      const kbText = Object.entries(kbEntries || {})
+        .filter(([k]) => k !== '__meta')
+        .map(([k, v]) => `${k} ${typeof v === 'string' ? v : JSON.stringify(v)}`.toLowerCase())
+        .join(' ');
+
+      // Drift
+      const uncovered = [], covered = [];
+      for (const kw of topKeywords) {
+        if (kbText.includes(kw.word)) covered.push(kw);
+        else uncovered.push(kw);
+      }
+      const driftScore = topKeywords.length > 0
+        ? Math.round((covered.length / topKeywords.length) * 100) : 100;
+
+      // Cross-sell (top 5 only for summary)
+      const conversations = analytics._loadConversations(tenantId);
+      const kbKeysLower = kbKeys.map(k => k.toLowerCase());
+      const coOcc = {};
+      for (const conv of conversations) {
+        const convText = (conv.messages || []).map(m => (m.content || '').toLowerCase()).join(' ');
+        const mentioned = [];
+        for (let i = 0; i < kbKeysLower.length; i++) {
+          if (convText.includes(kbKeysLower[i])) mentioned.push(i);
+        }
+        if (mentioned.length >= 2) {
+          for (let i = 0; i < mentioned.length; i++) {
+            for (let j = i + 1; j < mentioned.length; j++) {
+              const pair = [kbKeys[mentioned[i]], kbKeys[mentioned[j]]].sort().join('|');
+              coOcc[pair] = (coOcc[pair] || 0) + 1;
+            }
+          }
+        }
+      }
+      const topPairs = Object.entries(coOcc)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([pair, count]) => ({ items: pair.split('|'), count }));
+
+      // KB score (simplified)
+      const nodePath_ins = require('path');
+      const kbDir = nodePath_ins.join(__dirname, '..', 'clients', tenantId, 'knowledge-base');
+      let entryCount = 0;
+      if (fs.existsSync(kbDir)) {
+        const scan = (dir) => {
+          try {
+            const items = fs.readdirSync(dir, { withFileTypes: true });
+            for (const item of items) {
+              if (item.isFile() && (item.name.endsWith('.json') || item.name.endsWith('.txt'))) entryCount++;
+              else if (item.isDirectory() && /^[a-z]{2,3}$/.test(item.name)) scan(nodePath_ins.join(dir, item.name));
+            }
+          } catch { /* skip */ }
+        };
+        scan(kbDir);
+      }
+      const kbScore = Math.min(100, Math.round((entryCount / 30) * 25) + Math.round((kbKeys.length / 20) * 25) + (driftScore >= 65 ? 25 : driftScore >= 40 ? 15 : 5) + (topPairs.length > 0 ? 25 : 10));
+
+      // Notifications/alerts
+      const alerts = [];
+      if (driftScore < 40) alerts.push({ level: 'critical', message: `Alignement KB critique: ${driftScore}%`, action: 'kb-gaps' });
+      if (uncovered.length > 3) alerts.push({ level: 'warning', message: `${uncovered.length} sujets non couverts`, action: 'kb-gaps' });
+      if (entryCount < 10) alerts.push({ level: 'info', message: 'KB insuffisante — ajoutez des entrees', action: 'knowledge-base' });
+      if (topPairs.length > 0) alerts.push({ level: 'opportunity', message: `${topPairs.length} opportunites cross-sell detectees`, action: 'cross-sell' });
+
+      sendJson(res, 200, {
+        tenant_id: tenantId,
+        timestamp: new Date().toISOString(),
+        conversations: {
+          total: analysis.total_conversations,
+          top_keywords: topKeywords.slice(0, 5)
+        },
+        kb: {
+          entries: entryCount,
+          score: kbScore,
+          level: kbScore < 40 ? 'Bronze' : kbScore < 65 ? 'Silver' : kbScore < 85 ? 'Gold' : 'Platinum'
+        },
+        drift: {
+          score: driftScore,
+          alignment: driftScore >= 85 ? 'Excellent' : driftScore >= 65 ? 'Good' : driftScore >= 40 ? 'Warning' : 'Critical',
+          uncovered_count: uncovered.length,
+          top_uncovered: uncovered.slice(0, 3)
+        },
+        cross_sell: {
+          pairs_count: topPairs.length,
+          top_pairs: topPairs
+        },
+        alerts
+      });
+    } catch (e) {
+      console.error('❌ Insights error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
   // Widget Install Verification — GET /api/widget/verify?url=&tenant_id=
   if (path === '/api/widget/verify' && method === 'GET') {
     const user = await checkAuth(req, res);

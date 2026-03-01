@@ -513,6 +513,71 @@
         </div>
       </div>
 
+      <!-- Intelligence Summary — Data Driven (250.260) -->
+      <div id="insights-panel" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2">
+            <i data-lucide="scan-eye" class="w-5 h-5 text-indigo-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.insights.title">Intelligence Analytique</h3>
+          </div>
+          <span id="insights-status" class="text-xs text-zinc-400">--</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- KB Health -->
+          <div class="p-4 rounded-xl border border-indigo-200 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-indigo-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                <i data-lucide="database" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider" data-i18n="dashboard.insights.kb_health">Sant&eacute; KB</span>
+            </div>
+            <p id="insights-kb-score" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+            <p id="insights-kb-level" class="text-xs text-zinc-500 mt-1">--</p>
+            <div class="mt-2 h-1.5 bg-zinc-200 dark:bg-white/[0.08] rounded-full overflow-hidden">
+              <div id="insights-kb-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Drift Alignment -->
+          <div class="p-4 rounded-xl border border-emerald-200 dark:border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                <i data-lucide="compass" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+              </div>
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider" data-i18n="dashboard.insights.alignment">Alignement</span>
+            </div>
+            <p id="insights-drift-score" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+            <p id="insights-drift-label" class="text-xs text-zinc-500 mt-1">--</p>
+            <div class="mt-2 h-1.5 bg-zinc-200 dark:bg-white/[0.08] rounded-full overflow-hidden">
+              <div id="insights-drift-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Cross-Sell Opportunities -->
+          <div class="p-4 rounded-xl border border-purple-200 dark:border-purple-500/20 bg-purple-50/50 dark:bg-purple-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <i data-lucide="git-branch" class="w-4 h-4 text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <span class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider" data-i18n="dashboard.insights.cross_sell">Cross-sell</span>
+            </div>
+            <p id="insights-crosssell-count" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+            <div id="insights-crosssell-top" class="mt-2 space-y-1"></div>
+          </div>
+          <!-- Smart Alerts -->
+          <div class="p-4 rounded-xl border border-amber-200 dark:border-amber-500/20 bg-amber-50/50 dark:bg-amber-900/10">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                <i data-lucide="bell-ring" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider" data-i18n="dashboard.insights.alerts">Alertes</span>
+            </div>
+            <div id="insights-alerts" class="space-y-2">
+              <div class="h-3 skeleton-pulse"></div>
+              <div class="h-3 w-3/4 skeleton-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- SOTA Engine Pipeline (T1-T7) -->
       <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
         <div class="flex items-center justify-between mb-5">
@@ -1038,6 +1103,9 @@
         // Quota usage
         renderQuotaUsage(tenantId);
 
+        // Intelligence Summary (Data Driven — 250.260)
+        renderInsightsSummary(tenantId);
+
       } catch (error) {
         console.error('Dashboard load error:', error);
         toast.error(VocaliaI18n.t('dashboard.common.data_load_error'));
@@ -1519,6 +1587,68 @@
       if (el) {
         const now = new Date();
         el.textContent = now.toLocaleTimeString(document.documentElement.lang || 'fr', { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+
+    // Intelligence Summary — fetch aggregated insights (250.260)
+    async function renderInsightsSummary(tenantId) {
+      try {
+        const data = await api.request(`/api/tenants/${tenantId}/insights`);
+        if (!data || data.error) {
+          document.getElementById('insights-status').textContent = 'Indisponible';
+          return;
+        }
+
+        // KB Health
+        const kbScore = data.kb?.score ?? 0;
+        const kbLevel = data.kb?.level || '--';
+        document.getElementById('insights-kb-score').textContent = `${kbScore}/100`;
+        document.getElementById('insights-kb-level').textContent = `${data.kb?.entries ?? 0} entr\u00e9es \u2022 ${kbLevel}`;
+        document.getElementById('insights-kb-bar').style.width = `${Math.min(100, kbScore)}%`;
+
+        // Drift Alignment
+        const driftScore = data.drift?.score ?? 0;
+        const alignment = data.drift?.alignment || '--';
+        document.getElementById('insights-drift-score').textContent = `${driftScore}%`;
+        document.getElementById('insights-drift-label').textContent = alignment;
+        document.getElementById('insights-drift-bar').style.width = `${Math.min(100, driftScore)}%`;
+        const driftBar = document.getElementById('insights-drift-bar');
+        if (driftScore < 50) {
+          driftBar.className = driftBar.className.replace('from-emerald-500 to-teal-500', 'from-red-500 to-orange-500');
+        } else if (driftScore < 75) {
+          driftBar.className = driftBar.className.replace('from-emerald-500 to-teal-500', 'from-amber-500 to-yellow-500');
+        }
+
+        // Cross-sell
+        const pairsCount = data.cross_sell?.pairs_count ?? 0;
+        document.getElementById('insights-crosssell-count').textContent = `${pairsCount} paire${pairsCount !== 1 ? 's' : ''}`;
+        const topPairsEl = document.getElementById('insights-crosssell-top');
+        const topPairs = (data.cross_sell?.top_pairs || []).slice(0, 3);
+        topPairsEl.innerHTML = topPairs.length > 0
+          ? topPairs.map(p => `<div class="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400"><i data-lucide="arrow-right" class="w-3 h-3 text-purple-500 flex-shrink-0"></i><span class="truncate">${p.pair || p.items?.join(' + ') || '--'}</span></div>`).join('')
+          : '<p class="text-xs text-zinc-400">Aucune donn\u00e9e</p>';
+
+        // Smart Alerts
+        const alertsEl = document.getElementById('insights-alerts');
+        const alerts = data.alerts || [];
+        if (alerts.length === 0) {
+          alertsEl.innerHTML = '<div class="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400"><i data-lucide="check-circle" class="w-3 h-3"></i><span>Tout est en ordre</span></div>';
+        } else {
+          const icons = { critical: 'alert-triangle', warning: 'alert-circle', info: 'info' };
+          const colors = { critical: 'text-red-500', warning: 'text-amber-500', info: 'text-blue-500' };
+          alertsEl.innerHTML = alerts.slice(0, 3).map(a =>
+            `<div class="flex items-start gap-1.5 text-xs ${colors[a.level] || 'text-zinc-500'}"><i data-lucide="${icons[a.level] || 'info'}" class="w-3 h-3 flex-shrink-0 mt-0.5"></i><span>${a.message}</span></div>`
+          ).join('');
+        }
+
+        // Status timestamp
+        document.getElementById('insights-status').textContent = new Date(data.timestamp).toLocaleTimeString(document.documentElement.lang || 'fr', { hour: '2-digit', minute: '2-digit' });
+
+        // Re-init lucide for newly injected icons
+        lucide.createIcons();
+      } catch (e) {
+        console.error('Insights load error:', e);
+        document.getElementById('insights-status').textContent = 'Erreur';
       }
     }
 
