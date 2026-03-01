@@ -349,6 +349,62 @@
           </div>
         </div>
 
+        <!-- Session 250.256: Drift Detection / Analyse de Coherence — F2 Thinking Partner -->
+        <div id="drift-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="git-compare" class="w-5 h-5 text-indigo-500"></i>
+              <h3 class="font-semibold text-zinc-900 dark:text-white">Analyse de Coherence</h3>
+            </div>
+            <span id="drift-badge" class="text-xs px-2 py-1 rounded bg-zinc-100 dark:bg-white/[0.08] text-zinc-600 dark:text-zinc-400">--</span>
+          </div>
+
+          <!-- Drift Score Gauge -->
+          <div class="flex items-center gap-6 mb-4">
+            <div class="relative flex-shrink-0">
+              <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor"
+                  class="text-zinc-200 dark:text-white/[0.08]" stroke-width="8" />
+                <circle id="drift-arc" cx="50" cy="50" r="40" fill="none" stroke="#6366f1" stroke-width="8"
+                  stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" transform="rotate(-90 50 50)"
+                  class="transition-all duration-1000 ease-out" />
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="drift-score" class="text-2xl font-bold text-zinc-900 dark:text-white">--</span>
+                <span class="text-[10px] text-zinc-500">%</span>
+              </div>
+            </div>
+            <div class="flex-1 text-sm text-zinc-600 dark:text-zinc-400">
+              <p id="drift-summary">Mesure l'alignement entre les questions posees par vos visiteurs et le contenu de votre KB.</p>
+            </div>
+          </div>
+
+          <!-- Uncovered topics (red) -->
+          <div id="drift-uncovered" class="mb-4">
+            <h4 class="text-xs font-medium text-zinc-500 uppercase mb-2">Sujets non couverts</h4>
+            <div id="drift-uncovered-list" class="flex flex-wrap gap-2">
+              <span class="text-sm text-zinc-400">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Top performing KB entries (green) -->
+          <div id="drift-performing">
+            <h4 class="text-xs font-medium text-zinc-500 uppercase mb-2">Entrees KB performantes</h4>
+            <div id="drift-performing-list" class="flex flex-wrap gap-2">
+              <span class="text-sm text-zinc-400">Chargement...</span>
+            </div>
+          </div>
+
+          <!-- Action button -->
+          <div class="mt-4 pt-4 border-t border-zinc-200 dark:border-white/[0.08]">
+            <a href="/app/client/knowledge-base.html"
+              class="inline-flex items-center gap-2 px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+              <i data-lucide="wrench" class="w-4 h-4"></i>
+              Corriger la KB
+            </a>
+          </div>
+        </div>
+
         <!-- Top Performers -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
@@ -972,6 +1028,65 @@
     }
 
     loadConversationIntelligence();
+
+    // Session 250.256: Drift Detection — F2 Thinking Partner
+    async function loadDriftAnalysis() {
+      try {
+        const tenantId = auth.getTenantId();
+        const data = await api.get(`/tenants/${tenantId}/drift`);
+
+        // Drift score gauge
+        const arc = document.getElementById('drift-arc');
+        const circumference = 2 * Math.PI * 40; // ~251
+        arc.style.strokeDashoffset = circumference - (data.drift_score / 100) * circumference;
+        if (data.drift_score >= 85) arc.setAttribute('stroke', '#10b981');
+        else if (data.drift_score >= 65) arc.setAttribute('stroke', '#6366f1');
+        else if (data.drift_score >= 40) arc.setAttribute('stroke', '#f59e0b');
+        else arc.setAttribute('stroke', '#ef4444');
+
+        document.getElementById('drift-score').textContent = data.drift_score;
+
+        // Badge
+        const badge = document.getElementById('drift-badge');
+        const alignColors = {
+          Excellent: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600',
+          Good: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600',
+          Warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-600',
+          Critical: 'bg-red-100 dark:bg-red-900/30 text-red-600'
+        };
+        badge.textContent = data.alignment;
+        badge.className = `text-xs px-2 py-1 rounded ${alignColors[data.alignment] || alignColors.Warning}`;
+
+        // Summary
+        document.getElementById('drift-summary').textContent =
+          `${data.total_conversations} conversations analysees, ${data.total_kb_entries} entrees KB. Alignement: ${data.drift_score}%.`;
+
+        // Uncovered topics
+        const uncList = document.getElementById('drift-uncovered-list');
+        if (data.top_uncovered && data.top_uncovered.length > 0) {
+          uncList.innerHTML = data.top_uncovered.map(u =>
+            `<span class="px-2 py-1 text-xs rounded-full bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400">${escapeHtml(u.word)} (${u.count})</span>`
+          ).join('');
+        } else {
+          uncList.innerHTML = '<span class="text-sm text-emerald-500">Tous les sujets sont couverts</span>';
+        }
+
+        // Top performing
+        const perfList = document.getElementById('drift-performing-list');
+        if (data.top_performing && data.top_performing.length > 0) {
+          perfList.innerHTML = data.top_performing.map(p =>
+            `<span class="px-2 py-1 text-xs rounded-full bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400">${escapeHtml(p.key)} (${p.hits})</span>`
+          ).join('');
+        } else {
+          perfList.innerHTML = '<span class="text-sm text-zinc-400">Pas assez de donnees</span>';
+        }
+
+        lucide.createIcons();
+      } catch (e) {
+        console.warn('Drift analysis load failed:', e.message);
+      }
+    }
+    loadDriftAnalysis();
 
     // Export button - real export
     document.getElementById('export-btn').addEventListener('click', async () => {

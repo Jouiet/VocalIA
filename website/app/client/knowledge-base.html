@@ -225,6 +225,22 @@
         </div>
       </div>
 
+      <!-- Session 250.256: KB Gaps / Opportunities Section — F1 Thinking Partner -->
+      <div id="kb-gaps-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500"></i>
+          <h3 class="font-semibold text-zinc-900 dark:text-white">Opportunites Detectees</h3>
+          <span id="kb-gaps-count" class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">0</span>
+        </div>
+        <div id="kb-gaps-list" class="space-y-3">
+          <p class="text-sm text-zinc-500">Chargement...</p>
+        </div>
+        <div id="kb-gaps-empty" class="hidden text-center py-4">
+          <i data-lucide="check-circle" class="w-8 h-8 text-emerald-500 mx-auto mb-2"></i>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400">Votre KB couvre bien les questions frequentes</p>
+        </div>
+      </div>
+
       <!-- Filters & Search -->
       <div
         class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
@@ -590,6 +606,7 @@
       await loadKBEntries();
       await loadQuota();
       renderKBQualityScore();
+      loadKBGaps();
       setupEventListeners();
     }
 
@@ -735,11 +752,56 @@
       }).catch(() => { });
     }
 
-    // KB Quality Score - Backend Grounded (Session 250.220)
+    // Session 250.256: KB Gap Detection — F1 Thinking Partner
+    async function loadKBGaps() {
+      try {
+        const data = await api.get(`/tenants/${currentTenantId}/kb-gaps`);
+        const list = document.getElementById('kb-gaps-list');
+        const count = document.getElementById('kb-gaps-count');
+        const empty = document.getElementById('kb-gaps-empty');
+
+        if (!data.gaps || data.gaps.length === 0) {
+          list.classList.add('hidden');
+          empty.classList.remove('hidden');
+          count.textContent = '0';
+          return;
+        }
+
+        count.textContent = data.gaps.length;
+        list.innerHTML = data.gaps.map(g => `
+          <div class="flex items-center justify-between p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/30">
+            <div>
+              <p class="text-sm font-medium text-zinc-900 dark:text-white">"${escapeHtml(g.question)}"</p>
+              <p class="text-xs text-zinc-500">${g.count} mentions — pas couvert par votre KB</p>
+            </div>
+            <button onclick="prefillEntry('${escapeHtml(g.question).replace(/'/g, "\\'")}')"
+              class="px-3 py-1.5 text-xs bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg whitespace-nowrap">
+              + Ajouter
+            </button>
+          </div>`).join('');
+        lucide.createIcons();
+      } catch (e) {
+        console.warn('KB gaps load failed:', e.message);
+      }
+    }
+
+    // Prefill KB entry modal from gap suggestion
+    window.prefillEntry = function(question) {
+      editingKey = null;
+      document.getElementById('entry-modal-title').textContent = 'Ajouter une entree';
+      document.getElementById('entry-key').value = question.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+      document.getElementById('entry-key').disabled = false;
+      document.getElementById('entry-response').value = '';
+      document.getElementById('entry-details').value = '';
+      document.getElementById('entry-language').value = currentLanguage;
+      showModal('entry-modal');
+    };
+
+    // KB Quality Score — upgraded to /kb-score endpoint (Session 250.256: F5)
     async function renderKBQualityScore() {
       try {
-        const score = await api.get(`/tenants/${currentTenantId}/kb/diagnostics`, { lang: currentLanguage });
-        const total = score.total_score;
+        const data = await api.get(`/tenants/${currentTenantId}/kb-score`);
+        const total = data.score;
 
         // Animate ring
         const arc = document.getElementById('kb-quality-arc');
@@ -755,44 +817,57 @@
         // Value
         document.getElementById('kb-quality-value').textContent = total;
 
-        // Badge
+        // Badge from level (API returns level directly)
         const badge = document.getElementById('kb-quality-badge');
-        if (total >= 90) {
-          badge.textContent = 'Platinum';
-          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400';
-        } else if (total >= 70) {
-          badge.textContent = 'Gold';
-          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400';
-        } else if (total >= 40) {
-          badge.textContent = 'Silver';
-          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-zinc-200 text-zinc-700 dark:bg-white/[0.08] dark:text-zinc-300';
-        } else {
-          badge.textContent = 'Bronze';
-          badge.className = 'px-3 py-1 text-sm font-semibold rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400';
-        }
+        const levelStyles = {
+          Platinum: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
+          Gold: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+          Silver: 'bg-zinc-200 text-zinc-700 dark:bg-white/[0.08] dark:text-zinc-300',
+          Bronze: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+        };
+        badge.textContent = data.level;
+        badge.className = `px-3 py-1 text-sm font-semibold rounded-full ${levelStyles[data.level] || levelStyles.Bronze}`;
 
-        // Breakdown
-        document.getElementById('kb-q-entries').textContent = `${Math.round(score.metrics.coverage)}/25`;
-        document.getElementById('kb-q-langs').textContent = `${Math.round(score.metrics.density)}/25`;
-        document.getElementById('kb-q-depth').textContent = `${Math.round(score.metrics.depth)}/25`;
-        document.getElementById('kb-q-cats').textContent = `${Math.round(score.metrics.grounding)}/25`;
+        // Breakdown from new API structure
+        document.getElementById('kb-q-entries').textContent = `${data.breakdown.entries.score}/25`;
+        document.getElementById('kb-q-langs').textContent = `${data.breakdown.languages.score}/25`;
+        document.getElementById('kb-q-depth').textContent = `${data.breakdown.depth.score}/25`;
+        document.getElementById('kb-q-cats').textContent = `${data.breakdown.categories.score}/25`;
 
-        // Recommendations
-        const recs = [];
-        if (score.metrics.grounding < 15) recs.push({ text: "Améliorer la clarté des réponses pour le RAG", icon: 'award' });
-        if (score.metrics.depth < 15) recs.push({ text: VocaliaI18n.t('kb.quality.rec_add_details'), icon: 'file-plus' });
-        if (score.metrics.coverage < 15) recs.push({ text: VocaliaI18n.t('kb.quality.rec_more_entries'), icon: 'plus-circle' });
-
+        // Suggestions from API (real, actionable)
         const recsDiv = document.getElementById('kb-quality-recs');
-        if (recs.length === 0) {
-          recsDiv.innerHTML = `<div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm"><i data-lucide="check-circle" class="w-4 h-4"></i><span>${VocaliaI18n.t('kb.quality.excellent')}</span></div>`;
+        if (!data.suggestions || data.suggestions.length === 0) {
+          recsDiv.innerHTML = `<div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm"><i data-lucide="check-circle" class="w-4 h-4"></i><span>${VocaliaI18n.t('kb.quality.excellent') || 'Excellent!'}</span></div>`;
         } else {
-          recsDiv.innerHTML = `<p class="text-xs font-medium text-zinc-500 uppercase mb-1">${VocaliaI18n.t('kb.quality.recommendations')}</p>` +
-            recs.map(r => `<div class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400" onclick="document.getElementById('btn-add-entry').click()"><i data-lucide="${r.icon}" class="w-4 h-4 text-indigo-500"></i><span>${escapeHtml(r.text)}</span></div>`).join('');
+          recsDiv.innerHTML = data.suggestions.map(s =>
+            `<div class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-500"></i>
+              <span>${escapeHtml(s)}</span>
+            </div>`
+          ).join('');
         }
+
+        // Impact estimation + next level (Session 250.256)
+        if (data.impact_estimate || data.next_level) {
+          let impactHtml = '';
+          if (data.impact_estimate) {
+            impactHtml += `<div class="flex items-center gap-2 mt-3 pt-3 border-t border-zinc-200 dark:border-white/[0.08]">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400">Impact estime: <strong class="text-zinc-900 dark:text-white">${escapeHtml(data.impact_estimate)}</strong></span>
+            </div>`;
+          }
+          if (data.next_level) {
+            impactHtml += `<div class="flex items-center gap-2 mt-2">
+              <i data-lucide="target" class="w-4 h-4 text-indigo-500"></i>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400">Prochain niveau: <strong class="text-zinc-900 dark:text-white">${escapeHtml(data.next_level.target)}</strong> (${data.next_level.points_needed} pts)</span>
+            </div>`;
+          }
+          recsDiv.insertAdjacentHTML('beforeend', impactHtml);
+        }
+
         lucide.createIcons();
       } catch (e) {
-        console.error('KB Diagnostics error:', e);
+        console.error('KB Score error:', e);
       }
     }
 

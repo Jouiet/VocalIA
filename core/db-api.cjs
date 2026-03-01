@@ -2467,6 +2467,17 @@ async function handleRequest(req, res) {
       if (depthScore < 15) suggestions.push('Convertissez les entrées texte en JSON structuré');
       if (catScore < 15) suggestions.push('Couvrez les catégories clés: livraison, retour, paiement, horaires, FAQ');
 
+      // Session 250.256: Impact estimation + next level gamification
+      const impactEstimate = score >= 85 ? '+40% resolution auto'
+        : score >= 65 ? '+25% resolution auto'
+        : score >= 40 ? '+15% resolution auto'
+        : 'KB insuffisante — taux resolution bas';
+
+      const nextLevel = level === 'Platinum' ? null : {
+        target: level === 'Bronze' ? 'Silver' : level === 'Silver' ? 'Gold' : 'Platinum',
+        points_needed: level === 'Bronze' ? 40 - score : level === 'Silver' ? 65 - score : 85 - score
+      };
+
       sendJson(res, 200, {
         score,
         level,
@@ -2476,10 +2487,133 @@ async function handleRequest(req, res) {
           depth: { score: depthScore, max: 25, structured: structuredCount, total: entries.length },
           categories: { score: catScore, max: 25, found: catHits }
         },
-        suggestions
+        suggestions,
+        impact_estimate: impactEstimate,
+        next_level: nextLevel
       });
     } catch (e) {
       console.error('❌ KB score error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // Session 250.256: KB Gap Detection — F1 Thinking Partner
+  const kbGapsMatch = path.match(/^\/api\/tenants\/(\w+)\/kb-gaps$/);
+  if (kbGapsMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(kbGapsMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      // 1. Top keywords from real conversations
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const analytics = getAnalytics();
+      const analysis = analytics.analyze(tenantId);
+      const topKeywords = analysis.top_keywords || [];
+
+      // 2. KB entries — build searchable text corpus
+      const { getInstance: getKBLoader } = require('./tenant-kb-loader.cjs');
+      const kbLoader = getKBLoader();
+      const kbEntries = await kbLoader.getKB(tenantId, 'fr');
+      const kbText = Object.entries(kbEntries || {})
+        .filter(([k]) => k !== '__meta')
+        .map(([k, v]) => `${k} ${typeof v === 'string' ? v : JSON.stringify(v)}`.toLowerCase())
+        .join(' ');
+
+      // 3. Compare: keyword present in KB text?
+      const gaps = [], covered = [];
+      for (const kw of topKeywords) {
+        if (kbText.includes(kw.word)) {
+          covered.push(kw);
+        } else {
+          gaps.push({ question: kw.word, count: kw.count, covered: false });
+        }
+      }
+
+      sendJson(res, 200, {
+        gaps: gaps.slice(0, 10),
+        covered: covered.slice(0, 10),
+        total_keywords: topKeywords.length,
+        coverage_rate: topKeywords.length > 0
+          ? Math.round((covered.length / topKeywords.length) * 100) : 100
+      });
+    } catch (e) {
+      console.error('❌ KB gaps error:', e.message);
+      sendError(res, 500, 'Internal server error');
+    }
+    return;
+  }
+
+  // Session 250.256: Drift Detection — F2 Thinking Partner
+  const driftMatch = path.match(/^\/api\/tenants\/(\w+)\/drift$/);
+  if (driftMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = sanitizeTenantId(driftMatch[1]);
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      // 1. Conversation analytics
+      const { getInstance: getAnalytics } = require('./conversation-analytics.cjs');
+      const analytics = getAnalytics();
+      const analysis = analytics.analyze(tenantId);
+      const topKeywords = analysis.top_keywords || [];
+
+      // 2. KB corpus
+      const { getInstance: getKBLoader } = require('./tenant-kb-loader.cjs');
+      const kbLoader = getKBLoader();
+      const kbEntries = await kbLoader.getKB(tenantId, 'fr');
+      const kbKeys = Object.keys(kbEntries || {}).filter(k => k !== '__meta');
+      const kbText = Object.entries(kbEntries || {})
+        .filter(([k]) => k !== '__meta')
+        .map(([k, v]) => `${k} ${typeof v === 'string' ? v : JSON.stringify(v)}`.toLowerCase())
+        .join(' ');
+
+      // 3. Uncovered vs covered
+      const uncovered = [], coveredKw = [];
+      for (const kw of topKeywords) {
+        if (kbText.includes(kw.word)) {
+          coveredKw.push(kw);
+        } else {
+          uncovered.push(kw);
+        }
+      }
+
+      // 4. Top performing KB entries (most mentioned in conversations)
+      const kbPerformance = kbKeys.map(key => {
+        const keyLower = key.toLowerCase();
+        let hits = 0;
+        for (const kw of topKeywords) {
+          if (keyLower.includes(kw.word) || kw.word.includes(keyLower)) hits += kw.count;
+        }
+        return { key, hits };
+      }).filter(e => e.hits > 0).sort((a, b) => b.hits - a.hits).slice(0, 5);
+
+      // 5. Drift score: 100 = perfect alignment, 0 = total drift
+      const driftScore = topKeywords.length > 0
+        ? Math.round((coveredKw.length / topKeywords.length) * 100)
+        : 100;
+      const alignment = driftScore >= 85 ? 'Excellent' : driftScore >= 65 ? 'Good' : driftScore >= 40 ? 'Warning' : 'Critical';
+
+      sendJson(res, 200, {
+        drift_score: driftScore,
+        alignment,
+        top_uncovered: uncovered.slice(0, 8),
+        top_performing: kbPerformance,
+        total_questions: topKeywords.length,
+        total_kb_entries: kbKeys.length,
+        total_conversations: analysis.total_conversations
+      });
+    } catch (e) {
+      console.error('❌ Drift detection error:', e.message);
       sendError(res, 500, 'Internal server error');
     }
     return;

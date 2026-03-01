@@ -2807,7 +2807,7 @@ function startServer(port = 3004) {
             res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
             return;
           }
-          const { message, history = [], sessionId, language: reqLanguage, widget_type: reqWidgetType } = bodyParsed.data;
+          const { message, history = [], sessionId, language: reqLanguage, widget_type: reqWidgetType, visitor_id: visitorId } = bodyParsed.data;
           let language = reqLanguage || 'fr';
 
           if (!message) {
@@ -2963,7 +2963,9 @@ function startServer(port = 3004) {
             // CRITICAL: Map tenant_id to knowledge_base_id for RAG context
             knowledge_base_id: tenantId === 'default' ? tenantId : tenantId,
             // Session 250.143: Include feature flags in metadata for client-side gating
-            features: Object.fromEntries(featureKeys.map(fk => [fk, tenantFeatures[fk].allowed]))
+            features: Object.fromEntries(featureKeys.map(fk => [fk, tenantFeatures[fk].allowed])),
+            // Session 250.256: F3 Visitor Memory — persistent visitor ID for cross-session context
+            visitor_id: visitorId || null
           };
 
           const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language, { forceFailProviders: bodyParsed.data.forceFailProviders });
@@ -2987,9 +2989,12 @@ function startServer(port = 3004) {
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });
 
           // SOTA Moat #1 (250.222): Extract free-form facts from conversation
+          // Session 250.256: F3 — enrich facts with visitor_id for cross-session memory
           try {
+            const factVisitorId = session?.metadata?.visitor_id || visitorId || null;
             const conversationFacts = extractConversationFacts(message, result.response, language);
             for (const fact of conversationFacts) {
+              fact.visitor_id = factVisitorId;
               ContextBox.extractKeyFact(leadSessionId, fact.type, fact.value, 'conversation', fact.confidence);
             }
           } catch (factErr) {

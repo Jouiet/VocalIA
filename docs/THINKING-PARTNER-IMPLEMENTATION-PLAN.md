@@ -2,7 +2,7 @@
 
 > **Date**: 28/02/2026 — Session 250.254
 > **Source**: Podcast Greg Isenberg × Vin (23/02/2026) + 10 recherches web (docs officielles, GitHub, forums)
-> **Statut**: Phase 1 (slash commands) ✅ DONE | Phase 2 (produit client) EN COURS
+> **Statut**: Phase 1 (slash commands) ✅ DONE | Phase 2 (produit client) ✅ F1+F2+F3+F5 DONE (250.256) | F4 = needs real ecom data
 > **Principe**: La qualite de l'IA est proportionnelle a la qualite du contexte structure qu'elle recoit. Ce contexte doit COMPOSER dans le temps.
 
 ---
@@ -106,8 +106,8 @@ Dashboard Client → "Opportunites Detectees"
 |:----------|:------:|:-------:|
 | Stockage conversations | ✅ `conversation-store.cjs` | — |
 | Extraction themes | ✅ `KBEnrichmentSkill` | — |
-| Comparaison KB vs questions | ❌ | Logique de gap detection |
-| UI dashboard "Opportunites" | ❌ | Section HTML + API endpoint |
+| Comparaison KB vs questions | ✅ **DONE (250.256)** | `GET /api/tenants/:id/kb-gaps` — ConversationAnalytics.analyze() × tenant-kb-loader |
+| UI dashboard "Opportunites" | ✅ **DONE (250.256)** | Section "Opportunites Detectees" dans knowledge-base.html + prefillEntry() |
 
 **Impact** : L'IA s'ameliore TOUTE SEULE. Plus de conversations = meilleure IA = plus de valeur = retention.
 
@@ -133,9 +133,9 @@ Dashboard Client → "Analyse de Coherence"
 |:----------|:------:|:-------:|
 | Logs de questions | ✅ `conversation-store.cjs` | — |
 | KB du tenant | ✅ `clients/<tenant>/knowledge-base/` | — |
-| Clustering de questions | ❌ | Topic extraction (LLM ou TF-IDF) |
-| Taux de resolution par entree KB | ❌ | Metric: question resolue vs escaladee |
-| UI dashboard "Drift" | ❌ | Section HTML + API endpoint |
+| Clustering de questions | ✅ **DONE (250.256)** | Keyword matching via ConversationAnalytics._extractTopKeywords() — zero-cost, upgrade LLM quand volume >100/tenant |
+| Taux de resolution par entree KB | ✅ **DONE (250.256)** | `top_performing[]` dans /drift — cross-reference keywords × KB keys |
+| UI dashboard "Drift" | ✅ **DONE (250.256)** | Section "Analyse de Coherence" dans analytics.html — gauge arc + tags uncovered/performing |
 
 **Impact** : Le client arrete de deviner quoi documenter. L'IA lui dit exactement ou sont les trous.
 
@@ -156,8 +156,8 @@ IA : "Bonjour ! La derniere fois vous vous interessiez a
 | Memoire long-terme par tenant | ✅ `tenant-memory.cjs` | — |
 | RAG sur faits stockes | ✅ `hybrid-rag.cjs` | — |
 | Auto-promote (fait → memoire) | ✅ flywheel dans TenantMemory | — |
-| Identification visiteur recurrent | ❌ | Cookie/localStorage → visitor ID |
-| Passage visitor ID au widget → API | ❌ | Parametre `data-visitor-id` ou auto-cookie |
+| Identification visiteur recurrent | ✅ **DONE (250.256)** | `getOrCreateVisitorId()` — localStorage first-party per tenant |
+| Passage visitor ID au widget → API | ✅ **DONE (250.256)** | `visitor_id` dans callVoiceAPI payload → extracté dans /respond → injecté metadata → facts enrichis |
 
 **Impact** : Experience personnalisee. Differentiation massive vs chatbots stateless. Retention client.
 
@@ -206,7 +206,7 @@ Impact estime : +23% de questions resolues automatiquement
 | Score KB | ✅ dashboard client | — |
 | Calcul score detaille | ✅ **DONE (250.255)** | `GET /api/tenants/:id/kb-score` — 4 criteres x 25pts (entries, langs, depth, categories) |
 | Actions suggerees | ✅ **DONE (250.255)** | `suggestions[]` dans la reponse API — actions concretes pour monter de niveau |
-| Estimation d'impact | ❌ | Correlation score ↔ taux resolution |
+| Estimation d'impact | ✅ **DONE (250.256)** | `impact_estimate` + `next_level` dans /kb-score — gamification progression |
 | Niveaux (Bronze/Silver/Gold/Platinum) | ✅ **DONE (250.255)** | Bronze <40, Silver <65, Gold <85, Platinum 85+ |
 
 **Impact** : Gamification de l'onboarding. Client engage a enrichir sa KB = IA meilleure = retention.
