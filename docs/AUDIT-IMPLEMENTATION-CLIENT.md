@@ -448,7 +448,7 @@ telephony:    voice_widget ✅ | voice_telephony ✅ | booking ✅ | ALL feature
 | 1.1 | **Fix NPM `index.js`** — `data-vocalia-tenant` attribute + safe config mapping | G3 | `distribution/npm/vocalia-widget/index.js` | ✅ 250.239 |
 | 1.2 | **Optionnel : Ajouter `tenantId` et `primaryColor` à `SAFE_CONFIG_KEYS`** — Not needed (tenantId via data attr) | G3 | `widget/voice-widget-v3.js:3632` | N/A |
 | 1.3 | **Test NPM complet** — `npm install vocalia-widget` + ESM import → 3 exports OK (initVocalia, initVocaliaB2B, initVocaliaEcommerce) | G3 | E2E test | ✅ 250.240 |
-| 1.4 | **WebSocket audio streaming** dans le widget — `cloudVoice` module (connect to `wss://api.vocalia.ma:3007`, PCM16 mic capture, plan-gated) | G2 | `widget/voice-widget-v3.js` | ✅ 250.240 |
+| 1.4 | **WebSocket audio streaming** dans le widget — `cloudVoice` module (connect to `wss://api.vocalia.ma/realtime`, PCM16 mic capture, plan-gated). URL fix 250.261: was `:3007` (port blocked), now `/realtime` (Traefik path route) | G2 | `widget/voice-widget-v3.js` | ✅ 250.261 |
 | 1.5 | **Embed domaine externe** — CORS dual-source (registry + dynamic config.json), tenant detection (4 methods: config/data-attr/URL/meta), NPM ESM import verified | G4 | Widget + CORS | ✅ By design + 250.240 NPM test |
 
 ### PHASE 2 : TENANT PROVISIONING DYNAMIQUE (Jour 8-14)

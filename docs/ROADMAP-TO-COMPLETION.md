@@ -27,7 +27,7 @@
 - `api.vocalia.ma/respond` ✅ Voice API OK (Grok 2.6s, agency_internal)
 - `api.vocalia.ma/api/auth/register` ❌ **500** (GoogleSheetsDB OAuth expired)
 - `api.vocalia.ma/api/auth/login` ❌ **500** (GoogleSheetsDB OAuth expired)
-- `api.vocalia.ma:3007` ❌ WebSocket unreachable (Traefik ne route pas WS)
+- `api.vocalia.ma/realtime` ✅ WebSocket route via Traefik (fix 250.261: widget URL was `:3007`, now `/realtime`)
 - Stripe billing ❌ PLACEHOLDER price IDs, STRIPE_SECRET_KEY missing
 
 > **Important**: These are THREE separate scores. Code completeness = code written+tested. Production readiness = deployed and accessible. Revenue readiness = can a client sign up, pay, and use the product end-to-end.
@@ -298,7 +298,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 |:-----|:-------|:-------|:-------:|
 | 1 | Widget JS loads | `voice-widget-ecommerce.js` served OK | ✅ |
 | 2 | Text chat | `POST /respond` — works for `agency_internal` (2.6s Grok) | ✅ (known tenants) |
-| 3 | Voice chat | `wss://api.vocalia.ma:3007` — port unreachable | **BROKEN** |
+| 3 | Voice chat | `wss://api.vocalia.ma/realtime` — Traefik path route (fix 250.261) | ✅ (code fixed, needs VPS restart) |
 | 4 | Booking flow | Widget-side multi-step → `POST /api/tenants/:id/bookings` | **UNTESTED** |
 | 5 | E-commerce | Catalog fetch → carousel | **0 catalogs connected** |
 

@@ -2470,7 +2470,7 @@
       getWsUrl() {
         const base = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
           ? 'ws://localhost:3007'
-          : 'wss://api.vocalia.ma:3007';
+          : 'wss://api.vocalia.ma/realtime';
         const voice = state.currentLang === 'ary' ? 'ara' : (state.currentLang === 'ar' ? 'ara' : 'alloy');
         return `${base}?voice=${voice}&tenant_id=${encodeURIComponent(state.tenantId || 'default')}`;
       },

@@ -116,7 +116,7 @@
 | calendar_sync | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (Google Calendar code minimal, pas d'OAuth Calendar) |
 | ~~sms_automation~~ | ~~Telephony~~ | ❌ | ❌ | ❌ | **SUPPRIME (250.255)** — etait FAKE (0 code). Retire de PLAN_FEATURES dans 3 fichiers |
 | whatsapp | Telephony | ✅ | ✅ | ❌ | **BROKEN** (deriveTenantFromWhatsApp fixe mais 0 numero WhatsApp Business API) |
-| cloud_voice | Pro+ | ✅ | ⚠️ | ❌ | **BROKEN** (WebSocket 3007 non routable via Traefik) |
+| cloud_voice | Pro+ | ✅ | ⚠️ | ❌ | **UNTESTED** (B5 fix 250.261: URL was `:3007`, now `/realtime` via Traefik. Code fixed, needs VPS restart) |
 | ecom_catalog | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (0 catalogues WooCommerce/Shopify connectes) |
 | ecom_cart_recovery | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (widget existe, 0 integrations actives) |
 | ecom_recommendations | Ecom | ✅ | ✅ | ❌ | **DEAD** (T7 code OK, 0 catalogues → 0 recommendations) |
@@ -126,7 +126,7 @@
 | multi_language | All | ✅ | ✅ | ✅ | **WORKS** (mais via code, pas via UI client) |
 | lead_scoring | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** (BANT fonctionne en test, 0 leads reels) |
 
-**Resume (updated 250.261)**: 7 WORKS | 0 PARTIAL | 7 UNTESTED | 2 BROKEN | 3 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED
+**Resume (updated 250.261)**: 7 WORKS | 0 PARTIAL | 8 UNTESTED | 1 BROKEN | 3 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED
 
 ### Data-Driven Dashboards (250.260-261)
 - **Client Dashboard**: Intelligence Summary widget (KB health, drift alignment, cross-sell, alerts) via `/api/tenants/:id/insights`
