@@ -88,7 +88,7 @@ Applique a VocalIA : **Plus un client utilise le voice assistant, plus l'IA appr
 #### F1. Auto-Enrichissement KB par les Conversations
 
 **Backend existant** : `KBEnrichmentSkill`, `ConversationStore`, `TenantMemory`
-**Manque** : Surface UI dans le dashboard client
+**~~Manque~~** : ~~Surface UI dans le dashboard client~~ → **DONE (250.256)**
 
 ```
 Dashboard Client → "Opportunites Detectees"
@@ -114,7 +114,7 @@ Dashboard Client → "Opportunites Detectees"
 #### F2. Drift Detection — FAQ vs Questions Reelles
 
 **Backend existant** : Analytics conversations, KB par tenant
-**Manque** : Algorithme de comparaison + vue dashboard
+**~~Manque~~** : ~~Algorithme de comparaison + vue dashboard~~ → **DONE (250.256)**
 
 ```
 Dashboard Client → "Analyse de Coherence"
@@ -142,7 +142,7 @@ Dashboard Client → "Analyse de Coherence"
 #### F3. Memoire Visiteur Recurrent
 
 **Backend existant** : `TenantMemory` (singleton + RAG + auto-promote flywheel)
-**Manque** : Activation cote widget (identification visiteur)
+**~~Manque~~** : ~~Activation cote widget (identification visiteur)~~ → **DONE (250.256)**
 
 ```
 Visiteur (2eme visite) : "Bonjour"
@@ -188,7 +188,7 @@ Produit: Chaussures Running X
 #### F5. KB Score Gamifie avec Actions
 
 **Backend existant** : KB Quality Score dans le dashboard
-**Manque** : Actions suggerees concretes + estimation d'impact
+**~~Manque~~** : ~~Actions suggerees concretes + estimation d'impact~~ → **DONE (250.256)**
 
 ```
 KB Quality Score : 45/100 — Bronze
