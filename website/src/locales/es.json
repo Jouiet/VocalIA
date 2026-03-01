@@ -1605,6 +1605,7 @@
     "vs_hidden_list": "Vacaciones, formación, rotación",
     "vs_no_hidden": "Ninguno",
     "vs_result": "16× más capacidad por el 4% del coste de un empleado",
+    "vs_result_suffix": "más capacidad por el 4% del coste de un empleado",
     "vs_disclaimer": "* Basado en un recepcionista a tiempo completo en Europa (~2.500€/mes) vs VocalIA Pro 99€/mes.",
     "row_cat_conversation": "CONVERSACIÓN",
     "row_chat_text": "Chat texto + IA",

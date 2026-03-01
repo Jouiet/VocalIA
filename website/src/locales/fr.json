@@ -1605,6 +1605,7 @@
     "vs_hidden_list": "Congés, formation, turnover",
     "vs_no_hidden": "Aucun",
     "vs_result": "16× plus de capacité pour 4% du coût d'un employé",
+    "vs_result_suffix": "plus de capacité pour 4% du coût d'un employé",
     "vs_disclaimer": "* Basé sur un réceptionniste temps plein en Europe (~2 500€ chargé/mois) vs VocalIA Pro 99€/mois. Capacité estimée à 15 appels/h (humain) vs 60 req/h (IA).",
     "row_cat_conversation": "CONVERSATION",
     "row_chat_text": "Chat texte + IA",

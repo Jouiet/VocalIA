@@ -139,7 +139,7 @@
   <main id="main-content" class="pt-24 pb-16 bg-grid min-h-screen">
     <div class="max-w-4xl mx-auto px-4">
       <!-- Header -->
-      <div class="text-center mb-10">
+      <div class="text-center mb-10" data-reveal="up">
         <h1 class="text-3xl md:text-4xl font-bold mb-3" data-i18n="signup_page.title">
           Créer votre compte
         </h1>
@@ -154,9 +154,9 @@
           data-i18n="signup_page.select_plan">
           1. Choisissez votre plan
         </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto" data-bento-grid>
           <!-- Starter Plan -->
-          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="starter"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-bento-item data-plan="starter"
             data-action="selectPlan" data-params="starter">
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -195,7 +195,7 @@
           </div>
 
           <!-- Pro Plan -->
-          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer relative" data-plan="pro"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer relative" data-bento-item data-plan="pro"
             data-action="selectPlan" data-params="pro">
             <div
               class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-500 text-white text-xs font-semibold rounded-full"
@@ -238,7 +238,7 @@
             </ul>
           </div>
           <!-- E-commerce Plan -->
-          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="ecom" data-action="selectPlan"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-bento-item data-plan="ecom" data-action="selectPlan"
             data-params="ecom">
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -276,7 +276,7 @@
             </ul>
           </div>
           <!-- Expert Clone Plan -->
-          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="expert_clone"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-bento-item data-plan="expert_clone"
             data-action="selectPlan" data-params="expert_clone">
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -314,7 +314,7 @@
             </ul>
           </div>
           <!-- Telephony Plan -->
-          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="telephony"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-bento-item data-plan="telephony"
             data-action="selectPlan" data-params="telephony">
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -355,7 +355,7 @@
       </div>
 
       <!-- Signup Form -->
-      <div class="max-w-md mx-auto">
+      <div class="max-w-md mx-auto" data-reveal="up">
         <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 text-center"
           data-i18n="signup_page.your_info">
           2. Vos informations
@@ -659,6 +659,15 @@
       window.addEventListener('load', initI18n);
     })();
   </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
+  <script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
+  <!-- GSAP ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="agency_internal" defer></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>

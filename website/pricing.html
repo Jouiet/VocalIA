@@ -130,33 +130,101 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
   <style>
+    /* Animated gradient border — CSS Houdini */
+    @property --border-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @keyframes rotate-gradient {
+      to { --border-angle: 360deg; }
+    }
+
     .pricing-card {
       background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
-      transition: all 0.3s ease;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .pricing-card:hover {
       border-color: rgba(94, 106, 210, 0.4);
-      transform: translateY(-4px);
     }
 
     .pricing-card.featured {
-      background: linear-gradient(135deg, rgba(94, 106, 210, 0.15), rgba(99, 102, 241, 0.1));
-      border: 2px solid #5E6AD2;
+      background: linear-gradient(135deg, rgba(94, 106, 210, 0.12), rgba(99, 102, 241, 0.06));
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
     }
 
+    /* Animated rotating gradient border */
     .pricing-card.featured::before {
       content: '';
       position: absolute;
       inset: -2px;
-      background: linear-gradient(135deg, #5E6AD2, #6366f1);
       border-radius: 18px;
+      background: conic-gradient(
+        from var(--border-angle),
+        #5E6AD2 0%,
+        #6366f1 25%,
+        #a5b4fc 50%,
+        #6366f1 75%,
+        #5E6AD2 100%
+      );
       z-index: -1;
-      opacity: 0.3;
-      filter: blur(20px);
+      animation: rotate-gradient 6s linear infinite;
+    }
+
+    /* Inner fill mask — creates the border illusion */
+    .pricing-card.featured::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(94, 106, 210, 0.12), rgba(15, 15, 20, 0.95));
+      z-index: -1;
+    }
+
+    /* Subtle glow on featured hover */
+    .pricing-card.featured:hover {
+      box-shadow: 0 0 40px rgba(94, 106, 210, 0.15), 0 0 80px rgba(94, 106, 210, 0.05);
+    }
+
+    /* E-commerce featured variant */
+    .pricing-card.featured.border-emerald-500\/50::before {
+      background: conic-gradient(
+        from var(--border-angle),
+        #10B981 0%,
+        #34d399 25%,
+        #6ee7b7 50%,
+        #34d399 75%,
+        #10B981 100%
+      );
+      animation: rotate-gradient 6s linear infinite;
+    }
+
+    .pricing-card.featured.border-emerald-500\/50:hover {
+      box-shadow: 0 0 40px rgba(16, 185, 129, 0.15), 0 0 80px rgba(16, 185, 129, 0.05);
+    }
+
+    /* Expert Clone featured variant */
+    .pricing-card.featured.border-amber-500\/50::before {
+      background: conic-gradient(
+        from var(--border-angle),
+        #F59E0B 0%,
+        #fbbf24 25%,
+        #fde68a 50%,
+        #fbbf24 75%,
+        #F59E0B 100%
+      );
+      animation: rotate-gradient 6s linear infinite;
+    }
+
+    .pricing-card.featured.border-amber-500\/50:hover {
+      box-shadow: 0 0 40px rgba(245, 158, 11, 0.15), 0 0 80px rgba(245, 158, 11, 0.05);
     }
 
     .toggle-switch {
@@ -186,6 +254,16 @@
     .toggle-option.active {
       background: #5E6AD2;
       color: white;
+    }
+
+    /* Savings counter pulse */
+    @keyframes savings-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(94, 106, 210, 0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(94, 106, 210, 0); }
+    }
+
+    .savings-badge {
+      animation: savings-pulse 3s ease-in-out infinite;
     }
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
@@ -236,7 +314,8 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-6" data-reveal="up">
 
         <!-- Starter -->
-        <div class="pricing-card p-6 relative glass">
+        <div class="pricing-card p-6 relative glass" data-card-3d="6">
+          <div class="card-glare"></div>
           <div class="mb-6">
             <h3 class="text-lg font-semibold text-vocalia-200 mb-2" data-i18n="pricing_page.starter_title">Starter</h3>
             <div class="flex items-baseline gap-1">
@@ -275,7 +354,8 @@
         </div>
 
         <!-- Pro (Services & Lead Gen) -->
-        <div class="pricing-card featured p-6 relative glass border-vocalia-500/50">
+        <div class="pricing-card featured p-6 relative glass border-vocalia-500/50" data-card-3d="6">
+          <div class="card-glare"></div>
           <div class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="px-4 py-1 rounded-full bg-vocalia-500 text-white text-xs font-bold uppercase tracking-widest"
               data-i18n="pricing_page.pro_badge">Populaire</span>
@@ -324,7 +404,8 @@
         </div>
 
         <!-- E-commerce (Shopify & WooCommerce) -->
-        <div class="pricing-card featured p-6 relative glass border-emerald-500/50">
+        <div class="pricing-card featured p-6 relative glass border-emerald-500/50" data-card-3d="6">
+          <div class="card-glare"></div>
           <div class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="px-4 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold uppercase tracking-widest"
               data-i18n="pricing_page.ecom_badge">E-commerce</span>
@@ -373,7 +454,8 @@
         </div>
 
         <!-- Expert Clone -->
-        <div class="pricing-card featured p-6 relative glass border-amber-500/50">
+        <div class="pricing-card featured p-6 relative glass border-amber-500/50" data-card-3d="6">
+          <div class="card-glare"></div>
           <div class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="px-4 py-1 rounded-full bg-amber-500 text-white text-xs font-bold uppercase tracking-widest"
               data-i18n="pricing_page.expert_badge">Expert</span>
@@ -422,7 +504,8 @@
         </div>
 
         <!-- Voice Telephony AI -->
-        <div class="pricing-card p-6 relative glass">
+        <div class="pricing-card p-6 relative glass" data-card-3d="6">
+          <div class="card-glare"></div>
           <div class="mb-6">
             <h3 class="text-lg font-semibold text-vocalia-200 mb-2" data-i18n="pricing_page.telephony_title">Telephony</h3>
             <div class="flex items-baseline gap-1">
@@ -579,9 +662,9 @@
         <p class="text-lg text-zinc-400 max-w-2xl mx-auto" data-i18n="pricing_page.vs_subtitle">Les chiffres parlent d'eux-mêmes. Comparez le coût réel d'un employé avec VocalIA.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto" data-reveal="up">
+      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto" data-bento-grid>
         <!-- Human Receptionist -->
-        <div class="glass rounded-2xl p-8 border border-red-500/20 relative">
+        <div class="glass rounded-2xl p-8 border border-red-500/20 relative" data-bento-item data-card-3d="4">
           <div class="absolute -top-3 left-6 px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full text-red-400 text-xs font-semibold uppercase tracking-wider" data-i18n="pricing_page.vs_human_badge">Méthode traditionnelle</div>
           <div class="mt-4 mb-6">
             <div class="flex items-center gap-3 mb-4">
@@ -623,7 +706,7 @@
         </div>
 
         <!-- VocalIA -->
-        <div class="glass rounded-2xl p-8 border border-vocalia-500/30 relative">
+        <div class="glass rounded-2xl p-8 border border-vocalia-500/30 relative" data-bento-item data-card-3d="4">
           <div class="absolute -top-3 left-6 px-3 py-1 bg-vocalia-500/20 border border-vocalia-500/30 rounded-full text-vocalia-300 text-xs font-semibold uppercase tracking-wider">VocalIA Pro</div>
           <div class="mt-4 mb-6">
             <div class="flex items-center gap-3 mb-4">
@@ -667,9 +750,9 @@
 
       <!-- Bottom highlight -->
       <div class="mt-8 text-center">
-        <div class="inline-flex items-center gap-3 px-6 py-3 glass rounded-xl border border-vocalia-500/20">
+        <div class="savings-badge inline-flex items-center gap-3 px-6 py-3 glass rounded-xl border border-vocalia-500/20">
           <i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i>
-          <span class="text-white font-semibold" data-i18n="pricing_page.vs_result">16× plus de capacité pour 4% du coût d'un employé</span>
+          <span class="text-white font-semibold"><span data-counter="16" data-counter-suffix="×" class="text-vocalia-400 text-xl font-bold tabular-nums">16×</span> <span data-i18n="pricing_page.vs_result_suffix">plus de capacité pour 4% du coût d'un employé</span></span>
         </div>
         <p class="text-xs text-zinc-500 mt-3" data-i18n="pricing_page.vs_disclaimer">* Basé sur un réceptionniste temps plein en Europe (~2 500€ chargé/mois) vs VocalIA Pro 99€/mois. Capacité estimée à 15 appels/h (humain) vs 60 req/h (IA).</p>
       </div>
@@ -682,16 +765,16 @@
       <h2 class="text-3xl font-bold text-center mb-12" data-i18n="pricing_page.comparison_title">Comparaison Détaillée
       </h2>
 
-      <div class="overflow-x-auto" data-reveal="up">
+      <div class="overflow-x-auto glass rounded-2xl border border-white/[0.06] p-1" data-reveal="up">
         <table class="w-full text-sm">
           <thead>
-            <tr class="border-b border-white/[0.08]">
-              <th class="text-left py-4 px-4 font-semibold" data-i18n="pricing_page.table_feature">Fonctionnalité</th>
-              <th class="text-center py-4 px-4 font-semibold" data-i18n="pricing_page.table_starter">Starter</th>
-              <th class="text-center py-4 px-4 font-semibold text-vocalia-400" data-i18n="pricing_page.table_pro">Pro</th>
-              <th class="text-center py-4 px-4 font-semibold text-emerald-400" data-i18n="pricing_page.table_ecom">E-commerce</th>
-              <th class="text-center py-4 px-4 font-semibold text-amber-400" data-i18n="pricing_page.table_expert">Expert Clone</th>
-              <th class="text-center py-4 px-4 font-semibold text-violet-400" data-i18n="pricing_page.table_telephony">Telephony</th>
+            <tr class="border-b border-white/[0.08] bg-white/[0.02]">
+              <th class="text-left py-4 px-4 font-semibold sticky top-0 bg-[#050505]/90 backdrop-blur-sm" data-i18n="pricing_page.table_feature">Fonctionnalité</th>
+              <th class="text-center py-4 px-4 font-semibold sticky top-0 bg-[#050505]/90 backdrop-blur-sm" data-i18n="pricing_page.table_starter">Starter</th>
+              <th class="text-center py-4 px-4 font-semibold text-vocalia-400 sticky top-0 bg-[#050505]/90 backdrop-blur-sm" data-i18n="pricing_page.table_pro">Pro</th>
+              <th class="text-center py-4 px-4 font-semibold text-emerald-400 sticky top-0 bg-[#050505]/90 backdrop-blur-sm" data-i18n="pricing_page.table_ecom">E-commerce</th>
+              <th class="text-center py-4 px-4 font-semibold text-amber-400 sticky top-0 bg-[#050505]/90 backdrop-blur-sm" data-i18n="pricing_page.table_expert">Expert Clone</th>
+              <th class="text-center py-4 px-4 font-semibold text-violet-400 sticky top-0 bg-[#050505]/90 backdrop-blur-sm" data-i18n="pricing_page.table_telephony">Telephony</th>
             </tr>
           </thead>
           <tbody>

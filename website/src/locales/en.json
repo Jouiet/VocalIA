@@ -1605,6 +1605,7 @@
     "vs_hidden_list": "Leave, training, turnover",
     "vs_no_hidden": "None",
     "vs_result": "16× more capacity for 4% of an employee's cost",
+    "vs_result_suffix": "more capacity for 4% of an employee's cost",
     "vs_disclaimer": "* Based on a full-time receptionist in Europe (~€2,500 loaded/month) vs VocalIA Pro €99/month. Capacity estimated at 15 calls/h (human) vs 60 req/h (AI).",
     "row_cat_conversation": "CONVERSATION",
     "row_chat_text": "AI text chat",
