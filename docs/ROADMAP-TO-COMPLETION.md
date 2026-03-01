@@ -25,8 +25,8 @@
 
 - `vocalia.ma` ✅ Website live
 - `api.vocalia.ma/respond` ✅ Voice API OK (Grok 2.6s, agency_internal)
-- `api.vocalia.ma/api/auth/register` ❌ **500** (GoogleSheetsDB OAuth expired)
-- `api.vocalia.ma/api/auth/login` ❌ **500** (GoogleSheetsDB OAuth expired)
+- `api.vocalia.ma/api/auth/register` ✅ **201** (B1 debunked 250.261: OAuth was NEVER expired — error was shell escaping `!` → `\!` in test commands, producing invalid JSON)
+- `api.vocalia.ma/api/auth/login` ✅ **works** (always worked, same OAuth)
 - `api.vocalia.ma/realtime` ✅ WebSocket route via Traefik (fix 250.261: widget URL was `:3007`, now `/realtime`)
 - Stripe billing ❌ PLACEHOLDER price IDs, STRIPE_SECRET_KEY missing
 
