@@ -542,6 +542,13 @@
     let allowedOrigins = [];
     let widgetConfig = { primary_color: '#4FBAF1', position: 'bottom-right', ecommerce: false };
     let configDirty = false;
+    let sriHashes = {};
+
+    // Load SRI hashes for snippet generation
+    fetch('/voice-assistant/sri-hashes.json')
+      .then(r => r.json())
+      .then(h => { sriHashes = h; updateSnippet(currentPlatform); })
+      .catch(() => {});
 
     // ─── Load Tenant Config ──────────────────────────────────────
 
@@ -615,61 +622,64 @@
     function getSnippets() {
       const attrs = buildSnippetAttrs();
       const widgetFile = getWidgetFilename();
+      const sri = sriHashes[widgetFile] || '';
+      const sriAttr = sri ? `\n  integrity="${sri}"\n  crossorigin="anonymous"` : '';
+      const sriInline = sri ? ` integrity="${sri}" crossorigin="anonymous"` : '';
       return {
         html: {
-          code: `<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Collez ce code juste avant </body> dans votre page HTML.'
         },
         shopify: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Dans Shopify Admin : Online Store > Themes > Edit Code > layout/theme.liquid > collez avant </body>.'
         },
         wordpress: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Apparence > Editeur > footer.php > collez avant </body>. Ou installez le plugin VocalIA WordPress.'
         },
         react: {
-          code: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${API_BASE}/voice-assistant/${widgetFile}';\n    script.defer = true;\n    script.dataset.vocaliaTenant = '${tenantId}';\n${widgetConfig.primary_color !== '#4FBAF1' ? `    script.dataset.color = '${widgetConfig.primary_color}';\n` : ''}${widgetConfig.position !== 'bottom-right' ? `    script.dataset.position = '${widgetConfig.position}';\n` : ''}    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> in your layout`,
+          code: `import { useEffect } from 'react';\n\nexport function VocalIAWidget() {\n  useEffect(() => {\n    const script = document.createElement('script');\n    script.src = '${API_BASE}/voice-assistant/${widgetFile}';\n    script.defer = true;\n    script.dataset.vocaliaTenant = '${tenantId}';\n${sri ? `    script.integrity = '${sri}';\n    script.crossOrigin = 'anonymous';\n` : ''}${widgetConfig.primary_color !== '#4FBAF1' ? `    script.dataset.color = '${widgetConfig.primary_color}';\n` : ''}${widgetConfig.position !== 'bottom-right' ? `    script.dataset.position = '${widgetConfig.position}';\n` : ''}    document.body.appendChild(script);\n    return () => { document.body.removeChild(script); };\n  }, []);\n  return null;\n}\n\n// Usage: <VocalIAWidget /> in your layout`,
           instructions: 'Ajoutez le composant VocalIAWidget dans votre layout (App.jsx ou layout.tsx).'
         },
         wix: {
-          code: `<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Dans Wix Editor : Settings > Custom Code > Add Code > Body End > collez le snippet.'
         },
         squarespace: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Dans Squarespace : Settings > Advanced > Code Injection > Footer > collez le snippet.'
         },
         webflow: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Dans Webflow : Project Settings > Custom Code > Footer Code > collez et publiez.'
         },
         prestashop: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'PrestaShop : Modules > Module Manager > uploadez vocalia.zip. Ou collez dans Design > Theme & Logo > Advanced > footer.'
         },
         magento: {
-          code: `<!-- VocalIA Voice Widget (Magento 2) -->\n<!-- Add to: app/design/frontend/YOUR_THEME/default/Magento_Theme/templates/root.phtml before </body> -->\n<!-- Or use our Magento module: VocalIA_VoiceAssistant -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget (Magento 2) -->\n<!-- Add to: app/design/frontend/YOUR_THEME/default/Magento_Theme/templates/root.phtml before </body> -->\n<!-- Or use our Magento module: VocalIA_VoiceAssistant -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Magento 2 : installez le module VocalIA_VoiceAssistant dans app/code/, ou ajoutez le snippet dans votre template root.phtml avant </body>.'
         },
         bigcommerce: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'BigCommerce : Storefront > Script Manager > Create a Script > Location: Footer > Pages: All Pages > collez le snippet.'
         },
         joomla: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Joomla : System > Install > Upload plg_vocalia.zip. Puis Plugins > VocalIA > Enable > entrez votre Tenant ID > Save.'
         },
         drupal: {
-          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'Drupal : Copiez le dossier vocalia dans modules/custom/. Extend > VocalIA > Install. Configuration > VocalIA > Tenant ID > Save.'
         },
         opencart: {
-          code: `<!-- VocalIA Voice Widget (OpenCart) -->\n<!-- Upload vocalia module: catalog/controller/extension/module/vocalia.php -->\n<!-- Extensions > Modules > VocalIA > Install > Edit > Tenant ID -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}" ${attrs} defer><\/script>`,
+          code: `<!-- VocalIA Voice Widget (OpenCart) -->\n<!-- Upload vocalia module: catalog/controller/extension/module/vocalia.php -->\n<!-- Extensions > Modules > VocalIA > Install > Edit > Tenant ID -->\n<script src="${API_BASE}/voice-assistant/${widgetFile}"${sriInline} ${attrs} defer><\/script>`,
           instructions: 'OpenCart 3.x : Upload le module dans catalog/controller/extension/module/. Extensions > Modules > VocalIA > Install > Edit > Tenant ID. OpenCart 4.x : Upload via Extensions > Installer (OCMOD zip).'
         },
         gtm: {
-          code: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${API_BASE}/voice-assistant/${widgetFile}';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n  document.body.appendChild(s);\n})();\n<\/script>`,
+          code: `<script>\n(function() {\n  var s = document.createElement('script');\n  s.src = '${API_BASE}/voice-assistant/${widgetFile}';\n  s.defer = true;\n  s.setAttribute('data-vocalia-tenant', '${tenantId}');\n${sri ? `  s.integrity = '${sri}'; s.crossOrigin = 'anonymous';\n` : ''}  document.body.appendChild(s);\n})();\n<\/script>`,
           instructions: 'Google Tag Manager : Tags > New > Custom HTML > collez ce code > Trigger : All Pages > Submit.'
         }
       };

@@ -19,6 +19,9 @@ if (!defined('_PS_VERSION_')) {
 
 class Vocalia extends Module
 {
+    const VOCALIA_SRI_ECOMMERCE = 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn'; // Auto-updated by build-widgets.cjs
+    const VOCALIA_SRI_B2B = 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'; // Auto-updated by build-widgets.cjs
+
     public function __construct()
     {
         $this->name = 'vocalia';
@@ -174,9 +177,12 @@ class Vocalia extends Module
             : 'voice-widget-b2b.js';
 
         $url = 'https://vocalia.ma/voice-assistant/' . $file;
+        $sri = ($widgetType === 'ecommerce') ? self::VOCALIA_SRI_ECOMMERCE : self::VOCALIA_SRI_B2B;
 
         return '<script src="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8')
-            . '" data-vocalia-tenant="' . htmlspecialchars($tenantId, ENT_QUOTES, 'UTF-8')
+            . '" integrity="' . htmlspecialchars($sri, ENT_QUOTES, 'UTF-8')
+            . '" crossorigin="anonymous"'
+            . ' data-vocalia-tenant="' . htmlspecialchars($tenantId, ENT_QUOTES, 'UTF-8')
             . '" defer></script>';
     }
 }

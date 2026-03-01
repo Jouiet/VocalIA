@@ -10,6 +10,9 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 
+define('VOCALIA_SRI_ECOMMERCE', 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn'); // Auto-updated by build-widgets.cjs
+define('VOCALIA_SRI_B2B', 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'); // Auto-updated by build-widgets.cjs
+
 /**
  * Implements hook_page_attachments().
  *
@@ -38,12 +41,16 @@ function vocalia_page_attachments(array &$attachments) {
   ];
   $file = $files[$widget_type] ?? $files['ecommerce'];
 
+  $sri = ($file === 'voice-widget-ecommerce.js') ? VOCALIA_SRI_ECOMMERCE : VOCALIA_SRI_B2B;
+
   $attachments['#attached']['html_head'][] = [
     [
       '#type'       => 'html_tag',
       '#tag'        => 'script',
       '#attributes' => [
         'src'                  => 'https://vocalia.ma/voice-assistant/' . $file,
+        'integrity'            => $sri,
+        'crossorigin'          => 'anonymous',
         'data-vocalia-tenant'  => $tenant_id,
         'defer'                => TRUE,
       ],

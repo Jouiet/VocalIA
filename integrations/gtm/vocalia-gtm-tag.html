@@ -32,10 +32,17 @@
     ? 'voice-widget-ecommerce.js'
     : 'voice-widget-b2b.js';
 
+  // SRI hashes — auto-updated by build-widgets.cjs
+  var SRI = {
+    'voice-widget-ecommerce.js': 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn',
+    'voice-widget-b2b.js': 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'
+  };
+
   var s = document.createElement('script');
   s.src = 'https://vocalia.ma/voice-assistant/' + file;
   s.defer = true;
   s.setAttribute('data-vocalia-tenant', TENANT_ID);
+  if (SRI[file]) { s.integrity = SRI[file]; s.crossOrigin = 'anonymous'; }
   document.body.appendChild(s);
 })();
 </script>

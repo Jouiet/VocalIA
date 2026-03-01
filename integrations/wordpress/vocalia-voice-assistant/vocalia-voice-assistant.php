@@ -21,6 +21,8 @@ if (!defined('ABSPATH')) {
 define('VOCALIA_VERSION', '1.0.0');
 define('VOCALIA_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VOCALIA_CDN_BASE', 'https://vocalia.ma/voice-assistant');
+define('VOCALIA_SRI_ECOMMERCE', 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn'); // Auto-updated by build-widgets.cjs
+define('VOCALIA_SRI_B2B', 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'); // Auto-updated by build-widgets.cjs
 
 /**
  * Register settings page
@@ -215,10 +217,11 @@ function vocalia_enqueue_widget() {
         ['strategy' => 'defer', 'in_footer' => true]
     );
 
-    // Pass tenant ID via data attribute (wp_enqueue_script doesn't support custom attributes natively)
-    add_filter('script_loader_tag', function($tag, $handle) use ($tenant_id) {
+    // Pass tenant ID + SRI via data attribute (wp_enqueue_script doesn't support custom attributes natively)
+    $sri = ($widget_type === 'ecommerce') ? VOCALIA_SRI_ECOMMERCE : VOCALIA_SRI_B2B;
+    add_filter('script_loader_tag', function($tag, $handle) use ($tenant_id, $sri) {
         if ($handle === 'vocalia-widget') {
-            $tag = str_replace(' src=', ' data-vocalia-tenant="' . esc_attr($tenant_id) . '" src=', $tag);
+            $tag = str_replace(' src=', ' data-vocalia-tenant="' . esc_attr($tenant_id) . '" integrity="' . esc_attr($sri) . '" crossorigin="anonymous" src=', $tag);
         }
         return $tag;
     }, 10, 2);

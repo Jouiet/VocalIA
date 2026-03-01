@@ -24,6 +24,9 @@
 
 class ControllerExtensionModuleVocalia extends Controller
 {
+    const VOCALIA_SRI_ECOMMERCE = 'sha384-ZOrFKaCREh1dqsxu1PdaNIcW/MTg1VumxPof7Yja9+Wv3R/doPB6rqcjolmgjeQn'; // Auto-updated by build-widgets.cjs
+    const VOCALIA_SRI_B2B = 'sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9'; // Auto-updated by build-widgets.cjs
+
     public function index($setting)
     {
         $status = isset($setting['status']) ? $setting['status'] : 0;
@@ -43,9 +46,12 @@ class ControllerExtensionModuleVocalia extends Controller
 
         $url = 'https://vocalia.ma/voice-assistant/' . $file;
 
+        $sri = ($widget_type === 'ecommerce') ? self::VOCALIA_SRI_ECOMMERCE : self::VOCALIA_SRI_B2B;
+
         $data = [
             'widget_url' => $url,
             'tenant_id'  => htmlspecialchars($tenant_id, ENT_QUOTES, 'UTF-8'),
+            'sri_hash'   => $sri,
         ];
 
         return $this->load->view('extension/module/vocalia', $data);
@@ -56,7 +62,7 @@ class ControllerExtensionModuleVocalia extends Controller
  * Template file: catalog/view/theme/default/template/extension/module/vocalia.twig
  *
  * Contents:
- * <script src="{{ widget_url }}" data-vocalia-tenant="{{ tenant_id }}" defer></script>
+ * <script src="{{ widget_url }}" integrity="{{ sri_hash }}" crossorigin="anonymous" data-vocalia-tenant="{{ tenant_id }}" defer></script>
  *
  * Admin controller (admin/controller/extension/module/vocalia.php):
  * Standard OpenCart admin module with fields: status (toggle), tenant_id (text), widget_type (select)

@@ -375,13 +375,26 @@
     // Set initial persona selection style
     document.querySelector('.persona-card input:checked')?.closest('.persona-card').querySelector('.persona-box')?.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
 
-    // Generate snippet for step 4
+    // Generate snippet for step 4 — dynamic widget type based on persona selection
     const tid = auth.getTenantId();
     const snippetContainer = document.getElementById('onboarding-snippet')?.closest('.bg-white, .dark\\:bg-white\\/\\[0\\.06\\]') || document.getElementById('onboarding-snippet')?.parentElement?.parentElement;
-    if (tid) {
-      const snippet = `<script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="${tid}" defer><\/script>`;
+
+    function updateOnboardingSnippet() {
+      const persona = document.querySelector('input[name="persona"]:checked')?.value || 'AGENCY';
+      const isEcom = persona === 'UNIVERSAL_ECOMMERCE';
+      const widgetFile = isEcom ? 'voice-widget-ecommerce.js' : 'voice-widget-b2b.js';
+      const snippet = `<script src="https://vocalia.ma/voice-assistant/${widgetFile}" data-vocalia-tenant="${tid}" defer><\/script>`;
       const pre = document.getElementById('onboarding-snippet');
       if (pre) pre.textContent = snippet;
+    }
+
+    // Re-generate snippet when persona changes
+    document.querySelectorAll('input[name="persona"]').forEach(radio => {
+      radio.addEventListener('change', updateOnboardingSnippet);
+    });
+
+    if (tid) {
+      updateOnboardingSnippet();
     } else {
       // Hide snippet block when tenantId unavailable
       const pre = document.getElementById('onboarding-snippet');

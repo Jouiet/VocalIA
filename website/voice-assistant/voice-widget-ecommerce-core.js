@@ -859,6 +859,40 @@
     // ============================================================
 
     // ============================================================
+    // VISITOR MEMORY (Session 250.256: F3 — persistent visitor ID)
+    // ============================================================
+
+    function getOrCreateVisitorId() {
+        const key = 'vocalia_vid_' + (state.tenantId || 'default');
+        let vid = null;
+        try { vid = localStorage.getItem(key); } catch { /* private browsing */ }
+        if (!vid) {
+            vid = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+            try { localStorage.setItem(key, vid); } catch { /* private browsing */ }
+        }
+        return vid;
+    }
+
+    // ============================================================
+    // WIDGET HEARTBEAT (Session 250.257: installation tracking)
+    // ============================================================
+
+    function sendHeartbeat() {
+        if (!state.tenantId || state.tenantId === 'unknown') return;
+        try {
+            const url = (state.apiUrl || CONFIG.apiUrl) + '/api/widget/heartbeat';
+            navigator.sendBeacon(url, JSON.stringify({
+                tenant_id: state.tenantId,
+                domain: window.location.hostname,
+                path: window.location.pathname,
+                widget: CONFIG.widgetType || 'b2b',
+                visitor_id: getOrCreateVisitorId(),
+                ts: Date.now()
+            }));
+        } catch { /* silent — non-critical */ }
+    }
+
+    // ============================================================
     // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
     // ============================================================
 
@@ -3464,6 +3498,7 @@
                 tenant_id: state.tenantId,
                 api_key: CONFIG.api_key || undefined,
                 widget_type: 'ECOM', // Enforce E-commerce Persona
+                visitor_id: getOrCreateVisitorId(), // Session 250.256: F3 Visitor Memory
                 history: state.conversationHistory.slice(-10).map(m => ({
                     role: m.role,
                     content: m.content
@@ -3945,6 +3980,7 @@
 
             captureAttribution();
             createWidget();
+            sendHeartbeat();
             initExitIntent();
             initSocialProof();
             initSubWidgets();

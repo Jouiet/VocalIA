@@ -14,6 +14,7 @@
  *
  *   Snippet:
  *   <script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js"
+ *     integrity="sha384-3MldGAd6hn/SpDyGMM8as1PUfJghkrjmoKIfQfVONxcCVsBcxmhlC3TCbRUJ12e9" crossorigin="anonymous"
  *     data-vocalia-tenant="YOUR_TENANT_ID" defer></script>
  *
  * METHOD 2 — Velo (advanced):

@@ -336,6 +336,12 @@ async function main() {
     console.log();
   }
 
+  // ── Generate SRI hashes ──
+  if (!checkOnly) {
+    generateSRIHashes();
+    updatePluginSRIHashes();
+  }
+
   // ── Summary ──
   if (errors > 0) {
     console.log(`❌ ${errors} issue(s) found`);
@@ -343,6 +349,128 @@ async function main() {
   } else {
     console.log(checkOnly ? '✅ All widgets in sync' : '✅ All widgets built successfully');
   }
+}
+
+/**
+ * Generate SRI (Subresource Integrity) SHA-384 hashes for all deployed JS files.
+ * Writes sri-hashes.json — single source of truth for all plugins and pages.
+ */
+function generateSRIHashes() {
+  const SRI_FILE = path.join(DEPLOYED, 'sri-hashes.json');
+  const hashes = {};
+  const files = fs.readdirSync(DEPLOYED)
+    .filter(f => f.endsWith('.js') && !f.endsWith('.min.js') && !f.endsWith('.map'));
+  for (const file of files) {
+    const content = fs.readFileSync(path.join(DEPLOYED, file));
+    const hash = crypto.createHash('sha384').update(content).digest('base64');
+    hashes[file] = `sha384-${hash}`;
+  }
+  fs.writeFileSync(SRI_FILE, JSON.stringify(hashes, null, 2) + '\n');
+  console.log(`\n🔒 SRI hashes: ${Object.keys(hashes).length} files → sri-hashes.json`);
+  return hashes;
+}
+
+/**
+ * Auto-update SRI constants in PHP plugins and HTML snippets.
+ * Reads sri-hashes.json and replaces hardcoded hashes in plugin source files.
+ */
+function updatePluginSRIHashes() {
+  const SRI_FILE = path.join(DEPLOYED, 'sri-hashes.json');
+  if (!fs.existsSync(SRI_FILE)) return;
+
+  const hashes = JSON.parse(fs.readFileSync(SRI_FILE, 'utf-8'));
+  const sriEcom = hashes['voice-widget-ecommerce.js'] || '';
+  const sriB2b = hashes['voice-widget-b2b.js'] || '';
+  if (!sriEcom || !sriB2b) return;
+
+  const SRI_MARKER = '// Auto-updated by build-widgets.cjs';
+  let updated = 0;
+
+  // PHP plugins — inject/replace SRI constants
+  const phpPlugins = [
+    path.join(ROOT, 'integrations/wordpress/vocalia-voice-assistant/vocalia-voice-assistant.php'),
+    path.join(ROOT, 'integrations/prestashop/vocalia.php'),
+    path.join(ROOT, 'integrations/joomla/src/Extension/Vocalia.php'),
+    path.join(ROOT, 'integrations/drupal/vocalia.module'),
+    path.join(ROOT, 'integrations/magento/vocalia-magento-block.php'),
+    path.join(ROOT, 'integrations/opencart/vocalia-opencart-module.php'),
+  ];
+
+  for (const file of phpPlugins) {
+    if (!fs.existsSync(file)) continue;
+    let content = fs.readFileSync(file, 'utf-8');
+    // Replace existing SRI hashes — handles both:
+    //   const FOO = 'sha384-...'   (class constant)
+    //   define('FOO', 'sha384-...') (define — has extra quotes between name and value)
+    const before = content;
+    content = content.replace(/(VOCALIA_SRI_ECOMMERCE.*?')sha384-[A-Za-z0-9+/=]+'/g, `$1${sriEcom}'`);
+    content = content.replace(/(VOCALIA_SRI_B2B.*?')sha384-[A-Za-z0-9+/=]+'/g, `$1${sriB2b}'`);
+    if (content !== before) {
+      fs.writeFileSync(file, content, 'utf-8');
+      updated++;
+    }
+  }
+
+  // BigCommerce HTML — replace integrity attribute value
+  const bigcFile = path.join(ROOT, 'integrations/bigcommerce/vocalia-bigcommerce-script.html');
+  if (fs.existsSync(bigcFile)) {
+    let content = fs.readFileSync(bigcFile, 'utf-8');
+    const before = content;
+    content = content.replace(/integrity="sha384-[A-Za-z0-9+/=]+"/, `integrity="${sriEcom}"`);
+    if (content !== before) {
+      fs.writeFileSync(bigcFile, content, 'utf-8');
+      updated++;
+    }
+  }
+
+  // HTML snippets — replace integrity attribute values (default to b2b widget)
+  const htmlSnippets = [
+    path.join(ROOT, 'integrations/squarespace/vocalia-squarespace-injection.html'),
+    path.join(ROOT, 'integrations/webflow/vocalia-webflow-embed.html'),
+  ];
+  for (const file of htmlSnippets) {
+    if (!fs.existsSync(file)) continue;
+    let content = fs.readFileSync(file, 'utf-8');
+    const before = content;
+    content = content.replace(/integrity="sha384-[A-Za-z0-9+/=]+"/, `integrity="${sriB2b}"`);
+    if (content !== before) {
+      fs.writeFileSync(file, content, 'utf-8');
+      updated++;
+    }
+  }
+
+  // Wix comment snippet — integrity attribute in documentation
+  const wixFile = path.join(ROOT, 'integrations/wix/vocalia-wix-custom-element.js');
+  if (fs.existsSync(wixFile)) {
+    let content = fs.readFileSync(wixFile, 'utf-8');
+    const before = content;
+    content = content.replace(/integrity="sha384-[A-Za-z0-9+/=]+"/, `integrity="${sriB2b}"`);
+    if (content !== before) {
+      fs.writeFileSync(wixFile, content, 'utf-8');
+      updated++;
+    }
+  }
+
+  // GTM tag — SRI object with both hashes
+  const gtmFile = path.join(ROOT, 'integrations/gtm/vocalia-gtm-tag.html');
+  if (fs.existsSync(gtmFile)) {
+    let content = fs.readFileSync(gtmFile, 'utf-8');
+    const before = content;
+    content = content.replace(
+      /('voice-widget-ecommerce\.js':\s*')sha384-[A-Za-z0-9+/=]+'/,
+      `$1${sriEcom}'`
+    );
+    content = content.replace(
+      /('voice-widget-b2b\.js':\s*')sha384-[A-Za-z0-9+/=]+'/,
+      `$1${sriB2b}'`
+    );
+    if (content !== before) {
+      fs.writeFileSync(gtmFile, content, 'utf-8');
+      updated++;
+    }
+  }
+
+  console.log(`🔒 SRI auto-updated: ${updated} plugin files`);
 }
 
 main();
