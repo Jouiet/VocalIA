@@ -1,8 +1,8 @@
 > **Date:** 2026-03-01 | **Session:** 250.257 (Plugin System Complete — 6 ZIPs, verifier, heartbeat)
-> **Code Completeness:** 9.9/10 | **Production Readiness:** 4.0/10 | **Revenue Readiness:** 2.5/10 | **Security:** 9.5/10
+> **Code Completeness:** 9.9/10 | **Production Readiness:** 6.0/10 | **Revenue Readiness:** 4.0/10 | **Security:** 9.5/10
 > **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **~7,400+ tests** (122 files: 120 .mjs + 2 .cjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). **Cross-system bug audit** (250.252): 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). **c8 coverage workaround** (250.252): cov-runner.cjs bypasses node:test IPC for proper V8 tracking. **Maturity Audit** (250.253): PHPUnit PHP tests (50 tests, WP+PS), plugin ZIP distribution (4 archives + API endpoints), dashboard visual polish (gradient mesh, ambient glow, skeleton states), readiness 35%→48%. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.257. Latest: **250.257** Plugin System Complete — 6 ZIPs (Magento+OpenCart added), widget install verifier, heartbeat, CDN fix verified, install-widget.html upgraded.
+> **Source:** 60+ audit phases across sessions 250.105-250.261. Latest: **250.261** B1 debunked (register 201 OK), B5 fixed (WS URL `/realtime`), VPS 7/7 HEALTHY verified, Platform Health widget, scores recalibrated.
 
 ---
 
@@ -20,8 +20,8 @@
 ## 1. Score Actuel
 
 **Code Completeness: 9.9/10** — ~7,400+ tests (122 files, 0 fail, 4 skip). 462/491 functions (94%). T1-T7 SOTA, 40 personas, MCP 203 tools.
-**Production Readiness: 4.0/10** — Register 500 (GoogleSheetsDB OAuth expired), Stripe PLACEHOLDER, WebSocket 3007 unreachable.
-**Revenue Readiness: 2.5/10** — Stripe billing code complete (250.255), 3 premieres etapes funnel brisees sur VPS. 0 signups, 0 paiements, 0 clients payants.
+**Production Readiness: 6.0/10** — Register 201 OK (B1 debunked 250.261), WebSocket via Traefik OK (B5 fixed 250.261). Remaining: Stripe PLACEHOLDER prices, STRIPE_SECRET_KEY missing.
+**Revenue Readiness: 4.0/10** — Register works, WebSocket works, billing code complete (250.255). Remaining: Stripe config on VPS (prices + secret key + webhook). 0 signups, 0 paiements, 0 clients payants.
 
 - `vocalia.ma` ✅ Website live
 - `api.vocalia.ma/respond` ✅ Voice API OK (Grok 2.6s, agency_internal)
@@ -60,7 +60,8 @@
 | 10 (9.5) | 5% | 0.475 |
 | **TOTAL** | **100%** | **9.405** → **~9.4/10** (250.218 — SOTA Patterns Completed) |
 
-> **⚠️ 250.254b Correction**: Ce scoring mesurait le CODE, pas la PRODUCTION. Production readiness revise a **4.0/10** apres audit empirique curl. Revenue readiness: **1.5/10**. Voir section 4.5 pour details.
+> **⚠️ 250.254b Correction**: Ce scoring mesurait le CODE, pas la PRODUCTION. Production readiness revise a **4.0/10** apres audit empirique curl. Revenue readiness: **1.5/10**.
+> **⚠️ 250.261 Update**: B1 DEBUNKED (OAuth jamais expiré — shell escaping `!`→`\!` causait JSON invalide), B5 FIXED (widget URL `:3007`→`/realtime`). Production: **6.0/10**, Revenue: **4.0/10**.
 
 ---
 
@@ -306,15 +307,15 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 | # | Blocker | Impact | Fix |
 |:--|:--------|:-------|:----|
-| B1 | GoogleSheetsDB OAuth expired on VPS | **FATAL** — 0 signups possible | SSH → refresh tokens |
+| B1 | ~~GoogleSheetsDB OAuth expired on VPS~~ | ~~FATAL~~ | **DEBUNKED (250.261)** — OAuth was NEVER expired. Error was shell escaping `!` → `\!` in curl test commands producing invalid JSON. Register 201 OK verified. |
 | B2 | Stripe prices = PLACEHOLDER | **FATAL** — 0 payments possible | Create Stripe Products+Prices |
 | B3 | STRIPE_SECRET_KEY missing on VPS | **FATAL** — Stripe backend dead | Add to .env |
 | B4 | ~~No Stripe webhook receiver~~ | ~~CRITICAL~~ | **FIXED (250.255)** — `stripe-subscription-handler.cjs` + 4 handlers |
-| B5 | WebSocket 3007 not routable | **MAJOR** — Voice realtime broken | Traefik WS config |
+| B5 | ~~WebSocket 3007 not routable~~ | ~~MAJOR~~ | **FIXED (250.261)** — Widget URL was `wss://api.vocalia.ma:3007` (port blocked). Fixed to `wss://api.vocalia.ma/realtime` (Traefik path route). Traefik config was always correct. `/realtime/health` → 200 OK on VPS. |
 | B6 | ~~Default tenant quota = 0~~ | ~~MAJOR~~ | **NOT A BUG (250.255)** — provisionTenant writes correct quotas (starter: 1000 sessions). Issue = register 500 (B1) prevents provisioning |
 | B7 | Traefik routing masks voice-api `/api/*` endpoints | **MINOR** — Some routes 404 | Reconfigure rules |
 
-**Revenue readiness: 1.5/10** — The 3 first funnel steps are broken end-to-end.
+**Revenue readiness: 4.0/10** — Register 201 OK (B1 debunked), WebSocket OK (B5 fixed). Remaining blocker: Stripe config (prices + secret key + webhook URL on VPS).
 
 #### 23-Feature Audit Matrix (250.254b)
 
@@ -334,7 +335,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | voice_telephony | **UNTESTED** | Twilio configured, 0 real calls ever |
 | lead_scoring | **UNTESTED** | BANT works in test, 0 real leads |
 | booking | **WORKS** | Per-tenant booking_url in config.json, multi-tenant (250.259 audit: no hardcoded URLs) |
-| cloud_voice | **BROKEN** | WebSocket 3007 unreachable via Traefik |
+| cloud_voice | **UNTESTED** | WebSocket URL fixed (250.261: `/realtime` via Traefik). `/realtime/health` → 200 OK. Needs real voice session test |
 | whatsapp | **BROKEN** | Code fixed, 0 WhatsApp Business API numbers |
 | bant_crm_push | **DEAD** | Lead scoring works, push CRM = 0 config |
 | crm_sync | **DEAD** | HubSpot/Pipedrive code OK, 0 API keys |
@@ -344,7 +345,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | expert_dashboard | **BLOCKED** | ElevenLabs quota exhausted |
 | multi_language | **WORKS** | 5 langs via code (not client-configurable UI) |
 
-**Summary (updated 250.259)**: 7 WORKS | 0 PARTIAL | 7 UNTESTED | 2 BROKEN | 4 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED = 22 features
+**Summary (updated 250.261)**: 7 WORKS | 0 PARTIAL | 8 UNTESTED | 1 BROKEN | 4 DEAD | 0 FAKE | 0 FRAGILE | 1 BLOCKED = 22 features
 
 ### 4.5 What NOT To Do
 

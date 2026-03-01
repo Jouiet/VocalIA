@@ -1,8 +1,9 @@
 # Perplexity Computer — Analyse Technique & Business + Plan d'Action VocalIA
 
-> Document de référence factuel | 01/03/2026 (MAJ 250.254b) | Sources: blog officiel, docs Perplexity, Fortune, Heise, reviews indépendantes
+> Document de référence factuel | 01/03/2026 (MAJ 250.261) | Sources: blog officiel, docs Perplexity, Fortune, Heise, reviews indépendantes
 > **250.253** : Plugin audit factuel — 12 integrations CMS (2 plugins PHP testés, 4 modules PHP sans tests, 6 snippets HTML <50L). ZIP bloat fixé (WP 16MB→4.4KB, PS 1.4MB→2.1KB). Dashboard visual polish (gradient mesh, ambient glow, skeleton states). Readiness 35%→48%.
-> **250.254b** : Revenue Path Audit — T1-T7 patterns ALL DONE mais production readiness chute 9.4→4.0/10. Register 500, Stripe PLACEHOLDER, WS 3007 mort. 23 features auditees: 3 WORKS, 3 PARTIAL, 7 UNTESTED, 2 BROKEN, 3 DEAD, 1 FAKE (sms_automation = zero code), 1 FRAGILE (booking = Google Apps Script hardcode). Revenue readiness: 1.5/10.
+> **250.254b** : Revenue Path Audit — T1-T7 patterns ALL DONE mais production readiness chute 9.4→4.0/10. 23 features auditees. Revenue readiness: 1.5/10.
+> **250.261** : B1 DEBUNKED (Register 201 OK — OAuth was NEVER expired, error was shell escaping `!`→`\!` in curl). B5 FIXED (widget WS URL `:3007`→`/realtime` Traefik path route). VPS 7/7 HEALTHY verified. Production: 6.0/10, Revenue: 4.0/10. Remaining: Stripe config on VPS.
 > Objectif: Comprendre l'architecture de Perplexity Computer et extraire les patterns applicables à VocalIA
 
 ---

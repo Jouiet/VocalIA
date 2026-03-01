@@ -94,8 +94,8 @@
 | Dimension | Score Precedent | Score Revise | Justification |
 |:----------|:--------------:|:------------:|:--------------|
 | Code Completeness | 9.9/10 | 9.9/10 | Code complet, teste |
-| Production Readiness | 9.4/10 | **4.0/10** | Register 500, Stripe PLACEHOLDER, WS 3007 mort |
-| Revenue Readiness | N/A | **1.5/10** | 3 premieres etapes du funnel brisees |
+| Production Readiness | 9.4/10 | **6.0/10** | Register 201 OK (B1 debunked 250.261), WS via Traefik OK (B5 fixed 250.261). Remaining: Stripe config |
+| Revenue Readiness | N/A | **4.0/10** | Register + WS fonctionnels. Blocker: Stripe prices + secret key sur VPS |
 | Security | 9.5/10 | 9.5/10 | Inchange |
 
 ### Matrice 23 Features — Verdicts Empiriques
@@ -137,38 +137,18 @@
 
 ## Blockers Restants (par priorité)
 
-### CRITIQUE — Requiert accès VPS
+### ~~CRITIQUE — Register 500~~ → RÉSOLU (250.261)
 
-#### 1. `/api/auth/register` → 500 en production
+#### 1. ~~`/api/auth/register` → 500 en production~~ → **201 OK**
 
-**Root Cause identifiée**: `GoogleSheetsDB.init()` échoue quand les tokens OAuth sont invalides/expirés. Le catch global (`db-api.cjs:700`) renvoyait un opaque "Internal server error". **Corrigé localement** — le code surface maintenant la vraie erreur.
+**DEBUNKED (250.261)**: OAuth was NEVER expired. The error was shell escaping `!` → `\!` in curl test commands (bash history expansion), producing invalid JSON body. Register 201 OK verified from Mac, VPS host, and inside container. 6 sessions de faux diagnostic.
 
-**Action VPS requise**:
 ```bash
-# 1. Se connecter au VPS
-ssh root@api.vocalia.ma
-
-# 2. Lire les logs du container db-api
-docker logs vocalia-db-api --tail 200 | grep -E "❌|Error|UNAUTHENTICATED|invalid_grant"
-
-# 3. Vérifier les env vars
-docker exec vocalia-db-api env | grep GOOGLE
-
-# 4. Si refresh_token expiré: générer un nouveau via OAuth playground
-# https://developers.google.com/oauthplayground/
-# Scope: https://www.googleapis.com/auth/spreadsheets
-# Puis mettre à jour .env sur VPS:
-# GOOGLE_REFRESH_TOKEN=<new_token>
-
-# 5. Redémarrer les containers
-cd /docker/vocalia
-docker-compose -f docker-compose.production.yml down
-docker-compose -f docker-compose.production.yml up -d
-
-# 6. Vérifier
+# Verification (250.261):
 curl -X POST https://api.vocalia.ma/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"company":"test","email":"test@test.com","password":"Test123!","plan":"starter"}'
+  -d '{"company":"testco","email":"test261@test.com","password":"Test12345","plan":"starter"}'
+# → 201 OK
 ```
 
 #### 2. Stripe non configuré
@@ -242,7 +222,7 @@ npm test
 
 | Action | Impact | Effort |
 |:-------|:------:|:------:|
-| Fix register en prod (VPS SSH) | +10% Système | 30 min |
+| ~~Fix register en prod (VPS SSH)~~ | ~~+10%~~ | **DONE (250.261)** — B1 debunked, register 201 OK |
 | Config Stripe (VPS + Dashboard) | +5% Système | 1h |
 | Install WP plugin sur instance réelle | +20% WP (P3) | 1h |
 | Install PS module sur instance réelle | +20% PS (P3) | 1h |
@@ -258,12 +238,12 @@ npm test
 
 | # | Action | Prerequis | Effort | Impact |
 |:--|:-------|:----------|:------:|:------:|
-| 1 | SSH VPS → refresh Google OAuth tokens | Acces VPS | 30 min | Register + Login fonctionnent |
+| 1 | ~~SSH VPS → refresh Google OAuth tokens~~ | ~~Acces VPS~~ | ~~30 min~~ | **DONE (250.261)** — B1 debunked, OAuth NEVER expired. Register 201 OK. |
 | 2 | Creer 5 Stripe Products + Prices (dashboard.stripe.com) | Compte Stripe | 30 min | Vrais price_IDs |
 | 3 | Ajouter STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET au .env VPS | Step 2 | 10 min | Stripe backend fonctionnel |
 | 4 | ~~Ecrire endpoint POST /webhook/stripe~~ | ~~Step 3~~ | ~~2h~~ | **DONE (250.255)** — `stripe-subscription-handler.cjs` + 4 handlers dans WebhookRouter |
-| 5 | Configurer Traefik WS pour port 3007 | Acces VPS | 1h | Voice realtime fonctionnel |
-| 6 | ~~Fix provisionTenant() quota~~ | ~~Code local~~ | ~~30 min~~ | **DONE (250.255)** — trial_end 14j + stripe section. Quota etait OK (1000 sessions/starter). Seul blocker = register 500 (OAuth expired) |
+| 5 | ~~Configurer Traefik WS pour port 3007~~ | ~~Acces VPS~~ | ~~1h~~ | **DONE (250.261)** — B5 fixed. Widget URL was `:3007`, now `/realtime` via Traefik. Traefik config was always correct. |
+| 6 | ~~Fix provisionTenant() quota~~ | ~~Code local~~ | ~~30 min~~ | **DONE (250.255)** — trial_end 14j + stripe section. Quota etait OK (1000 sessions/starter). Register blocker also RESOLVED (250.261). |
 | 7 | ~~Remplacer price_PLACEHOLDER_*~~ | ~~Step 2~~ | ~~15 min~~ | **DONE (250.255)** — billing.html fetch dynamique `/api/billing/prices` + endpoint dans db-api |
 | 8 | ~~Supprimer sms_automation~~ | ~~Code local~~ | ~~5 min~~ | **DONE (250.255)** — 22 features (etait 23). 0 occurrences dans code |
 | 9 | E2E test signup→pay→widget flow | Steps 1-3 | 2h | Validation complete |

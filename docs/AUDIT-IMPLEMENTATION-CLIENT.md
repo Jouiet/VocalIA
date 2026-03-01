@@ -737,16 +737,13 @@ Provider : Grok 4.1 Fast Reasoning. La latence est dominée par l'appel IA exter
 #### Hiérarchie des blocages
 
 ```
-S7 (Register 500)      ── BLOQUE TOUT (aucun signup possible)
-  ↓ si réparé
-S1+S2 (Snippet)        ── Widget ne charge PAS (URL fausse + fichier inexistant)
-  ↓ si corrigé
-S5+S4 (CORS)           ── Widget charge mais ne communique PAS (403 "Origin not allowed")
-  ↓ si origines enregistrées
-A (Stripe)             ── Facturation impossible (clés manquantes)
-S3 (.htaccess)         ── E-commerce code-split bloqué (monolith contourne)
-S9 (WebSocket)         ── Voice streaming indisponible (fallback Web Speech)
-S8 (/health)           ── Monitoring externe impossible
+S7 (Register 500)      ── ✅ RÉSOLU (250.261) — B1 debunked, register 201 OK
+S1+S2 (Snippet)        ── ✅ RÉSOLU (250.244) — URL canonique api.vocalia.ma
+S5+S4 (CORS)           ── ✅ RÉSOLU (250.244) — 26 tenants, origines dynamiques
+A (Stripe)             ── ❌ SEUL BLOCKER RESTANT — Facturation impossible (clés manquantes sur VPS)
+S3 (.htaccess)         ── ✅ RÉSOLU — Widgets servis depuis VPS
+S9 (WebSocket)         ── ✅ RÉSOLU (250.261) — B5 fixed, URL /realtime via Traefik
+S8 (/health)           ── ✅ RÉSOLU — Monitoring v3.0 */5 + ntfy.sh
 S6 (CSP CinematicAds)  ── Spécifique 1 plateforme
 ```
 

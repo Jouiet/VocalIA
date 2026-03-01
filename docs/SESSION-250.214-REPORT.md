@@ -1,8 +1,9 @@
 # VocalIA — Rapport Strategique et Suivi d'Implementation
 
-> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.254b (01/03/2026)
+> **Origine**: Session 250.214 (15/02/2026) | **Derniere MAJ**: 250.261 (01/03/2026)
 > **Role**: Document de suivi des implementations UI/UX dev→commercial + decisions strategiques
-> **250.254b**: Revenue Path Audit — Production readiness 9.4→4.0/10, Revenue readiness 1.5/10. Register 500 (GoogleSheetsDB OAuth), Stripe PLACEHOLDER, WS 3007 mort. 23 features: 3 WORKS, 3 PARTIAL, 7 UNTESTED, 2 BROKEN, 3 DEAD, 1 FAKE, 1 FRAGILE, 1 BLOCKED.
+> **250.254b**: Revenue Path Audit — Production readiness 9.4→4.0/10, Revenue readiness 1.5/10. 23 features auditees.
+> **250.261**: B1 DEBUNKED (Register 201 OK — OAuth NEVER expired, shell escaping `!`→`\!`). B5 FIXED (WS URL `:3007`→`/realtime`). VPS 7/7 HEALTHY. Production: **6.0/10**, Revenue: **4.0/10**. Remaining: Stripe config on VPS.
 > **Tests**: ~7,400+ pass, 0 fail, 4 skip (122 files: 120 .mjs + 2 .cjs) | **Timeout**: 180s | **40 personas**
 > **250.233**: Promptfoo full coverage — 200/200 prompts, eval-all 1193/1210 PASS (98.6%), red team 40/40 personas 558/560 (99.6%). Anti-hallucination rule injected (199 SECURITY sections). Anthropic blocked ($0).
 > **250.234**: Deep Surgery Test Audit — +47 behavioral tests (B103-B110), B123 real bug found & fixed (voice-clone audit trail wrong API signature).
