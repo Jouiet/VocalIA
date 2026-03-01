@@ -2,7 +2,7 @@
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 4.0/10 | **Revenue Readiness:** 1.5/10 | **Security:** 9.5/10
 > **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **~7,400+ tests** (122 files: 120 .mjs + 2 .cjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). **Cross-system bug audit** (250.252): 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). **c8 coverage workaround** (250.252): cov-runner.cjs bypasses node:test IPC for proper V8 tracking. **Maturity Audit** (250.253): PHPUnit PHP tests (50 tests, WP+PS), plugin ZIP distribution (4 archives + API endpoints), dashboard visual polish (gradient mesh, ambient glow, skeleton states), readiness 35%→48%. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.253. Latest: **250.253** Maturity audit + PHP tests + plugin distribution + dashboard polish.
+> **Source:** 60+ audit phases across sessions 250.105-250.254b. Latest: **250.254b** Revenue Path Audit — 23 features traced caller/callee, production curl verification, revenue readiness 1.5/10.
 
 ---
 
@@ -19,14 +19,19 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.8/10** — Features coded and tested (~6,250 tests). **TenantMemory** (Singleton+RAG+Auto-Promote Flywheel), **WhatsApp Bidirectional** (Webhook+Signature+Status Tracking), **ProactiveScheduler** (file-based JSONL, no Redis), **3 Proactive Skills** (FollowUp, KBEnrichment, QuotaAlert) ALL IMPLEMENTED & VERIFIED. 8 SOTA bugs fixed (250.221): fork bomb, 240MB deps removed, singleton pattern, lazy imports. Architecture: "Ultrathink" SOTA patterns (OpenClaw inspired).
-**Production Readiness: 9.0/10** — Ready for deploy. Docker Compose updated.
+**Code Completeness: 9.9/10** — ~7,400+ tests (122 files, 0 fail, 4 skip). 462/491 functions (94%). T1-T7 SOTA, 40 personas, MCP 203 tools.
+**Production Readiness: 4.0/10** — Register 500 (GoogleSheetsDB OAuth expired), Stripe PLACEHOLDER, WebSocket 3007 unreachable.
+**Revenue Readiness: 1.5/10** — 3 premieres etapes funnel brisees. 0 signups, 0 paiements, 0 clients payants.
 
 - `vocalia.ma` ✅ Website live
-- `api.vocalia.ma/whatsapp/webhook` ✅ READY (Waiting for deploy)
-- `api.vocalia.ma/telephony` ✅ READY (Bridge updated)
+- `api.vocalia.ma/respond` ✅ Voice API OK (Grok 2.6s, agency_internal)
+- `api.vocalia.ma/api/auth/register` ❌ **500** (GoogleSheetsDB OAuth expired)
+- `api.vocalia.ma/api/auth/login` ❌ **500** (GoogleSheetsDB OAuth expired)
+- `api.vocalia.ma:3007` ❌ WebSocket unreachable (Traefik ne route pas WS)
+- Stripe billing ❌ PLACEHOLDER price IDs, STRIPE_SECRET_KEY missing
 
-> **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
+> **Important**: These are THREE separate scores. Code completeness = code written+tested. Production readiness = deployed and accessible. Revenue readiness = can a client sign up, pay, and use the product end-to-end.
+> **250.254b**: Revenue Path Audit — 23 features traced. 3 WORKS, 3 PARTIAL, 7 UNTESTED, 2 BROKEN, 4 DEAD, 1 FAKE, 1 FRAGILE, 1 BLOCKED. See section 4.5.
 
 | # | Dimension | Score 250.211 | Score 250.218 | Delta | Justification (250.218) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
@@ -54,6 +59,8 @@
 | 9 (9.0) | 10% | 0.900 |
 | 10 (9.5) | 5% | 0.475 |
 | **TOTAL** | **100%** | **9.405** → **~9.4/10** (250.218 — SOTA Patterns Completed) |
+
+> **⚠️ 250.254b Correction**: Ce scoring mesurait le CODE, pas la PRODUCTION. Production readiness revise a **4.0/10** apres audit empirique curl. Revenue readiness: **1.5/10**. Voir section 4.5 pour details.
 
 ---
 
@@ -308,6 +315,36 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | B7 | Traefik routing masks voice-api `/api/*` endpoints | **MINOR** — Some routes 404 | Reconfigure rules |
 
 **Revenue readiness: 1.5/10** — The 3 first funnel steps are broken end-to-end.
+
+#### 23-Feature Audit Matrix (250.254b)
+
+| Feature | Verdict | Detail |
+|:--------|:-------:|:-------|
+| voice_widget | **WORKS** | Widget loads + /respond OK for known tenants |
+| conversation_persistence | **WORKS** | File-based ConversationStore with LRU cache |
+| api_access | **WORKS** | API key auth + rate limiting functional |
+| email_automation | **PARTIAL** | Resend SMTP OK, no auto-trigger on events |
+| analytics_dashboard | **PARTIAL** | UI renders, data empty (0 conversations) |
+| export | **PARTIAL** | CSV/XLSX/PDF code OK, 0 data to export |
+| custom_branding | **UNTESTED** | Code exists, never verified in production |
+| webhooks | **UNTESTED** | WebhookRouter deployed, 0 webhooks configured |
+| ecom_catalog | **UNTESTED** | 0 WooCommerce/Shopify catalogs connected |
+| ecom_cart_recovery | **UNTESTED** | Widget exists, 0 active integrations |
+| ecom_product_quiz | **UNTESTED** | Widget exists, never tested with real catalog |
+| voice_telephony | **UNTESTED** | Twilio configured, 0 real calls ever |
+| lead_scoring | **UNTESTED** | BANT works in test, 0 real leads |
+| booking | **FRAGILE** | Hardcoded Google Apps Script, not multi-tenant |
+| cloud_voice | **BROKEN** | WebSocket 3007 unreachable via Traefik |
+| whatsapp | **BROKEN** | Code fixed, 0 WhatsApp Business API numbers |
+| bant_crm_push | **DEAD** | Lead scoring works, push CRM = 0 config |
+| crm_sync | **DEAD** | HubSpot/Pipedrive code OK, 0 API keys |
+| ecom_recommendations | **DEAD** | T7 code OK, 0 catalogs → 0 recommendations |
+| calendar_sync | **DEAD** | Minimal code, no Google Calendar OAuth |
+| sms_automation | **FAKE** | Flag in PLAN_FEATURES, ZERO implementation |
+| expert_dashboard | **BLOCKED** | ElevenLabs quota exhausted |
+| multi_language | **WORKS** | 5 langs via code (not client-configurable UI) |
+
+**Summary**: 3 WORKS | 3 PARTIAL | 7 UNTESTED | 2 BROKEN | 4 DEAD | 1 FAKE | 1 FRAGILE | 1 BLOCKED
 
 ### 4.5 What NOT To Do
 

@@ -8,6 +8,7 @@
 > **Principe** : Chaque claim est accompagnee de sa commande de verification. Aucune supposition.
 > **250.252** : WebhookRouter.cjs hardcoded localhost:3004 FIXE → utilise VOCALIA_API_URL env var (impacte le routing webhook en production pour les satellites). EventBus payload envelope mismatch FIXE (5 subscribe handlers). Doit etre deploye (git push + restart containers).
 > **250.253** : Plugin distribution corrigee — ZIP bloat fix (WP 16MB→4.4KB, PS 1.4MB→2.1KB, excluait vendor/tests). Maturity audit: WP+PS a 40% (P1+P2), systeme global 65%. Dashboard visual polish deploye. Aucune installation reelle sur satellite — Henderson/Alpha-Medical (Shopify) utilisent snippet Liquid, 3A (Hostinger) utilise snippet HTML. Pas de plugin PHP necessaire pour les satellites.
+> **250.254b** : Revenue Path Audit — Register 500 en production (GoogleSheetsDB OAuth expired). Aucun satellite ne peut s'inscrire. CORS depuis satellites: 403 "Origin not allowed" (tenant whitelist vide pour nouveaux tenants). Blockers satellites inchanges: B1 (OAuth) + CORS + tenant provisioning = 0 installations possibles. Production readiness: 4.0/10. Revenue readiness: 1.5/10.
 
 ---
 

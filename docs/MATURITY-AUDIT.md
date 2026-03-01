@@ -81,6 +81,52 @@
 
 ---
 
+## Revenue Path Audit — 23 Features (250.254b — 01/03/2026)
+
+> **Methode**: Trace caller/callee chains pour chaque feature de PLAN_FEATURES dans voice-api-resilient.cjs.
+> Verification: curl production + lecture code source. Zero supposition.
+
+### Scores Revises
+
+| Dimension | Score Precedent | Score Revise | Justification |
+|:----------|:--------------:|:------------:|:--------------|
+| Code Completeness | 9.9/10 | 9.9/10 | Code complet, teste |
+| Production Readiness | 9.4/10 | **4.0/10** | Register 500, Stripe PLACEHOLDER, WS 3007 mort |
+| Revenue Readiness | N/A | **1.5/10** | 3 premieres etapes du funnel brisees |
+| Security | 9.5/10 | 9.5/10 | Inchange |
+
+### Matrice 23 Features — Verdicts Empiriques
+
+| Feature | Plan | Code | Test | Prod | Verdict |
+|:--------|:-----|:----:|:----:|:----:|:-------:|
+| voice_widget | All | ✅ | ✅ | ✅ | **WORKS** |
+| conversation_persistence | Pro+ | ✅ | ✅ | ✅ | **WORKS** |
+| api_access | Pro+ | ✅ | ✅ | ✅ | **WORKS** |
+| email_automation | Pro+ | ✅ | ✅ | ⚠️ | **PARTIAL** (Resend SMTP OK, trigger auto missing) |
+| analytics_dashboard | Pro+ | ✅ | ✅ | ⚠️ | **PARTIAL** (UI OK, data vide: 0 conversations) |
+| export | Pro+ | ✅ | ✅ | ⚠️ | **PARTIAL** (CSV/XLSX/PDF code OK, 0 data a exporter) |
+| custom_branding | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** en production |
+| webhooks | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** (WebhookRouter deploye mais 0 webhooks configures) |
+| booking | Pro+ | ✅ | ⚠️ | ❓ | **FRAGILE** (Google Apps Script hardcode, pas multi-tenant) |
+| bant_crm_push | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (lead scoring fonctionne, push CRM = 0 tenants configures) |
+| crm_sync | Pro+ | ✅ | ✅ | ❌ | **DEAD** (HubSpot/Pipedrive code OK, 0 cles API configures) |
+| calendar_sync | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (Google Calendar code minimal, pas d'OAuth Calendar) |
+| sms_automation | Telephony | ❌ | ❌ | ❌ | **FAKE** (flag dans PLAN_FEATURES, ZERO ligne d'implementation) |
+| whatsapp | Telephony | ✅ | ✅ | ❌ | **BROKEN** (deriveTenantFromWhatsApp fixe mais 0 numero WhatsApp Business API) |
+| cloud_voice | Pro+ | ✅ | ⚠️ | ❌ | **BROKEN** (WebSocket 3007 non routable via Traefik) |
+| ecom_catalog | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (0 catalogues WooCommerce/Shopify connectes) |
+| ecom_cart_recovery | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (widget existe, 0 integrations actives) |
+| ecom_recommendations | Ecom | ✅ | ✅ | ❌ | **DEAD** (T7 code OK, 0 catalogues → 0 recommendations) |
+| ecom_product_quiz | Ecom | ✅ | ✅ | ❓ | **UNTESTED** |
+| expert_dashboard | Expert | ⚠️ | ❌ | ❌ | **BLOCKED** (voice clone API = ElevenLabs quota epuise) |
+| voice_telephony | Telephony | ✅ | ✅ | ❓ | **UNTESTED** (Twilio configures mais 0 appels reels en prod) |
+| multi_language | All | ✅ | ✅ | ✅ | **WORKS** (mais via code, pas via UI client) |
+| lead_scoring | Pro+ | ✅ | ✅ | ❓ | **UNTESTED** (BANT fonctionne en test, 0 leads reels) |
+
+**Resume**: 3 WORKS | 3 PARTIAL | 7 UNTESTED | 2 BROKEN | 3 DEAD | 1 FAKE | 1 FRAGILE | 1 BLOCKED
+
+---
+
 ## Blockers Restants (par priorité)
 
 ### CRITIQUE — Requiert accès VPS
@@ -197,3 +243,23 @@ npm test
 
 **Projection après VPS fix + CMS tests: ~65%** (vs 48% actuel)
 **Projection full (include marketplace): ~80%**
+
+---
+
+## Plan Actionnable — Chemin vers Premier Client Payant
+
+| # | Action | Prerequis | Effort | Impact |
+|:--|:-------|:----------|:------:|:------:|
+| 1 | SSH VPS → refresh Google OAuth tokens | Acces VPS | 30 min | Register + Login fonctionnent |
+| 2 | Creer 5 Stripe Products + Prices (dashboard.stripe.com) | Compte Stripe | 30 min | Vrais price_IDs |
+| 3 | Ajouter STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET au .env VPS | Step 2 | 10 min | Stripe backend fonctionnel |
+| 4 | Ecrire endpoint POST /webhook/stripe (checkout.session.completed) | Step 3 | 2h | Paiement → subscription active |
+| 5 | Configurer Traefik WS pour port 3007 | Acces VPS | 1h | Voice realtime fonctionnel |
+| 6 | Fix provisionTenant() — quota par defaut > 0 | Code local | 30 min | Nouveaux tenants peuvent chatter |
+| 7 | Remplacer price_PLACEHOLDER_* dans billing.html | Step 2 | 15 min | Boutons paiement fonctionnels |
+| 8 | Supprimer sms_automation de PLAN_FEATURES | Code local | 5 min | Pas de feature fantome |
+| 9 | E2E test signup→pay→widget flow | Steps 1-7 | 2h | Validation complete |
+
+**Prerequis critique**: Steps 1-3 = acces VPS SSH (root@api.vocalia.ma)
+
+*Derniere MAJ: 01/03/2026 — Session 250.254b (Revenue Path Audit)*
