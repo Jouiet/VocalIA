@@ -157,6 +157,38 @@ class VocaliaOpenCartModuleTest extends TestCase
         $this->assertEquals('extension/module/vocalia', $loaderObj->renderedViews[0]['template']);
     }
 
+    // ─── SRI Integrity ────────────────────────────────────────
+
+    public function testSRIHashPassedToView()
+    {
+        $this->controller->index([
+            'status' => 1,
+            'tenant_id' => 'test',
+            'widget_type' => 'ecommerce',
+        ]);
+
+        $loader = (new ReflectionClass($this->controller))->getProperty('load');
+        $loader->setAccessible(true);
+        $loaderObj = $loader->getValue($this->controller);
+
+        $data = $loaderObj->renderedViews[0]['data'];
+        $this->assertArrayHasKey('sri_hash', $data);
+        $this->assertStringStartsWith('sha384-', $data['sri_hash']);
+    }
+
+    // ─── HTTPS URL ──────────────────────────────────────────
+
+    public function testWidgetUrlUsesHttps()
+    {
+        $output = $this->controller->index([
+            'status' => 1,
+            'tenant_id' => 'test',
+            'widget_type' => 'ecommerce',
+        ]);
+
+        $this->assertStringContainsString('https://vocalia.ma', $output);
+    }
+
     // ─── Valid tenant patterns ──────────────────────────────
 
     public function testValidTenantPatterns()

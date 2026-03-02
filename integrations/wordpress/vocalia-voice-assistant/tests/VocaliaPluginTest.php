@@ -16,6 +16,8 @@ class VocaliaPluginTest extends TestCase
         $GLOBALS['wp_options'] = [];
         $GLOBALS['wp_settings_errors'] = [];
         $GLOBALS['wp_scripts'] = [];
+        $GLOBALS['wp_filters'] = [];
+        $GLOBALS['wp_transients'] = [];
         $GLOBALS['wp_is_front_page'] = false;
         $GLOBALS['wp_is_woocommerce'] = false;
         $GLOBALS['wp_is_cart'] = false;
@@ -272,6 +274,106 @@ class VocaliaPluginTest extends TestCase
         // New behavior: shows Connect button when no tenant ID
         $this->assertStringContainsString('Connect with VocalIA', $output);
         $this->assertStringContainsString('plugin-authorize', $output);
+    }
+
+    // ============================================================
+    // OAuth Connect Callback
+    // ============================================================
+
+    public function testConnectCallbackStoresCredentials()
+    {
+        // Simulate nonce stored via transient
+        set_transient('vocalia_connect_nonce', 'abc123');
+
+        // Simulate callback GET params
+        $_GET['page'] = 'vocalia-settings';
+        $_GET['vocalia_token'] = 'tok_xyz';
+        $_GET['tenant_id'] = 'my_company';
+        $_GET['nonce'] = 'abc123';
+
+        vocalia_handle_plugin_connect_callback();
+
+        $this->assertEquals('my_company', get_option('vocalia_tenant_id'));
+        $this->assertEquals('tok_xyz', get_option('vocalia_plugin_token'));
+        // Transient should be deleted after use
+        $this->assertFalse(get_transient('vocalia_connect_nonce'));
+
+        unset($_GET['page'], $_GET['vocalia_token'], $_GET['tenant_id'], $_GET['nonce']);
+    }
+
+    public function testConnectCallbackRejectsInvalidNonce()
+    {
+        set_transient('vocalia_connect_nonce', 'correct_nonce');
+
+        $_GET['page'] = 'vocalia-settings';
+        $_GET['vocalia_token'] = 'tok_xyz';
+        $_GET['tenant_id'] = 'my_company';
+        $_GET['nonce'] = 'wrong_nonce';
+
+        vocalia_handle_plugin_connect_callback();
+
+        // Should NOT store credentials
+        $this->assertFalse(get_option('vocalia_tenant_id'));
+        // Settings error should be set
+        $this->assertNotEmpty($GLOBALS['wp_settings_errors']);
+
+        unset($_GET['page'], $_GET['vocalia_token'], $_GET['tenant_id'], $_GET['nonce']);
+    }
+
+    public function testDisconnectRemovesCredentials()
+    {
+        update_option('vocalia_tenant_id', 'connected_tenant');
+        update_option('vocalia_plugin_token', 'tok_abc');
+
+        $_GET['page'] = 'vocalia-settings';
+        $_GET['vocalia_disconnect'] = '1';
+
+        vocalia_handle_plugin_connect_callback();
+
+        $this->assertFalse(get_option('vocalia_tenant_id'));
+        $this->assertFalse(get_option('vocalia_plugin_token'));
+
+        unset($_GET['page'], $_GET['vocalia_disconnect']);
+    }
+
+    // ============================================================
+    // SRI Integrity
+    // ============================================================
+
+    public function testSRIIntegrityFilterAdded()
+    {
+        update_option('vocalia_enabled', true);
+        update_option('vocalia_tenant_id', 'test');
+        update_option('vocalia_widget_type', 'b2b');
+        update_option('vocalia_pages', 'all');
+
+        vocalia_enqueue_widget();
+
+        // The filter should be registered on script_loader_tag
+        $this->assertArrayHasKey('script_loader_tag', $GLOBALS['wp_filters']);
+        $filter = $GLOBALS['wp_filters']['script_loader_tag'][0];
+
+        // Call the filter closure to verify SRI injection
+        $tag = '<script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js"></script>';
+        $result = call_user_func($filter['callback'], $tag, 'vocalia-widget');
+
+        $this->assertStringContainsString('integrity="sha384-', $result);
+        $this->assertStringContainsString('crossorigin="anonymous"', $result);
+        $this->assertStringContainsString('data-vocalia-tenant="test"', $result);
+    }
+
+    public function testWidgetUrlUsesHttps()
+    {
+        update_option('vocalia_enabled', true);
+        update_option('vocalia_tenant_id', 'test');
+        update_option('vocalia_widget_type', 'b2b');
+        update_option('vocalia_pages', 'all');
+
+        vocalia_enqueue_widget();
+
+        $script = $GLOBALS['wp_scripts']['vocalia-widget'];
+        $this->assertStringStartsWith('https://', $script['src']);
+        $this->assertStringNotContainsString('http://', str_replace('https://', '', $script['src']));
     }
 
     // ============================================================

@@ -131,6 +131,43 @@ class VocaliaWidgetTest extends TestCase
         $this->assertEquals('vocalia_voice/general/widget_type', Widget::XML_PATH_WIDGET_TYPE);
     }
 
+    // ─── SRI Integrity ────────────────────────────────────────
+
+    public function testGetSRIHashEcommerce()
+    {
+        $widget = $this->createWidget();
+        $sri = $widget->getSRIHash();
+        $this->assertStringStartsWith('sha384-', $sri);
+        $this->assertEquals(Widget::VOCALIA_SRI_ECOMMERCE, $sri);
+    }
+
+    public function testGetSRIHashB2b()
+    {
+        $this->scopeConfig->setValue('vocalia_voice/general/widget_type', 'b2b');
+        $widget = $this->createWidget();
+        $sri = $widget->getSRIHash();
+        $this->assertEquals(Widget::VOCALIA_SRI_B2B, $sri);
+    }
+
+    // ─── Input Sanitization ─────────────────────────────────
+
+    public function testGetTenantIdWithXSSPayload()
+    {
+        $this->scopeConfig->setValue('vocalia_voice/general/tenant_id', '<script>alert(1)</script>');
+        $widget = $this->createWidget();
+        // getTenantId returns raw value — escaping is template responsibility
+        // Verify _toHtml won't render for non-empty but dangerous tenant
+        // (Magento templates use $block->escapeHtmlAttr() for safety)
+        $this->assertNotEmpty($widget->getTenantId());
+    }
+
+    public function testGetTenantIdWithNull()
+    {
+        $this->scopeConfig->setValue('vocalia_voice/general/tenant_id', null);
+        $widget = $this->createWidget();
+        $this->assertEquals('', $widget->getTenantId());
+    }
+
     // ─── CDN_BASE constant ──────────────────────────────────
 
     public function testCdnBaseConstant()

@@ -158,6 +158,36 @@ class VocaliaModuleTest extends TestCase
         $this->assertNull($result);
     }
 
+    // ─── SRI Integrity ────────────────────────────────────────
+
+    public function testSRIIntegrityInWidgetAttributes()
+    {
+        $attachments = [];
+        vocalia_page_attachments($attachments);
+
+        $attrs = $attachments['#attached']['html_head'][0][0]['#attributes'];
+        $this->assertArrayHasKey('integrity', $attrs);
+        $this->assertStringStartsWith('sha384-', $attrs['integrity']);
+        $this->assertEquals('anonymous', $attrs['crossorigin']);
+    }
+
+    // ─── Tenant ID escaping (Drupal render API) ────────────
+
+    public function testTenantIdInAttributesMatchesConfig()
+    {
+        Drupal::setService('config.vocalia.settings', new StubImmutableConfig([
+            'enabled' => true,
+            'tenant_id' => 'safe_tenant_123',
+            'widget_type' => 'ecommerce',
+        ]));
+
+        $attachments = [];
+        vocalia_page_attachments($attachments);
+
+        $attrs = $attachments['#attached']['html_head'][0][0]['#attributes'];
+        $this->assertEquals('safe_tenant_123', $attrs['data-vocalia-tenant']);
+    }
+
     // ─── Valid tenant patterns ──────────────────────────────
 
     public function testValidTenantPatterns()

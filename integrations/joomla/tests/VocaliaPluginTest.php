@@ -166,6 +166,19 @@ class VocaliaPluginTest extends TestCase
         $this->assertStringEndsWith('defer></script>', $tag);
     }
 
+    // ─── SRI Integrity ────────────────────────────────────────
+
+    public function testSRIIntegrityInWidgetTag()
+    {
+        $plugin = $this->createPlugin();
+        $plugin->onBeforeCompileHead();
+
+        $doc = $GLOBALS['joomla_app']->getDocument();
+        $tag = $doc->customTags[0];
+        $this->assertStringContainsString('integrity="sha384-', $tag);
+        $this->assertStringContainsString('crossorigin="anonymous"', $tag);
+    }
+
     // ─── Whitespace tenant ID ───────────────────────────────
 
     public function testWhitespaceTenantIdIsRejected()

@@ -260,6 +260,64 @@ class VocaliaModuleTest extends TestCase
     }
 
     // ============================================================
+    // OAuth Connect
+    // ============================================================
+
+    public function testGetContentShowsConnectButtonWithoutTenant()
+    {
+        $this->module->install();
+        // No tenant ID set → should show Connect button
+        $output = $this->module->getContent();
+        $this->assertStringContainsString('Connect with VocalIA', $output);
+        $this->assertStringContainsString('plugin-authorize', $output);
+        $this->assertStringContainsString('prestashop', $output);
+    }
+
+    public function testGetContentShowsConnectedStateWithTenant()
+    {
+        $this->module->install();
+        Configuration::updateValue('VOCALIA_TENANT_ID', 'my_tenant');
+        Configuration::updateValue('VOCALIA_PLUGIN_TOKEN', 'tok_abc');
+        $output = $this->module->getContent();
+        $this->assertStringContainsString('Connected to VocalIA', $output);
+        $this->assertStringContainsString('my_tenant', $output);
+        $this->assertStringContainsString('Disconnect', $output);
+    }
+
+    public function testConnectCallbackStoresCredentials()
+    {
+        $this->module->install();
+        Configuration::updateValue('VOCALIA_CONNECT_NONCE', 'test_nonce_123');
+        Tools::simulateSubmit('dummy', [
+            'vocalia_token' => 'tok_xyz',
+            'tenant_id' => 'connected_tenant',
+            'nonce' => 'test_nonce_123',
+        ]);
+
+        $output = $this->module->getContent();
+
+        $this->assertEquals('connected_tenant', Configuration::get('VOCALIA_TENANT_ID'));
+        $this->assertEquals('tok_xyz', Configuration::get('VOCALIA_PLUGIN_TOKEN'));
+        $this->assertStringContainsString('Connected to VocalIA', $output);
+    }
+
+    // ============================================================
+    // SRI Integrity
+    // ============================================================
+
+    public function testWidgetOutputContainsSRI()
+    {
+        Configuration::updateValue('VOCALIA_ENABLED', true);
+        Configuration::updateValue('VOCALIA_TENANT_ID', 'test');
+        Configuration::updateValue('VOCALIA_WIDGET_TYPE', 'ecommerce');
+
+        $output = $this->module->hookDisplayBeforeBodyClosingTag([]);
+
+        $this->assertStringContainsString('integrity="sha384-', $output);
+        $this->assertStringContainsString('crossorigin="anonymous"', $output);
+    }
+
+    // ============================================================
     // Security
     // ============================================================
 
