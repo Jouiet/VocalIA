@@ -1,8 +1,8 @@
-> **Date:** 2026-03-02 | **Session:** 250.264 (Plugins SOTA 2026 — OAuth connect, auto-origin, Magento/OpenCart fix, widget features sync)
+> **Date:** 2026-03-02 | **Session:** 250.265 (GSAP bento-grid fix + Traefik routing + VPS deploy)
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 6.0/10 | **Revenue Readiness:** 4.0/10 | **Security:** 9.5/10
-> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **~8,041+ tests** (132 files: 123 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). **Cross-system bug audit** (250.252): 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). **c8 coverage workaround** (250.252): cov-runner.cjs bypasses node:test IPC for proper V8 tracking. **Maturity Audit** (250.253): PHPUnit PHP tests (50 tests, WP+PS), plugin ZIP distribution (4 archives + API endpoints), dashboard visual polish (gradient mesh, ambient glow, skeleton states), readiness 35%→48%. **Plugins SOTA 2026** (250.264): 8 chantiers — OAuth plugin-connect (WP/PS/Joomla/Drupal), auto-register origin, Magento/OpenCart ZIP restructure, Tenant ID visible, login.html handler, widget features sync bridge, 4 ecom toggles. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
+> **Deployed:** 7 containers healthy (ALL non-root, node:22-alpine), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20%. **Resend SMTP LIVE** (DKIM+SPF+MX verified). **OAuth SSO LIVE** (Google+GitHub+Slack). **GSC verified** + sitemap submitted. **Stripe billing code COMPLETE** (checkout, subscriptions, cancel, Meters, trial credits). **WhatsApp Bidirectional FIXED** (deriveTenantFromWhatsApp production bug resolved). **TenantMemory READY** (Singleton+RAG+Persist+Auto-Promote Flywheel). **ProactiveScheduler FIXED** (file-based, no Redis). **3 Skills ACTIVE** (FollowUp, KBEnrichment, QuotaAlert). **Promptfoo LLM Eval** (200/200 prompts 100%, 2/3 providers active, eval-all 1193/1210 PASS 98.6%, red team 40/40 558/560 99.6%, anti-hallucination 199 SECURITY sections). **40 personas**. **~8,041+ tests** (132 files: 123 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota). **NPM `vocalia-widget@1.0.0`** published. **Client Implementation Audit** (250.239-240): 18 gaps fixed (G2-G20+G24), score 45→93/100. **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE + E2E verified with real API calls. **QualityGate v2** (250.247): synonym groups, injection detection, off_topic penalty recalibrated. **Satellite Audit** (250.242-245): Score 8→91/100. **SOTA Dashboards** (250.249-250): T1-T7 orchestration pipeline in admin + client dashboards, engine-stats API extended, engine metrics per tenant. **Plugin 1-click** (250.250): 14 platforms covered (WordPress/Shopify/Wix/Squarespace/Joomla/Drupal/Webflow/PrestaShop/Magento/BigCommerce/OpenCart/GTM/React-NPM/HTML) = **83% CMS market** (W3Techs March 2026). **Cross-system bug audit** (250.252): 6 bugs found+fixed (EventBus envelope mismatch, hardcoded localhost, missing await, sync-to-3a process.exit). **c8 coverage workaround** (250.252): cov-runner.cjs bypasses node:test IPC for proper V8 tracking. **Maturity Audit** (250.253): PHPUnit PHP tests (50 tests, WP+PS), plugin ZIP distribution (4 archives + API endpoints), dashboard visual polish (gradient mesh, ambient glow, skeleton states), readiness 35%→48%. **Plugins SOTA 2026** (250.264): 8 chantiers — OAuth plugin-connect (WP/PS/Joomla/Drupal), auto-register origin, Magento/OpenCart ZIP restructure, Tenant ID visible, login.html handler, widget features sync bridge, 4 ecom toggles. **GSAP bento-grid fix** (250.265): pricing comparison cards invisibles en production (gsap.fromTo + embedded scrollTrigger = ne fire pas) → ScrollTrigger.create + onEnter + safety 4s. Traefik +5 paths. VPS 7/7 HEALTHY. Deploy auto GitHub Actions FTP → NindoHost. Missing: STRIPE_SECRET_KEY values on VPS, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 60+ audit phases across sessions 250.105-250.264. Latest: **250.264** Plugins SOTA 2026 (8 chantiers: OAuth connect, auto-origin, Magento/OC fix, Tenant ID, widget sync). Previous: **250.261** B1 debunked, B5 fixed, VPS 7/7 HEALTHY.
+> **Source:** 60+ audit phases across sessions 250.105-250.265. Latest: **250.265** GSAP fix + Traefik routing + VPS deploy. Previous: **250.264** Plugins SOTA 2026 (8 chantiers).
 
 ---
 
@@ -1170,16 +1170,28 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 | 12 | build-widgets.cjs paths fix | `scripts/build-widgets.cjs` | ✅ DONE |
 | 13 | 6 ZIPs rebuilt | `dist/plugins/` + `website/downloads/` | ✅ DONE |
 
+### Session 250.265 — Ce qui a été fait
+
+| # | Action | Statut |
+|:-:|:-------|:------:|
+| 1 | Fix GSAP bento-grid pricing (cards invisibles LIVE) | ✅ DONE — `ScrollTrigger.create()` + `onEnter` |
+| 2 | Safety timeout 4s pour bento-items restants cachés | ✅ DONE |
+| 3 | `ScrollTrigger.refresh()` après init | ✅ DONE |
+| 4 | Cache buster v=231→v=265 (39 pages) | ✅ DONE |
+| 5 | Traefik routing +5 paths (oauth, billing, admin, plugins, widget) | ✅ DONE |
+| 6 | VPS restart 7/7 HEALTHY | ✅ DONE |
+| 7 | Deploy auto GitHub Actions FTP → NindoHost | ✅ VÉRIFIÉ LIVE (opacity 0→1, counter 16×) |
+| 8 | 6 ZIPs rebuilt + validés | ✅ DONE (WP 5.5KB, PS 3.1KB, Joomla 3.5KB, Drupal 6.0KB, Magento 7.4KB, OpenCart 9.1KB) |
+
 ### Prochaines actions (par priorité revenue)
 
 | # | Action | Type | Effort | Impact |
 |:-:|:-------|:-----|:-------|:-------|
 | **1** | **Configurer Stripe sur VPS** | Business | 30 min | **FATAL** — 0 paiement possible sans ça |
-| 2 | Tester plugin WP sur vrai WordPress (Docker local) | E2E | 1h | Valider le flow complet OAuth → widget visible |
-| 3 | VPS restart (deploy code 250.264) | Deploy | 5 min | Activer OAuth endpoints + auto-register origin + widget sync |
-| 4 | .htaccess whitelist ecom sub-bundles | Fix | 5 min | Débloquer code-split e-commerce (6 fichiers → 403) |
-| 5 | Soumettre plugin WP sur wordpress.org | Business | SVN + 5-10j review | Marketplace officielle |
-| 6 | Premier client payant | Business | Variable | Valider tout le pipeline E2E |
+| 2 | Tester plugin WP sur vrai WordPress (Docker VPS `wordpress-wordpress-1`) | E2E | 1h | Valider le flow complet OAuth → widget visible |
+| 3 | .htaccess whitelist ecom sub-bundles | Fix NindoHost | 5 min | Débloquer code-split e-commerce (6 fichiers → 403) |
+| 4 | Soumettre plugin WP sur wordpress.org | Business | SVN + 5-10j review | Marketplace officielle |
+| 5 | Premier client payant | Business | Variable | Valider tout le pipeline E2E |
 
 ### Blockers restants (exhaustif)
 
@@ -1187,10 +1199,19 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 |:-:|:--------|:-----|:-------|
 | B2 | Stripe prices = PLACEHOLDER | Business config | **FATAL** |
 | B3 | STRIPE_SECRET_KEY missing on VPS | Business config | **FATAL** |
-| S3 | .htaccess bloque 6 sub-bundles ecom | Hostinger config | HAUTE |
+| S3 | .htaccess bloque 6 sub-bundles ecom | NindoHost config | HAUTE |
 | — | Lang files CORS depuis sites externes | Config | MOYENNE |
 | — | 0 installation CMS réelle | E2E validation | HAUTE |
 | — | 0 publication marketplace | Business | MOYENNE |
 
-*Document mis a jour le 2026-03-02 — Session 250.264*
-*Changelog: sessions 250.105→264 (543+ bugs reported across 83+ phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). **SOTA Pattern implementation complete (250.218)**: TenantMemory (P0), WhatsApp Bidirectional (P0), ProactiveScheduler (P1). **Promptfoo 200/200** (250.233): eval-all 98.6%, red team 40/40 99.6%. **Deep Surgery Test Audit** (250.234): +47 tests, B123 fixed. **Mobile Optimization** (250.235): 88 pages, 33 files, 5 CSS bugs self-caught, 833/833 pass. **Maturity Audit** (250.253): PHPUnit PHP tests (50 total), plugin ZIP distribution (4 archives), dashboard visual polish, readiness score 35%→48%. **Plugins SOTA 2026** (250.264): 8 chantiers (OAuth connect, auto-origin, Magento/OC restructure, Tenant ID, widget sync bridge, 4 ecom toggles, 6 ZIPs). Details: `memory/session-history.md`*
+### Ce qui est RÉSOLU depuis 250.264
+
+| Blocker | Statut 250.264 | Statut 250.265 |
+|:--------|:---------------|:---------------|
+| VPS restart (deploy 250.264 code) | Pas fait | ✅ DONE — 7/7 HEALTHY, commit `bbd802e2` |
+| Traefik routing nouveaux endpoints | 404 en production | ✅ DONE — +5 prefixes ajoutés |
+| Pricing cards invisibles LIVE | Bug non détecté | ✅ FIXÉ — vérifié Playwright LIVE |
+| Deploy website auto | Pas documenté | ✅ GitHub Actions FTP → NindoHost (auto sur push main) |
+
+*Document mis a jour le 2026-03-02 — Session 250.265*
+*Changelog: sessions 250.105→265 (543+ bugs reported across 84+ phases, all resolved except 8 not fixable locally). Key milestones: UCP unified (250.189), 30+ data stores zero fragmentation (250.190), 221/221 functions tested (250.210c), signup→checkout flow complete (250.211). **SOTA Pattern implementation complete (250.218)**: TenantMemory (P0), WhatsApp Bidirectional (P0), ProactiveScheduler (P1). **Promptfoo 200/200** (250.233): eval-all 98.6%, red team 40/40 99.6%. **Deep Surgery Test Audit** (250.234): +47 tests, B123 fixed. **Mobile Optimization** (250.235): 88 pages, 33 files, 5 CSS bugs self-caught, 833/833 pass. **Maturity Audit** (250.253): PHPUnit PHP tests (50 total), plugin ZIP distribution (4 archives), dashboard visual polish, readiness score 35%→48%. **Plugins SOTA 2026** (250.264): 8 chantiers (OAuth connect, auto-origin, Magento/OC restructure, Tenant ID, widget sync bridge, 4 ecom toggles, 6 ZIPs). **GSAP bento-grid fix** (250.265): ScrollTrigger.create + onEnter, Traefik +5 paths, VPS 7/7 HEALTHY, deploy auto NindoHost. Details: `memory/session-history.md`*

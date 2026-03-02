@@ -5,6 +5,7 @@
 > **250.254b** : Revenue Path Audit — T1-T7 patterns ALL DONE mais production readiness chute 9.4→4.0/10. 23 features auditees. Revenue readiness: 1.5/10.
 > **250.261** : B1 DEBUNKED (Register 201 OK — OAuth was NEVER expired, error was shell escaping `!`→`\!` in curl). B5 FIXED (widget WS URL `:3007`→`/realtime` Traefik path route). VPS 7/7 HEALTHY verified. Production: 6.0/10, Revenue: 4.0/10. Remaining: Stripe config on VPS.
 > **250.264** : **Plugins SOTA 2026** — 8 chantiers: OAuth plugin-connect (WP/PS/Joomla/Drupal), auto-register origin, Magento/OpenCart ZIP restructure (cassés→standard), Tenant ID visible, login.html handler. Widget features sync bridge (Sheets→config.json disconnect fixé). 4 ecom toggles. Deep audit conclusions: AI-native paradigm ≠ flow builder (N/A, pas 0/10), FAB preview exists, plugin=injector = standard industrie.
+> **250.265** : Fix GSAP bento-grid (pricing comparison cards invisibles LIVE — `gsap.fromTo()` + embedded scrollTrigger = pattern non fiable, remplacé par `ScrollTrigger.create()` + `onEnter`). Traefik +5 path prefixes. VPS restart 7/7 HEALTHY. Deploy auto GitHub Actions FTP → NindoHost vérifié. Commit `bbd802e2`. Production: 6.0/10, Revenue: 4.0/10.
 > Objectif: Comprendre l'architecture de Perplexity Computer et extraire les patterns applicables à VocalIA
 
 ---

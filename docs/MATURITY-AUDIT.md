@@ -1,6 +1,7 @@
 # Audit de Maturité "Readiness / Plug-and-Play" — VocalIA
 
-> Date: 02/03/2026 — Updated Session 250.264
+> Date: 02/03/2026 — Updated Session 250.265
+> **250.265**: Fix GSAP bento-grid (pricing comparison cards invisible → ScrollTrigger.create + onEnter). Traefik +5 path prefixes. VPS restart 7/7 HEALTHY. Deploy auto via GitHub Actions FTP → NindoHost (vocalia.ma ≠ Hostinger). 6 ZIPs rebuilt: WP 5.5KB, PS 3.1KB, Joomla 3.5KB, Drupal 6.0KB, Magento 7.4KB, OpenCart 9.1KB. Health 45/45. Widgets sync OK. Design tokens 0 errors.
 > Méthodologie: 5 Piliers Cumulatifs (0→100%)
 
 ## Méthodologie
@@ -79,6 +80,7 @@
 **Moyenne pondérée après: ~48%** (+13 points)
 
 > *Session 250.264 update*: Système Global P5 passe de 0%→5% grâce à OAuth plugin-connect (self-service partiel — le client peut connecter son plugin CMS sans copier-coller de Tenant ID). Tenant ID visible dans dashboard. Auto-register origin. Full self-service bloqué par: 0 publication marketplace (wordpress.org, Shopify App Store), 0 installation CMS réelle testée.
+> *Session 250.265 update*: Pricing page comparison cards étaient INVISIBLES en production (GSAP ScrollTrigger bug — `gsap.fromTo` + embedded scrollTrigger never fires). Fixé: `ScrollTrigger.create()` + `onEnter`. Traefik routing +5 paths pour nouveaux endpoints (OAuth, billing, admin, plugins, widget). VPS 7/7 HEALTHY avec latest code. Découverte: deploy website = auto via GitHub Actions FTP → NindoHost (pas Hostinger). 6 ZIPs validés. P5 inchangé (5%) — nécessite publication marketplace + test CMS réel.
 
 > *Session 250.254*: 4 CMS modules (Joomla/Drupal/Magento/OpenCart) passent P1→P2 avec PHPUnit (54 tests: 14+13+14+13). CDN URL fix api.vocalia.ma→vocalia.ma dans les 6 plugins. Satellite S1/S2/S3 re-verified. Client folders cleanup (5643→528). http-utils tests (19). Design token validator 0 errors.
 
