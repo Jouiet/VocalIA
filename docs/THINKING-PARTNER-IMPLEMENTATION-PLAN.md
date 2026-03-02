@@ -5,6 +5,7 @@
 > **Statut**: Phase 1 (slash commands) ✅ DONE | Phase 2 (produit client) ✅ ALL 5 FEATURES DONE (F1-F3+F5: 250.256, F4: 250.259) | Production: VPS 7/7 HEALTHY, dashboards DEPLOYED (250.261)
 > **250.264**: Plugins SOTA 2026 — 8 chantiers: OAuth plugin-connect (C1), auto-register origin (C2), Magento/OpenCart ZIP restructure (C3/C4), Tenant ID visible (C5), PS/Joomla/Drupal Connect (C6), login.html handler (C7). Widget features sync bridge (GoogleSheetsDB→config.json). 4 ecom toggles. Deep audit: AI-native paradigm = design choice (pas gap). FAB preview exists. Plugin=injector = standard industrie.
 > **250.265**: Fix GSAP bento-grid pricing.html (cartes comparaison invisibles — `gsap.fromTo()` avec scrollTrigger embarqué ne fire pas → `ScrollTrigger.create()` + `onEnter` callback + safety timeout 4s). Traefik routing +5 paths (`/oauth`, `/api/billing`, `/api/admin`, `/api/plugins`, `/api/widget`). VPS 7/7 HEALTHY. Deploy auto GitHub Actions FTP → NindoHost. Vérifié LIVE: opacity 0→1, counter 16×. Commit `bbd802e2`.
+> **250.266**: PHPUnit coverage audit — 6 gaps critiques comblés (+18 tests: OAuth Connect, SRI integrity, XSS escaping, HTTPS URL). 122/122 pass, 220 assertions. Bug fix: lien download PS cassé. 6 ZIPs rebuild+validation. Commits `02496aa7`+`617cf17b`.
 > **Principe**: La qualite de l'IA est proportionnelle a la qualite du contexte structure qu'elle recoit. Ce contexte doit COMPOSER dans le temps.
 
 ---

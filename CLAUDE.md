@@ -90,6 +90,6 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Hosting**: vocalia.ma = NindoHost (auto-deploy `.github/workflows/deploy-nindohost.yml`). api.vocalia.ma = Hostinger VPS Docker.
 - **Next (CRITICAL PATH)**: 1) Create Stripe Products/Prices on dashboard.stripe.com 2) Set STRIPE_SECRET_KEY + STRIPE_PRICE_* on VPS .env 3) Configure Stripe webhook URL → api.vocalia.ma/webhook/stripe 4) VPS restart 5) First paying customer
 
-- **PHPUnit Coverage Audit** (250.266): Exhaustive sector-by-sector audit found 6 critical gaps: OAuth Connect (WP/PS untested), SRI integrity (0 tests all 6), XSS escaping (Drupal/Magento), HTTPS URL (WP/OpenCart). +18 tests written: WP +5, PS +4, Joomla +1, Drupal +2, Magento +4, OpenCart +2. Total: 104→122 PHPUnit tests, 191→220 assertions. All 122/122 pass.
+- **PHPUnit Coverage Audit** (250.266): Exhaustive sector-by-sector audit found 6 critical gaps: OAuth Connect (WP/PS untested), SRI integrity (0 tests all 6), XSS escaping (Drupal/Magento), HTTPS URL (WP/OpenCart). +18 tests written: WP +5, PS +4, Joomla +1, Drupal +2, Magento +4, OpenCart +2. Total: 104→122 PHPUnit tests, 191→220 assertions. All 122/122 pass. Bug fix: install-widget.html PS download link pointed to nonexistent `vocalia-prestashop.zip` (build produces `vocalia.zip`). Obsolete ZIP removed from git.
 
 *Last update: 02/03/2026 — Session 250.266: PHPUnit coverage audit — 6 critical gaps found, +18 tests written (122/122 pass, 220 assertions). All code tasks DONE. Only remaining: Stripe config on VPS (business, not code).*

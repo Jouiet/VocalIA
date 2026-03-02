@@ -18,6 +18,7 @@
 > **250.253**: Maturity audit factuel — PHPUnit WP (25 tests) + PS (25 tests), plugin ZIP distribution fixee (4 archives, bloat vendor/ exclu: WP 16MB→4.4KB). Plugin audit: 12 CMS integrations (2 avec tests PHP, 4 modules PHP sans tests, 6 snippets <50L). Dashboard visual polish (gradient mesh, ambient glow, skeleton states). Readiness score 35%→48%. 0 installation CMS reelle.
 > **250.264**: Plugins SOTA 2026 — 8 chantiers. OAuth "Connect with VocalIA" (WP/PS/Joomla/Drupal). Auto-register origin (plugin-connect + heartbeat first-use). Magento/OpenCart ZIPs cassés→réparés (restructuration arborescences standard). Tenant ID visible + copy dans dashboard. Widget features sync bridge (Sheets→config.json). 4 ecom toggles. 6 ZIPs rebuilt. PHPUnit 50 pass.
 > **250.265**: Fix GSAP bento-grid (pricing cards invisibles LIVE: `gsap.fromTo()` + embedded scrollTrigger = ne fire jamais → `ScrollTrigger.create()` + `onEnter` + safety 4s). Traefik +5 paths. VPS 7/7 HEALTHY. Deploy auto GitHub Actions FTP → NindoHost. Vérifié LIVE: opacity 0→1, counter 16×. Health 45/45, widgets sync, 0 design token errors. Commit `bbd802e2`.
+> **250.266**: PHPUnit coverage audit exhaustif — 6 gaps critiques (OAuth Connect, SRI, XSS, HTTPS) comblés par +18 tests. 122/122 pass, 220 assertions (WP 30+PS 29+Joomla 15+Drupal 15+Magento 18+OpenCart 15). Bug fix: install-widget.html lien download PS cassé (`vocalia-prestashop.zip` → `vocalia.zip`). Obsolète supprimé git. 6 ZIPs rebuild+validation. Commits `02496aa7`+`617cf17b`.
 
 ---
 

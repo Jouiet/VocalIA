@@ -1,7 +1,8 @@
 # Audit de Maturité "Readiness / Plug-and-Play" — VocalIA
 
-> Date: 02/03/2026 — Updated Session 250.265
+> Date: 02/03/2026 — Updated Session 250.266
 > **250.265**: Fix GSAP bento-grid (pricing comparison cards invisible → ScrollTrigger.create + onEnter). Traefik +5 path prefixes. VPS restart 7/7 HEALTHY. Deploy auto via GitHub Actions FTP → NindoHost (vocalia.ma ≠ Hostinger). 6 ZIPs rebuilt: WP 5.5KB, PS 3.1KB, Joomla 3.5KB, Drupal 6.0KB, Magento 7.4KB, OpenCart 9.1KB. Health 45/45. Widgets sync OK. Design tokens 0 errors.
+> **250.266**: PHPUnit coverage audit exhaustif — 6 gaps critiques trouvés (OAuth Connect WP/PS, SRI integrity 0 tests sur 6 CMS, XSS Drupal/Magento, HTTPS WP/OpenCart). +18 tests écrits. Total: 122/122 pass, 220 assertions. Bug fix: install-widget.html lien PS cassé (pointait vers `vocalia-prestashop.zip` inexistant → corrigé vers `vocalia.zip`). Obsolète supprimé de git. ZIPs rebuilt + validés (SRI, CDN, HTTPS, structure).
 > Méthodologie: 5 Piliers Cumulatifs (0→100%)
 
 ## Méthodologie
@@ -34,16 +35,16 @@
 
 ### Actions réalisées
 
-1. **PHPUnit WordPress** — 25 tests, 53 assertions, 100% pass
-   - Sanitization, hooks, activation, uninstall, widget injection, settings page
-   - `integrations/wordpress/vocalia-voice-assistant/tests/VocaliaPluginTest.php`
+1. **PHPUnit 6 CMS Plugins** — 122 tests, 220 assertions, 100% pass (250.266)
+   - WordPress: 30 tests, 66 assertions (sanitization, hooks, activation, uninstall, widget, settings, OAuth Connect/Disconnect/Nonce, SRI filter, HTTPS)
+   - PrestaShop: 29 tests, 55 assertions (install/uninstall, config, hooks, form, widget, XSS, Connect UI, OAuth callback, SRI)
+   - Joomla: 15 tests, 26 assertions (subscriber events, widget injection, CDN, escaping, SRI, valid patterns)
+   - Drupal: 15 tests, 26 assertions (page_attachments, admin skip, CDN, help hook, SRI attributes, tenant escaping)
+   - Magento: 18 tests, 23 assertions (enabled/disabled, URLs, XML paths, SRI ecommerce/b2b, XSS payload, null tenant)
+   - OpenCart: 15 tests, 24 assertions (widget render, disabled, empty/invalid tenant, CDN, default type, SRI view data, HTTPS)
 
-2. **PHPUnit PrestaShop** — 25 tests, 44 assertions, 100% pass
-   - Install/uninstall, configuration, hooks, form, widget rendering, XSS escaping
-   - `integrations/prestashop/tests/VocaliaModuleTest.php`
-
-3. **Plugin ZIPs distribués** — 6 archives build automatique
-   - `scripts/build-plugin-zips.cjs` — WordPress (4.4 KB), PrestaShop (2.1 KB), Joomla (2.6 KB), Drupal (4.7 KB), Magento (4.8 KB), OpenCart (2.7 KB)
+2. **Plugin ZIPs distribués** — 6 archives build automatique
+   - `scripts/build-plugin-zips.cjs` — WordPress (5.5 KB), PrestaShop (3.1 KB), Joomla (3.5 KB), Drupal (6.0 KB), Magento (7.4 KB), OpenCart (9.1 KB)
    - **BUG CORRIGÉ (250.253b)** : ZIPs incluaient `vendor/` + `tests/` + `composer.lock` (WP=16MB, PS=1.4MB). Fix: exclusions ajoutées dans zip command.
    - **250.257**: Auto-copie vers `website/downloads/` + Magento/OpenCart ajoutés
    - Endpoint: `GET /api/plugins/download/:platform` (wordpress|prestashop|joomla|drupal|magento|opencart)
@@ -100,7 +101,7 @@
 > - **OAuth SSO fix**: sessionStorage bridge pour params plugin_connect pendant redirect OAuth
 > - **build-widgets.cjs fix**: Chemins Magento/OpenCart mis à jour après restructuration C3/C4
 > - **6 ZIPs rebuilds**: WP 5.5KB, PS 3.2KB, Joomla 3.5KB, Drupal 6.1KB, Magento 7.6KB, OpenCart 9.3KB
-> - **PHPUnit**: WP 25 tests + PS 25 tests = 50 pass, 0 fail
+> - **PHPUnit**: 6 CMS × PHPUnit = 122 tests, 220 assertions, 0 fail (WP 30 + PS 29 + Joomla 15 + Drupal 15 + Magento 18 + OpenCart 15) — coverage audit 250.266
 >
 > **Audit SOTA 2026 conclusions**:
 > - AI-native (VocalIA) vs rules-based (Tidio) = paradigme différent, PAS un gap fonctionnel
