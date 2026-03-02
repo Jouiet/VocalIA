@@ -8,6 +8,8 @@
 ?>
 <?php if ($block->isEnabled() && $block->getTenantId()): ?>
 <script src="<?= $block->escapeUrl($block->getWidgetUrl()) ?>"
+        integrity="<?= $block->escapeHtmlAttr($block->getSRIHash()) ?>"
+        crossorigin="anonymous"
         data-vocalia-tenant="<?= $block->escapeHtmlAttr($block->getTenantId()) ?>"
         defer></script>
 <?php endif; ?>

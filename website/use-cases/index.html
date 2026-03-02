@@ -8,6 +8,7 @@
   <meta name="description"
     content="Découvrez les cas d'usage VocalIA: qualification de leads, e-commerce, prise de RDV, service client. 31+ intégrations, 5 langues, ROI prouvé.">
   <link rel="canonical" href="https://vocalia.ma/use-cases/" />
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/use-cases/?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/use-cases/?lang=en" />
@@ -22,6 +23,7 @@
   <meta property="og:title" content="Cas d'Usage - VocalIA | Voice AI pour Chaque Besoin" />
   <meta property="og:description" content="Qualification leads, e-commerce, RDV, support client. 31+ intégrations." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="og:locale" content="fr_FR" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
@@ -352,24 +354,6 @@
         lucide.createIcons();
       }
     }
-
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
       });
     }
 
@@ -407,12 +391,10 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
-        initMobileMenu();
         initI18n();
       });
     } else {
       initLucide();
-      initMobileMenu();
       initI18n();
     }
 
@@ -424,7 +406,7 @@
   <!-- GSAP ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
   <!-- Voice Widget -->
   <!-- VocalIA Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="agency_internal" defer></script>

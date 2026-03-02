@@ -15,6 +15,8 @@
  * - GET    /api/auth/me             - Get current user
  * - PUT    /api/auth/me             - Update profile
  * - PUT    /api/auth/password       - Change password
+ * - GET    /api/auth/plugin-authorize - OAuth redirect for CMS plugins
+ * - POST   /api/auth/plugin-connect   - Generate plugin token + auto-register origin
  *
  * NLP Operator:
  * - POST   /api/nlp-operator        - Natural language analytics chat
@@ -42,6 +44,7 @@ const crypto = require('crypto');
 const { WebSocketServer } = require('ws');
 const { getDB } = require('./GoogleSheetsDB.cjs');
 const authService = require('./auth-service.cjs');
+const jwt = require('jsonwebtoken');
 const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-middleware.cjs');
 
 const { sanitizeTenantId } = require('./voice-api-utils.cjs');
@@ -711,6 +714,130 @@ async function handleAuthRequest(req, res, path, method) {
         sendJson(res, 200, result);
       } catch (e) {
         sendError(res, e.status || 400, e.message);
+      }
+      return true;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // GET /api/auth/plugin-authorize — OAuth redirect for CMS plugins
+    // Redirects to login.html with plugin_connect=1
+    // ═══════════════════════════════════════════════════════════════
+    if (path === '/api/auth/plugin-authorize' && method === 'GET') {
+      const parsedUrl = url.parse(req.url, true);
+      const { platform, return_url, nonce } = parsedUrl.query;
+
+      if (!return_url || !nonce) {
+        sendError(res, 400, 'return_url and nonce are required');
+        return true;
+      }
+
+      // Validate return_url is a valid HTTPS URL (prevent http:// phishing)
+      let parsedReturnUrl;
+      try { parsedReturnUrl = new URL(return_url); } catch {
+        sendError(res, 400, 'Invalid return_url');
+        return true;
+      }
+      if (parsedReturnUrl.protocol !== 'https:' && !parsedReturnUrl.hostname.match(/^(localhost|127\.0\.0\.1)$/)) {
+        sendError(res, 400, 'return_url must use HTTPS');
+        return true;
+      }
+
+      const validPlatforms = ['wordpress', 'prestashop', 'joomla', 'drupal', 'magento', 'opencart'];
+      if (platform && !validPlatforms.includes(platform)) {
+        sendError(res, 400, `Invalid platform. Must be one of: ${validPlatforms.join(', ')}`);
+        return true;
+      }
+
+      // Redirect to login page with plugin connect params
+      const loginUrl = new URL('https://vocalia.ma/login.html');
+      loginUrl.searchParams.set('plugin_connect', '1');
+      loginUrl.searchParams.set('return_url', return_url);
+      loginUrl.searchParams.set('nonce', nonce);
+      if (platform) loginUrl.searchParams.set('platform', platform);
+
+      const corsHeaders = res._corsHeaders || {};
+      res.writeHead(302, { ...corsHeaders, 'Location': loginUrl.toString() });
+      res.end();
+      return true;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // POST /api/auth/plugin-connect — Generate plugin token + auto-register origin
+    // Called from login.html after successful auth, returns plugin_token + tenant_id
+    // ═══════════════════════════════════════════════════════════════
+    if (path === '/api/auth/plugin-connect' && method === 'POST') {
+      const token = extractToken(req);
+      if (!token) {
+        sendError(res, 401, 'Authorization required');
+        return true;
+      }
+
+      try {
+        const decoded = authService.verifyToken(token);
+        const tenantId = sanitizeTenantId(decoded.tenant_id || '');
+        if (!tenantId) {
+          sendError(res, 400, 'No tenant associated with this account');
+          return true;
+        }
+
+        const { site_url, platform, nonce } = body;
+        if (!site_url || !nonce) {
+          sendError(res, 400, 'site_url and nonce are required');
+          return true;
+        }
+
+        // Validate site_url
+        let siteOrigin;
+        try {
+          siteOrigin = new URL(site_url).origin;
+        } catch {
+          sendError(res, 400, 'Invalid site_url');
+          return true;
+        }
+
+        // Generate plugin token (30 days, limited scope)
+        const pluginToken = jwt.sign(
+          { sub: decoded.sub, tenant_id: tenantId, scope: 'plugin', platform: platform || 'unknown' },
+          authService.CONFIG.jwt.secret,
+          { expiresIn: '30d', algorithm: authService.CONFIG.jwt.algorithm }
+        );
+
+        // Auto-register origin
+        let originsAutoRegistered = false;
+        try {
+          const nodePath = require('path');
+          const configPath = nodePath.join(__dirname, '..', 'clients', tenantId, 'config.json');
+          if (await fileExists(configPath)) {
+            const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+            if (!config.allowed_origins) config.allowed_origins = [];
+            if (!config.allowed_origins.includes(siteOrigin)) {
+              config.allowed_origins.push(siteOrigin);
+              config.updated_at = new Date().toISOString();
+              await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
+              originsAutoRegistered = true;
+
+              auditStore.log(tenantId, {
+                action: 'tenant.origin_auto_registered',
+                category: ACTION_CATEGORIES?.CONFIG || 'config',
+                actor: decoded.sub || decoded.email,
+                target: tenantId,
+                details: { origin: siteOrigin, platform: platform || 'unknown', method: 'plugin_connect' }
+              });
+            }
+          }
+        } catch (e) {
+          console.error('❌ [Plugin Connect] Auto-register origin failed:', e.message);
+        }
+
+        sendJson(res, 200, {
+          success: true,
+          tenant_id: tenantId,
+          plugin_token: pluginToken,
+          origin_auto_registered: originsAutoRegistered,
+          nonce
+        });
+      } catch (e) {
+        sendError(res, e.status || 401, e.message);
       }
       return true;
     }
@@ -5896,6 +6023,35 @@ ${JSON.stringify(contextData)}`;
       }
       const updateData = await parseBody(req);
       const updated = await db.update(sheet, id, updateData);
+
+      // Sync widget-relevant fields from GoogleSheetsDB → config.json
+      // This bridges the two data stores so widget /config endpoint reads fresh data
+      if (sheet === 'tenants' && (updateData.widget_features || updateData.widget_config || updateData.notifications)) {
+        try {
+          const safeTId = sanitizeTenantId(id);
+          if (safeTId) {
+            const nodePath = require('path');
+            const configPath = nodePath.join(__dirname, '..', 'clients', safeTId, 'config.json');
+            if (await fileExists(configPath)) {
+              const config = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+              if (updateData.widget_features) {
+                config.widget_features = { ...(config.widget_features || {}), ...updateData.widget_features };
+              }
+              if (updateData.widget_config) {
+                config.widget_config = { ...(config.widget_config || {}), ...updateData.widget_config };
+              }
+              if (updateData.notifications) {
+                config.notifications = { ...(config.notifications || {}), ...updateData.notifications };
+              }
+              config.updated_at = new Date().toISOString();
+              await atomicWriteFile(configPath, JSON.stringify(config, null, 2));
+            }
+          }
+        } catch (syncErr) {
+          console.error(`❌ [DB-API] Sync tenant config.json failed for ${id}:`, syncErr.message);
+        }
+      }
+
       // Broadcast update to appropriate channel
       if (updated.tenant_id) {
         broadcastToTenant(updated.tenant_id, sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);

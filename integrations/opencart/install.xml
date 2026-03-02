@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>VocalIA Voice Assistant</name>
+  <version>1.0.0</version>
+  <author>VocalIA</author>
+  <link>https://vocalia.ma</link>
+  <code>vocalia_voice_assistant</code>
+  <description>AI-powered voice assistant widget for your OpenCart store. Supports B2B and E-commerce widget types with SRI integrity verification.</description>
+</modification>

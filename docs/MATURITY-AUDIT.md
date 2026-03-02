@@ -1,6 +1,6 @@
 # Audit de Maturité "Readiness / Plug-and-Play" — VocalIA
 
-> Date: 01/03/2026 — Updated Session 250.261
+> Date: 02/03/2026 — Updated Session 250.264
 > Méthodologie: 5 Piliers Cumulatifs (0→100%)
 
 ## Méthodologie
@@ -74,13 +74,36 @@
 | **Drupal** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
 | **Magento** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
 | **OpenCart** | 20% ✅ | 20% ✅ | 0% ❌ | 0% ❌ | 0% ❌ | **40%** |
-| **Système Global** | 20% ✅ | 20% ✅ | 10% ⚠️ | 15% ⚠️ | 0% ❌ | **65%** |
+| **Système Global** | 20% ✅ | 20% ✅ | 10% ⚠️ | 15% ⚠️ | 5% ⚠️ | **70%** |
 
 **Moyenne pondérée après: ~48%** (+13 points)
+
+> *Session 250.264 update*: Système Global P5 passe de 0%→5% grâce à OAuth plugin-connect (self-service partiel — le client peut connecter son plugin CMS sans copier-coller de Tenant ID). Tenant ID visible dans dashboard. Auto-register origin. Full self-service bloqué par: 0 publication marketplace (wordpress.org, Shopify App Store), 0 installation CMS réelle testée.
 
 > *Session 250.254*: 4 CMS modules (Joomla/Drupal/Magento/OpenCart) passent P1→P2 avec PHPUnit (54 tests: 14+13+14+13). CDN URL fix api.vocalia.ma→vocalia.ma dans les 6 plugins. Satellite S1/S2/S3 re-verified. Client folders cleanup (5643→528). http-utils tests (19). Design token validator 0 errors.
 
 > *Session 250.257*: CDN URL fix vérifié et complété dans les 6 snippets (Shopify/BigC/Squarespace/Webflow/Wix/GTM) — grep confirme 0 références api.vocalia.ma restantes. 6 ZIPs distribués (ajout Magento 4.8KB + OpenCart 2.7KB). build-plugin-zips.cjs auto-copie vers website/downloads/. Download endpoint élargi à 6 plateformes. install-widget.html: cards séparées Magento/BigCommerce/OpenCart avec boutons ZIP. Widget install verifier (GET /api/widget/verify). Widget heartbeat (POST /api/widget/heartbeat + GET /api/widget/heartbeats). install-widget.html: section "Vérifier l'installation" avec UI inline.
+
+> *Session 250.264 (02/03/2026)*: **Plugins SOTA 2026** — 8 chantiers complétés:
+> - **C1 OAuth Plugin-Connect**: `GET /api/auth/plugin-authorize` + `POST /api/auth/plugin-connect` dans db-api.cjs. WordPress plugin réécrit: bouton "Connect with VocalIA" + fallback Tenant ID manuel
+> - **C2 Auto-Register Origin**: Origin auto-ajoutée via plugin-connect + heartbeat first-use fallback dans voice-api-resilient.cjs
+> - **C3 Fix Magento ZIP**: Restructuration complète fichiers flat → arborescence Magento 2 standard (`VocalIA/VoiceAssistant/` — registration.php, etc/module.xml, Block/Widget.php, etc.)
+> - **C4 Fix OpenCart ZIP**: Restructuration complète → OpenCart 3.x standard (`upload/admin/` + `upload/catalog/` + admin template Twig + language file + install.xml OCMOD)
+> - **C5 Tenant ID Visible**: Section "Identifiant du compte" + bouton copie dans settings.html
+> - **C6 PS/Joomla/Drupal Connect**: OAuth "Connect with VocalIA" ajouté aux 3 plugins PHP
+> - **C7 login.html Handler**: Détecte `?plugin_connect=1`, appelle API après login, redirige avec credentials
+> - **Widget features sync bridge**: db-api.cjs PUT handler syncs widget_features/widget_config/notifications → config.json (corrige disconnect GoogleSheetsDB↔config.json)
+> - **4 e-commerce toggles**: Cart recovery, quiz, gamification, carousel dans settings.html (visible si plan le permet)
+> - **Widget features overrides**: /config endpoint applique widget_features overrides aux plan_features
+> - **OAuth SSO fix**: sessionStorage bridge pour params plugin_connect pendant redirect OAuth
+> - **build-widgets.cjs fix**: Chemins Magento/OpenCart mis à jour après restructuration C3/C4
+> - **6 ZIPs rebuilds**: WP 5.5KB, PS 3.2KB, Joomla 3.5KB, Drupal 6.1KB, Magento 7.6KB, OpenCart 9.3KB
+> - **PHPUnit**: WP 25 tests + PS 25 tests = 50 pass, 0 fail
+>
+> **Audit SOTA 2026 conclusions**:
+> - AI-native (VocalIA) vs rules-based (Tidio) = paradigme différent, PAS un gap fonctionnel
+> - FAB preview live existe (couleur + position) — chat preview non pertinent pour widget vocal IA
+> - Plugin CMS = injecteur = standard industrie 2026 (Tidio/Crisp/Intercom font pareil)
 
 ---
 
@@ -116,7 +139,7 @@
 | calendar_sync | Pro+ | ⚠️ | ❌ | ❌ | **DEAD** (Google Calendar code minimal, pas d'OAuth Calendar) |
 | ~~sms_automation~~ | ~~Telephony~~ | ❌ | ❌ | ❌ | **SUPPRIME (250.255)** — etait FAKE (0 code). Retire de PLAN_FEATURES dans 3 fichiers |
 | whatsapp | Telephony | ✅ | ✅ | ❌ | **BROKEN** (deriveTenantFromWhatsApp fixe mais 0 numero WhatsApp Business API) |
-| cloud_voice | Pro+ | ✅ | ⚠️ | ❌ | **UNTESTED** (B5 fix 250.261: URL was `:3007`, now `/realtime` via Traefik. Code fixed, needs VPS restart) |
+| cloud_voice | Pro+ | ✅ | ⚠️ | ❌ | **UNTESTED** (B5 fixed 250.261: URL `/realtime` via Traefik. `/realtime/health` → 200 OK. Needs real voice session test) |
 | ecom_catalog | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (0 catalogues WooCommerce/Shopify connectes) |
 | ecom_cart_recovery | Ecom | ✅ | ✅ | ❓ | **UNTESTED** (widget existe, 0 integrations actives) |
 | ecom_recommendations | Ecom | ✅ | ✅ | ❌ | **DEAD** (T7 code OK, 0 catalogues → 0 recommendations) |

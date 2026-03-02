@@ -6,6 +6,7 @@
   <title>Comment réduire de 70% vos coûts support client avec Voice AI - VocalIA Blog</title>
   <meta name="description" content="Découvrez comment les entreprises leaders utilisent l'IA vocale pour automatiser leur support client tout en améliorant la satisfaction. Guide complet avec ROI calculator.">
   <link rel="canonical" href="https://vocalia.ma/blog/articles/reduire-couts-support-voice-ai" />
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/blog/articles/reduire-couts-support-voice-ai?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/blog/articles/reduire-couts-support-voice-ai?lang=en" />
@@ -19,12 +20,19 @@
   <meta property="og:title" content="Réduire de 70% vos coûts support avec Voice AI" />
   <meta property="og:description" content="Guide complet pour automatiser le support client avec l'IA vocale." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="og:locale" content="fr_FR" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
 
+  <meta name="author" content="VocalIA">
   <meta property="article:published_time" content="2026-01-29" />
-  <meta property="article:author" content="Équipe VocalIA" />
+  <meta property="article:modified_time" content="2026-03-01" />
+  <meta property="article:author" content="VocalIA" />
+  <meta property="article:section" content="Guide" />
+  <meta property="article:tag" content="ROI" />
+  <meta property="article:tag" content="Support client" />
+  <meta property="article:tag" content="Voice AI" />
 
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
   <meta name="theme-color" content="#5E6AD2">
@@ -40,7 +48,7 @@
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": "Comment réduire de 70% vos coûts support client avec Voice AI",
-    "datePublished": "2026-01-29",
+    "datePublished": "2026-01-29", "dateModified": "2026-03-01",
     "author": {"@type": "Organization", "name": "VocalIA"},
     "publisher": {"@type": "Organization", "name": "VocalIA", "url": "https://vocalia.ma"},
     "speakable": {
@@ -990,24 +998,6 @@
         lucide.createIcons();
       }
     }
-
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
       });
     }
 
@@ -1045,12 +1035,10 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
-        initMobileMenu();
         initI18n();
       });
     } else {
       initLucide();
-      initMobileMenu();
       initI18n();
     }
 
@@ -1062,7 +1050,7 @@
   <!-- GSAP ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

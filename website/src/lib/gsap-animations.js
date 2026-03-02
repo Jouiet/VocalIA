@@ -72,6 +72,20 @@ class VocalIAAnimations {
     this.initTextAnimations();
     this.initBentoGrid();
 
+    // Refresh ScrollTrigger positions after all animations are set up
+    if (window.ScrollTrigger) {
+      ScrollTrigger.refresh();
+    }
+
+    // Safety: reveal any items still hidden after 4s (network/layout race conditions)
+    setTimeout(() => {
+      document.querySelectorAll('[data-bento-item]').forEach(el => {
+        if (parseFloat(getComputedStyle(el).opacity) < 0.1) {
+          gsap.to(el, { opacity: 1, y: 0, scale: 1, duration: 0.5 });
+        }
+      });
+    }, 4000);
+
     // Handle resize
     window.addEventListener('resize', this.handleResize.bind(this));
 
@@ -221,76 +235,91 @@ class VocalIAAnimations {
 
     // Fade up elements
     document.querySelectorAll('[data-reveal="up"]').forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        y: 60,
-        duration: this.config.duration.normal,
-        ease: this.config.ease.smooth
-      });
+      gsap.fromTo(el,
+        { opacity: 0, y: 60 },
+        {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          },
+          opacity: 1,
+          y: 0,
+          duration: this.config.duration.normal,
+          ease: this.config.ease.smooth
+        }
+      );
     });
 
     // Fade in elements
     document.querySelectorAll('[data-reveal="fade"]').forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        duration: this.config.duration.normal,
-        ease: this.config.ease.smooth
-      });
+      gsap.fromTo(el,
+        { opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          },
+          opacity: 1,
+          duration: this.config.duration.normal,
+          ease: this.config.ease.smooth
+        }
+      );
     });
 
     // Scale elements
     document.querySelectorAll('[data-reveal="scale"]').forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        scale: 0.9,
-        duration: this.config.duration.normal,
-        ease: this.config.ease.bounce
-      });
+      gsap.fromTo(el,
+        { opacity: 0, scale: 0.9 },
+        {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          },
+          opacity: 1,
+          scale: 1,
+          duration: this.config.duration.normal,
+          ease: this.config.ease.bounce
+        }
+      );
     });
 
     // Slide from left
     document.querySelectorAll('[data-reveal="left"]').forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        x: -60,
-        duration: this.config.duration.normal,
-        ease: this.config.ease.smooth
-      });
+      gsap.fromTo(el,
+        { opacity: 0, x: -60 },
+        {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          },
+          opacity: 1,
+          x: 0,
+          duration: this.config.duration.normal,
+          ease: this.config.ease.smooth
+        }
+      );
     });
 
     // Slide from right
     document.querySelectorAll('[data-reveal="right"]').forEach(el => {
-      gsap.from(el, {
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        opacity: 0,
-        x: 60,
-        duration: this.config.duration.normal,
-        ease: this.config.ease.smooth
-      });
+      gsap.fromTo(el,
+        { opacity: 0, x: 60 },
+        {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          },
+          opacity: 1,
+          x: 0,
+          duration: this.config.duration.normal,
+          ease: this.config.ease.smooth
+        }
+      );
     });
   }
 
@@ -522,28 +551,33 @@ class VocalIAAnimations {
 
   /**
    * Bento Grid Staggered Reveal
+   * Uses explicit ScrollTrigger.create + onEnter for reliable triggering
    */
   initBentoGrid() {
     if (!window.gsap || !window.ScrollTrigger) return;
 
     document.querySelectorAll('[data-bento-grid]').forEach(grid => {
       const items = grid.querySelectorAll('[data-bento-item]');
+      if (!items.length) return;
 
-      gsap.from(items, {
-        scrollTrigger: {
-          trigger: grid,
-          start: 'top 75%'
-        },
-        opacity: 0,
-        y: 40,
-        scale: 0.95,
-        stagger: {
-          each: 0.08,
-          from: 'start',
-          grid: 'auto'
-        },
-        duration: this.config.duration.normal,
-        ease: this.config.ease.smooth
+      // Set initial state explicitly
+      gsap.set(items, { opacity: 0, y: 40, scale: 0.95 });
+
+      // Create trigger with callback — more reliable than embedded scrollTrigger
+      ScrollTrigger.create({
+        trigger: grid,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          gsap.to(items, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.08,
+            duration: this.config.duration.normal,
+            ease: this.config.ease.smooth
+          });
+        }
       });
     });
   }

@@ -6,6 +6,7 @@
   <title>Voice AI vs Chatbot : Quel outil choisir en 2026 ? - VocalIA Blog</title>
   <meta name="description" content="Comparatif complet Voice AI vs Chatbot texte. Découvrez pourquoi 73% des entreprises passent à la voix pour leur service client. Avantages, coûts, ROI.">
   <link rel="canonical" href="https://vocalia.ma/blog/articles/voice-ai-vs-chatbot-comparatif" />
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/blog/articles/voice-ai-vs-chatbot-comparatif?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/blog/articles/voice-ai-vs-chatbot-comparatif?lang=en" />
@@ -19,9 +20,16 @@
   <meta property="og:title" content="Voice AI vs Chatbot : Le comparatif 2026" />
   <meta property="og:description" content="Pourquoi 73% des entreprises passent à la voix. Comparatif complet avec ROI." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="og:locale" content="fr_FR" />
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
+  <meta name="author" content="VocalIA">
   <meta property="article:published_time" content="2026-02-01" />
+  <meta property="article:modified_time" content="2026-03-01" />
+  <meta property="article:author" content="VocalIA" />
+  <meta property="article:section" content="Comparatif" />
+  <meta property="article:tag" content="Chatbot" />
+  <meta property="article:tag" content="Voice AI" />
 
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
   <meta name="theme-color" content="#5E6AD2">
@@ -652,7 +660,7 @@
   <!-- GSAP ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
   <script src="/src/lib/geo-detect.js?v=250"></script>
   <script src="/src/lib/i18n.js?v=250"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
@@ -672,24 +680,6 @@
         lucide.createIcons();
       }
     }
-
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
       });
     }
 
@@ -727,12 +717,10 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
-        initMobileMenu();
         initI18n();
       });
     } else {
       initLucide();
-      initMobileMenu();
       initI18n();
     }
 

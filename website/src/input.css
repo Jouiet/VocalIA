@@ -60,6 +60,7 @@
   .gap-12 { gap: 1.75rem; }  /* 28px instead of 48px (42% reduction) */
   .gap-10 { gap: 1.5rem; }   /* 24px instead of 40px (40% reduction) */
   .gap-8 { gap: 1.25rem; }   /* 20px instead of 32px (37% reduction) */
+  .gap-6 { gap: 1rem; }      /* 16px instead of 24px (33% reduction) */
 
   /* Note: heading sizes rely on per-element responsive classes (text-4xl sm:text-5xl etc.)
      No global override — dashboard h1s use text-xl/text-2xl intentionally */
@@ -2712,22 +2713,13 @@ body.gsap-ready [data-reveal="scale"] {
    Staggered Bento Animation
    ======================================================================= */
 [data-bento-item] {
+  opacity: 1;
+  transform: none;
+}
+body.gsap-ready [data-bento-item] {
   opacity: 0;
   transform: translateY(40px) scale(0.95);
 }
-
-.bento-animated [data-bento-item] {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.bento-animated [data-bento-item]:nth-child(1) { transition-delay: 0.05s; }
-.bento-animated [data-bento-item]:nth-child(2) { transition-delay: 0.1s; }
-.bento-animated [data-bento-item]:nth-child(3) { transition-delay: 0.15s; }
-.bento-animated [data-bento-item]:nth-child(4) { transition-delay: 0.2s; }
-.bento-animated [data-bento-item]:nth-child(5) { transition-delay: 0.25s; }
-.bento-animated [data-bento-item]:nth-child(6) { transition-delay: 0.3s; }
 
 /* =======================================================================
    Animated Counter Display
@@ -2981,6 +2973,23 @@ body.gsap-ready [data-reveal="scale"] {
 
   [data-parallax] {
     transform: none !important;
+  }
+
+  /* btn-cyber: reduce padding/font on mobile for better fit */
+  .btn-cyber {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* Comparison table: allow criteria text to wrap on mobile */
+  table td.whitespace-nowrap,
+  table td[class*="whitespace-nowrap"] {
+    white-space: normal;
+  }
+
+  /* Voice demo cards: disable hover transform on touch devices */
+  .voice-demo-card:hover {
+    transform: none;
   }
 }
 

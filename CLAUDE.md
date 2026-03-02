@@ -1,13 +1,13 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~92k lines | ~7,400+ tests (132 files: 123 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota)
+> 89 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~92k lines | ~8,041+ tests (132 files: 123 .mjs + 9 .cjs, 0 fail, 4 skip Gemini TTS quota)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 40 personas | 25 function tools | 7 widgets
 
 ## Architecture
 
 core/ (70 modules, 43.1k) | telephony/ (5.5k) | personas/ (8.8k) | widget/ (11.0k, 7 files)
-mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (973) | integrations/ (3.8k, 12 platform dirs + 7 CRM/ecom .cjs, 6 downloadable ZIPs)
+mcp-server/src/ (19.3k, 33 .ts) | lib/ (944) | sensors/ (973) | integrations/ (3.8k, 12 platform dirs + 7 CRM/ecom .cjs, 7 downloadable ZIPs)
 clients/ = 1,248 dirs (ALL test data) | website/ = 89 pages + locales (28.0k)
 
 ## Services (8 HTTP servers)
@@ -72,7 +72,8 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Perplexity Computer Patterns** (250.245-247): T1-T7 ALL DONE — TaskRouter, parallel context, QualityGate v2 (synonym groups + injection detection + penalty recalibration), intelligent retry, ClientProfile, TokenBudget, RAG multi-source enrichment.
 - **WhatsApp Inbound** (250.247): deriveTenantFromWhatsApp was UNDEFINED (production crash). Fixed: function + ClientRegistry.getTenantIdByWhatsAppNumberId(). Gemini TTS: preflight quota detection (4 false fails → 4 clean skips). asyncSearchHybrid: 0→7 tests.
 - **Satellite Audit** (250.242-245): Score 8→91/100. All critical blockers resolved. 4 satellites pre-provisioned.
-- **Plugin 1-Click** (250.250-257): 12 CMS dirs (6 PHP plugins with PHPUnit: WP 25 + PS 25 + Joomla 14 + Drupal 13 + Magento 14 + OpenCart 13 = 104 tests, 6 HTML/Liquid/JS snippets: Shopify/BigC/Wix/Squarespace/Webflow/GTM). 7 CRM/ecom .cjs backends (2,275L). 6 downloadable ZIPs (WP 4.4KB, PS 2.1KB, Joomla 2.6KB, Drupal 4.7KB, Magento 4.8KB, OpenCart 2.7KB). Widget install verifier + heartbeat. 0 real CMS installations.
+- **Plugin 1-Click** (250.250-257): 12 CMS dirs (6 PHP plugins with PHPUnit: WP 25 + PS 25 + Joomla 14 + Drupal 13 + Magento 14 + OpenCart 13 = 104 tests, 6 HTML/Liquid/JS snippets: Shopify/BigC/Wix/Squarespace/Webflow/GTM). 7 CRM/ecom .cjs backends (2,275L). 7 downloadable ZIPs (WP 5.5KB, PS 3.2KB, Joomla 3.5KB, Drupal 6.1KB, Magento 7.6KB, OpenCart 9.3KB). Widget install verifier + heartbeat. 0 real CMS installations.
+- **Plugins SOTA 2026** (250.264): 8 chantiers: OAuth "Connect with VocalIA" (WP/PS/Joomla/Drupal), auto-register origin (plugin-connect + heartbeat first-use), Magento/OpenCart ZIP restructure (cassés→standard), Tenant ID visible dans dashboard, login.html plugin handler. Widget features sync bridge (GoogleSheetsDB→config.json disconnect fixé). 4 ecom toggles (cart recovery, quiz, gamification, carousel). Deep audit: AI-native paradigm = design choice (N/A), FAB preview exists, plugin=injector = standard industrie 2026.
 - **SOTA Dashboards** (250.249-250): T1-T7 pipeline visualization in admin + client dashboards, engine-stats API, engine metrics per tenant.
 - **Unified Component Loader** (250.251): Two loaders merged into one. 19 app pages migrated. NLP Operator auto-injection bug fixed (checked nonexistent class).
 - **Revenue Path Audit** (250.254b): FATAL — Register/Login = 500 on VPS (GoogleSheetsDB OAuth expired), Stripe prices = PLACEHOLDER, STRIPE_SECRET_KEY missing, no Stripe webhook receiver, WebSocket 3007 unreachable, new tenant quota = 0. Revenue readiness: 1.5/10.
@@ -87,4 +88,4 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **VPS Full Restart** (250.261): 7 containers restarted with latest code. All HEALTHY. Register: 201. Realtime: 200. Health: OK (7 sheets, 27 conversations, 8 audit tenants).
 - **Next (CRITICAL PATH)**: 1) Create Stripe Products/Prices on dashboard.stripe.com 2) Set STRIPE_SECRET_KEY + STRIPE_PRICE_* on VPS .env 3) Configure Stripe webhook URL → api.vocalia.ma/webhook/stripe 4) VPS restart 5) First paying customer
 
-*Last update: 01/03/2026 — Session 250.261: B1 DEBUNKED (OAuth fine, was shell escaping). B5 FIXED (WS URL). VPS restarted, 7/7 HEALTHY. Register 201 OK. Production 4→6/10. Revenue readiness 2.5→4.0/10. Only remaining: Stripe config (business, not code).*
+*Last update: 02/03/2026 — Session 250.264: Plugins SOTA 2026 (8 chantiers). OAuth plugin-connect, auto-register origin, Magento/OpenCart ZIP fix, Tenant ID visible, widget features sync bridge, 4 ecom toggles, 6 ZIPs rebuilt. Deep audit: AI-native=design choice, FAB preview exists, plugin=injector=standard. Production 6.0/10. Revenue 4.0/10. Only remaining: Stripe config on VPS (business, not code).*

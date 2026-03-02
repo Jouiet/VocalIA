@@ -21,6 +21,7 @@ use Joomla\Event\SubscriberInterface;
 final class Vocalia extends CMSPlugin implements SubscriberInterface
 {
     private const CDN_BASE = 'https://vocalia.ma/voice-assistant';
+    private const CONNECT_URL = 'https://api.vocalia.ma/api/auth/plugin-authorize';
 
     private const WIDGET_FILES = [
         'ecommerce' => 'voice-widget-ecommerce.js',
@@ -34,7 +35,59 @@ final class Vocalia extends CMSPlugin implements SubscriberInterface
     {
         return [
             'onBeforeCompileHead' => 'onBeforeCompileHead',
+            'onAfterRoute'        => 'onAfterRoute',
         ];
+    }
+
+    /**
+     * Handle plugin-connect OAuth callback in admin context
+     */
+    public function onAfterRoute(): void
+    {
+        $app = $this->getApplication();
+        if ($app instanceof SiteApplication) {
+            return; // Only handle in admin
+        }
+
+        $input = $app->getInput();
+        $vocaliaToken = $input->getString('vocalia_token', '');
+        $tenantId = $input->getString('tenant_id', '');
+        $nonce = $input->getString('nonce', '');
+
+        if (!empty($vocaliaToken) && !empty($tenantId) && !empty($nonce)) {
+            // Validate nonce
+            $storedNonce = $app->getSession()->get('vocalia_connect_nonce', '');
+            if (!empty($storedNonce) && hash_equals($storedNonce, $nonce)) {
+                $cleanTenantId = preg_replace('/[^a-z0-9_-]/i', '', $tenantId);
+                $this->params->set('tenant_id', $cleanTenantId);
+                $this->params->set('vocalia_plugin_token', $vocaliaToken);
+                // Save params to DB
+                $db = \Joomla\CMS\Factory::getDbo();
+                $query = $db->getQuery(true)
+                    ->update($db->quoteName('#__extensions'))
+                    ->set($db->quoteName('params') . ' = ' . $db->quote($this->params->toString()))
+                    ->where($db->quoteName('element') . ' = ' . $db->quote('vocalia'))
+                    ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
+                $db->setQuery($query);
+                $db->execute();
+                $app->getSession()->set('vocalia_connect_nonce', null);
+                $app->enqueueMessage('Connected to VocalIA! Tenant: ' . $cleanTenantId, 'success');
+            }
+        }
+    }
+
+    /**
+     * Generate the Connect URL for admin usage
+     */
+    public static function getConnectUrl(string $returnUrl): string
+    {
+        $nonce = bin2hex(random_bytes(16));
+        \Joomla\CMS\Factory::getApplication()->getSession()->set('vocalia_connect_nonce', $nonce);
+        return self::CONNECT_URL . '?' . http_build_query([
+            'platform'   => 'joomla',
+            'return_url' => $returnUrl,
+            'nonce'      => $nonce,
+        ]);
     }
 
     public function onBeforeCompileHead(): void

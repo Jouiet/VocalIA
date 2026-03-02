@@ -392,8 +392,8 @@ function updatePluginSRIHashes() {
     path.join(ROOT, 'integrations/prestashop/vocalia.php'),
     path.join(ROOT, 'integrations/joomla/src/Extension/Vocalia.php'),
     path.join(ROOT, 'integrations/drupal/vocalia.module'),
-    path.join(ROOT, 'integrations/magento/vocalia-magento-block.php'),
-    path.join(ROOT, 'integrations/opencart/vocalia-opencart-module.php'),
+    path.join(ROOT, 'integrations/magento/Block/Widget.php'),
+    path.join(ROOT, 'integrations/opencart/upload/catalog/controller/extension/module/vocalia.php'),
   ];
 
   for (const file of phpPlugins) {

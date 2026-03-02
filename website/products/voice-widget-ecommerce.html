@@ -8,7 +8,7 @@
   <meta name="description"
     content="The ultimate 8-AI-Widget suite for E-commerce. Abandoned cart recovery, Voice SEO, and smart product recommendations. Boost your Shopify/Woo store revenue.">
   <link rel="canonical" href="https://vocalia.ma/products/voice-widget-ecommerce" />
-
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=en" />
@@ -24,6 +24,7 @@
   <meta property="og:description"
     content="The ultimate 8-AI-Widget suite for E-commerce. Increase your conversion rate with voice AI." />
   <meta property="og:image" content="https://vocalia.ma/public/images/products/voice-widget-og.webp" />
+  <meta property="og:locale" content="fr_FR" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
@@ -601,7 +602,7 @@
       <p class="text-xl text-white/80 mb-8" data-i18n="voice_widget_page.cta_subtitle">Essai inclus, déployé en 2
         minutes.</p>
       <a href="/signup?product=widget"
-        class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg"
+        class="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-base sm:text-lg"
         data-i18n="voice_widget_page.cta_button">
         Créer Mon Widget
         <i data-lucide="layout" class="w-5 h-5 ml-2"></i>
@@ -672,24 +673,6 @@
           lucide.createIcons();
         }
       }
-
-      // Mobile menu
-      function initMobileMenu() {
-        var btn = document.getElementById('mobileMenuBtn');
-        var menu = document.getElementById('mobileMenu');
-        if (!btn || !menu) return;
-
-        btn.addEventListener('click', function () {
-          var isOpen = menu.classList.contains('translate-x-0');
-          if (isOpen) {
-            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-            document.body.style.overflow = '';
-          } else {
-            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-            document.body.style.overflow = 'hidden';
-          }
         });
       }
 
@@ -727,12 +710,10 @@
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function () {
           initLucide();
-          initMobileMenu();
           initI18n();
         });
       } else {
         initLucide();
-        initMobileMenu();
         initI18n();
       }
 
@@ -744,7 +725,7 @@
   <!-- GSAP ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

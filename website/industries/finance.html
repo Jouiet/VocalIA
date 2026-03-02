@@ -8,6 +8,7 @@
   <meta name="description"
     content="Solution Voice AI pour banques, assurances et fintech. Automatisation des appels, support client vocal 24/7, intégration core banking.">
   <link rel="canonical" href="https://vocalia.ma/industries/finance" />
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/industries/finance?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/industries/finance?lang=en" />
@@ -22,6 +23,7 @@
   <meta property="og:title" content="Voice AI pour les Services Financiers - VocalIA" />
   <meta property="og:description" content="Automatisez votre support client financier avec une solution Voice AI sécurisée." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="og:locale" content="fr_FR" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
@@ -166,10 +168,10 @@
           </div>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-xl font-semibold transition transform hover:scale-105" data-i18n="industries_finance_page.hero_cta">
+            <a href="/contact" class="px-6 sm:px-8 py-3 sm:py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-xl font-semibold transition transform hover:scale-105" data-i18n="industries_finance_page.hero_cta">
               Demander une Démo
             </a>
-            <a href="/docs" class="px-8 py-4 glass hover:bg-white/[0.04] rounded-xl font-semibold transition" data-i18n="industries_finance_page.hero_cta_secondary">
+            <a href="/docs" class="px-6 sm:px-8 py-3 sm:py-4 glass hover:bg-white/[0.04] rounded-xl font-semibold transition" data-i18n="industries_finance_page.hero_cta_secondary">
               Voir les Tarifs
             </a>
           </div>
@@ -478,12 +480,12 @@
       <!-- CTA Buttons - Linear style -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <!-- Primary CTA -->
-        <a href="/pricing" class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25">
+        <a href="/pricing" class="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-base sm:text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25">
           <span data-i18n="cta.button">Démarrer Maintenant</span>
           <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
         </a>
         <!-- Secondary CTA -->
-        <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 hover:border-white/20 transition-all duration-200">
+        <a href="/contact" class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-base sm:text-lg border border-white/10 hover:border-white/20 transition-all duration-200">
           <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
           <span data-i18n="cta.demo">Demander une Démo</span>
         </a>
@@ -540,24 +542,6 @@
         lucide.createIcons();
       }
     }
-
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
       });
     }
 
@@ -595,12 +579,10 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
-        initMobileMenu();
         initI18n();
       });
     } else {
       initLucide();
-      initMobileMenu();
       initI18n();
     }
 
@@ -612,7 +594,7 @@
   <!-- GSAP ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

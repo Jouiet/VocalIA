@@ -1,8 +1,9 @@
 # Compounding Knowledge — Pattern "KB Vivante" pour VocalIA
 
-> **Date**: 28/02/2026 — Session 250.254 | **Derniere MAJ**: 250.261 (01/03/2026)
+> **Date**: 28/02/2026 — Session 250.254 | **Derniere MAJ**: 250.264 (02/03/2026)
 > **Source**: Podcast Greg Isenberg × Vin (23/02/2026) + 10 recherches web (docs officielles, GitHub, forums)
 > **Statut**: Phase 1 (slash commands) ✅ DONE | Phase 2 (produit client) ✅ ALL 5 FEATURES DONE (F1-F3+F5: 250.256, F4: 250.259) | Production: VPS 7/7 HEALTHY, dashboards DEPLOYED (250.261)
+> **250.264**: Plugins SOTA 2026 — 8 chantiers: OAuth plugin-connect (C1), auto-register origin (C2), Magento/OpenCart ZIP restructure (C3/C4), Tenant ID visible (C5), PS/Joomla/Drupal Connect (C6), login.html handler (C7). Widget features sync bridge (GoogleSheetsDB→config.json). 4 ecom toggles. Deep audit: AI-native paradigm = design choice (pas gap). FAB preview exists. Plugin=injector = standard industrie.
 > **Principe**: La qualite de l'IA est proportionnelle a la qualite du contexte structure qu'elle recoit. Ce contexte doit COMPOSER dans le temps.
 
 ---

@@ -269,8 +269,9 @@ class VocaliaPluginTest extends TestCase
         vocalia_render_settings_page();
         $output = ob_get_clean();
 
-        $this->assertStringContainsString('notice-warning', $output);
-        $this->assertStringContainsString('signup.html', $output);
+        // New behavior: shows Connect button when no tenant ID
+        $this->assertStringContainsString('Connect with VocalIA', $output);
+        $this->assertStringContainsString('plugin-authorize', $output);
     }
 
     // ============================================================

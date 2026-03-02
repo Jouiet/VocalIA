@@ -2395,10 +2395,11 @@ function startServer(port = 3004) {
     }
 
     // Session 250.257: Widget heartbeat — tracks active installations
+    // Session 250.264: Auto-register origin on first heartbeat (if allowed_origins is empty)
     if (req.url === '/api/widget/heartbeat' && req.method === 'POST') {
       let body = '';
       req.on('data', chunk => body += chunk);
-      req.on('end', () => {
+      req.on('end', async () => {
         try {
           const data = JSON.parse(body);
           const tid = sanitizeTenantId(data.tenant_id || '');
@@ -2413,6 +2414,31 @@ function startServer(port = 3004) {
               last_seen: Date.now(),
               visitor_id: (data.visitor_id || '').slice(0, 40)
             };
+
+            // Auto-register origin on first use (only if allowed_origins is empty)
+            // Security: unauthenticated endpoint — only auto-register when NO origins exist (first setup)
+            if (data.domain && typeof data.domain === 'string') {
+              const cleanDomain = data.domain.replace(/^https?:\/\//, '').split('/')[0].split(':')[0];
+              // Validate domain format (alphanumeric + dots + hyphens only)
+              if (/^[a-z0-9]([a-z0-9-]*\.)*[a-z0-9][a-z0-9-]*\.[a-z]{2,}$/i.test(cleanDomain)) {
+                try {
+                  const configPath = path.join(__dirname, '..', 'clients', tid, 'config.json');
+                  if (fs.existsSync(configPath)) {
+                    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+                    const origins = config.allowed_origins || [];
+                    if (origins.length === 0) {
+                      const origin = 'https://' + cleanDomain;
+                      config.allowed_origins = [origin];
+                      config.updated_at = new Date().toISOString();
+                      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+                      console.log(`✅ [Heartbeat] Auto-registered origin ${origin} for ${tid} (first use)`);
+                    }
+                  }
+                } catch (e) {
+                  console.warn('⚠️ [Heartbeat] Auto-register origin failed:', e.message);
+                }
+              }
+            }
           }
         } catch { /* ignore malformed */ }
         res.writeHead(204);
@@ -2770,6 +2796,12 @@ function startServer(port = 3004) {
         const widgetBranding = tenantConfig.widget_config?.branding || {};
         const widgetPosition = tenantConfig.widget_config?.position || null;
 
+        // Apply widget_features overrides to plan_features (client can disable plan-allowed features)
+        if (widgetFeatures.ecom_cart_recovery_enabled === false) resolvedPlanFeatures.ecom_cart_recovery = false;
+        if (widgetFeatures.ecom_quiz_enabled === false) resolvedPlanFeatures.ecom_quiz = false;
+        if (widgetFeatures.ecom_gamification_enabled === false) resolvedPlanFeatures.ecom_gamification = false;
+        if (widgetFeatures.ecom_recommendations_enabled === false) resolvedPlanFeatures.ecom_recommendations = false;
+
         const config = {
           success: true,
           tenantId: safeTId,
@@ -2789,6 +2821,7 @@ function startServer(port = 3004) {
             booking_enabled: widgetFeatures.booking_enabled !== false && !!(bookingUrl || bookingPhone),
             exit_intent_enabled: widgetFeatures.exit_intent_enabled !== false
           },
+          widget_features: widgetFeatures,
           plan_features: resolvedPlanFeatures,
           booking: {
             url: bookingUrl,

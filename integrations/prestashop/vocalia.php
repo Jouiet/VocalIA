@@ -46,7 +46,8 @@ class Vocalia extends Module
             && $this->registerHook('displayFooter')
             && Configuration::updateValue('VOCALIA_TENANT_ID', '')
             && Configuration::updateValue('VOCALIA_WIDGET_TYPE', 'ecommerce')
-            && Configuration::updateValue('VOCALIA_ENABLED', true);
+            && Configuration::updateValue('VOCALIA_ENABLED', true)
+            && Configuration::updateValue('VOCALIA_PLUGIN_TOKEN', '');
     }
 
     public function uninstall()
@@ -54,12 +55,35 @@ class Vocalia extends Module
         return parent::uninstall()
             && Configuration::deleteByName('VOCALIA_TENANT_ID')
             && Configuration::deleteByName('VOCALIA_WIDGET_TYPE')
-            && Configuration::deleteByName('VOCALIA_ENABLED');
+            && Configuration::deleteByName('VOCALIA_ENABLED')
+            && Configuration::deleteByName('VOCALIA_PLUGIN_TOKEN');
     }
 
     public function getContent()
     {
         $output = '';
+
+        // Handle plugin-connect callback
+        if (Tools::getValue('vocalia_token') && Tools::getValue('tenant_id') && Tools::getValue('nonce')) {
+            $storedNonce = Configuration::get('VOCALIA_CONNECT_NONCE');
+            $receivedNonce = Tools::getValue('nonce');
+            if ($storedNonce && hash_equals($storedNonce, $receivedNonce)) {
+                $tenantId = preg_replace('/[^a-z0-9_-]/i', '', Tools::getValue('tenant_id'));
+                Configuration::updateValue('VOCALIA_TENANT_ID', $tenantId);
+                Configuration::updateValue('VOCALIA_PLUGIN_TOKEN', Tools::getValue('vocalia_token'));
+                Configuration::deleteByName('VOCALIA_CONNECT_NONCE');
+                $output .= $this->displayConfirmation($this->l('Connected to VocalIA! Your domain has been auto-registered.'));
+            } else {
+                $output .= $this->displayError($this->l('Connection failed: invalid nonce. Please try again.'));
+            }
+        }
+
+        // Handle disconnect
+        if (Tools::getValue('vocalia_disconnect') === '1') {
+            Configuration::updateValue('VOCALIA_TENANT_ID', '');
+            Configuration::updateValue('VOCALIA_PLUGIN_TOKEN', '');
+            $output .= $this->displayConfirmation($this->l('Disconnected from VocalIA.'));
+        }
 
         if (Tools::isSubmit('submitVocaliaSettings')) {
             $tenantId = Tools::getValue('VOCALIA_TENANT_ID');
@@ -74,6 +98,32 @@ class Vocalia extends Module
                 Configuration::updateValue('VOCALIA_ENABLED', $enabled);
                 $output .= $this->displayConfirmation($this->l('Settings saved.'));
             }
+        }
+
+        // Show Connect button if not connected
+        $tenantId = Configuration::get('VOCALIA_TENANT_ID');
+        $pluginToken = Configuration::get('VOCALIA_PLUGIN_TOKEN');
+        if (empty($tenantId) || empty($pluginToken)) {
+            $nonce = bin2hex(random_bytes(16));
+            Configuration::updateValue('VOCALIA_CONNECT_NONCE', $nonce);
+            $returnUrl = $this->context->link->getAdminLink('AdminModules', true)
+                . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
+            $connectUrl = 'https://api.vocalia.ma/api/auth/plugin-authorize?'
+                . http_build_query(['platform' => 'prestashop', 'return_url' => $returnUrl, 'nonce' => $nonce]);
+
+            $output .= '<div class="panel"><h3>' . $this->l('Connect your VocalIA account') . '</h3>'
+                . '<p>' . $this->l('Click below to connect. Your domain will be auto-registered.') . '</p>'
+                . '<a href="' . htmlspecialchars($connectUrl, ENT_QUOTES, 'UTF-8') . '" class="btn btn-primary btn-lg">'
+                . $this->l('Connect with VocalIA') . '</a>'
+                . '<hr><p style="color:#999;">' . $this->l('Or configure manually using the form below.') . '</p></div>';
+        } else {
+            $disconnectUrl = $this->context->link->getAdminLink('AdminModules', true)
+                . '&configure=' . $this->name . '&vocalia_disconnect=1';
+            $output .= '<div class="alert alert-success">'
+                . '<strong>' . $this->l('Connected to VocalIA') . '</strong> — '
+                . $this->l('Tenant:') . ' <code>' . htmlspecialchars($tenantId, ENT_QUOTES, 'UTF-8') . '</code>'
+                . ' | <a href="' . htmlspecialchars($disconnectUrl, ENT_QUOTES, 'UTF-8') . '" style="color:#c0392b;">' . $this->l('Disconnect') . '</a>'
+                . '</div>';
         }
 
         return $output . $this->renderForm();

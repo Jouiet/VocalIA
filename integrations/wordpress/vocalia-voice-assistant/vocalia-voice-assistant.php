@@ -62,8 +62,48 @@ function vocalia_register_settings() {
         'sanitize_callback' => 'sanitize_text_field',
         'default' => 'all',
     ]);
+    register_setting('vocalia_settings', 'vocalia_plugin_token', [
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_text_field',
+        'default' => '',
+    ]);
 }
 add_action('admin_init', 'vocalia_register_settings');
+
+/**
+ * Handle OAuth plugin-connect callback
+ */
+function vocalia_handle_plugin_connect_callback() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    if (!isset($_GET['page']) || $_GET['page'] !== 'vocalia-settings') {
+        return;
+    }
+
+    // Handle disconnect
+    if (isset($_GET['vocalia_disconnect']) && $_GET['vocalia_disconnect'] === '1') {
+        check_admin_referer('vocalia_disconnect');
+        delete_option('vocalia_tenant_id');
+        delete_option('vocalia_plugin_token');
+        add_settings_error('vocalia_settings', 'disconnected', __('Disconnected from VocalIA.', 'vocalia-voice-assistant'), 'updated');
+        return;
+    }
+
+    // Handle connect callback
+    if (isset($_GET['vocalia_token']) && isset($_GET['tenant_id']) && isset($_GET['nonce'])) {
+        $stored_nonce = get_transient('vocalia_connect_nonce');
+        if ($stored_nonce && hash_equals($stored_nonce, sanitize_text_field($_GET['nonce']))) {
+            update_option('vocalia_tenant_id', vocalia_sanitize_tenant_id($_GET['tenant_id']));
+            update_option('vocalia_plugin_token', sanitize_text_field($_GET['vocalia_token']));
+            delete_transient('vocalia_connect_nonce');
+            add_settings_error('vocalia_settings', 'connected', __('Connected to VocalIA! Your domain has been auto-registered.', 'vocalia-voice-assistant'), 'updated');
+        } else {
+            add_settings_error('vocalia_settings', 'nonce_error', __('Connection failed: invalid nonce. Please try again.', 'vocalia-voice-assistant'), 'error');
+        }
+    }
+}
+add_action('admin_init', 'vocalia_handle_plugin_connect_callback');
 
 /**
  * Sanitize tenant ID — only allow alphanumeric, hyphens, underscores
@@ -86,25 +126,79 @@ function vocalia_render_settings_page() {
     }
 
     $tenant_id = get_option('vocalia_tenant_id', '');
+    $plugin_token = get_option('vocalia_plugin_token', '');
     $widget_type = get_option('vocalia_widget_type', 'b2b');
     $enabled = get_option('vocalia_enabled', true);
     $pages = get_option('vocalia_pages', 'all');
+    $is_connected = !empty($tenant_id) && !empty($plugin_token);
+
+    settings_errors('vocalia_settings');
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
-        <?php if (empty($tenant_id)) : ?>
-        <div class="notice notice-warning">
-            <p>
+        <?php if ($is_connected) : ?>
+        <!-- Connected state -->
+        <div class="notice notice-success" style="border-left-color: #6366f1;">
+            <p style="font-size: 14px;">
+                <strong style="color: #6366f1;"><?php esc_html_e('Connected to VocalIA', 'vocalia-voice-assistant'); ?></strong><br>
                 <?php printf(
-                    /* translators: %s: signup URL */
-                    esc_html__('You need a VocalIA account. %s to get your Tenant ID.', 'vocalia-voice-assistant'),
-                    '<a href="https://vocalia.ma/signup.html" target="_blank" rel="noopener">' . esc_html__('Sign up free', 'vocalia-voice-assistant') . '</a>'
+                    /* translators: %s: tenant ID */
+                    esc_html__('Tenant: %s', 'vocalia-voice-assistant'),
+                    '<code>' . esc_html($tenant_id) . '</code>'
                 ); ?>
+                &nbsp;|&nbsp;
+                <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=vocalia-settings&vocalia_disconnect=1'), 'vocalia_disconnect')); ?>" style="color: #dc2626;">
+                    <?php esc_html_e('Disconnect', 'vocalia-voice-assistant'); ?>
+                </a>
             </p>
         </div>
-        <?php endif; ?>
+        <?php elseif (empty($tenant_id)) : ?>
+        <!-- Not connected — show Connect button -->
+        <div class="card" style="max-width: 520px; padding: 20px; border-left: 4px solid #6366f1;">
+            <h2 style="margin-top: 0;"><?php esc_html_e('Connect your VocalIA account', 'vocalia-voice-assistant'); ?></h2>
+            <p><?php esc_html_e('Click below to connect your VocalIA account. Your domain will be auto-registered.', 'vocalia-voice-assistant'); ?></p>
+            <?php
+            $nonce = wp_generate_password(32, false);
+            set_transient('vocalia_connect_nonce', $nonce, 600); // 10 min expiry
+            $return_url = admin_url('options-general.php?page=vocalia-settings');
+            $connect_url = 'https://api.vocalia.ma/api/auth/plugin-authorize?' . http_build_query([
+                'platform' => 'wordpress',
+                'return_url' => $return_url,
+                'nonce' => $nonce,
+            ]);
+            ?>
+            <a href="<?php echo esc_url($connect_url); ?>" class="button button-primary button-hero" style="background: #6366f1; border-color: #4f46e5; font-size: 15px;">
+                <?php esc_html_e('Connect with VocalIA', 'vocalia-voice-assistant'); ?>
+            </a>
+            <hr style="margin: 20px 0;">
+            <details>
+                <summary style="cursor: pointer; color: #6b7280;"><?php esc_html_e('Or configure manually', 'vocalia-voice-assistant'); ?></summary>
+                <div style="margin-top: 10px;">
+                    <form method="post" action="options.php">
+                        <?php settings_fields('vocalia_settings'); ?>
+                        <label for="vocalia_tenant_id"><?php esc_html_e('Tenant ID', 'vocalia-voice-assistant'); ?></label><br>
+                        <input type="text" id="vocalia_tenant_id" name="vocalia_tenant_id"
+                               value="<?php echo esc_attr($tenant_id); ?>"
+                               class="regular-text" placeholder="e.g. mycompany_a1b2"
+                               pattern="[a-z0-9_-]+" title="<?php esc_attr_e('Lowercase letters, numbers, underscores, hyphens', 'vocalia-voice-assistant'); ?>">
+                        <p class="description">
+                            <?php printf(
+                                /* translators: %s: dashboard URL */
+                                esc_html__('Find your Tenant ID in your %s under Settings.', 'vocalia-voice-assistant'),
+                                '<a href="https://vocalia.ma/app/client/settings.html" target="_blank" rel="noopener">' . esc_html__('VocalIA dashboard', 'vocalia-voice-assistant') . '</a>'
+                            ); ?>
+                        </p>
+                        <?php submit_button(__('Save', 'vocalia-voice-assistant'), 'secondary'); ?>
+                    </form>
+                </div>
+            </details>
+        </div>
+        <?php
+        return; // Don't show widget config until connected
+        endif; ?>
 
+        <!-- Widget configuration (shown when connected or tenant ID set) -->
         <form method="post" action="options.php">
             <?php settings_fields('vocalia_settings'); ?>
 
@@ -118,6 +212,7 @@ function vocalia_render_settings_page() {
                         <p class="description"><?php esc_html_e('Show the VocalIA voice assistant on your site.', 'vocalia-voice-assistant'); ?></p>
                     </td>
                 </tr>
+                <?php if (!$is_connected) : ?>
                 <tr>
                     <th scope="row">
                         <label for="vocalia_tenant_id"><?php esc_html_e('Tenant ID', 'vocalia-voice-assistant'); ?></label>
@@ -126,16 +221,10 @@ function vocalia_render_settings_page() {
                         <input type="text" id="vocalia_tenant_id" name="vocalia_tenant_id"
                                value="<?php echo esc_attr($tenant_id); ?>"
                                class="regular-text" placeholder="e.g. mycompany_a1b2"
-                               pattern="[a-z0-9_-]+" title="<?php esc_attr_e('Lowercase letters, numbers, underscores, hyphens', 'vocalia-voice-assistant'); ?>">
-                        <p class="description">
-                            <?php printf(
-                                /* translators: %s: dashboard URL */
-                                esc_html__('Find your Tenant ID in your %s under Settings.', 'vocalia-voice-assistant'),
-                                '<a href="https://vocalia.ma/app/client/settings.html" target="_blank" rel="noopener">' . esc_html__('VocalIA dashboard', 'vocalia-voice-assistant') . '</a>'
-                            ); ?>
-                        </p>
+                               pattern="[a-z0-9_-]+">
                     </td>
                 </tr>
+                <?php endif; ?>
                 <tr>
                     <th scope="row">
                         <label for="vocalia_widget_type"><?php esc_html_e('Widget Type', 'vocalia-voice-assistant'); ?></label>
@@ -162,22 +251,14 @@ function vocalia_render_settings_page() {
                 </tr>
             </table>
 
+            <!-- Hidden field to preserve tenant_id when connected -->
+            <?php if ($is_connected) : ?>
+            <input type="hidden" name="vocalia_tenant_id" value="<?php echo esc_attr($tenant_id); ?>">
+            <input type="hidden" name="vocalia_plugin_token" value="<?php echo esc_attr($plugin_token); ?>">
+            <?php endif; ?>
+
             <?php submit_button(); ?>
         </form>
-
-        <hr>
-        <h2><?php esc_html_e('Quick Start', 'vocalia-voice-assistant'); ?></h2>
-        <ol>
-            <li><?php printf(
-                /* translators: %s: signup URL */
-                esc_html__('Create a free account at %s', 'vocalia-voice-assistant'),
-                '<a href="https://vocalia.ma/signup.html" target="_blank" rel="noopener">vocalia.ma</a>'
-            ); ?></li>
-            <li><?php esc_html_e('Copy your Tenant ID from the dashboard', 'vocalia-voice-assistant'); ?></li>
-            <li><?php esc_html_e('Paste it above and click Save Changes', 'vocalia-voice-assistant'); ?></li>
-            <li><?php esc_html_e('Add your WordPress domain to Allowed Origins in the VocalIA dashboard', 'vocalia-voice-assistant'); ?></li>
-            <li><?php esc_html_e('Done! The voice assistant will appear on your site.', 'vocalia-voice-assistant'); ?></li>
-        </ol>
     </div>
     <?php
 }
@@ -265,5 +346,6 @@ function vocalia_uninstall() {
     delete_option('vocalia_widget_type');
     delete_option('vocalia_enabled');
     delete_option('vocalia_pages');
+    delete_option('vocalia_plugin_token');
 }
 register_uninstall_hook(__FILE__, 'vocalia_uninstall');

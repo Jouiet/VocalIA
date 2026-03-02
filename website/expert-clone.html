@@ -8,7 +8,7 @@
   <meta name="description"
     content="Clonez votre expertise avec VocalIA Expert Clone : voix personnalisee, base de connaissances profonde (20 000 entrees), tableau de bord revenus. 149 EUR/mois.">
   <link rel="canonical" href="https://vocalia.ma/expert-clone" />
-
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/expert-clone?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/expert-clone?lang=en" />
@@ -24,6 +24,7 @@
   <meta property="og:description"
     content="Votre expertise, disponible 24/7. Voix clonee, base de connaissances de 20 000 entrees, suivi des revenus par client." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="og:locale" content="fr_FR" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -146,11 +147,11 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/signup?plan=expert_clone"
-              class="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-xl transition text-lg" data-i18n="expert_clone_page.cta_start">
+              class="px-6 sm:px-8 py-3 sm:py-4 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-xl transition text-base sm:text-lg" data-i18n="expert_clone_page.cta_start">
               Commencer &agrave; 149&euro;/mois
             </a>
             <a href="/booking"
-              class="px-8 py-4 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white font-semibold rounded-xl transition text-lg" data-i18n="expert_clone_page.cta_demo">
+              class="px-6 sm:px-8 py-3 sm:py-4 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white font-semibold rounded-xl transition text-base sm:text-lg" data-i18n="expert_clone_page.cta_demo">
               Demander une d&eacute;mo
             </a>
           </div>
@@ -357,11 +358,11 @@
           </ul>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/signup?plan=expert_clone"
-              class="px-8 py-4 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-xl transition text-lg" data-i18n="expert_clone_page.cta_signup">
+              class="px-6 sm:px-8 py-3 sm:py-4 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-xl transition text-base sm:text-lg" data-i18n="expert_clone_page.cta_signup">
               S'inscrire maintenant
             </a>
             <a href="/pricing"
-              class="px-8 py-4 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white font-medium rounded-xl transition" data-i18n="expert_clone_page.cta_compare">
+              class="px-6 sm:px-8 py-3 sm:py-4 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-white font-medium rounded-xl transition" data-i18n="expert_clone_page.cta_compare">
               Comparer tous les plans
             </a>
           </div>
@@ -388,15 +389,6 @@
       if (typeof lucide !== 'undefined' && lucide.createIcons) {
         lucide.createIcons();
       }
-    }
-
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-      btn.addEventListener('click', function() {
-        menu.classList.toggle('hidden');
-      });
     }
 
     function initLangDropdown() {
@@ -440,14 +432,12 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
-        initMobileMenu();
         initLangDropdown();
         initPricing();
         initI18n();
       });
     } else {
       initLucide();
-      initMobileMenu();
       initLangDropdown();
       initPricing();
       initI18n();
@@ -457,7 +447,7 @@
   })();
   </script>
 
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>

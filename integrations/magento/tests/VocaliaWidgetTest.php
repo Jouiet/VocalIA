@@ -5,7 +5,7 @@ use VocalIA\VoiceAssistant\Block\Widget;
 use Magento\Framework\View\Element\Template\Context;
 
 require_once __DIR__ . '/bootstrap.php';
-require_once dirname(__DIR__) . '/vocalia-magento-block.php';
+require_once dirname(__DIR__) . '/Block/Widget.php';
 
 class VocaliaWidgetTest extends TestCase
 {

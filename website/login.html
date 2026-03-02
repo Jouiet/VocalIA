@@ -7,7 +7,7 @@
   <title>Connexion - VocalIA Business</title>
   <meta name="description" content="Connectez-vous à votre compte VocalIA Business pour accéder à votre tableau de bord et gérer vos agents vocaux IA professionnels.">
   <link rel="canonical" href="https://vocalia.ma/login" />
-
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/login?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/login?lang=en" />
@@ -22,6 +22,7 @@
   <meta property="og:title" content="Connexion - VocalIA Business" />
   <meta property="og:description" content="Accédez à votre tableau de bord VocalIA pour gérer vos agents vocaux IA professionnels." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="og:locale" content="fr_FR" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -309,6 +310,66 @@
       }
     }
 
+    // Plugin connect params (from URL or restored from sessionStorage after OAuth redirect)
+    var pluginParams = new URLSearchParams(window.location.search);
+    var isPluginConnect = pluginParams.get('plugin_connect') === '1';
+    var pluginReturnUrl = pluginParams.get('return_url');
+    var pluginNonce = pluginParams.get('nonce');
+    var pluginPlatform = pluginParams.get('platform');
+
+    // Restore plugin connect params after OAuth SSO redirect (query params are lost during OAuth flow)
+    if (!isPluginConnect && sessionStorage.getItem('vocalia_plugin_connect')) {
+      try {
+        var stored = JSON.parse(sessionStorage.getItem('vocalia_plugin_connect'));
+        if (stored && stored.return_url && stored.nonce) {
+          isPluginConnect = true;
+          pluginReturnUrl = stored.return_url;
+          pluginNonce = stored.nonce;
+          pluginPlatform = stored.platform || '';
+          sessionStorage.removeItem('vocalia_plugin_connect');
+        }
+      } catch (_e) { sessionStorage.removeItem('vocalia_plugin_connect'); }
+    }
+
+    // Validate return URL is safe (HTTPS only, no javascript: etc.)
+    if (pluginReturnUrl) {
+      try {
+        var testUrl = new URL(pluginReturnUrl);
+        if (testUrl.protocol !== 'https:' && testUrl.hostname !== 'localhost' && testUrl.hostname !== '127.0.0.1') {
+          isPluginConnect = false; // Block non-HTTPS redirects
+          pluginReturnUrl = null;
+        }
+      } catch (_e) {
+        isPluginConnect = false;
+        pluginReturnUrl = null;
+      }
+    }
+
+    // After successful login, handle plugin connect redirect
+    async function handlePluginConnect(accessToken) {
+      try {
+        var apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:3013' : 'https://api.vocalia.ma';
+        var resp = await fetch(apiBase + '/api/auth/plugin-connect', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ site_url: pluginReturnUrl, platform: pluginPlatform || '', nonce: pluginNonce })
+        });
+        var data = await resp.json();
+        if (data.success) {
+          var redirect = new URL(pluginReturnUrl);
+          redirect.searchParams.set('vocalia_token', data.plugin_token);
+          redirect.searchParams.set('tenant_id', data.tenant_id);
+          redirect.searchParams.set('nonce', pluginNonce);
+          window.location.href = redirect.toString();
+          return true;
+        }
+      } catch (e) {
+        console.error('Plugin connect failed:', e);
+      }
+      return false;
+    }
+
     // Form submission
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -316,11 +377,19 @@
       setLoading(true);
 
       try {
-        await auth.login({
+        var result = await auth.login({
           email: emailInput.value,
           password: passwordInput.value,
           rememberMe: rememberCheckbox.checked
         });
+
+        // Plugin connect flow — redirect back to CMS with credentials
+        if (isPluginConnect && pluginReturnUrl && pluginNonce) {
+          var token = localStorage.getItem('vocalia_access_token');
+          var handled = await handlePluginConnect(token);
+          if (handled) return;
+        }
+
         var returnUrl = new URLSearchParams(window.location.search).get('return');
         window.location.href = returnUrl || '/app/client/index.html';
       } catch (err) {
@@ -365,8 +434,16 @@
           oauth_provider: hashParams.get('oauth_provider') || '',
           linked_providers: linkedProviders
         }));
-        // Clean URL and redirect
-        window.location.href = '/app/client/index.html';
+
+        // Plugin connect flow — redirect back to CMS with credentials
+        if (isPluginConnect && pluginReturnUrl && pluginNonce) {
+          handlePluginConnect(accessToken).then(function(handled) {
+            if (!handled) window.location.href = '/app/client/index.html';
+          });
+        } else {
+          // Clean URL and redirect
+          window.location.href = '/app/client/index.html';
+        }
       }
     }
 
@@ -376,15 +453,29 @@
       showError(decodeURIComponent(urlParams.get('oauth_error')));
     }
 
+    // Store plugin connect params in sessionStorage before OAuth redirect (params are lost during OAuth flow)
+    function storePluginConnectParams() {
+      if (isPluginConnect && pluginReturnUrl && pluginNonce) {
+        sessionStorage.setItem('vocalia_plugin_connect', JSON.stringify({
+          return_url: pluginReturnUrl,
+          nonce: pluginNonce,
+          platform: pluginPlatform || ''
+        }));
+      }
+    }
+
     document.getElementById('google-login').addEventListener('click', function() {
+      storePluginConnectParams();
       window.location.href = oauthBaseUrl + '/oauth/login/google';
     });
 
     document.getElementById('github-login').addEventListener('click', function() {
+      storePluginConnectParams();
       window.location.href = oauthBaseUrl + '/oauth/login/github';
     });
 
     document.getElementById('slack-login').addEventListener('click', function() {
+      storePluginConnectParams();
       window.location.href = oauthBaseUrl + '/oauth/login/slack';
     });
   </script>
@@ -404,24 +495,6 @@
         lucide.createIcons();
       }
     }
-
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
-
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
       });
     }
 
@@ -459,12 +532,10 @@
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
-        initMobileMenu();
         initI18n();
       });
     } else {
       initLucide();
-      initMobileMenu();
       initI18n();
     }
 

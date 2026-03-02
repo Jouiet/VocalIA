@@ -32,4 +32,4 @@ class StubLoader
     }
 }
 
-require_once dirname(__DIR__) . '/vocalia-opencart-module.php';
+require_once dirname(__DIR__) . '/upload/catalog/controller/extension/module/vocalia.php';

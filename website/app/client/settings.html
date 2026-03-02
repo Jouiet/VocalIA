@@ -42,6 +42,19 @@
       </header>
 
       <div class="px-6 py-6 max-w-3xl space-y-6">
+        <!-- Tenant ID Display -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-2" data-i18n="settings.tenant_id.title">Identifiant du compte</h3>
+          <div class="flex items-center gap-3">
+            <code id="tenant-id-display" class="px-3 py-1.5 bg-zinc-100 dark:bg-white/[0.08] text-zinc-900 dark:text-zinc-100 rounded-lg font-mono text-sm select-all">—</code>
+            <button id="copy-tenant-id" type="button" title="Copier" class="p-2 text-zinc-500 hover:text-indigo-600 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg transition-colors">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+            <span id="copy-tenant-id-feedback" class="text-xs text-green-600 dark:text-green-400 hidden">Copié</span>
+          </div>
+          <p class="text-xs text-zinc-500 mt-2" data-i18n="settings.tenant_id.desc">Utilisez cet identifiant pour configurer le widget VocalIA sur votre site.</p>
+        </div>
+
         <!-- Profile -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.profile.title">Profil</h3>
@@ -187,6 +200,43 @@
               </div>
               <input type="checkbox" id="feat-exit-intent" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
+
+            <!-- E-commerce features (shown only for ecommerce/telephony plans) -->
+            <div id="ecom-features-section" class="hidden border-t border-zinc-200 dark:border-white/[0.08] pt-4 mt-4">
+              <p class="text-xs font-semibold uppercase tracking-wide text-zinc-400 dark:text-zinc-500 mb-3" data-i18n="settings.widget_features.ecom_section">Fonctionnalités E-commerce</p>
+
+              <label class="flex items-center justify-between cursor-pointer">
+                <div>
+                  <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.cart_recovery">Cart Recovery</p>
+                  <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.cart_recovery_desc">Rappel automatique de panier abandonné</p>
+                </div>
+                <input type="checkbox" id="feat-cart-recovery" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
+              </label>
+
+              <label class="flex items-center justify-between cursor-pointer">
+                <div>
+                  <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.product_quiz">Quiz Produit</p>
+                  <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.product_quiz_desc">Quiz interactif pour recommander des produits</p>
+                </div>
+                <input type="checkbox" id="feat-quiz" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
+              </label>
+
+              <label class="flex items-center justify-between cursor-pointer">
+                <div>
+                  <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.gamification">Gamification (Spin Wheel)</p>
+                  <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.gamification_desc">Roue de la fortune pour offres promotionnelles</p>
+                </div>
+                <input type="checkbox" id="feat-gamification" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
+              </label>
+
+              <label class="flex items-center justify-between cursor-pointer">
+                <div>
+                  <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.recommendations">Carousel Recommandations</p>
+                  <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.recommendations_desc">Recommandations de produits personnalisées</p>
+                </div>
+                <input type="checkbox" id="feat-recommendations" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
+              </label>
+            </div>
 
             <div class="pt-4">
               <button type="button" id="save-widget-features-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
@@ -357,6 +407,21 @@
     const tenantId = auth.getTenantId() || user?.tenant_id;
     let settings = { api_keys: [], webhook_url: '', webhook_secret: '', webhook_events: [] };
 
+    // Tenant ID display
+    if (tenantId) {
+      document.getElementById('tenant-id-display').textContent = tenantId;
+    }
+    document.getElementById('copy-tenant-id').addEventListener('click', () => {
+      const tid = document.getElementById('tenant-id-display').textContent;
+      if (tid && tid !== '—') {
+        navigator.clipboard.writeText(tid).then(() => {
+          const fb = document.getElementById('copy-tenant-id-feedback');
+          fb.classList.remove('hidden');
+          setTimeout(() => fb.classList.add('hidden'), 2000);
+        });
+      }
+    });
+
     if (user) {
       document.getElementById('user-name').textContent = user.name || VocaliaI18n.t('dashboard.common.user_default');
       document.getElementById('user-email').textContent = user.email || '';
@@ -450,17 +515,35 @@
           ? 'http://localhost:3004' : 'https://api.vocalia.ma';
         const resp = await fetch(`${baseUrl}/config?tenantId=${encodeURIComponent(tenantId)}`);
         const data = await resp.json();
-        if (data.success && data.features) {
-          document.getElementById('feat-social-proof').checked = data.features.social_proof_enabled !== false;
-          document.getElementById('feat-booking').checked = data.features.booking_enabled !== false;
-          document.getElementById('feat-exit-intent').checked = data.features.exit_intent_enabled !== false;
+        if (data.success) {
+          // Core features
+          if (data.features) {
+            document.getElementById('feat-social-proof').checked = data.features.social_proof_enabled !== false;
+            document.getElementById('feat-booking').checked = data.features.booking_enabled !== false;
+            document.getElementById('feat-exit-intent').checked = data.features.exit_intent_enabled !== false;
+          }
+          // E-commerce features — show section if plan allows any ecom feature
+          if (data.plan_features) {
+            const hasEcom = data.plan_features.ecom_cart_recovery || data.plan_features.ecom_quiz ||
+              data.plan_features.ecom_gamification || data.plan_features.ecom_recommendations;
+            const ecomSection = document.getElementById('ecom-features-section');
+            if (hasEcom && ecomSection) {
+              ecomSection.classList.remove('hidden');
+              // Load current toggle states from plan_features (overridable via widget_features)
+              const wf = data.widget_features || {};
+              document.getElementById('feat-cart-recovery').checked = wf.ecom_cart_recovery_enabled !== false && data.plan_features.ecom_cart_recovery;
+              document.getElementById('feat-quiz').checked = wf.ecom_quiz_enabled !== false && data.plan_features.ecom_quiz;
+              document.getElementById('feat-gamification').checked = wf.ecom_gamification_enabled !== false && data.plan_features.ecom_gamification;
+              document.getElementById('feat-recommendations').checked = wf.ecom_recommendations_enabled !== false && data.plan_features.ecom_recommendations;
+            }
+          }
         }
       } catch (e) {
         console.warn('Failed to load widget features:', e.message);
       }
     }
 
-    // Save widget features
+    // Save widget features (core + ecommerce)
     document.getElementById('save-widget-features-btn').addEventListener('click', async () => {
       if (!tenantId) {
         toast.error(VocaliaI18n.t('dashboard.common.tenant_not_found'));
@@ -468,13 +551,20 @@
       }
       const loading = modal.loading(VocaliaI18n.t('dashboard.common.saving'));
       try {
-        await api.settings.update(tenantId, {
-          widget_features: {
-            social_proof_enabled: document.getElementById('feat-social-proof').checked,
-            booking_enabled: document.getElementById('feat-booking').checked,
-            exit_intent_enabled: document.getElementById('feat-exit-intent').checked
-          }
-        });
+        const features = {
+          social_proof_enabled: document.getElementById('feat-social-proof').checked,
+          booking_enabled: document.getElementById('feat-booking').checked,
+          exit_intent_enabled: document.getElementById('feat-exit-intent').checked
+        };
+        // Include e-commerce features if section is visible
+        const ecomSection = document.getElementById('ecom-features-section');
+        if (ecomSection && !ecomSection.classList.contains('hidden')) {
+          features.ecom_cart_recovery_enabled = document.getElementById('feat-cart-recovery').checked;
+          features.ecom_quiz_enabled = document.getElementById('feat-quiz').checked;
+          features.ecom_gamification_enabled = document.getElementById('feat-gamification').checked;
+          features.ecom_recommendations_enabled = document.getElementById('feat-recommendations').checked;
+        }
+        await api.settings.update(tenantId, { widget_features: features });
         loading.close();
         toast.success(VocaliaI18n.t('dashboard.settings_page.widget_features_updated'));
       } catch (error) {

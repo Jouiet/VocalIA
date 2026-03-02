@@ -74,6 +74,13 @@ function add_settings_error($setting, $code, $message, $type = 'error') {
     ];
 }
 
+function settings_errors($setting = '', $sanitize = false, $hide_on_update = false) {
+    $errors = $GLOBALS['wp_settings_errors'] ?? [];
+    foreach ($errors as $error) {
+        echo '<div class="notice notice-' . $error['type'] . '"><p>' . $error['message'] . '</p></div>';
+    }
+}
+
 function wp_enqueue_script($handle, $src = '', $deps = [], $ver = false, $args = []) {
     $GLOBALS['wp_scripts'][$handle] = [
         'src' => $src,
@@ -151,7 +158,7 @@ function settings_fields($option_group) {
     echo '<input type="hidden" name="option_page" value="' . esc_attr($option_group) . '">';
 }
 
-function submit_button($text = 'Save Changes') {
+function submit_button($text = 'Save Changes', $type = 'primary', $name = 'submit', $wrap = true, $other_attributes = null) {
     echo '<input type="submit" value="' . esc_attr($text) . '">';
 }
 
@@ -189,6 +196,33 @@ function is_checkout() {
 
 function class_exists_wp($class) {
     return class_exists($class);
+}
+
+// Transients (used by plugin connect flow)
+function set_transient($key, $value, $expiration = 0) {
+    $GLOBALS['wp_transients'][$key] = $value;
+    return true;
+}
+
+function get_transient($key) {
+    return $GLOBALS['wp_transients'][$key] ?? false;
+}
+
+function delete_transient($key) {
+    unset($GLOBALS['wp_transients'][$key]);
+    return true;
+}
+
+function wp_generate_password($length = 12, $special_chars = true, $extra_special_chars = false) {
+    return substr(str_repeat('abcdef0123456789', $length), 0, $length);
+}
+
+function wp_nonce_url($actionurl, $action = -1, $name = '_wpnonce') {
+    return $actionurl . '&' . $name . '=test_nonce';
+}
+
+function check_admin_referer($action = -1, $query_arg = '_wpnonce') {
+    return true;
 }
 
 // Load the plugin file

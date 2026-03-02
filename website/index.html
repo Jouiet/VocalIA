@@ -8,7 +8,7 @@
   <meta name="description"
     content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie IA. 5 langues supportées.">
   <link rel="canonical" href="https://vocalia.ma/" />
-
+  <meta name="robots" content="index, follow">
   <!-- Hreflang for i18n SEO (5 languages) -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/?lang=en" />
@@ -90,6 +90,10 @@
           "name": "VocalIA",
           "url": "https://vocalia.ma",
           "logo": "https://vocalia.ma/public/images/logo.webp",
+          "sameAs": [
+            "https://linkedin.com/company/vocalia",
+            "https://twitter.com/vocaliaAI"
+          ],
           "contactPoint": {
             "@type": "ContactPoint",
             "email": "contact@vocalia.ma",
@@ -316,7 +320,7 @@
             <i data-lucide="lock" class="w-5 h-5 inline-block ml-2 group-hover:translate-x-1 transition-transform"></i>
           </a>
           <button type="button" data-action="openDemoModal"
-            class="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all font-semibold text-lg flex items-center group hover:scale-105 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            class="px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all font-semibold text-base sm:text-lg flex items-center group hover:scale-105 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             data-animate="cta" data-magnetic>
             <span class="relative flex h-3 w-3 mr-3" aria-hidden="true">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -325,7 +329,7 @@
             <span data-i18n="hero.cta_secondary">Voir la Démo</span>
           </button>
           <a href="/signup.html"
-            class="px-8 py-4 rounded-xl border-2 border-vocalia-500 text-vocalia-400 hover:bg-vocalia-500 hover:text-white transition-all font-semibold text-lg flex items-center group hover:scale-105 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            class="px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 border-vocalia-500 text-vocalia-400 hover:bg-vocalia-500 hover:text-white transition-all font-semibold text-base sm:text-lg flex items-center group hover:scale-105 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             data-animate="cta" data-magnetic>
             <i data-lucide="user-plus" class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"></i>
             <span data-i18n="hero.cta_signup">Créer un Compte</span>
@@ -1511,14 +1515,14 @@
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <!-- Primary CTA -->
         <a href="/pricing"
-          class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+          class="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-base sm:text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
           data-ab="hero-cta">
           <span data-i18n="cta.button">Démarrer Maintenant</span>
           <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
         </a>
         <!-- Secondary CTA -->
         <a href="/contact"
-          class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 hover:border-white/20 transition-all duration-200 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+          class="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-base sm:text-lg border border-white/10 hover:border-white/20 transition-all duration-200 focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
           data-ab="demo-request">
           <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
           <span data-i18n="cta.demo">Demander une Démo</span>
@@ -1561,7 +1565,7 @@
   <script src="/src/lib/i18n.js?v=250"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
   <!-- VocalIA GSAP Animation System -->
-  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=265" defer></script>
 
   <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
   <script src="/src/lib/voice-visualizer.js?v=222" defer></script>
@@ -1591,26 +1595,6 @@
         if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
           lucide.createIcons();
         }
-      }
-
-      // Mobile menu
-      function initMobileMenu() {
-        var btn = document.getElementById('mobileMenuBtn');
-        var menu = document.getElementById('mobileMenu');
-        if (!btn || !menu) return;
-
-        btn.addEventListener('click', function () {
-          var isOpen = menu.classList.contains('translate-x-0');
-          if (isOpen) {
-            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-            document.body.style.overflow = '';
-          } else {
-            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-            document.body.style.overflow = 'hidden';
-          }
-        });
       }
 
       // i18n init - Priority: URL param > localStorage > geo detection
@@ -1664,12 +1648,10 @@
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function () {
           initLucide();
-          initMobileMenu();
           initI18n();
         });
       } else {
         initLucide();
-        initMobileMenu();
         initI18n();
       }
 

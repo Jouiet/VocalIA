@@ -51,12 +51,14 @@ const PLUGINS = {
   magento: {
     src: 'integrations/magento',
     zip: 'vocalia-magento.zip',
-    folder: 'vocalia'
+    folder: 'VocalIA/VoiceAssistant',
+    excludeFlat: true
   },
   opencart: {
     src: 'integrations/opencart',
     zip: 'vocalia-opencart.zip',
-    folder: 'vocalia'
+    folder: 'vocalia-opencart',
+    ocmod: true
   }
 };
 
@@ -80,32 +82,47 @@ function buildZip(name, config) {
     fs.unlinkSync(zipPath);
   }
 
-  // Build ZIP using system zip command
-  // -r recursive, -j don't store directory paths (we use cd instead)
-  const parentDir = path.dirname(srcPath);
-  const folderName = path.basename(srcPath);
+  const excludes = '-x "*.DS_Store" -x "__MACOSX/*" -x "*/vendor/*" -x "*/tests/*" -x "*/composer.lock" -x "*/phpunit.xml" -x "*/composer.json" -x "*/.phpunit.result.cache"';
 
-  // For plugins where source folder name differs from desired ZIP folder name,
-  // we create a temp symlink
-  let cleanup = null;
-  let zipTarget = folderName;
-
-  if (folderName !== config.folder) {
-    const linkPath = path.join(parentDir, config.folder);
-    if (!fs.existsSync(linkPath)) {
-      fs.symlinkSync(srcPath, linkPath);
-      cleanup = linkPath;
+  // For nested folder names (e.g. VocalIA/VoiceAssistant), use a temp staging dir
+  if (config.folder.includes('/')) {
+    const tmpDir = path.join(ROOT, 'dist', '.tmp-zip-' + name);
+    const targetDir = path.join(tmpDir, config.folder);
+    if (fs.existsSync(tmpDir)) fs.rmSync(tmpDir, { recursive: true });
+    fs.mkdirSync(targetDir, { recursive: true });
+    // Copy source files (excluding tests, vendor, etc.)
+    copyDirFiltered(srcPath, targetDir);
+    try {
+      const topFolder = config.folder.split('/')[0];
+      execSync(`cd "${tmpDir}" && zip -r "${zipPath}" "${topFolder}" ${excludes}`, { stdio: 'pipe' });
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true });
     }
-    zipTarget = config.folder;
-  }
+  } else if (config.ocmod) {
+    // OpenCart OCMOD: zip install.xml + upload/ from source dir
+    execSync(`cd "${srcPath}" && zip -r "${zipPath}" install.xml upload/ ${excludes}`, { stdio: 'pipe' });
+  } else {
+    // Standard: symlink approach for flat renames
+    const parentDir = path.dirname(srcPath);
+    const folderName = path.basename(srcPath);
+    let cleanup = null;
+    let zipTarget = folderName;
 
-  try {
-    execSync(`cd "${parentDir}" && zip -r "${zipPath}" "${zipTarget}" -x "*.DS_Store" -x "__MACOSX/*" -x "*/vendor/*" -x "*/tests/*" -x "*/composer.lock" -x "*/phpunit.xml" -x "*/composer.json" -x "*/.phpunit.result.cache"`, {
-      stdio: 'pipe'
-    });
-  } finally {
-    if (cleanup && fs.existsSync(cleanup)) {
-      fs.unlinkSync(cleanup);
+    if (folderName !== config.folder) {
+      const linkPath = path.join(parentDir, config.folder);
+      if (!fs.existsSync(linkPath)) {
+        fs.symlinkSync(srcPath, linkPath);
+        cleanup = linkPath;
+      }
+      zipTarget = config.folder;
+    }
+
+    try {
+      execSync(`cd "${parentDir}" && zip -r "${zipPath}" "${zipTarget}" ${excludes}`, { stdio: 'pipe' });
+    } finally {
+      if (cleanup && fs.existsSync(cleanup)) {
+        fs.unlinkSync(cleanup);
+      }
     }
   }
 
@@ -119,6 +136,25 @@ function buildZip(name, config) {
 
   console.log(`✅ [${name}] ${config.zip} (${sizeKB} KB)`);
   return true;
+}
+
+/**
+ * Copy directory contents excluding tests, vendor, phpunit, composer files
+ */
+function copyDirFiltered(src, dest) {
+  const EXCLUDE = ['tests', 'vendor', 'phpunit.xml', 'composer.json', 'composer.lock', '.phpunit.result.cache', '.DS_Store'];
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    if (EXCLUDE.includes(entry.name)) continue;
+    const srcEntry = path.join(src, entry.name);
+    const destEntry = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      fs.mkdirSync(destEntry, { recursive: true });
+      copyDirFiltered(srcEntry, destEntry);
+    } else {
+      fs.copyFileSync(srcEntry, destEntry);
+    }
+  }
 }
 
 function main() {

@@ -10,6 +10,7 @@
 > **250.253** : Plugin distribution corrigee — ZIP bloat fix (WP 16MB→4.4KB, PS 1.4MB→2.1KB, excluait vendor/tests). Maturity audit: WP+PS a 40% (P1+P2), systeme global 65%. Dashboard visual polish deploye. Aucune installation reelle sur satellite — Henderson/Alpha-Medical (Shopify) utilisent snippet Liquid, 3A (Hostinger) utilise snippet HTML. Pas de plugin PHP necessaire pour les satellites.
 > **250.254b** : Revenue Path Audit — Register 500 en production (diagnostiqué OAuth expired — FAUX, voir 250.261). CORS depuis satellites: 403 "Origin not allowed" (tenant whitelist vide pour nouveaux tenants).
 > **250.261** : **B1 DEBUNKED** — Register 201 OK. OAuth was NEVER expired. Error was shell escaping `!`→`\!` in curl producing invalid JSON (6 sessions de faux diagnostic). **B5 FIXED** — Widget WS URL `:3007`→`/realtime` (Traefik path route). VPS 7/7 HEALTHY. Production: 6.0/10, Revenue: 4.0/10. Satellite blocker restant: CORS (tenant whitelist vide pour nouveaux tenants) + Stripe config.
+> **250.264** : **Plugins SOTA 2026** — Auto-register origin (C2) corrige le CORS blocker pour satellites. Le plugin-connect auto-ajoute l'origin du site au `allowed_origins[]` du tenant. Le heartbeat first-use fallback auto-register pour les snippets (Shopify/BigC = Henderson/Alpha-Medical). Magento/OpenCart ZIPs réparés (étaient cassés — structure flat au lieu de standard CMS). OAuth "Connect with VocalIA" dans WP/PS/Joomla/Drupal. **Impact satellites**: Henderson/Alpha-Medical (Shopify snippets) bénéficient du heartbeat auto-register origin. 3A (snippet HTML Hostinger) idem. CinematicAds (Docker VPS) = snippet HTML.
 
 ---
 
@@ -80,15 +81,15 @@ curl -sI https://mydealz.shop | head -1             # HTTP/2 402
 | API key rotation route | POST `/api/tenants/*/api-key/rotate` | ✅ `{"error":"Authorization required"}` | Route existe |
 | NPM package | `npm info vocalia-widget` | ✅ v1.0.0 publie | npmjs.com |
 
-### 2.2 Ce qui NE FONCTIONNE PAS (verifie par curl)
+### 2.2 Ce qui NE FONCTIONNE PAS (verifie par curl — mis à jour 250.264)
 
 | Composant | Test | Resultat | Impact |
 |:----------|:-----|:---------|:-------|
-| **Register** | POST `/api/auth/register` (email frais) | ❌ **500 "Internal server error"** | **AUCUN nouveau tenant ne peut s'inscrire** |
+| ~~**Register**~~ | POST `/api/auth/register` (email frais) | ✅ **201 OK** (B1 debunked 250.261) | **RÉSOLU** |
 | **Health check** | GET `/health` ou `/api/health` | ❌ **404** | Monitoring externe impossible |
-| **WebSocket /realtime** | GET `/realtime/` avec upgrade WS | ❌ **404** | Voice streaming WebSocket inaccessible |
+| ~~**WebSocket /realtime**~~ | GET `/realtime/` avec upgrade WS | ✅ **200 OK** (B5 fixed 250.261) | **RÉSOLU** — `/realtime/health` → 200 |
 | **Widget ecom sub-bundles** | GET `voice-widget-ecommerce-core.js` | ❌ **403** (6 fichiers) | Code-split e-commerce inutilisable |
-| **CORS depuis satellites** | OPTIONS `/respond` Origin: 3a-automation.com | ❌ **403 "Origin not allowed"** | Widget externe ne peut pas communiquer |
+| ~~**CORS depuis satellites**~~ | OPTIONS `/respond` Origin: satellite | ⚠️ **Partiellement résolu** (250.264) | Auto-register origin via heartbeat first-use. Satellites nouveaux tenants = auto-ajouté. Tenants existants = ajout manuel |
 | **Lang files CORS** | GET `lang/voice-fr.json` Origin: externe | ❌ **Pas de header CORS** | Traductions bloquees depuis sites externes |
 
 ```bash

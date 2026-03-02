@@ -1,101 +1,89 @@
 #!/bin/bash
-# VocalIA - Create Deploy ZIP for NindoHost cPanel (SaaS Ready)
+# VocalIA - Create Deploy ZIP for Hostinger (Static Website)
 # Usage: bash scripts/create-deploy-zip.sh
-# Version: 246 (Multi-Tenant)
+# Version: 264 (Full website rsync)
 
 set -e
 
-echo "=== VocalIA SaaS Deploy ZIP Creator ==="
-echo "Creating deployment package for NindoHost..."
+echo "=== VocalIA Website Deploy ZIP Creator ==="
+echo "Creating deployment package for Hostinger..."
 
 # Navigate to project root
 cd "$(dirname "$0")/.."
 
 # Create deploy directory
-DEPLOY_DIR="deploy_saas"
-ZIP_NAME="vocalia-saas-$(date +%Y%m%d-%H%M%S).zip"
+DEPLOY_DIR="deploy_website"
+ZIP_NAME="vocalia-website-$(date +%Y%m%d-%H%M%S).zip"
 
 rm -rf "$DEPLOY_DIR"
 mkdir -p "$DEPLOY_DIR"
 
-# --- FRONTEND (Static Vitrine) ---
-echo "1. Copying Frontend (Vitrine)..."
-cp -r website/index.html "$DEPLOY_DIR/"
-cp -r website/features.html "$DEPLOY_DIR/"
-cp -r website/pricing.html "$DEPLOY_DIR/"
-cp -r website/about.html "$DEPLOY_DIR/"
-cp -r website/contact.html "$DEPLOY_DIR/"
-cp -r website/privacy.html "$DEPLOY_DIR/"
-cp -r website/terms.html "$DEPLOY_DIR/"
-cp -r website/integrations.html "$DEPLOY_DIR/"
-cp -r website/robots.txt "$DEPLOY_DIR/"
-cp -r website/sitemap.xml "$DEPLOY_DIR/"
-cp -r website/.htaccess "$DEPLOY_DIR/"
+# --- FRONTEND (Full Static Website) ---
+echo "1. Copying website files..."
 
-mkdir -p "$DEPLOY_DIR/products"
-cp -r website/products/*.html "$DEPLOY_DIR/products/"
+# Copy entire website directory, excluding dev files
+rsync -a --exclude='node_modules' \
+         --exclude='src/config' \
+         --exclude='src/input.css' \
+         --exclude='package.json' \
+         --exclude='package-lock.json' \
+         --exclude='tailwind.config.js' \
+         --exclude='postcss.config.js' \
+         --exclude='.DS_Store' \
+         --exclude='__MACOSX' \
+         website/ "$DEPLOY_DIR/"
 
-mkdir -p "$DEPLOY_DIR/dashboard"
-cp -r website/dashboard/*.html "$DEPLOY_DIR/dashboard/"
+echo "   Files copied: $(find "$DEPLOY_DIR" -type f | wc -l)"
 
-mkdir -p "$DEPLOY_DIR/public"
-cp -r website/public/* "$DEPLOY_DIR/public/"
+# Verify critical files exist
+echo ""
+echo "2. Verifying critical files..."
+MISSING=0
+for f in index.html pricing.html features.html about.html contact.html \
+         robots.txt sitemap.xml llms.txt llms-full.txt .htaccess \
+         blog/index.html booking.html signup.html login.html \
+         referral.html expert-clone.html cookie-policy.html \
+         privacy.html terms.html 404.html \
+         products/voice-widget.html products/voice-widget-b2b.html \
+         products/voice-widget-b2c.html products/voice-widget-ecommerce.html \
+         products/voice-telephony.html \
+         industries/index.html use-cases/index.html \
+         docs/index.html docs/api.html \
+         academie-business/index.html \
+         public/css/style.css; do
+  if [ ! -f "$DEPLOY_DIR/$f" ]; then
+    echo "   MISSING: $f"
+    MISSING=$((MISSING + 1))
+  fi
+done
 
-mkdir -p "$DEPLOY_DIR/src/lib"
-cp website/src/lib/*.js "$DEPLOY_DIR/src/lib/"
+if [ "$MISSING" -eq 0 ]; then
+  echo "   All critical files present."
+else
+  echo "   WARNING: $MISSING critical files missing!"
+fi
 
-mkdir -p "$DEPLOY_DIR/src/locales"
-cp website/src/locales/*.json "$DEPLOY_DIR/src/locales/"
-
-echo "   Copying Voice Assistant..."
-mkdir -p "$DEPLOY_DIR/voice-assistant"
-cp -r website/voice-assistant/* "$DEPLOY_DIR/voice-assistant/"
-
-# --- BACKEND (MCP Server + Core) ---
-# NOTE: NindoHost cPanel is shared hosting (Node.js app support varies).
-# Ideally, this should go to a VPS. But we package it for potential Node deployment.
-echo "2. Copying Backend (Server)..."
-mkdir -p "$DEPLOY_DIR/server"
-mkdir -p "$DEPLOY_DIR/server/core"
-mkdir -p "$DEPLOY_DIR/server/mcp-server"
-
-# Core: Registry
-# CHANGED: Copying FULL Core for Voice API
-cp -r core/* "$DEPLOY_DIR/server/core/"
-
-# Copying Backend Dependencies
-mkdir -p "$DEPLOY_DIR/server/lib"
-cp -r lib/* "$DEPLOY_DIR/server/lib/" 2>/dev/null || true
-
-mkdir -p "$DEPLOY_DIR/server/integrations"
-cp -r integrations/* "$DEPLOY_DIR/server/integrations/" 2>/dev/null || true
-
-mkdir -p "$DEPLOY_DIR/server/personas"
-cp -r personas/* "$DEPLOY_DIR/server/personas/" 2>/dev/null || true
-
-# MCA Server: Build & Dist
-echo "   Building MCP Server..."
-cd mcp-server
-npm run build
-cd ..
-
-cp -r mcp-server/dist "$DEPLOY_DIR/server/mcp-server/"
-cp mcp-server/package.json "$DEPLOY_DIR/server/mcp-server/"
+# Count pages
+HTML_COUNT=$(find "$DEPLOY_DIR" -name "*.html" | wc -l | tr -d ' ')
+echo "   HTML pages: $HTML_COUNT"
 
 # --- ZIP ---
-echo "Creating ZIP archive..."
+echo ""
+echo "3. Creating ZIP archive..."
 cd "$DEPLOY_DIR"
-zip -r "../$ZIP_NAME" . -x "*.DS_Store" -x "*__MACOSX*" -x "*.git*"
+zip -r "../$ZIP_NAME" . -x "*.DS_Store" -x "*__MACOSX*" -x "*.git*" -q
 cd ..
+
+ZIP_SIZE=$(du -sh "$ZIP_NAME" | cut -f1)
 
 # Cleanup
 rm -rf "$DEPLOY_DIR"
 
 # Report
 echo ""
-echo "=== SaaS Deployment Package Created ==="
-echo "File: $ZIP_NAME"
-echo "Contents:"
-echo "  - / (Static Frontend)"
-echo "  - /server (Node.js Backend & Registry)"
+echo "=== Website Deployment Package Created ==="
+echo "File: $ZIP_NAME ($ZIP_SIZE)"
+echo "Pages: $HTML_COUNT HTML files"
+echo ""
+echo "Deploy: Upload to Hostinger hPanel → File Manager → public_html"
 echo ""
